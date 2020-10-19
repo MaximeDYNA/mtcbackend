@@ -16,16 +16,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_caissier")
 public class Caissier {
 	@Id
-	private String idCaissier;
+	private String caissier_id;
 	private String codeCaissier;
 	private String idOrganisation;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name="idPartenaire")
 	private Partenaire partenaire;
 	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)//id utilisateur optionel
+	@ManyToOne(optional = true)//id utilisateur optionel
 	@JoinColumn(name="idUtilisateur")
 	private Utilisateur user;
 	
@@ -33,28 +32,31 @@ public class Caissier {
 	@JsonIgnore
 	private Set<CaissierCaisse> caissierCaisses;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="caissier")
+	@JsonIgnore
+	private Set<SessionCaisse> sessionCaisse;
+	
 	public Caissier() {
 	}
 
-
-	public Caissier(String idCaissier, String codeCaissier, String idOrganisation, Partenaire partenaire,
-			Utilisateur user, Set<CaissierCaisse> caissierCaisses) {
-		this.idCaissier = idCaissier;
+	public Caissier(String caissier_id, String codeCaissier, String idOrganisation, Partenaire partenaire,
+			Utilisateur user, Set<CaissierCaisse> caissierCaisses, Set<SessionCaisse> sessionCaisse) {
+		super();
+		this.caissier_id = caissier_id;
 		this.codeCaissier = codeCaissier;
 		this.idOrganisation = idOrganisation;
 		this.partenaire = partenaire;
 		this.user = user;
 		this.caissierCaisses = caissierCaisses;
+		this.sessionCaisse = sessionCaisse;
 	}
 
-
-
-	public String getIdCaissier() {
-		return idCaissier;
+	public String getCaissier_id() {
+		return caissier_id;
 	}
 
-	public void setIdCaissier(String idCaissier) {
-		this.idCaissier = idCaissier;
+	public void setCaissier_id(String idCaissier) {
+		this.caissier_id = idCaissier;
 	}
 
 	public String getCodeCaissier() {
@@ -97,6 +99,24 @@ public class Caissier {
 
 	public void setCaissierCaisses(Set<CaissierCaisse> caissierCaisses) {
 		this.caissierCaisses = caissierCaisses;
+	}
+
+
+
+
+
+
+	public Set<SessionCaisse> getSessionCaisse() {
+		return sessionCaisse;
+	}
+
+
+
+
+
+
+	public void setSessionCaisse(Set<SessionCaisse> sessionCaisse) {
+		this.sessionCaisse = sessionCaisse;
 	}
 	
 	

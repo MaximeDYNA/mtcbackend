@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_caisse")
 public class Caisse {
 	@Id
-	private String idCaisse;
+	private String caisse_id;
 	private String description;
 	private String idOrganisation; 
 	
@@ -22,16 +22,28 @@ public class Caisse {
 	@JsonIgnore
 	private Set<CaissierCaisse> caissiercaisses;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="caisse")
+	@JsonIgnore
+	private Set<SessionCaisse> sessionCaisse;
+	
 	public Caisse() {
 	}
 
-	public Caisse(String idCaisse, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses) {
+	
+
+
+
+	public Caisse(String caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses,
+			Set<SessionCaisse> sessionCaisse) {
 		super();
-		this.idCaisse = idCaisse;
+		this.caisse_id = caisse_id;
 		this.description = description;
 		this.idOrganisation = idOrganisation;
 		this.caissiercaisses = caissiercaisses;
+		this.sessionCaisse = sessionCaisse;
 	}
+
+
 
 
 
@@ -44,11 +56,11 @@ public class Caisse {
 	}
 
 	public String getIdCaisse() {
-		return idCaisse;
+		return caisse_id;
 	}
 
 	public void setIdCaisse(String idCaisse) {
-		this.idCaisse = idCaisse;
+		this.caisse_id = idCaisse;
 	}
 
 	public String getIdOrganisation() {
@@ -69,6 +81,38 @@ public class Caisse {
 
 	public void setCaissiercaisses(Set<CaissierCaisse> caissiercaisses) {
 		this.caissiercaisses = caissiercaisses;
+	}
+
+
+
+
+
+	public String getCaisse_id() {
+		return caisse_id;
+	}
+
+
+
+
+
+	public void setCaisse_id(String caisse_id) {
+		this.caisse_id = caisse_id;
+	}
+
+
+
+
+
+	public Set<SessionCaisse> getSessionCaisse() {
+		return sessionCaisse;
+	}
+
+
+
+
+
+	public void setSessionCaisse(Set<SessionCaisse> sessionCaisse) {
+		this.sessionCaisse = sessionCaisse;
 	}
 
 	

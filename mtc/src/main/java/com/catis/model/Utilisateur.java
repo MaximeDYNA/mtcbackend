@@ -19,6 +19,7 @@ public class Utilisateur {
 	private String idUtilisateur;
 	private String login;
 	private String motDePasse;
+	private String idOrganisation;
 	
 	@ManyToOne
 	@JoinColumn(name ="idPartenaire")
@@ -31,15 +32,14 @@ public class Utilisateur {
 	@JsonIgnore
 	private Set<Controleur> controleurs;
 
-	
-	
 
-	public Utilisateur(String idUtilisateur, String login, String motDePasse, Partenaire partenaire,
-			Set<Caissier> caissiers, Set<Controleur> controleurs) {
+	public Utilisateur(String idUtilisateur, String login, String motDePasse, String idOrganisation,
+			Partenaire partenaire, Set<Caissier> caissiers, Set<Controleur> controleurs) {
 		super();
 		this.idUtilisateur = idUtilisateur;
 		this.login = login;
 		this.motDePasse = motDePasse;
+		this.idOrganisation = idOrganisation;
 		this.partenaire = partenaire;
 		this.caissiers = caissiers;
 		this.controleurs = controleurs;
@@ -94,6 +94,14 @@ public class Utilisateur {
 
 	public void setControleurs(Set<Controleur> controleurs) {
 		this.controleurs = controleurs;
+	}
+
+	public String getIdOrganisation() {
+		return idOrganisation;
+	}
+
+	public void setIdOrganisation(String idOrganisation) {
+		this.idOrganisation = idOrganisation;
 	}
 	
 	

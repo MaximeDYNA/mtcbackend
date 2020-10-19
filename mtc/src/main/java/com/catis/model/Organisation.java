@@ -32,6 +32,11 @@ public class Organisation {
 		
 	}
 	
+	
+
+	
+
+
 	public Organisation(String idOrganisation, Set<Adresse> adresse, Set<Contact> contact, String patente,
 			String statutJurique, String numeroDeContribuable, String idOrganisationParent) {
 		super();
@@ -43,6 +48,11 @@ public class Organisation {
 		this.numeroDeContribuable = numeroDeContribuable;
 		this.idOrganisationParent = idOrganisationParent;
 	}
+
+
+
+
+
 
 	public String getIdOrganisation() {
 		return idOrganisation;
@@ -95,4 +105,6 @@ public class Organisation {
 		this.contact = contact;
 	}
 
+
+	
 }

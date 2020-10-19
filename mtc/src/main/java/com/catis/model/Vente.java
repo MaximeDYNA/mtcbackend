@@ -41,19 +41,24 @@ public class Vente {
 	@JoinColumn(name="idVendeur")
 	private Vendeur vendeur;
 	
+	
 	public Vente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public Vente(String idVente, double montantTotal, String idOrganisation,
-			CaissierCaisse caissierCaisse, Client client, Set<OperationCaisse> operationCaisse,
-			Set<DetailVente> detailventes, Vendeur vendeur) {
+
+
+
+
+
+
+	public Vente(String idVente, double montantTotal, String idOrganisation, CaissierCaisse caissierCaisse,
+			Client client, Set<OperationCaisse> operationCaisse, Set<DetailVente> detailventes, Vendeur vendeur) {
 		super();
 		this.idVente = idVente;
 		this.montantTotal = montantTotal;
-	
 		this.idOrganisation = idOrganisation;
 		this.caissierCaisse = caissierCaisse;
 		this.client = client;
@@ -61,6 +66,13 @@ public class Vente {
 		this.detailventes = detailventes;
 		this.vendeur = vendeur;
 	}
+
+
+
+
+
+
+
 
 	public Set<OperationCaisse> getOperationCaisse() {
 		return operationCaisse;
@@ -145,6 +157,7 @@ public class Vente {
 	public void setVendeur(Vendeur vendeur) {
 		this.vendeur = vendeur;
 	}
-	
-	
+
+
+
 }

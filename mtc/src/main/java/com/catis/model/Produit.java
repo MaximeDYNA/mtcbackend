@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,40 +17,60 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Produit {
 
 	@Id
-	private String idProduit;
-	private String code;
+	private String produit_id;
+	private String libelle;
 	private String description;
 	private double prix;
+	private int delaiValidite;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
 	@JsonIgnore
 	private Set<DetailVente> detailVente;
 	
+	@ManyToOne
+	@JoinColumn(name="categorieProduitId")
+	private CategorieProduit categorieProduit;
+	
 	public Produit() {
 		
 	}
-	
-	public Produit(String idProduit, String code, String description, double prix, Set<DetailVente> detailVente) {
+
+	public Produit(String produit_id, String libelle, String description, double prix, int delaiValidite,
+			Set<DetailVente> detailVente, CategorieProduit categorieProduit) {
 		super();
-		this.idProduit = idProduit;
-		this.code = code;
+		this.produit_id = produit_id;
+		this.libelle = libelle;
 		this.description = description;
 		this.prix = prix;
+		this.delaiValidite = delaiValidite;
 		this.detailVente = detailVente;
+		this.categorieProduit = categorieProduit;
 	}
 
-	public String getIdProduit() {
-		return idProduit;
+	public String getProduit_id() {
+		return produit_id;
 	}
-	public void setIdProduit(String idProduit) {
-		this.idProduit = idProduit;
+
+	public void setProduit_id(String produit_id) {
+		this.produit_id = produit_id;
 	}
-	public String getCode() {
-		return code;
+
+	public CategorieProduit getCategorieProduit() {
+		return categorieProduit;
 	}
-	public void setCode(String code) {
-		this.code = code;
+
+	public void setCategorieProduit(CategorieProduit categorieProduit) {
+		this.categorieProduit = categorieProduit;
 	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -68,6 +90,18 @@ public class Produit {
 
 	public void setDetailVente(Set<DetailVente> detailVente) {
 		this.detailVente = detailVente;
+	}
+
+
+
+	public int getDelaiValidite() {
+		return delaiValidite;
+	}
+
+
+
+	public void setDelaiValidite(int delaiValidite) {
+		this.delaiValidite = delaiValidite;
 	}
 	
 	

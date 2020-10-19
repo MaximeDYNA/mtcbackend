@@ -26,6 +26,10 @@ public class OperationCaisse {
 	@JoinColumn(name="idTaxe")
 	private Taxe taxe;
 	
+	@ManyToOne
+	@JoinColumn(name="idSessionCaisse")
+	private SessionCaisse sessionCaisse;
+	
 	private String idOrganisation;
 	
 	
@@ -34,10 +38,9 @@ public class OperationCaisse {
 
 	}
 
-	
 
 	public OperationCaisse(String idOperationDeCaisse, String libelle, double montant, CaissierCaisse caissierCaisse,
-			Vente vente, Taxe taxe, String idOrganisation) {
+			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String idOrganisation) {
 		super();
 		this.idOperationDeCaisse = idOperationDeCaisse;
 		this.libelle = libelle;
@@ -45,8 +48,13 @@ public class OperationCaisse {
 		this.caissierCaisse = caissierCaisse;
 		this.vente = vente;
 		this.taxe = taxe;
+		this.sessionCaisse = sessionCaisse;
 		this.idOrganisation = idOrganisation;
 	}
+
+
+
+
 
 
 
@@ -108,6 +116,26 @@ public class OperationCaisse {
 
 	public void setIdOrganisation(String idOrganisation) {
 		this.idOrganisation = idOrganisation;
+	}
+
+
+
+
+
+
+
+	public SessionCaisse getSessionCaisse() {
+		return sessionCaisse;
+	}
+
+
+
+
+
+
+
+	public void setSessionCaisse(SessionCaisse sessionCaisse) {
+		this.sessionCaisse = sessionCaisse;
 	}
 
 	

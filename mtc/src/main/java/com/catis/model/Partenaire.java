@@ -3,18 +3,39 @@ package com.catis.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "t_partenaire")
 public class Partenaire {
+	
 	@Id
+	/*@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_partenaire_seq")
+	
+	 * @GenericGenerator( name = "t_partenaire_seq", strategy =
+	 * "com.catis.model.idGeneratorStrategy.StringPrefixedSequenceIdGenerator",
+	 * parameters = {
+	 * 
+	 * @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value =
+	 * "1"),
+	 * 
+	 * @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER,
+	 * value = "PAR_"),
+	 * 
+	 * @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER,
+	 * value = "%05d") })
+	 */
+	@GenericGenerator(name = "sequence_dep_id", strategy = "com.catis.model.idGeneratorStrategy.StringPrefixedSequenceIdGenerator")
+	@GeneratedValue(generator = "sequence_dep_id")
+	@Column(name="id_partenaire")
 	private String id_partenaire;
 	private String nom;
 	private String prenom;
@@ -43,15 +64,9 @@ public class Partenaire {
 	@OneToMany(mappedBy="partenaire")
 	@JsonIgnore
 	Set<Caissier> caissiers;
-	
 
-	
 	public Partenaire() {
 	}
-
-	
-
-
 
 	public Partenaire(String id_partenaire, String nom, String prenom, Date dateNaiss, String lieuDeNaiss,
 			String passport, String permiDeConduire, String cni, Set<ProprietaireVehicule> proprietaireVehicule,
@@ -72,10 +87,6 @@ public class Partenaire {
 		this.controleurs = controleurs;
 		this.caissiers = caissiers;
 	}
-
-
-
-
 
 	public Set<ProprietaireVehicule> getProprietaireVehicule() {
 		return proprietaireVehicule;
