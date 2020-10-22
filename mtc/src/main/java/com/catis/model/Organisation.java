@@ -4,24 +4,27 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_organisation")
 public class Organisation {
 	@Id
-	private String idOrganisation;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long organisationId;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="organisation")
 	@JsonIgnore
 	Set<Adresse> adresse;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="organisation")
 	@JsonIgnore
-	Set<Contact> contact;
+	Set<Partenaire> partenaires;
 	
 	private String patente;
 	private String statutJurique;
@@ -31,18 +34,12 @@ public class Organisation {
 	public Organisation() {
 		
 	}
-	
-	
 
-	
-
-
-	public Organisation(String idOrganisation, Set<Adresse> adresse, Set<Contact> contact, String patente,
-			String statutJurique, String numeroDeContribuable, String idOrganisationParent) {
+	public Organisation(Long organisationId, Set<Adresse> adresse, String patente, String statutJurique,
+			String numeroDeContribuable, String idOrganisationParent) {
 		super();
-		this.idOrganisation = idOrganisation;
+		this.organisationId = organisationId;
 		this.adresse = adresse;
-		this.contact = contact;
 		this.patente = patente;
 		this.statutJurique = statutJurique;
 		this.numeroDeContribuable = numeroDeContribuable;
@@ -54,13 +51,29 @@ public class Organisation {
 
 
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+
+
+	public Long getOrganisationId() {
+		return organisationId;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+
+
+
+
+
+	public void setOrganisationId(Long organisationId) {
+		this.organisationId = organisationId;
 	}
+
+
+
+
+
+
+
 
 	public String getIdOrganisationParent() {
 		return idOrganisationParent;
@@ -97,13 +110,18 @@ public class Organisation {
 		this.adresse = adresse;
 	}
 
-	public Set<Contact> getContact() {
-		return contact;
+
+
+	public Set<Partenaire> getPartenaires() {
+		return partenaires;
 	}
 
-	public void setContact(Set<Contact> contact) {
-		this.contact = contact;
+
+
+	public void setPartenaire(Set<Partenaire> partenaires) {
+		this.partenaires = partenaires;
 	}
+
 
 
 	

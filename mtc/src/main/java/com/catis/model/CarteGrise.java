@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="t_cartegrise")
 public class CarteGrise {
 	@Id
-	private String idCarteGrise;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long idCarteGrise;
 	private String numImmatriculation;
 	private String preImmatriculation;// immatriculation précédente
 	private Date dateDebutValid; //debut de validité
@@ -77,7 +80,7 @@ public class CarteGrise {
 
 	
 
-	public CarteGrise(String idCarteGrise, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
+	public CarteGrise(long idCarteGrise, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
 			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
 			String genreVehicule, String marqueVehicule, String typeVehicule, String carrosserie, String enregistrement,
 			String chassis, Date dateMiseEnCirculation, Date premiereMiseEnCirculation, String energie, int cylindre,
@@ -116,11 +119,11 @@ public class CarteGrise {
 		this.visites = visites;
 	}
 
-	public String getIdCarteGrise() {
+	public long getIdCarteGrise() {
 		return idCarteGrise;
 	}
 
-	public void setIdCarteGrise(String idCarteGrise) {
+	public void setIdCarteGrise(long idCarteGrise) {
 		this.idCarteGrise = idCarteGrise;
 	}
 

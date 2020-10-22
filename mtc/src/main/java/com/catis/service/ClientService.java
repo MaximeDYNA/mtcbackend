@@ -26,7 +26,10 @@ public class ClientService {
 		clientRepository.findAll().forEach(clients::add);
 		return clients;
 	}
-	public Client findCustomerById(String id) {
-		return clientRepository.findById(id).get();
+	public Client findCustomerById(long id) {
+		return clientRepository.findByClientId(id);
+	}
+	public Client findByPartenaire(long id) {		
+		return clientRepository.findByPartenaire_PartenaireId(id);
 	}
 }

@@ -1,21 +1,34 @@
 package com.catis.Controller.objectTemporaire;
 
 import java.util.Date;
+import java.util.List;
+
+import com.catis.model.Client;
+import com.catis.model.Partenaire;
 
 public class ClientPartenaire {
+	private long clientId;
+	private long contactId;
+	private long vendeurId;
+	private String description;
 	private String nom;
 	private String prenom;
-	private Date dateNaiss;
-	private String lieuDeNaiss;
+	private Date dateNaiss; // date de naissance
+	private String lieuDeNaiss; // lieu de naissance
 	private String passport; 
 	private String permiDeConduire;
 	private String cni;
-	private String descriptionClient;
-	private String idorganisation;
+	private String telephone;
+	private Partenaire partenaire;
 	
-	public ClientPartenaire(String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
-			String permiDeConduire, String cni, String descriptionClient, String idorganisation) {
+	public ClientPartenaire(long clientId, long contactId, long vendeurId, String description, String nom,
+			String prenom, Date dateNaiss, String lieuDeNaiss, String passport, String permiDeConduire, String cni,
+			String telephone, Partenaire partenaire) {
 		super();
+		this.clientId = clientId;
+		this.contactId = contactId;
+		this.vendeurId = vendeurId;
+		this.description = description;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaiss = dateNaiss;
@@ -23,10 +36,25 @@ public class ClientPartenaire {
 		this.passport = passport;
 		this.permiDeConduire = permiDeConduire;
 		this.cni = cni;
-		this.descriptionClient = descriptionClient;
-		this.idorganisation = idorganisation;
+		this.telephone = telephone;
+		this.partenaire = partenaire;
 	}
-	
+	public ClientPartenaire() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public long getClientId() {
+		return clientId;
+	}
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public String getNom() {
 		return nom;
 	}
@@ -69,17 +97,32 @@ public class ClientPartenaire {
 	public void setCni(String cni) {
 		this.cni = cni;
 	}
-	public String getDescriptionClient() {
-		return descriptionClient;
+	public String getTelephone() {
+		return telephone;
 	}
-	public void setDescriptionClient(String descriptionClient) {
-		this.descriptionClient = descriptionClient;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
-	public String getIdorganisation() {
-		return idorganisation;
+	public Partenaire getPartenaire() {
+		return partenaire;
 	}
-	public void setIdorganisation(String idorganisation) {
-		this.idorganisation = idorganisation;
+	public void setPartenaire(Partenaire partenaire) {
+		this.partenaire = partenaire;
 	}
-
+	public long getContactId() {
+		return contactId;
+	}
+	public void setContactId(long contactId) {
+		this.contactId = contactId;
+	}
+	public long getVendeurId() {
+		return vendeurId;
+	}
+	public void setVendeurId(long vendeurId) {
+		this.vendeurId = vendeurId;
+	}
+	
+	
+	
+	
 }

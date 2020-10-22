@@ -28,13 +28,13 @@ public class SessionCaisseController {
 		sessionCaisse.setIdOrganisation("aux");
 		sessionCaisse.setDateHeureOuverture(now);
 		sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
-		sessionCaisse = sessionCaisseService.findSessionCaisseById(sessionCaisse.getIdSessionCaisse());
+		sessionCaisse = sessionCaisseService.findSessionCaisseById(sessionCaisse.getSessionCaisseId());
 		System.out.println(sessionCaisse.getCaisse().getDescription());
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", sessionCaisse);
 	}
 	@RequestMapping("/api/v1/sessioncaisses")
 	public SessionCaisse sessionCaisse(@RequestBody SessionCaisse sessionCaisse) {
 		
-		return sessionCaisseService.findSessionCaisseById("auxsce1");
+		return sessionCaisseService.findSessionCaisseById(0);
 	}
 }

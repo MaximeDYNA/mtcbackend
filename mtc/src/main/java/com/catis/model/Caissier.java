@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +22,6 @@ public class Caissier {
 	private String idOrganisation;
 
 	@ManyToOne
-	@JoinColumn(name="idPartenaire")
 	private Partenaire partenaire;
 	
 	@ManyToOne(optional = true)//id utilisateur optionel

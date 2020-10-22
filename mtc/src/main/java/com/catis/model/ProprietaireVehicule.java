@@ -1,8 +1,11 @@
 package com.catis.model;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -15,7 +18,6 @@ public class ProprietaireVehicule {
 	private String idOrganisation;
 	
 	@ManyToOne
-	@JoinColumn(name="idPartenaire")
 	private Partenaire partenaire;
 	private String description;
 	

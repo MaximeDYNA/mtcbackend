@@ -1,5 +1,8 @@
 package com.catis.model;
 
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -11,7 +14,8 @@ import javax.persistence.Table;
 public class ValeurTest {
 
 	@Id
-	private String idValeurTest;
+	@Column(name = "uuid", nullable = false, updatable = false)
+	private UUID idValeurTest;
 	
 	private String code;
 	private double valeur;
@@ -30,7 +34,10 @@ public class ValeurTest {
 		
 	}
 
-	public ValeurTest(String idValeurTest, String code, double valeur, String description, String idOrganisation,
+	
+
+
+	public ValeurTest(UUID idValeurTest, String code, double valeur, String description, String idOrganisation,
 			Mesure mesure, Machine machine) {
 		super();
 		this.idValeurTest = idValeurTest;
@@ -44,12 +51,20 @@ public class ValeurTest {
 
 
 
-	public String getIdValeurTest() {
+	public UUID getIdValeurTest() {
 		return idValeurTest;
 	}
-	public void setIdValeurTest(String idValeurTest) {
+
+
+
+
+	public void setIdValeurTest(UUID idValeurTest) {
 		this.idValeurTest = idValeurTest;
 	}
+
+
+
+
 	public String getCode() {
 		return code;
 	}

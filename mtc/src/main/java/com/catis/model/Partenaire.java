@@ -2,41 +2,24 @@ package com.catis.model;
 
 import java.util.Date;
 import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "t_partenaire")
 public class Partenaire {
 	
 	@Id
-	/*@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_partenaire_seq")
-	
-	 * @GenericGenerator( name = "t_partenaire_seq", strategy =
-	 * "com.catis.model.idGeneratorStrategy.StringPrefixedSequenceIdGenerator",
-	 * parameters = {
-	 * 
-	 * @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value =
-	 * "1"),
-	 * 
-	 * @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER,
-	 * value = "PAR_"),
-	 * 
-	 * @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER,
-	 * value = "%05d") })
-	 */
-	@GenericGenerator(name = "sequence_dep_id", strategy = "com.catis.model.idGeneratorStrategy.StringPrefixedSequenceIdGenerator")
-	@GeneratedValue(generator = "sequence_dep_id")
-	@Column(name="id_partenaire")
-	private String id_partenaire;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long partenaireId;
 	private String nom;
 	private String prenom;
 	private Date dateNaiss; // date de naissance
@@ -44,6 +27,11 @@ public class Partenaire {
 	private String passport; 
 	private String permiDeConduire;
 	private String cni;
+	private String telephone;
+	
+	@ManyToOne
+	@JoinColumn(name="organisationId", nullable = false)
+    private Organisation organisation;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
 	@JsonIgnore
@@ -53,9 +41,6 @@ public class Partenaire {
 	@JsonIgnore
 	Set<Utilisateur> utilisateurs;
 	
-	@OneToMany(mappedBy="partenaire")
-	@JsonIgnore
-	Set<Contact> contacts;
 	
 	@OneToMany(mappedBy="partenaire")
 	@JsonIgnore
@@ -64,16 +49,20 @@ public class Partenaire {
 	@OneToMany(mappedBy="partenaire")
 	@JsonIgnore
 	Set<Caissier> caissiers;
+	
+	@OneToMany(mappedBy="partenaire")
+	@JsonIgnore
+	Set<Vendeur> vendeurs;
 
 	public Partenaire() {
 	}
-
-	public Partenaire(String id_partenaire, String nom, String prenom, Date dateNaiss, String lieuDeNaiss,
-			String passport, String permiDeConduire, String cni, Set<ProprietaireVehicule> proprietaireVehicule,
-			Set<Utilisateur> utilisateurs, Set<Contact> contacts, Set<Controleur> controleurs,
+	
+	public Partenaire(long id, String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
+			String permiDeConduire, String cni, Organisation organisation,
+			Set<ProprietaireVehicule> proprietaireVehicule, Set<Utilisateur> utilisateurs, Set<Controleur> controleurs,
 			Set<Caissier> caissiers) {
 		super();
-		this.id_partenaire = id_partenaire;
+		this.partenaireId = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaiss = dateNaiss;
@@ -81,12 +70,13 @@ public class Partenaire {
 		this.passport = passport;
 		this.permiDeConduire = permiDeConduire;
 		this.cni = cni;
+		this.organisation = organisation;
 		this.proprietaireVehicule = proprietaireVehicule;
 		this.utilisateurs = utilisateurs;
-		this.contacts = contacts;
 		this.controleurs = controleurs;
 		this.caissiers = caissiers;
 	}
+
 
 	public Set<ProprietaireVehicule> getProprietaireVehicule() {
 		return proprietaireVehicule;
@@ -96,12 +86,14 @@ public class Partenaire {
 		this.proprietaireVehicule = proprietaireVehicule;
 	}
 
-	public String getId_partenaire() {
-		return id_partenaire;
+	public long getPartenaireId() {
+		return partenaireId;
 	}
-	public void setId_partenaire(String id_partenaire) {
-		this.id_partenaire = id_partenaire;
+
+	public void setPartenaireId(long id) {
+		this.partenaireId = id;
 	}
+
 	public String getNom() {
 		return nom;
 	}
@@ -145,12 +137,9 @@ public class Partenaire {
 		this.cni = cni;
 	}
 
-
-
 	public Set<Utilisateur> getUtilisateurs() {
 		return utilisateurs;
 	}
-
 
 
 	public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
@@ -158,48 +147,44 @@ public class Partenaire {
 	}
 
 
-
-	public Set<Contact> getContacts() {
-		return contacts;
-	}
-
-
-
-	public void setContacts(Set<Contact> contacts) {
-		this.contacts = contacts;
-	}
-
-
-
-
-
 	public Set<Controleur> getControleurs() {
 		return controleurs;
 	}
-
-
-
-
 
 	public void setControleurs(Set<Controleur> controleurs) {
 		this.controleurs = controleurs;
 	}
 
-
-
-
-
 	public Set<Caissier> getCaissiers() {
 		return caissiers;
 	}
 
+	public String getTelephone() {
+		return telephone;
+	}
 
-
-
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 
 	public void setCaissiers(Set<Caissier> caissiers) {
 		this.caissiers = caissiers;
 	}
-	
+
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
+	public Set<Vendeur> getVendeurs() {
+		return vendeurs;
+	}
+
+	public void setVendeurs(Set<Vendeur> vendeurs) {
+		this.vendeurs = vendeurs;
+	}
 	
 }

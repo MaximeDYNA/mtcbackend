@@ -6,4 +6,5 @@ import com.catis.model.SessionCaisse;
 
 public interface SessionCaisseRepository extends CrudRepository<SessionCaisse, String>{
 
+	SessionCaisse findBySessionCaisseId(long id);
 }

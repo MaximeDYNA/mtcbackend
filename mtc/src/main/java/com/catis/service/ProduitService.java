@@ -23,5 +23,7 @@ public class ProduitService {
 	public List<Produit> findByCategorieProduit(String id){
 		return produitRepository.findByCategorieProduit_CategorieProduitId(id);
 	}
-	
+	public Produit findById(Long id) {
+		return produitRepository.findById(id).get();
+	}
 }

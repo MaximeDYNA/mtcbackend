@@ -20,4 +20,7 @@ public class OrganisationService {
 		organisationRepository.findAll().forEach(organisations::add);
 		return organisations;
 	}
+	public void addOrgansiation(Organisation organisation) {
+		organisationRepository.save(organisation);
+	}
 }

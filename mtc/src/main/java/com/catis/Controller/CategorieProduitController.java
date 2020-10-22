@@ -41,10 +41,5 @@ public class CategorieProduitController {
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success",  cateProduitService.listeCategorieProduit());
 	}
 	
-	/*
-	 * @RequestMapping("/api/v1/categorieproduits") public
-	 * List<CategorieProduit>listerLesCategorieProduits(){
-	 * LOGGER.info("liste des catégories..."); return
-	 * cateProduitService.listeCategorieProduit(); }
-	 */
+
 }

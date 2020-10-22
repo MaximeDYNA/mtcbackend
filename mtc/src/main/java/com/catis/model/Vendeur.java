@@ -4,41 +4,85 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "t_vendeur")
 public class Vendeur {
 	//entité capable d'avoir des commisions sur une vente
 	@Id
-	private String idVendeur;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long vendeurId;
+	
 	private String description;
+
+	@ManyToOne
+	private Partenaire partenaire;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="vendeur")
 	@JsonIgnore
 	private Set<Vente> ventes;
 	
-	
 	public Vendeur() {
 	}
 
-	public Vendeur(String idVendeur, String description, Set<Vente> ventes) {
+	public Vendeur(long vendeurId, String description, Partenaire partenaire) {
 		super();
-		this.idVendeur = idVendeur;
+		this.vendeurId = vendeurId;
 		this.description = description;
+		this.partenaire = partenaire;
+	}
+
+
+	public Long getVendeurId() {
+		return vendeurId;
+	}
+
+
+	public void setVendeurId(Long vendeurId) {
+		this.vendeurId = vendeurId;
+	}
+
+	public Partenaire getPartenaire() {
+		return partenaire;
+	}
+
+
+
+
+
+
+
+
+
+	public void setPartenaire(Partenaire partenaire) {
+		this.partenaire = partenaire;
+	}
+
+
+
+
+
+
+
+
+
+	
+
+	public Set<Vente> getVentes() {
+		return ventes;
+	}
+
+	public void setVentes(Set<Vente> ventes) {
 		this.ventes = ventes;
-	}
-
-	public String getIdVendeur() {
-		return idVendeur;
-	}
-
-	public void setIdVendeur(String idVendeur) {
-		this.idVendeur = idVendeur;
 	}
 
 	public String getDescription() {
@@ -49,13 +93,4 @@ public class Vendeur {
 		this.description = description;
 	}
 
-	public Set<Vente> getVentes() {
-		return ventes;
-	}
-
-	public void setVentes(Set<Vente> ventes) {
-		this.ventes = ventes;
-	}
-	
-	
 }

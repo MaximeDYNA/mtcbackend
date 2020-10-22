@@ -2,6 +2,8 @@ package com.catis.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +13,9 @@ import javax.persistence.Table;
 @Table(name = "t_operationdecaisse")
 public class OperationCaisse {
 	@Id
-	private String idOperationDeCaisse;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long operationDeCaisseId;
+	
 	private String libelle;
 	private double montant;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -19,7 +23,6 @@ public class OperationCaisse {
 	private CaissierCaisse caissierCaisse;
 	
 	@ManyToOne
-	@JoinColumn(name="idVente")
 	private Vente vente;
 	
 	@ManyToOne
@@ -30,7 +33,7 @@ public class OperationCaisse {
 	@JoinColumn(name="idSessionCaisse")
 	private SessionCaisse sessionCaisse;
 	
-	private String idOrganisation;
+	private String numeroTicket;
 	
 	
 
@@ -39,32 +42,33 @@ public class OperationCaisse {
 	}
 
 
-	public OperationCaisse(String idOperationDeCaisse, String libelle, double montant, CaissierCaisse caissierCaisse,
-			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String idOrganisation) {
+
+	public OperationCaisse(long operationDeCaisseId, String libelle, double montant, CaissierCaisse caissierCaisse,
+			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
 		super();
-		this.idOperationDeCaisse = idOperationDeCaisse;
+		this.operationDeCaisseId = operationDeCaisseId;
 		this.libelle = libelle;
 		this.montant = montant;
 		this.caissierCaisse = caissierCaisse;
 		this.vente = vente;
 		this.taxe = taxe;
 		this.sessionCaisse = sessionCaisse;
-		this.idOrganisation = idOrganisation;
+		this.numeroTicket = numeroTicket;
 	}
 
 
 
-
-
-
-
-	public String getIdOperationDeCaisse() {
-		return idOperationDeCaisse;
+	public long getOperationDeCaisseId() {
+		return operationDeCaisseId;
 	}
 
-	public void setIdOperationDeCaisse(String idOperationDeCaisse) {
-		this.idOperationDeCaisse = idOperationDeCaisse;
+
+
+	public void setOperationDeCaisseId(long operationDeCaisseId) {
+		this.operationDeCaisseId = operationDeCaisseId;
 	}
+
+
 
 	public String getLibelle() {
 		return libelle;
@@ -108,15 +112,31 @@ public class OperationCaisse {
 
 
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+
+
+
+
+
+
+	public String getNumeroTicket() {
+		return numeroTicket;
 	}
 
 
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+
+
+
+
+
+	public void setNumeroTicket(String numeroTicket) {
+		this.numeroTicket = numeroTicket;
 	}
+
+
+
 
 
 

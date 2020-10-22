@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Produit {
 
 	@Id
-	private String produit_id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long produit_id;
 	private String libelle;
 	private String description;
 	private double prix;
@@ -35,7 +38,9 @@ public class Produit {
 		
 	}
 
-	public Produit(String produit_id, String libelle, String description, double prix, int delaiValidite,
+	
+
+	public Produit(Long produit_id, String libelle, String description, double prix, int delaiValidite,
 			Set<DetailVente> detailVente, CategorieProduit categorieProduit) {
 		super();
 		this.produit_id = produit_id;
@@ -47,13 +52,19 @@ public class Produit {
 		this.categorieProduit = categorieProduit;
 	}
 
-	public String getProduit_id() {
+
+
+	public Long getProduit_id() {
 		return produit_id;
 	}
 
-	public void setProduit_id(String produit_id) {
+
+
+	public void setProduit_id(Long produit_id) {
 		this.produit_id = produit_id;
 	}
+
+
 
 	public CategorieProduit getCategorieProduit() {
 		return categorieProduit;

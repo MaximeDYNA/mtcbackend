@@ -29,7 +29,8 @@ public class PartenaireService {
 		return partenaireRepository.findById(idPartenaire).get();
 	}
 	public List<Partenaire> findPartenaireByNom(String nom) {
-		return partenaireRepository.findByNom(nom);
+		return partenaireRepository
+				.findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
 	}
 	public void deletePartenaireById(String idPartenaire) {
 		partenaireRepository.deleteById(idPartenaire);

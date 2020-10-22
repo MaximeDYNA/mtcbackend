@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,7 +27,6 @@ public class Controleur {
 	private Utilisateur utilisateur;
 	
 	@ManyToOne
-	@JoinColumn(name="idPartenaire")
 	private Partenaire partenaire;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="controleur")
@@ -36,10 +36,6 @@ public class Controleur {
 	public Controleur() {
 
 	}
-
-	
-	
-
 
 	public Controleur(String idControleur, String agremment, int score, String idOrganisation, Utilisateur utilisateur,
 			Partenaire partenaire, Set<Inspection> inspections) {
@@ -52,10 +48,6 @@ public class Controleur {
 		this.partenaire = partenaire;
 		this.inspections = inspections;
 	}
-
-
-
-
 
 	public String getIdControleur() {
 		return idControleur;

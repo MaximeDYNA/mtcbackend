@@ -15,7 +15,7 @@ public class SessionCaisseService {
 	public void enregistrerSessionCaisse(SessionCaisse sessionCaisse) {
 		sessionCaisseRepository.save(sessionCaisse);
 	}
-	public SessionCaisse findSessionCaisseById(String idSessionCaisse) {
-		return sessionCaisseRepository.findById(idSessionCaisse).get();
+	public SessionCaisse findSessionCaisseById(long idSessionCaisse) {
+		return sessionCaisseRepository.findBySessionCaisseId(idSessionCaisse);
 	}
 }

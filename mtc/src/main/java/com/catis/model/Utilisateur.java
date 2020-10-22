@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,7 +23,7 @@ public class Utilisateur {
 	private String idOrganisation;
 	
 	@ManyToOne
-	@JoinColumn(name ="idPartenaire")
+
 	private Partenaire partenaire;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="user")

@@ -3,31 +3,38 @@ package com.catis.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_vente")
+
 public class Vente {
 	@Id
-	private String idVente;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long idVente;
 	private double montantTotal;
-	
-	private String idOrganisation;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idCaissierCaisse")
-	private CaissierCaisse caissierCaisse;
-	@ManyToOne
-	@JoinColumn(name="idClient")
 	private Client client;
+	
+	@ManyToOne
+	private Vendeur vendeur;
+	
+	@ManyToOne
+	private Contact contact;
+	
+	@ManyToOne
+	private SessionCaisse sessionCaisse;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="vente")
 	@JsonIgnore
@@ -37,9 +44,7 @@ public class Vente {
 	@JsonIgnore
 	private Set<DetailVente> detailventes;
 	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)//id utilisateur optionel
-	@JoinColumn(name="idVendeur")
-	private Vendeur vendeur;
+	
 	
 	
 	public Vente() {
@@ -50,26 +55,14 @@ public class Vente {
 
 
 
-
-
-
-
-	public Vente(String idVente, double montantTotal, String idOrganisation, CaissierCaisse caissierCaisse,
-			Client client, Set<OperationCaisse> operationCaisse, Set<DetailVente> detailventes, Vendeur vendeur) {
+	public Vente(Long idVente, double montantTotal, Set<OperationCaisse> operationCaisse,
+			Set<DetailVente> detailventes) {
 		super();
 		this.idVente = idVente;
 		this.montantTotal = montantTotal;
-		this.idOrganisation = idOrganisation;
-		this.caissierCaisse = caissierCaisse;
-		this.client = client;
 		this.operationCaisse = operationCaisse;
 		this.detailventes = detailventes;
-		this.vendeur = vendeur;
 	}
-
-
-
-
 
 
 
@@ -84,14 +77,34 @@ public class Vente {
 	}
 
 
-	public String getIdVente() {
+
+
+	public Long getIdVente() {
 		return idVente;
 	}
 
 
-	public void setIdVente(String idVente) {
+
+
+	public Client getClient() {
+		return client;
+	}
+
+
+
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+
+
+
+	public void setIdVente(long idVente) {
 		this.idVente = idVente;
 	}
+
+
 
 
 	public double getMontantTotal() {
@@ -104,42 +117,6 @@ public class Vente {
 	}
 
 
-	
-
-
-	
-
-
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
-	}
-
-
-	public CaissierCaisse getCaissierCaisse() {
-		return caissierCaisse;
-	}
-
-
-	public void setCaissierCaisse(CaissierCaisse caissierCaisse) {
-		this.caissierCaisse = caissierCaisse;
-	}
-
-
-	public Client getClient() {
-		return client;
-	}
-
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-
 	public Set<DetailVente> getDetailventes() {
 		return detailventes;
 	}
@@ -149,13 +126,45 @@ public class Vente {
 	}
 
 
+
+
 	public Vendeur getVendeur() {
 		return vendeur;
 	}
 
 
+
+
 	public void setVendeur(Vendeur vendeur) {
 		this.vendeur = vendeur;
+	}
+
+
+
+
+	public Contact getContact() {
+		return contact;
+	}
+
+
+
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+
+
+
+	public SessionCaisse getSessionCaisse() {
+		return sessionCaisse;
+	}
+
+
+
+
+	public void setSessionCaisse(SessionCaisse sessionCaisse) {
+		this.sessionCaisse = sessionCaisse;
 	}
 
 

@@ -5,10 +5,12 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="t_categorieproduit")
 public class CategorieProduit {
 	
 	@Id
@@ -27,23 +29,13 @@ public class CategorieProduit {
 	}
 
 
-	
-
-
 	public String getCategorieProduitId() {
 		return categorieProduitId;
 	}
 
-
-
-
-
 	public void setCategorieProduitId(String categorieProduitId) {
 		this.categorieProduitId = categorieProduitId;
 	}
-
-
-
 
 
 	public CategorieProduit(String categorieProduitId, String libelle, String description, Set<Produit> produits) {
@@ -53,9 +45,6 @@ public class CategorieProduit {
 		this.description = description;
 		this.produits = produits;
 	}
-
-
-
 
 
 	public String getLibelle() {

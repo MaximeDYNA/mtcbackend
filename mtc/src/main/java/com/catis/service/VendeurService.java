@@ -27,8 +27,11 @@ public class VendeurService {
 		vendeurRepository.findAll().forEach(vendeurs::add);
 		return vendeurs;
 	}
-	public Vendeur findCustomerById(String id) {
+	public Vendeur findVendeurById(Long id) {
 		return vendeurRepository.findById(id).get();
+	}
+	public Vendeur findVendeurByPartenaireId(long PartenaireId) {
+		return vendeurRepository.findByPartenaire_PartenaireId(PartenaireId);
 	}
 	
 }

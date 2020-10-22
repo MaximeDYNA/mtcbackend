@@ -1,6 +1,8 @@
 package com.catis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +13,8 @@ import javax.persistence.Table;
 public class DetailVente {
 	//table pivot entre produit et vente
 	@Id
-	private String idDetailVente;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long idDetailVente;
 	private String idOrganisation;
 	
 	@ManyToOne
@@ -19,16 +22,13 @@ public class DetailVente {
 	private Produit produit;
 	
 	@ManyToOne
-	@JoinColumn(name="idVente")
 	private Vente vente;
 
 	public DetailVente() {
 		
 	}
-
 	
-
-	public DetailVente(String idDetailVente, String idOrganisation, Produit produit, Vente vente) {
+	public DetailVente(long idDetailVente, String idOrganisation, Produit produit, Vente vente) {
 		super();
 		this.idDetailVente = idDetailVente;
 		this.idOrganisation = idOrganisation;
@@ -36,17 +36,21 @@ public class DetailVente {
 		this.vente = vente;
 	}
 
-
-
-	public String getIdDetailVente() {
+	public long getIdDetailVente() {
 		return idDetailVente;
 	}
 
 
 
-	public void setIdDetailVente(String idDetailVente) {
+
+
+	public void setIdDetailVente(long idDetailVente) {
 		this.idDetailVente = idDetailVente;
 	}
+
+
+
+
 
 	public String getIdOrganisation() {
 		return idOrganisation;

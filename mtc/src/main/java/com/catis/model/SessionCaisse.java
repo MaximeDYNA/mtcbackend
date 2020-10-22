@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class SessionCaisse {
 	
 	@Id
-	private String session_caisse_id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long sessionCaisseId;
 	
 	@ManyToOne
 	@JoinColumn(name="caisse_id")
@@ -37,19 +40,24 @@ public class SessionCaisse {
 	@JsonIgnore
 	Set <OperationCaisse> operationCaisse;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
+	@JsonIgnore
+	private Set <Vente> vente;
+	
 	public SessionCaisse() {
 	
 	}
 
 
+	
 
 
 
-	public SessionCaisse(String session_caisse_id, Caisse caisse, Caissier caissier, Date dateHeureOuverture,
+	public SessionCaisse(long sessionCaisseId, Caisse caisse, Caissier caissier, Date dateHeureOuverture,
 			Date dateHeureFermeture, String idOrganisation, double montantOuverture,
 			Set<OperationCaisse> operationCaisse) {
 		super();
-		this.session_caisse_id = session_caisse_id;
+		this.sessionCaisseId = sessionCaisseId;
 		this.caisse = caisse;
 		this.caissier = caissier;
 		this.dateHeureOuverture = dateHeureOuverture;
@@ -63,19 +71,12 @@ public class SessionCaisse {
 
 
 
-	public String getIdSessionCaisse() {
-		return session_caisse_id;
-	}
 
-	public void setIdSessionCaisse(String idSessionCaisse) {
-		this.session_caisse_id = idSessionCaisse;
-	}
 
 
 	public Caisse getCaisse() {
 		return caisse;
 	}
-
 
 
 
@@ -150,15 +151,51 @@ public class SessionCaisse {
 
 
 
-	public String getSession_caisse_id() {
-		return session_caisse_id;
+
+
+
+	public long getSessionCaisseId() {
+		return sessionCaisseId;
 	}
 
 
 
-	public void setSession_caisse_id(String session_caisse_id) {
-		this.session_caisse_id = session_caisse_id;
+
+
+
+	public void setSessionCaisseId(long sessionCaisseId) {
+		this.sessionCaisseId = sessionCaisseId;
 	}
+
+
+
+
+
+
+	public Set<Vente> getVente() {
+		return vente;
+	}
+
+
+
+
+
+
+	public void setVente(Set<Vente> vente) {
+		this.vente = vente;
+	}
+
+
+
+
+
+
+	
+
+	
+
+
+	
 	
 	
 	
