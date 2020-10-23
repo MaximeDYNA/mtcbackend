@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CarteGrise {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long idCarteGrise;
+	private Long carteGriseId;
 	private String numImmatriculation;
 	private String preImmatriculation;// immatriculation précédente
 	private Date dateDebutValid; //debut de validité
@@ -55,6 +55,9 @@ public class CarteGrise {
 	@JoinColumn(name="idVehicule")
 	private Vehicule vehicule;
 	
+	@ManyToOne
+	private Produit produit;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="carteGrise")
 	@JsonIgnore
 	Set<Visite> visites; 
@@ -80,15 +83,18 @@ public class CarteGrise {
 
 	
 
-	public CarteGrise(long idCarteGrise, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
+	
+
+	
+	public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
 			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
 			String genreVehicule, String marqueVehicule, String typeVehicule, String carrosserie, String enregistrement,
 			String chassis, Date dateMiseEnCirculation, Date premiereMiseEnCirculation, String energie, int cylindre,
 			int puissAdmin, int poidsTotalCha, int poidsVide, int chargeUtile, Date dateDelivrance,
 			String lieuDedelivrance, String centre_ssdt, ProprietaireVehicule proprietaireVehicule, Vehicule vehicule,
-			Set<Visite> visites) {
+			Produit produit, Set<Visite> visites) {
 		super();
-		this.idCarteGrise = idCarteGrise;
+		this.carteGriseId = carteGriseId;
 		this.numImmatriculation = numImmatriculation;
 		this.preImmatriculation = preImmatriculation;
 		this.dateDebutValid = dateDebutValid;
@@ -116,15 +122,16 @@ public class CarteGrise {
 		this.centre_ssdt = centre_ssdt;
 		this.proprietaireVehicule = proprietaireVehicule;
 		this.vehicule = vehicule;
+		this.produit = produit;
 		this.visites = visites;
 	}
 
-	public long getIdCarteGrise() {
-		return idCarteGrise;
+	public Long getCarteGriseId() {
+		return carteGriseId;
 	}
 
-	public void setIdCarteGrise(long idCarteGrise) {
-		this.idCarteGrise = idCarteGrise;
+	public void setCarteGriseId(Long carteGriseId) {
+		this.carteGriseId = carteGriseId;
 	}
 
 	public String getNumImmatriculation() {
@@ -341,6 +348,14 @@ public class CarteGrise {
 
 	public void setVehicule(Vehicule vehicule) {
 		this.vehicule = vehicule;
+	}
+
+	public Produit getProduit() {
+		return produit;
+	}
+
+	public void setProduit(Produit produit) {
+		this.produit = produit;
 	}
 	
 	

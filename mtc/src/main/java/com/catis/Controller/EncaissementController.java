@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.catis.Controller.exception.ContactVideException;
 import com.catis.Controller.objectTemporaire.Encaissement;
+import com.catis.Controller.objectTemporaire.EncaissementResponse;
 import com.catis.Controller.objectTemporaire.ProduitVue;
 import com.catis.model.CarteGrise;
 import com.catis.model.Client;
@@ -20,8 +23,10 @@ import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
 import com.catis.model.Produit;
 import com.catis.model.SessionCaisse;
+import com.catis.model.TaxeProduit;
 import com.catis.model.Vendeur;
 import com.catis.model.Vente;
+import com.catis.repository.TaxeProduitRepository;
 import com.catis.service.CaissierCaisseService;
 import com.catis.service.CarteGriseService;
 import com.catis.service.ClientService;
@@ -30,6 +35,7 @@ import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.ProduitService;
 import com.catis.service.SessionCaisseService;
+import com.catis.service.TaxeProduitService;
 import com.catis.service.VendeurService;
 import com.catis.service.VenteService;
 
@@ -57,6 +63,10 @@ public class EncaissementController {
 	private ContactService contactService;
 	@Autowired
 	private ProduitService produitService;
+	@Autowired
+	private DetailVenteService detailVenteService;
+	
+	
 
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
@@ -84,7 +94,7 @@ public class EncaissementController {
 				
 			/* ---------Contact------------*/
 				
-				vente.setContact(contactService.findById(encaissement.getContactid()));
+				vente.setContact(contactService.findById(encaissement.getContactId()));
 			/*------------------------------*/
 				
 			/* ---------Session Caisse------------*/
@@ -101,10 +111,15 @@ public class EncaissementController {
 			for(ProduitVue produitVue :  encaissement.getProduitVue()) {
 				detailVente = new DetailVente();
 				produit = new Produit();
+				produit = produitService.findById(produitVue.getProduitId());
 				carteGrise = new CarteGrise();
 				produit.setProduit_id(produitVue.getProduitId());
+				
+				
+				System.out.println("**********************"+ produitVue.getReference()+"----------------------");
 				carteGrise.setNumImmatriculation(produitVue.getReference());
-				detailVente.setProduit(produitService.findById(produitVue.getProduitId()));
+				carteGrise.setProduit(produit);
+				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
 				dvs.addVente(detailVente);
 				cgs.addCarteGrise(carteGrise);
@@ -116,16 +131,24 @@ public class EncaissementController {
 			op.setNumeroTicket(encaissement.getNumeroTicket());
 			op.setVente(vente);
 			/* --------------------------*/
+
+			if(op.getVente().getContact().equals(null) || op.getVente().getContact().getContactId() == 0 )
+				throw new ContactVideException("Erreur : Veuillez renseigner le contact");
 			 ocs.addOperationCaisse(op);
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", op);
+			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()));
+			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
 		}
 		catch(java.util.NoSuchElementException nosuch) {
 			LOGGER.error("Une valeur referencée n'existe pas");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une valeur referencée n'existe pas", null);
 		}
+		catch(ContactVideException c) {
+			LOGGER.error("Veuillez renseigner le contact");
+			return ApiResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false, "Veuillez renseigner le contact, si l'erreur persiste contactez CATIS", null);
+		}
 		catch(Exception e) {
 			LOGGER.error("Une erreur est survenue");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur au web master", null);
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur au web master CATIS", null);
 		}
 		
 		

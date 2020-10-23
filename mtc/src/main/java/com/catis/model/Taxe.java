@@ -1,39 +1,67 @@
 package com.catis.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="t_taxe")
 public class Taxe {
 	
 	@Id
-	private String idTaxe;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long taxeId;
 	
 	private String nom;
 	private String description;
-	private String idOrganisation;
+	private double valeur;
+	
+	private boolean incluse;
+	
+	@OneToMany(mappedBy="taxe")
+	@JsonIgnore
+	private Set<TaxeProduit> taxeProduit;
 	
 	
-	public Taxe(String idTaxe, String nom, String description, String idOrganisation) {
+	
+
+	
+
+	public Taxe(Long taxeId, String nom, String description, double valeur, Set<TaxeProduit> taxeProduit) {
 		super();
-		this.idTaxe = idTaxe;
+		this.taxeId = taxeId;
 		this.nom = nom;
 		this.description = description;
-		this.idOrganisation = idOrganisation;
+		this.valeur = valeur;
+		this.taxeProduit = taxeProduit;
 	}
-	
+
+
+
 	public Taxe() {
 
 	}
 
-	public String getIdTaxe() {
-		return idTaxe;
+	
+	
+	public Long getTaxeId() {
+		return taxeId;
 	}
-	public void setIdTaxe(String idTaxe) {
-		this.idTaxe = idTaxe;
+
+
+	public void setTaxeId(Long taxeId) {
+		this.taxeId = taxeId;
 	}
+
+
+
 	public String getNom() {
 		return nom;
 	}
@@ -46,11 +74,40 @@ public class Taxe {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+
+
+	public double getValeur() {
+		return valeur;
 	}
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+
+	public void setValeur(double valeur) {
+		this.valeur = valeur;
+	}
+
+
+
+	public Set<TaxeProduit> getTaxeProduit() {
+		return taxeProduit;
+	}
+
+
+	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
+		this.taxeProduit = taxeProduit;
+	}
+
+
+
+	public boolean isIncluse() {
+		return incluse;
+	}
+
+
+
+	public void setIncluse(boolean incluse) {
+		this.incluse = incluse;
 	}
 	
 	

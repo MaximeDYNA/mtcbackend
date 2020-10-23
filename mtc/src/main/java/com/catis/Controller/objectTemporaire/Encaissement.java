@@ -6,7 +6,7 @@ public class Encaissement {
 
 	private long clientId;
 	private long vendeurId;
-	private long contactid;
+	private long contactId;
 	private double montantTotal;
 	private double montantEncaisse;
 	private String numeroTicket;
@@ -20,7 +20,7 @@ public class Encaissement {
 		super();
 		this.clientId = clientId;
 		this.vendeurId = vendeurId;
-		this.contactid = contactid;
+		this.contactId = contactid;
 		this.montantTotal = montantTotal;
 		this.montantEncaisse = montantEncaisse;
 		this.numeroTicket = numeroTicket;
@@ -49,12 +49,12 @@ public class Encaissement {
 		this.vendeurId = vendeurId;
 	}
 
-	public long getContactid() {
-		return contactid;
+	public long getContactId() {
+		return contactId;
 	}
 
-	public void setContactid(long contactid) {
-		this.contactid = contactid;
+	public void setContactId(long contactId) {
+		this.contactId = contactId;
 	}
 
 	public double getMontantTotal() {

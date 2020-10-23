@@ -2,7 +2,7 @@ package com.catis.Controller.objectTemporaire;
 
 public class ProduitVue {
 
-	private long produitId;
+	private Long produitId;
 	private String reference;
 	
 	public ProduitVue(long produitId, String reference) {
@@ -23,11 +23,11 @@ public class ProduitVue {
 		this.reference = reference;
 	}
 
-	public long getProduitId() {
+	public Long getProduitId() {
 		return produitId;
 	}
 
-	public void setProduitId(long produitId) {
+	public void setProduitId(Long produitId) {
 		this.produitId = produitId;
 	}
 	

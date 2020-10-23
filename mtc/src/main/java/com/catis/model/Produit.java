@@ -1,7 +1,6 @@
 package com.catis.model;
 
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,19 +19,29 @@ public class Produit {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long produit_id;
+	private Long produitId;
 	private String libelle;
 	private String description;
 	private double prix;
 	private int delaiValidite;
+
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
 	@JsonIgnore
 	private Set<DetailVente> detailVente;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
+	@JsonIgnore
+	private Set<CarteGrise> carteGrise;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
+	@JsonIgnore
+	private Set<TaxeProduit> taxeProduit;
+	
 	@ManyToOne
 	@JoinColumn(name="categorieProduitId")
 	private CategorieProduit categorieProduit;
+	
 	
 	public Produit() {
 		
@@ -43,7 +52,7 @@ public class Produit {
 	public Produit(Long produit_id, String libelle, String description, double prix, int delaiValidite,
 			Set<DetailVente> detailVente, CategorieProduit categorieProduit) {
 		super();
-		this.produit_id = produit_id;
+		this.produitId = produit_id;
 		this.libelle = libelle;
 		this.description = description;
 		this.prix = prix;
@@ -54,14 +63,14 @@ public class Produit {
 
 
 
-	public Long getProduit_id() {
-		return produit_id;
+	public Long getProduitId() {
+		return produitId;
 	}
 
 
 
 	public void setProduit_id(Long produit_id) {
-		this.produit_id = produit_id;
+		this.produitId = produit_id;
 	}
 
 
@@ -114,6 +123,40 @@ public class Produit {
 	public void setDelaiValidite(int delaiValidite) {
 		this.delaiValidite = delaiValidite;
 	}
+
+
+
+	public Set<TaxeProduit> getTaxeProduit() {
+		return taxeProduit;
+	}
+
+
+
+	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
+		this.taxeProduit = taxeProduit;
+	}
+
+
+
+	public Set<CarteGrise> getCarteGrise() {
+		return carteGrise;
+	}
+
+
+
+	public void setCarteGrise(Set<CarteGrise> carteGrise) {
+		this.carteGrise = carteGrise;
+	}
+
+
+
+	public void setProduitId(Long produitId) {
+		this.produitId = produitId;
+	}
+
+
+
+	
 	
 	
 }

@@ -10,7 +10,7 @@ public class ApiResponseHandler {
 
 		    public static ResponseEntity<Object> generateResponse(HttpStatus status, boolean error,String message, Object responseObj) {
 		        Map<String, Object> map = new HashMap<String, Object>();
-		        error= true;
+		        
 		        try {
 		            //map.put("time", new Date());
 		            map.put("status", status.value());

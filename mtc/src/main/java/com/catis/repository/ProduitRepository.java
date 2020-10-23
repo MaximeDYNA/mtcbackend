@@ -8,5 +8,5 @@ import com.catis.model.Produit;
 
 public interface ProduitRepository extends CrudRepository<Produit, Long> {
 
-	List<Produit> findByCategorieProduit_CategorieProduitId(String id);
+	List<Produit> findByCategorieProduit_CategorieProduitId(Long id);
 }

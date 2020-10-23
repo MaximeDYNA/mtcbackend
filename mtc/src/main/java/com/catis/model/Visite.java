@@ -3,6 +3,8 @@ package com.catis.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,8 +15,9 @@ import javax.persistence.Table;
 public class Visite {
 
 	@Id
-	private String idVisite;
-	private String nature;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long idVisite;
+	private boolean contreVisite;
 	private Date dateDebut;
 	private Date dateFin;
 	private String statut;
@@ -25,18 +28,18 @@ public class Visite {
 	private Caissier caissier;
 	
 	@ManyToOne
-	@JoinColumn(name="idCarteGrise")
 	private CarteGrise carteGrise;
 
 	public Visite() {
 	
 	}
 
-	public Visite(String idVisite, String nature, Date dateDebut, Date dateFin, String statut, String idOrganisation,
-			Caissier caissier, CarteGrise carteGrise) {
+
+	public Visite(Long idVisite, boolean contreVisite, Date dateDebut, Date dateFin, String statut,
+			String idOrganisation, Caissier caissier, CarteGrise carteGrise) {
 		super();
 		this.idVisite = idVisite;
-		this.nature = nature;
+		this.contreVisite = contreVisite;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.statut = statut;
@@ -45,21 +48,48 @@ public class Visite {
 		this.carteGrise = carteGrise;
 	}
 
-	public String getIdVisite() {
+
+
+
+
+
+
+
+
+	public boolean isContreVisite() {
+		return contreVisite;
+	}
+
+
+
+
+
+
+
+
+
+	public void setContreVisite(boolean contreVisite) {
+		this.contreVisite = contreVisite;
+	}
+
+
+
+
+
+
+
+
+
+	public Long getIdVisite() {
 		return idVisite;
 	}
 
-	public void setIdVisite(String idVisite) {
+
+
+	public void setIdVisite(Long idVisite) {
 		this.idVisite = idVisite;
 	}
 
-	public String getNature() {
-		return nature;
-	}
-
-	public void setNature(String nature) {
-		this.nature = nature;
-	}
 
 	public Date getDateDebut() {
 		return dateDebut;

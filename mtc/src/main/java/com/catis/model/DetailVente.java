@@ -23,11 +23,16 @@ public class DetailVente {
 	
 	@ManyToOne
 	private Vente vente;
+	
+
 
 	public DetailVente() {
 		
 	}
+
 	
+
+
 	public DetailVente(long idDetailVente, String idOrganisation, Produit produit, Vente vente) {
 		super();
 		this.idDetailVente = idDetailVente;
@@ -36,21 +41,16 @@ public class DetailVente {
 		this.vente = vente;
 	}
 
+
+
+
 	public long getIdDetailVente() {
 		return idDetailVente;
 	}
 
-
-
-
-
 	public void setIdDetailVente(long idDetailVente) {
 		this.idDetailVente = idDetailVente;
 	}
-
-
-
-
 
 	public String getIdOrganisation() {
 		return idOrganisation;
@@ -75,5 +75,7 @@ public class DetailVente {
 	public void setVente(Vente vente) {
 		this.vente = vente;
 	}
+
+
 
 }

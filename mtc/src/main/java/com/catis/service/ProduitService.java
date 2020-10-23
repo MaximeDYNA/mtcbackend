@@ -20,7 +20,7 @@ public class ProduitService {
 		produitRepository.findAll().forEach(produits::add);
 		return produits;
 	}
-	public List<Produit> findByCategorieProduit(String id){
+	public List<Produit> findByCategorieProduit(Long id){
 		return produitRepository.findByCategorieProduit_CategorieProduitId(id);
 	}
 	public Produit findById(Long id) {

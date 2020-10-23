@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Caisse {
 	@Id
 	private String caisse_id;
+	
 	private String description;
 	private String idOrganisation; 
 	

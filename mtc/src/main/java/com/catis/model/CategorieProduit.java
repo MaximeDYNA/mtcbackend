@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CategorieProduit {
 	
 	@Id
-	private String categorieProduitId;
+	private Long categorieProduitId;
 	private String libelle;
 	private String description;
 	
@@ -29,22 +29,34 @@ public class CategorieProduit {
 	}
 
 
-	public String getCategorieProduitId() {
-		return categorieProduitId;
-	}
-
-	public void setCategorieProduitId(String categorieProduitId) {
-		this.categorieProduitId = categorieProduitId;
-	}
+	
 
 
-	public CategorieProduit(String categorieProduitId, String libelle, String description, Set<Produit> produits) {
+	public CategorieProduit(Long categorieProduitId, String libelle, String description, Set<Produit> produits) {
 		super();
 		this.categorieProduitId = categorieProduitId;
 		this.libelle = libelle;
 		this.description = description;
 		this.produits = produits;
 	}
+
+
+
+
+	public Long getCategorieProduitId() {
+		return categorieProduitId;
+	}
+
+
+
+
+
+	public void setCategorieProduitId(Long categorieProduitId) {
+		this.categorieProduitId = categorieProduitId;
+	}
+
+
+
 
 
 	public String getLibelle() {

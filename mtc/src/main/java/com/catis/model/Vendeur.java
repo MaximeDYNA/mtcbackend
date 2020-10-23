@@ -41,7 +41,6 @@ public class Vendeur {
 		this.partenaire = partenaire;
 	}
 
-
 	public Long getVendeurId() {
 		return vendeurId;
 	}
@@ -55,27 +54,9 @@ public class Vendeur {
 		return partenaire;
 	}
 
-
-
-
-
-
-
-
-
 	public void setPartenaire(Partenaire partenaire) {
 		this.partenaire = partenaire;
 	}
-
-
-
-
-
-
-
-
-
-	
 
 	public Set<Vente> getVentes() {
 		return ventes;

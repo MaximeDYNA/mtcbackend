@@ -21,6 +21,10 @@ public class DetailVenteService {
 			detailVenteRepository.save(detailVente);
 		}
 	}
+	public List<DetailVente> findByVente(Long id){
+		return detailVenteRepository.findByVente_IdVente(id);
+				
 	
+	}
 	
 }
