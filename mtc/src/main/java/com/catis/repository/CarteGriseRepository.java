@@ -8,5 +8,5 @@ import com.catis.model.CarteGrise;
 
 public interface CarteGriseRepository extends CrudRepository<CarteGrise, String>{
 
-	List<CarteGrise> findByNumImmatriculationStartsWithIgnoreCaseOrVehicule_ChassisStartsWithIgnoreCase(String immatriculation, String Chassis);
+	List<CarteGrise> findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(String immatriculation, String Chassis);
 }

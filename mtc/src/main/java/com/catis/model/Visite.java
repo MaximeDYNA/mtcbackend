@@ -1,5 +1,6 @@
 package com.catis.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,8 +19,8 @@ public class Visite {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long idVisite;
 	private boolean contreVisite;
-	private Date dateDebut;
-	private Date dateFin;
+	private LocalDateTime dateDebut;
+	private LocalDateTime dateFin;
 	private String statut;
 	private String idOrganisation;
 	
@@ -35,7 +36,16 @@ public class Visite {
 	}
 
 
-	public Visite(Long idVisite, boolean contreVisite, Date dateDebut, Date dateFin, String statut,
+	
+
+
+
+
+
+
+
+
+	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, String statut,
 			String idOrganisation, Caissier caissier, CarteGrise carteGrise) {
 		super();
 		this.idVisite = idVisite;
@@ -47,6 +57,8 @@ public class Visite {
 		this.caissier = caissier;
 		this.carteGrise = carteGrise;
 	}
+
+
 
 
 
@@ -91,21 +103,62 @@ public class Visite {
 	}
 
 
-	public Date getDateDebut() {
+
+	public LocalDateTime getDateDebut() {
 		return dateDebut;
 	}
 
-	public void setDateDebut(Date dateDebut) {
+
+
+
+
+
+
+
+
+
+
+	public void setDateDebut(LocalDateTime dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
-	public Date getDateFin() {
+
+
+
+
+
+
+
+
+
+
+	public LocalDateTime getDateFin() {
 		return dateFin;
 	}
 
-	public void setDateFin(Date dateFin) {
+
+
+
+
+
+
+
+
+
+
+	public void setDateFin(LocalDateTime dateFin) {
 		this.dateFin = dateFin;
 	}
+
+
+
+
+
+
+
+
+
+
 
 	public String getStatut() {
 		return statut;

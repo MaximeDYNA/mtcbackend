@@ -14,7 +14,10 @@ public class VisiteService {
 	private VisiteRepository visiteRepository;
 	
 	public List<Visite> findByReference(String ref){
-		return visiteRepository.findByCarteGriseNumImmatriculationStartsWithIgnoreCaseOrCarteGrise_Vehicule_ChassisStartsWithIgnoreCase(ref, ref);
+		return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(ref, ref);
+	}
+	public Visite findById(Long i) {
+		return visiteRepository.findById(i).get();
 	}
 	
 }

@@ -15,7 +15,7 @@ public class DetailVente {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long idDetailVente;
-	private String idOrganisation;
+	private String reference;
 	
 	@ManyToOne
 	@JoinColumn(name="idProduit")
@@ -33,13 +33,17 @@ public class DetailVente {
 	
 
 
-	public DetailVente(long idDetailVente, String idOrganisation, Produit produit, Vente vente) {
+
+
+	public DetailVente(long idDetailVente, String reference, Produit produit, Vente vente) {
 		super();
 		this.idDetailVente = idDetailVente;
-		this.idOrganisation = idOrganisation;
+		this.reference = reference;
 		this.produit = produit;
 		this.vente = vente;
 	}
+
+
 
 
 
@@ -52,13 +56,25 @@ public class DetailVente {
 		this.idDetailVente = idDetailVente;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+
+	public String getReference() {
+		return reference;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+
+
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
+
+
+
+
+
 
 	public Produit getProduit() {
 		return produit;

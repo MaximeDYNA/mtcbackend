@@ -1,24 +1,28 @@
 package com.catis.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 import com.catis.repository.TaxeProduitRepository;
 
 @Service
-public class TaxeProduitService {
+public class TaxeService {
 
 	@Autowired
 	private TaxeProduitRepository taxeProduitRepository;
 	
-	public List<TaxeProduit> findByProduitId(Long produitId){
-		return taxeProduitRepository.findByProduit_ProduitId(produitId);
+	public List<Taxe> taxListByLibelle(String libelle){
+		List<Taxe> taxes = new ArrayList<>();
+		
+		for(TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleContainsIgnoreCase(libelle)) {
+			taxes.add(tp.getTaxe());
+		}
+		
+		return taxes;
 	}
-	public List<TaxeProduit> findByLibelle(String reference){
-		return taxeProduitRepository.findByProduit_LibelleContainsIgnoreCase(reference);
-	}
+	
 }

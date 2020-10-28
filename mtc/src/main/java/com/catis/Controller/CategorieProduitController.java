@@ -3,6 +3,7 @@ package com.catis.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,9 @@ public class CategorieProduitController {
 			List<Taxe> taxes;
 			ProduitEtTaxe pet; 
 			Long id = Long.valueOf(idString);
-			for(Produit produit : produitService.findByCategorieProduit(id)) {
+			for(Produit produit : produitService.findByCategorieProduit(id).stream()
+												.filter(prod -> !prod.getLibelle().equalsIgnoreCase("contre visite"))
+												.collect(Collectors.toList())) {
 				pet = new ProduitEtTaxe();
 				pet.setProduit(produit);
 				taxes = new ArrayList<>();

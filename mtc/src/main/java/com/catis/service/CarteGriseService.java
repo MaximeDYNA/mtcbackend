@@ -18,6 +18,7 @@ public class CarteGriseService {
 		return cgr.save(carteGrise);
 	}
 	public List<CarteGrise> findByImmatriculationOuCarteGrise(String imOrCha){
-		return cgr.findByNumImmatriculationStartsWithIgnoreCaseOrVehicule_ChassisStartsWithIgnoreCase(imOrCha, imOrCha);
+		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
 	}
+	
 }

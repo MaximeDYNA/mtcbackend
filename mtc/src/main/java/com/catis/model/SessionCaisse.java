@@ -21,7 +21,7 @@ public class SessionCaisse {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long sessionCaisseId;
+	private Long sessionCaisseId;
 	
 	@ManyToOne
 	@JoinColumn(name="caisse_id")
@@ -35,6 +35,7 @@ public class SessionCaisse {
 	private Date dateHeureFermeture;
 	private String idOrganisation;
 	private double montantOuverture;
+	private boolean active;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
 	@JsonIgnore
@@ -43,6 +44,15 @@ public class SessionCaisse {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
 	@JsonIgnore
 	private Set <Vente> vente;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
+	@JsonIgnore
+	Set<Hold> holds;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
+	@JsonIgnore
+	private Set<Posales> posales;
+	
 	
 	public SessionCaisse() {
 	
@@ -53,7 +63,7 @@ public class SessionCaisse {
 
 
 
-	public SessionCaisse(long sessionCaisseId, Caisse caisse, Caissier caissier, Date dateHeureOuverture,
+	public SessionCaisse(Long sessionCaisseId, Caisse caisse, Caissier caissier, Date dateHeureOuverture,
 			Date dateHeureFermeture, String idOrganisation, double montantOuverture,
 			Set<OperationCaisse> operationCaisse) {
 		super();
@@ -154,7 +164,7 @@ public class SessionCaisse {
 
 
 
-	public long getSessionCaisseId() {
+	public Long getSessionCaisseId() {
 		return sessionCaisseId;
 	}
 
@@ -163,7 +173,7 @@ public class SessionCaisse {
 
 
 
-	public void setSessionCaisseId(long sessionCaisseId) {
+	public void setSessionCaisseId(Long sessionCaisseId) {
 		this.sessionCaisseId = sessionCaisseId;
 	}
 
@@ -183,6 +193,60 @@ public class SessionCaisse {
 
 	public void setVente(Set<Vente> vente) {
 		this.vente = vente;
+	}
+
+
+
+
+
+
+	public Set<Hold> getHolds() {
+		return holds;
+	}
+
+
+
+
+
+
+	public void setHolds(Set<Hold> holds) {
+		this.holds = holds;
+	}
+
+
+
+
+
+
+	public boolean isActive() {
+		return active;
+	}
+
+
+
+
+
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+
+
+
+
+
+	public Set<Posales> getPosales() {
+		return posales;
+	}
+
+
+
+
+
+
+	public void setPosales(Set<Posales> posales) {
+		this.posales = posales;
 	}
 
 

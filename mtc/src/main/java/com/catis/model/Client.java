@@ -1,9 +1,7 @@
 package com.catis.model;
 
 import java.util.Set;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,10 +30,6 @@ public class Client {
 	public Client() {
 	}	
 
-
-
-
-
 	public Client(long clientId, String description, Partenaire partenaire) {
 		super();
 		this.clientId = clientId;
@@ -43,70 +37,36 @@ public class Client {
 		this.partenaire = partenaire;
 	}
 
-
-
-
-
 	public String getDescription() {
 		return description;
 	}
-
-
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
-
-
-
 	public long getClientId() {
 		return clientId;
 	}
-
-
-
-
 
 	public void setClientId(long clientId) {
 		this.clientId = clientId;
 	}
 
-
-
-
-
 	public Partenaire getPartenaire() {
 		return partenaire;
 	}
-
-
-
-
 
 	public void setPartenaire(Partenaire partenaire) {
 		this.partenaire = partenaire;
 	}
 
-
-
-
-
 	public Set<Vente> getVentes() {
 		return ventes;
 	}
-
-
-
-
 
 	public void setVentes(Set<Vente> ventes) {
 		this.ventes = ventes;
 	}
 
-
-
-
-	
 }

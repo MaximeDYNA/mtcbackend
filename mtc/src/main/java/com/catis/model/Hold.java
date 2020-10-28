@@ -1,74 +1,113 @@
 package com.catis.model;
 
 
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Entity
-@Table(name = "t_holds")
+@Table(name = "t_hold")
 public class Hold {
 	
 	@Id
-	private int id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long holdId;
 	
-	private int number;
-	private String time;
+	@Column(unique=true)
+	private Long number;
+	private Date time;
 	
 	@ManyToOne
-	private SessionCaisse sessioncaisse;
+	@JsonIgnore
+	private SessionCaisse sessionCaisse;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="hold")
+	private Set<Posales> posales;
 	
 	public Hold() {
 		
 	}
 
-	public Hold(int id, int number, String time, SessionCaisse sessioncaisse) {
+	
+
+	
+
+
+
+	public Hold(Long holdId, Long number, Date time, SessionCaisse sessionCaisse) {
 		super();
-		this.id = id;
+		this.holdId = holdId;
 		this.number = number;
 		this.time = time;
-		this.sessioncaisse = sessioncaisse;
+		this.sessionCaisse = sessionCaisse;
 	}
 
-	public int getId() {
-		return id;
+
+
+	public Long getHoldId() {
+		return holdId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+
+
+	public void setHoldId(Long holdId) {
+		this.holdId = holdId;
 	}
 
-	public int getNumber() {
+
+	public Long getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Long number) {
 		this.number = number;
 	}
 
-	public String getTime() {
+	
+
+	public Date getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+
+
+	public void setTime(Date time) {
 		this.time = time;
 	}
 
-	public SessionCaisse getSessioncaisse() {
-		return sessioncaisse;
+
+	@JsonIgnore
+	public SessionCaisse getSessionCaisse() {
+		return sessionCaisse;
 	}
 
-	public void setSessioncaisse(SessionCaisse sessioncaisse) {
-		this.sessioncaisse = sessioncaisse;
+
+
+	public void setSessionCaisse(SessionCaisse sessionCaisse) {
+		this.sessionCaisse = sessionCaisse;
+	}
+
+
+	@JsonIgnore
+	public Set<Posales> getPosales() {
+		return posales;
+	}
+
+
+	public void setPosales(Set<Posales> posales) {
+		this.posales = posales;
 	}
 	
 	

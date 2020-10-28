@@ -38,6 +38,10 @@ public class Produit {
 	@JsonIgnore
 	private Set<TaxeProduit> taxeProduit;
 	
+	@OneToMany( mappedBy="produit")
+	@JsonIgnore
+	private Set<Posales> posales;
+	
 	@ManyToOne
 	@JoinColumn(name="categorieProduitId")
 	private CategorieProduit categorieProduit;
@@ -152,6 +156,18 @@ public class Produit {
 
 	public void setProduitId(Long produitId) {
 		this.produitId = produitId;
+	}
+
+
+
+	public Set<Posales> getPosales() {
+		return posales;
+	}
+
+
+
+	public void setPosales(Set<Posales> posales) {
+		this.posales = posales;
 	}
 
 
