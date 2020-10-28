@@ -46,6 +46,7 @@ public class KeycloakAdapter extends KeycloakWebSecurityConfigurerAdapter{
 		.antMatchers("/api/v1/produits*").hasRole("caissier")
 		//.antMatchers("/admin*").hasRole("ADMIN")
 		.anyRequest().denyAll();
+		;
 	}
 	
 	
