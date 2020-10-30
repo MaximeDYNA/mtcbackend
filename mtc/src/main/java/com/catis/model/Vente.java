@@ -44,7 +44,7 @@ public class Vente {
 	@JsonIgnore
 	private Set<DetailVente> detailventes;
 	
-	
+	private String numFacture;
 	
 	
 	public Vente() {
@@ -165,6 +165,27 @@ public class Vente {
 
 	public void setSessionCaisse(SessionCaisse sessionCaisse) {
 		this.sessionCaisse = sessionCaisse;
+	}
+
+
+
+
+	public String getNumFacture() {
+		return numFacture;
+	}
+
+
+
+
+	public void setNumFacture(String numFacture) {
+		this.numFacture = numFacture;
+	}
+
+
+
+
+	public void setIdVente(Long idVente) {
+		this.idVente = idVente;
 	}
 
 

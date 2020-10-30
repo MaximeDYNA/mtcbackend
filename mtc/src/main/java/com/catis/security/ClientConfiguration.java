@@ -20,7 +20,7 @@ public class ClientConfiguration {
 	 * requestTemplate.header("Authorization", "Bearer " +
 	 * context.getIdTokenString()); }; }
 	 */
-	// get athentification object 
+	// get authentification object 
 	 protected KeycloakSecurityContext getKeycloakSecurityContext() {
 	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	        KeycloakAuthenticationToken token;

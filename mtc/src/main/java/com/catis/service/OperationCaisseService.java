@@ -1,5 +1,9 @@
 package com.catis.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +20,15 @@ public class OperationCaisseService {
 		operationCaisseRepository.save(op);
 	}
 	
+	public String genererTicket() {
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddhhmmssSSSS");
+		String start = "T" + now.format(formatter);
+		
+		return start;
+	}
+	public int randomNumber() {
+		Random rand = new Random();
+		return rand.nextInt(1000);
+	}
 }
