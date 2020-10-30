@@ -1,0 +1,16 @@
+on: push
+name: Main Workflow
+jobs:
+    sonarQubeTrigger:
+    name: SonarQube Trigger
+    runs-on: fedora-server
+    steps:  
+    - uses: actions/checkout@master
+    - name: SonarQube Scanner
+      uses: ItsEcholot/sonarqube-action@v0.0.2
+      uses: kitabisa/sonarqube-action@master
+      with:
+      projectBaseDir: C:\Users\HP\git\mtc\mtc
+      with:
+        host: ${{ secrets.http://51.210.48.154:9000/ }}
+        login: ${{ secrets.3cc4f55108ffc59ed973c9c8f7280fd5b8a8e364 }}
