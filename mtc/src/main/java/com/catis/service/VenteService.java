@@ -1,7 +1,11 @@
 package com.catis.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +26,12 @@ public class VenteService {
 		return venteRepository.findById(id).get();
 	}
 	public String genererNumFacture() {
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddhhmmssSSSS");
-		String start = "F" + now.format(formatter);
+		Date now = new Date();
+		DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String start = "F"
+		+ 	
+		formatter.format(now)
+		;
 		
 		return start;
 	}

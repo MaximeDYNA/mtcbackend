@@ -50,17 +50,19 @@ public class ClientController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/clients/{keyword}")
 	public  ResponseEntity<Object> search(@PathVariable String keyword){
-		LOGGER.info("liste des clients...");
+		LOGGER.info("Recherche clients...");
 		List<ClientPartenaire> clientPartenaires = new ArrayList<>();
 		ClientPartenaire cp; 
 		for(Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
-			cp = new ClientPartenaire();
-			cp.setNom(p.getNom());
-			cp.setPrenom(p.getPrenom());
-			cp.setTelephone(p.getTelephone());
-			if(clientService.findByPartenaire(p.getPartenaireId())!=null)
-			cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
-			clientPartenaires.add(cp);
+			if(clientService.findByPartenaire(p.getPartenaireId())!=null) {
+				cp = new ClientPartenaire();
+				cp.setNom(p.getNom());
+				cp.setPrenom(p.getPrenom());
+				cp.setTelephone(p.getTelephone());
+				cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
+				clientPartenaires.add(cp);
+			}
+			
 		}
 	return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires );
 	}

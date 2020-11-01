@@ -7,6 +7,7 @@ public class Encaissement {
 	private long clientId;
 	private long vendeurId;
 	private long contactId;
+	private boolean type;
 	private double montantTotal;
 	private double montantEncaisse;
 	private String numeroTicket;
@@ -101,6 +102,14 @@ public class Encaissement {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return super.toString();
+	}
+
+	public boolean isType() {
+		return type;
+	}
+
+	public void setType(boolean type) {
+		this.type = type;
 	}
 
 	

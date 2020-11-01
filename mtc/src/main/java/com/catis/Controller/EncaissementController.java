@@ -79,8 +79,7 @@ public class EncaissementController {
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
 	private ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement){
-		try
-		{
+		
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
 			
@@ -89,7 +88,6 @@ public class EncaissementController {
 			CarteGrise carteGrise;
 			
 			/* ---------client------------*/
-			System.out.println("***************************"+encaissement.getClientId() );
 				vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
 			/*------------------------------*/
 				
@@ -108,6 +106,10 @@ public class EncaissementController {
 				
 			/* ---------vente------------*/
 				vente.setMontantTotal(encaissement.getMontantTotal());
+			/* --------------------------*/
+				
+			/* ---------vente------------*/
+				vente.setNumFacture(venteService.genererNumFacture());;
 			/* --------------------------*/
 			
 			
@@ -129,10 +131,10 @@ public class EncaissementController {
 				cgs.addCarteGrise(carteGrise);
 			}
 			/* ---------Opération de caisse------------*/
-			op.setLibelle("Encaissement");
+			op.setLibelle(ocs.type(encaissement.isType()));
 			op.setMontant(encaissement.getMontantEncaisse());
 			op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
-			op.setNumeroTicket(encaissement.getNumeroTicket());
+			op.setNumeroTicket(ocs.genererTicket());
 			op.setVente(vente);
 			/* --------------------------*/
 
@@ -141,12 +143,13 @@ public class EncaissementController {
 			if(op.getMontant() != 0) {
 				if(!op.getVente().getContact().equals(null) && op.getVente().getContact().getContactId() != 0)
 					ocs.addOperationCaisse(op);
-				else 
-					throw new ContactVideException("Erreur : Veuillez renseigner le contact");
+				/*else 
+					throw new ContactVideException("Erreur : Veuillez renseigner le contact");*/
 			}
 			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()));
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
-		}
+		/*try
+		{}
 		catch(java.util.NoSuchElementException nosuch) {
 			LOGGER.error("Une valeur referencée n'existe pas");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une valeur referencée n'existe pas", null);
@@ -158,7 +161,7 @@ public class EncaissementController {
 		catch(Exception e) {
 			LOGGER.error("Une erreur est survenue");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur au web master CATIS", null);
-		}
+		}*/
 		
 		
 	}

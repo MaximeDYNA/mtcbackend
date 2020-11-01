@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins={"*"})
 public class HoldController {
 
 	@Autowired

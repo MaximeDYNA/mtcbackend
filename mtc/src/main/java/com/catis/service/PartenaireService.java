@@ -44,4 +44,16 @@ public class PartenaireService {
 		.collect(Collectors.toList())
 		.isEmpty();
 	}
+	public boolean isNomAlreadyExist(String nom) {
+		return !partenaireRepository.findByNomIgnoreCase(nom).isEmpty();
+	}
+	public boolean isCniAlreadyExist(String cni) {
+		return !partenaireRepository.findByCniIgnoreCase(cni).isEmpty();
+	}
+	public boolean isPassportAlreadyExist(String passport) {
+		return !partenaireRepository.findByPassportIgnoreCase(passport).isEmpty();
+	}
+	public boolean isEmailAlreadyExist(String email) {
+		return !partenaireRepository.findByEmail(email).isEmpty();
+	}
 }

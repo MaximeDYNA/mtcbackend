@@ -58,4 +58,10 @@ public class PosaleService {
 	public void deletePosalesByReference(String reference, Long sessionCaisseId) {
 		psr.deleteByReferenceAndSessionCaisse_SessionCaisseId(reference, sessionCaisseId);
 	}
+	public boolean isDecaissementExist(Long holdId, Long sessionId) {
+		if(psr.findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_ProduitId(holdId, sessionId, 1L).isEmpty())
+			return false;
+		else
+			return true;
+	}
 }

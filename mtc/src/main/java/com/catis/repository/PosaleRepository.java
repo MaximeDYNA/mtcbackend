@@ -15,4 +15,5 @@ public interface PosaleRepository extends CrudRepository<Posales, Long>{
 	List<Posales> findBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
 	void deleteByReferenceAndSessionCaisse_SessionCaisseId(String reference, Long sessionCaisseId);
 	List<Posales> findByReferenceAndSessionCaisse_SessionCaisseId(String reference, Long sessionCaisseId);
+	List<Posales> findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_ProduitId(Long holdId, Long sessionCaisseId, Long produitId);
 }

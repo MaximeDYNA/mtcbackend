@@ -43,18 +43,20 @@ public class VendeurController {
 	}
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/vendeurs/{keyword}")
 	public  ResponseEntity<Object> search(@PathVariable String keyword){
-		LOGGER.info("liste des vendeurs...");
+		LOGGER.info("Recherche vendeurs...");
 		List<ClientPartenaire> clientPartenaires = new ArrayList<>();
 		ClientPartenaire cp; 
 
 		for(Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
 			cp = new ClientPartenaire();
-			cp.setNom(p.getNom());
-			cp.setPrenom(p.getPrenom());
-			cp.setTelephone(p.getTelephone());
-				if(vendeurService.findVendeurByPartenaireId(p.getPartenaireId())!=null)
+			if(vendeurService.findVendeurByPartenaireId(p.getPartenaireId())!=null) {
+				cp.setNom(p.getNom());
+				cp.setPrenom(p.getPrenom());
+				cp.setTelephone(p.getTelephone());
 				cp.setContactId(vendeurService.findVendeurByPartenaireId(p.getPartenaireId()).getVendeurId());
-			clientPartenaires.add(cp);
+				clientPartenaires.add(cp);
+			}
+			
 		}
 	return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires );
 	}

@@ -28,6 +28,7 @@ public class Partenaire {
 	private String permiDeConduire;
 	private String cni;
 	private String telephone;
+	private String email;
 	
 	@ManyToOne
 	@JoinColumn(name="organisationId", nullable = false)
@@ -186,5 +187,14 @@ public class Partenaire {
 	public void setVendeurs(Set<Vendeur> vendeurs) {
 		this.vendeurs = vendeurs;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	
 }

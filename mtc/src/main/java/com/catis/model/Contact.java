@@ -23,11 +23,8 @@ public class Contact {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long contactId;
 	
-	private String mobile1;
-	private String mobile2;
-	private String fixe;
-	private String faxe;
-	private String email;
+	private String description;
+	
 	
 	@ManyToOne
 	private Partenaire partenaire;
@@ -39,17 +36,13 @@ public class Contact {
 	public Contact() {
 		
 	}
-	
-	public Contact(long contactId, String mobile1, String mobile2, String fixe, String faxe, String email,
-			Partenaire partenaire) {
+
+	public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
 		super();
 		this.contactId = contactId;
-		this.mobile1 = mobile1;
-		this.mobile2 = mobile2;
-		this.fixe = fixe;
-		this.faxe = faxe;
-		this.email = email;
+		this.description = description;
 		this.partenaire = partenaire;
+		this.ventes = ventes;
 	}
 
 	public Long getContactId() {
@@ -60,44 +53,12 @@ public class Contact {
 		this.contactId = contactId;
 	}
 
-	public String getMobile1() {
-		return mobile1;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setMobile1(String mobile1) {
-		this.mobile1 = mobile1;
-	}
-
-	public String getMobile2() {
-		return mobile2;
-	}
-
-	public void setMobile2(String mobile2) {
-		this.mobile2 = mobile2;
-	}
-
-	public String getFixe() {
-		return fixe;
-	}
-
-	public void setFixe(String fixe) {
-		this.fixe = fixe;
-	}
-
-	public String getFaxe() {
-		return faxe;
-	}
-
-	public void setFaxe(String faxe) {
-		this.faxe = faxe;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Partenaire getPartenaire() {
@@ -115,6 +76,8 @@ public class Contact {
 	public void setVentes(Set<Vente> ventes) {
 		this.ventes = ventes;
 	}
+	
+	
 
 
 

@@ -12,4 +12,8 @@ public interface PartenaireRepository extends CrudRepository<Partenaire, String>
 	 * ) List<Partenaire> searchByKeyword(@Param("title") String title);
 	 */
 	List<Partenaire> findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(String nom, String prenom, String passport, String telephone);
+	List<Partenaire> findByNomIgnoreCase(String nom);
+	List<Partenaire> findByCniIgnoreCase(String cni);
+	List<Partenaire> findByPassportIgnoreCase(String passport);
+	List<Partenaire> findByEmail(String email);
 }

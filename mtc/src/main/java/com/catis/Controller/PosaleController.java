@@ -1,11 +1,8 @@
 package com.catis.Controller;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.Controller.exception.DecaissementExistantException;
 import com.catis.Controller.exception.ProduitNonDisponibleException;
 import com.catis.Controller.objectTemporaire.Card;
 import com.catis.Controller.objectTemporaire.HoldData;
@@ -52,6 +50,8 @@ public class PosaleController {
 		
 			try {
 						LOGGER.info("Ajout d'un produit dans un onglet");
+						if(posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId()))
+							throw new DecaissementExistantException();
 						Hold hold = hs.findByHoldId(posaleData.getHoldId());
 						Posales posale = new Posales();
 						posale.setHold(hold);
@@ -64,12 +64,17 @@ public class PosaleController {
 				} 
 				catch (DataIntegrityViolationException integrity) {
 					LOGGER.error("Duplicata de champ unique");
-					return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Duplicata de champ unique /n Une erreur est survenu"
-							+ "bien vouloir le signaler à l'équipe CATIS "+ integrity.getMessage()  , null);
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
+							 , null);
+				}
+				catch (DecaissementExistantException integrity) {
+					LOGGER.error("Décaissement exitant");
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "exists_dec"
+							 , null);
 				}
 				catch (Exception e) {
 				LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu"
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
 						+ "bien vouloir le signaler à l'équipe CATIS", null);
 				}
 		
@@ -96,7 +101,7 @@ public class PosaleController {
 			} 
 			catch (Exception e) {
 				LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu"
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
 						+ "bien vouloir le signaler à l'équipe CATIS", null);
 			}
 		
@@ -115,11 +120,44 @@ public class PosaleController {
 				} 
 				catch (ProduitNonDisponibleException p) {
 					LOGGER.error("Le produit n'est disponible dans le panier");
-					return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Le produit n'est disponible dans le panier", null);
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Le produit n'est plus disponible dans le panier", null);
 				}
 				catch (Exception e) {
 					LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-					return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu"
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
+							+ "bien vouloir le signaler à l'équipe CATIS", null);
+				}
+		
+	}
+	@RequestMapping(method = RequestMethod.POST, value="/api/v1/posale/decaissement")
+	public ResponseEntity<Object> ajoutDecaissement(@RequestBody PosaleData posaleData){
+		
+				LOGGER.info("Ajout d'un décaissement au panier");
+			try {
+					posaleService.deletePosale(posaleData.getHoldId(), posaleData.getSessionCaisseId());
+					Posales p = new Posales();
+					Hold hold = hs.findByHoldId(posaleData.getHoldId());
+					Posales posale = new Posales();
+					posale.setHold(hold);
+					posale.setProduit(produitService.findById(1L));
+					posale.setReference(posaleData.getReference());
+					posale.setStatus(true);
+					posale.setSessionCaisse(hold.getSessionCaisse());
+					posaleService.addPosales(posale);					
+					
+					if(!posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).isEmpty())
+					posaleService.deletePosalesByReference(posaleData.getReference(), posaleData.getSessionCaisseId());
+					else
+						throw new ProduitNonDisponibleException();
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "supprimé avec succès", null);
+				} 
+				catch (ProduitNonDisponibleException p) {
+					LOGGER.error("Le produit n'est disponible dans le panier");
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Le produit n'est plus disponible dans le panier", null);
+				}
+				catch (Exception e) {
+					LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
 							+ "bien vouloir le signaler à l'équipe CATIS", null);
 				}
 		
