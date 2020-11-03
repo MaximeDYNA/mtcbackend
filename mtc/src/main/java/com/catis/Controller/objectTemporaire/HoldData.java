@@ -29,5 +29,11 @@ public class HoldData {
 	public void setNumber(Long number) {
 		this.number = number;
 	}
+	public boolean isValid() {
+		if(this.sessionCaisseId==null || this.number==null) {
+			return false;
+		}
+		return true;
+	}
 	
 }

@@ -2,6 +2,8 @@ package com.catis.model;
 
 import java.util.Date;
 import java.util.Set;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -20,14 +26,22 @@ public class Partenaire {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long partenaireId;
+	@NotEmpty
+	
 	private String nom;
 	private String prenom;
+	@Column(nullable=true)
 	private Date dateNaiss; // date de naissance
 	private String lieuDeNaiss; // lieu de naissance
-	private String passport; 
+	@Column(unique=true)
+	private String passport;
+	@Column(unique=true)
 	private String permiDeConduire;
+	@Column(unique=true)
 	private String cni;
+	@Column(unique=true)
 	private String telephone;
+	@Column(unique=true)
 	private String email;
 	
 	@ManyToOne

@@ -16,20 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.catis.Controller.exception.ContactVideException;
 import com.catis.Controller.objectTemporaire.Encaissement;
 import com.catis.Controller.objectTemporaire.EncaissementResponse;
-import com.catis.Controller.objectTemporaire.ProduitVue;
 import com.catis.model.CarteGrise;
-import com.catis.model.Client;
-import com.catis.model.Contact;
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
 import com.catis.model.Posales;
 import com.catis.model.Produit;
-import com.catis.model.SessionCaisse;
-import com.catis.model.TaxeProduit;
-import com.catis.model.Vendeur;
 import com.catis.model.Vente;
-import com.catis.repository.TaxeProduitRepository;
-import com.catis.service.CaissierCaisseService;
 import com.catis.service.CarteGriseService;
 import com.catis.service.ClientService;
 import com.catis.service.ContactService;
@@ -38,7 +30,6 @@ import com.catis.service.OperationCaisseService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
 import com.catis.service.SessionCaisseService;
-import com.catis.service.TaxeProduitService;
 import com.catis.service.VendeurService;
 import com.catis.service.VenteService;
 
@@ -50,8 +41,6 @@ public class EncaissementController {
 	private OperationCaisseService ocs;
 	@Autowired
 	private SessionCaisseService scs;
-	@Autowired
-	private CaissierCaisseService ccs;
 	@Autowired 
 	private VenteService venteService;
 	@Autowired
@@ -78,8 +67,8 @@ public class EncaissementController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
-	private ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement){
-		
+	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement){
+	
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
 			
@@ -106,6 +95,7 @@ public class EncaissementController {
 				
 			/* ---------vente------------*/
 				vente.setMontantTotal(encaissement.getMontantTotal());
+				vente.setMontantHT(encaissement.getMontantHT());
 			/* --------------------------*/
 				
 			/* ---------vente------------*/
@@ -138,27 +128,24 @@ public class EncaissementController {
 			op.setVente(vente);
 			/* --------------------------*/
 
-			
-				
-			if(op.getMontant() != 0) {
-				if(!op.getVente().getContact().equals(null) && op.getVente().getContact().getContactId() != 0)
 					ocs.addOperationCaisse(op);
-				/*else 
+				/*}
+				//else 
 					throw new ContactVideException("Erreur : Veuillez renseigner le contact");*/
-			}
+			
 			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()));
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
-		/*try
+		/*	try
 		{}
 		catch(java.util.NoSuchElementException nosuch) {
 			LOGGER.error("Une valeur referencée n'existe pas");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une valeur referencée n'existe pas", null);
-		}
-		catch(ContactVideException c) {
+		}*/
+		/*catch(ContactVideException c) {
 			LOGGER.error("Veuillez renseigner le contact");
 			return ApiResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false, "Veuillez renseigner le contact, si l'erreur persiste contactez CATIS", null);
-		}
-		catch(Exception e) {
+		}*/
+	/*	catch(Exception e) {
 			LOGGER.error("Une erreur est survenue");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur au web master CATIS", null);
 		}*/

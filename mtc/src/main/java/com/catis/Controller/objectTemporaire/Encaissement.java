@@ -10,6 +10,7 @@ public class Encaissement {
 	private boolean type;
 	private double montantTotal;
 	private double montantEncaisse;
+	private double montantHT;
 	private String numeroTicket;
 	private long sessionCaisseId;
 	private List<ProduitVue> produitVue;
@@ -110,6 +111,14 @@ public class Encaissement {
 
 	public void setType(boolean type) {
 		this.type = type;
+	}
+
+	public double getMontantHT() {
+		return montantHT;
+	}
+
+	public void setMontantHT(double montantHT) {
+		this.montantHT = montantHT;
 	}
 
 	

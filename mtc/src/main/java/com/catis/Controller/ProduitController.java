@@ -75,19 +75,19 @@ public class ProduitController {
 	
 	@RequestMapping(value="/api/v1/produits/reference/{imCha}")
 	public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) {
-		try {
+		
 			LOGGER.info("liste des catégories...");
 			List<Produit> produits = new ArrayList<>();
 			for(CarteGrise cg : cgs.findByImmatriculationOuCarteGrise(imCha)) {
+				System.out.println("produit de carte grise");
 				produits.add(cg.getProduit());
 			}
 
-			LocalDateTime now = LocalDateTime.now();
-			
+			LocalDateTime now = LocalDateTime.now();		
 			List <Visite> visitess = visiteService.findByReference(imCha).stream()
-			.filter(visites -> Duration.between(visites.getDateFin(), now ).toDays() <= 15)
-			.filter(visites -> !visites.isContreVisite())
-			.collect(Collectors.toList());
+				.filter(visites -> Duration.between(visites.getDateFin(), now ).toDays() <= 15)
+					.filter(visites -> !visites.isContreVisite())
+						.collect(Collectors.toList());
 			
 			if(visitess.isEmpty()) {
 				
@@ -113,7 +113,7 @@ public class ProduitController {
 					ProduitEtTaxe pet = new ProduitEtTaxe();
 					List <Taxe> taxes = new ArrayList<>();
 					pet.setProduit(produitService.findByImmatriculation(imCha));
-				
+					
 					pet.setTaxe(taxeService.taxListByLibelle(produitService.findByLibelle("contre").getLibelle()));
 					pets.add(pet);
 					//Visite v =  visiteService.findByReference(imCha).get(0);
@@ -125,15 +125,17 @@ public class ProduitController {
 			else {
 				
 				List<ProduitEtTaxe> pets = new ArrayList<>();
-				ProduitEtTaxe pet = new ProduitEtTaxe(produitService.findByLibelle("contre visite"),taxeService.taxListByLibelle("contre visite") );
+				ProduitEtTaxe pet = new ProduitEtTaxe(produitService.findByLibelle("cv"), taxeService.taxListByLibelle("cv") );
 				pets.add(pet);
+				
+				
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets );
 			}
 			
-			} catch (Exception e) {
+			/*try {} catch (Exception e) {
 				LOGGER.error("Veuillez signaler cette erreur à Franck");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
-			}
+			}*/
 		
 	}
 }

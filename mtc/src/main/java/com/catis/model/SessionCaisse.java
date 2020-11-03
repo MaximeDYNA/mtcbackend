@@ -23,18 +23,16 @@ public class SessionCaisse {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long sessionCaisseId;
 	
-	@ManyToOne
-	@JoinColumn(name="caisse_id")
-	private Caisse caisse;
 	
-	@ManyToOne
-	@JoinColumn(name="caissier_id")
-	private Caissier caissier;
 	
 	private Date dateHeureOuverture;
 	private Date dateHeureFermeture;
-	private String idOrganisation;
+	@ManyToOne
+	private Organisation organisationId;
+	@ManyToOne
+	private Utilisateur user;
 	private double montantOuverture;
+	private double montantfermeture;
 	private boolean active;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="sessionCaisse")
@@ -59,22 +57,53 @@ public class SessionCaisse {
 	}
 
 
+
 	
 
 
 
-	public SessionCaisse(Long sessionCaisseId, Caisse caisse, Caissier caissier, Date dateHeureOuverture,
-			Date dateHeureFermeture, String idOrganisation, double montantOuverture,
-			Set<OperationCaisse> operationCaisse) {
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+	public SessionCaisse(Long sessionCaisseId, Date dateHeureOuverture, Date dateHeureFermeture,
+			Organisation organisationId, Utilisateur user, double montantOuverture, boolean active,
+			Set<OperationCaisse> operationCaisse, Set<Vente> vente, Set<Hold> holds, Set<Posales> posales) {
 		super();
 		this.sessionCaisseId = sessionCaisseId;
-		this.caisse = caisse;
-		this.caissier = caissier;
 		this.dateHeureOuverture = dateHeureOuverture;
 		this.dateHeureFermeture = dateHeureFermeture;
-		this.idOrganisation = idOrganisation;
+		this.organisationId = organisationId;
+		this.user = user;
 		this.montantOuverture = montantOuverture;
+		this.active = active;
 		this.operationCaisse = operationCaisse;
+		this.vente = vente;
+		this.holds = holds;
+		this.posales = posales;
+	}
+
+
+	public Utilisateur getUser() {
+		return user;
+	}
+
+
+
+
+
+	public void setUser(Utilisateur user) {
+		this.user = user;
 	}
 
 
@@ -84,32 +113,14 @@ public class SessionCaisse {
 
 
 
-	public Caisse getCaisse() {
-		return caisse;
-	}
-
-
-
-
-	public void setCaisse(Caisse caisse) {
-		this.caisse = caisse;
-	}
 
 
 
 
 
-	public Caissier getCaissier() {
-		return caissier;
-	}
 
 
 
-
-
-	public void setCaissier(Caissier caissier) {
-		this.caissier = caissier;
-	}
 
 
 
@@ -131,13 +142,17 @@ public class SessionCaisse {
 		this.dateHeureFermeture = dateHeureFermeture;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	public Organisation getOrganisationId() {
+		return organisationId;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+	public void setOrganisationId(Organisation organisationId) {
+		this.organisationId = organisationId;
 	}
+
+
 
 	public double getMontantOuverture() {
 		return montantOuverture;
@@ -247,6 +262,54 @@ public class SessionCaisse {
 
 	public void setPosales(Set<Posales> posales) {
 		this.posales = posales;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public double getMontantfermeture() {
+		return montantfermeture;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setMontantfermeture(double montantfermeture) {
+		this.montantfermeture = montantfermeture;
 	}
 
 

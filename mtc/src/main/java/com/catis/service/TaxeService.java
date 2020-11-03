@@ -18,7 +18,7 @@ public class TaxeService {
 	public List<Taxe> taxListByLibelle(String libelle){
 		List<Taxe> taxes = new ArrayList<>();
 		
-		for(TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleContainsIgnoreCase(libelle)) {
+		for(TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleIgnoreCase(libelle)) {
 			taxes.add(tp.getTaxe());
 		}
 		

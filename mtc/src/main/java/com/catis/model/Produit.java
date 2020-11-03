@@ -24,6 +24,7 @@ public class Produit {
 	private String description;
 	private double prix;
 	private int delaiValidite;
+	private String img;
 
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
@@ -51,20 +52,22 @@ public class Produit {
 		
 	}
 
-	
-
-	public Produit(Long produit_id, String libelle, String description, double prix, int delaiValidite,
-			Set<DetailVente> detailVente, CategorieProduit categorieProduit) {
+	public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
+			Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
+			Set<Posales> posales, CategorieProduit categorieProduit) {
 		super();
-		this.produitId = produit_id;
+		this.produitId = produitId;
 		this.libelle = libelle;
 		this.description = description;
 		this.prix = prix;
 		this.delaiValidite = delaiValidite;
+		this.img = img;
 		this.detailVente = detailVente;
+		this.carteGrise = carteGrise;
+		this.taxeProduit = taxeProduit;
+		this.posales = posales;
 		this.categorieProduit = categorieProduit;
 	}
-
 
 
 	public Long getProduitId() {
@@ -168,6 +171,18 @@ public class Produit {
 
 	public void setPosales(Set<Posales> posales) {
 		this.posales = posales;
+	}
+
+
+
+	public String getImg() {
+		return img;
+	}
+
+
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 

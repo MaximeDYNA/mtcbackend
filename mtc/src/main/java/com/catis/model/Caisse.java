@@ -23,9 +23,7 @@ public class Caisse {
 	@JsonIgnore
 	private Set<CaissierCaisse> caissiercaisses;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="caisse")
-	@JsonIgnore
-	private Set<SessionCaisse> sessionCaisse;
+	
 	
 	public Caisse() {
 	}
@@ -34,14 +32,14 @@ public class Caisse {
 
 
 
-	public Caisse(String caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses,
-			Set<SessionCaisse> sessionCaisse) {
+	public Caisse(String caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses
+			) {
 		super();
 		this.caisse_id = caisse_id;
 		this.description = description;
 		this.idOrganisation = idOrganisation;
 		this.caissiercaisses = caissiercaisses;
-		this.sessionCaisse = sessionCaisse;
+		
 	}
 
 
@@ -104,18 +102,5 @@ public class Caisse {
 
 
 
-	public Set<SessionCaisse> getSessionCaisse() {
-		return sessionCaisse;
-	}
-
-
-
-
-
-	public void setSessionCaisse(Set<SessionCaisse> sessionCaisse) {
-		this.sessionCaisse = sessionCaisse;
-	}
-
-	
 
 }

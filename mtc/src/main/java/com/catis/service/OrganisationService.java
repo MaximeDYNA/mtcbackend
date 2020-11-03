@@ -26,5 +26,8 @@ public class OrganisationService {
 	public void addOrgansiation(Organisation organisation) {
 		organisationRepository.save(organisation);
 	}
+	public Organisation findByOrganisationId(Long id) {
+		return organisationRepository.findById(id).get();
+	}
 	
 }

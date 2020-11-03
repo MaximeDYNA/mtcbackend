@@ -14,8 +14,8 @@ public class PartenaireService {
 	@Autowired
 	private PartenaireRepository partenaireRepository;
 	
-	public void addPartenaire(Partenaire partenaire) {
-		partenaireRepository.save(partenaire);
+	public Partenaire addPartenaire(Partenaire partenaire) {
+		return partenaireRepository.save(partenaire);
 	}
 	public void updatePartenaire(Partenaire partenaire) {
 		partenaireRepository.save(partenaire);
@@ -56,4 +56,10 @@ public class PartenaireService {
 	public boolean isEmailAlreadyExist(String email) {
 		return !partenaireRepository.findByEmail(email).isEmpty();
 	}
+	public boolean isNomEtPrenomAlreadyExist(String nom, String prenom) {
+		return !partenaireRepository.findByNomIgnoreCaseAndPrenomIgnoreCase(nom, prenom).isEmpty();
+	}
+	public void isPartenaireAlreadyExist(Partenaire partenaire) {
+		
+;	}
 }

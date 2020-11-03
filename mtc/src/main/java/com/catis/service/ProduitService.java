@@ -34,12 +34,12 @@ public class ProduitService {
 		return produitRepository.findById(id).get();
 	}
 	public Produit findByLibelle(String libelle) {
-		return produitRepository.findByLibelleStartsWith(libelle);
+		return produitRepository.findByLibelleIgnoreCase(libelle);
 	}
 	public List<Produit> findProduitWithoutContreVisite(){
-		return findAllProduit().stream().filter(produit -> !produit.getLibelle().equalsIgnoreCase("contre visite"))
-										.filter(produit -> !produit.getLibelle().equalsIgnoreCase("décaissement"))
-				.collect(Collectors.toList());
+		return findAllProduit().stream().filter(produit -> !produit.getLibelle().equalsIgnoreCase("cv"))
+										.filter(produit -> !produit.getLibelle().equalsIgnoreCase("dec"))
+										.collect(Collectors.toList());
 	}
 	public Produit findByImmatriculation(String imOrCha) {
 		if(cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha).isEmpty()) {

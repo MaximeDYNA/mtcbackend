@@ -13,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -23,7 +27,7 @@ public class Vente {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long idVente;
 	private double montantTotal;
-
+	private double montantHT;
 	@ManyToOne
 	private Client client;
 	
@@ -55,14 +59,31 @@ public class Vente {
 
 
 
-	public Vente(Long idVente, double montantTotal, Set<OperationCaisse> operationCaisse,
-			Set<DetailVente> detailventes) {
+	
+
+
+
+
+	public Vente(Long idVente, double montantTotal, double montantHT, Client client, Vendeur vendeur,
+			@NotEmpty @NotNull Contact contact, SessionCaisse sessionCaisse, Set<OperationCaisse> operationCaisse,
+			Set<DetailVente> detailventes, String numFacture) {
 		super();
 		this.idVente = idVente;
 		this.montantTotal = montantTotal;
+		this.montantHT = montantHT;
+		this.client = client;
+		this.vendeur = vendeur;
+		this.contact = contact;
+		this.sessionCaisse = sessionCaisse;
 		this.operationCaisse = operationCaisse;
 		this.detailventes = detailventes;
+		this.numFacture = numFacture;
 	}
+
+
+
+
+
 
 
 
@@ -186,6 +207,30 @@ public class Vente {
 
 	public void setIdVente(Long idVente) {
 		this.idVente = idVente;
+	}
+
+
+
+
+
+
+
+
+
+	public double getMontantHT() {
+		return montantHT;
+	}
+
+
+
+
+
+
+
+
+
+	public void setMontantHT(double montantHT) {
+		this.montantHT = montantHT;
 	}
 
 

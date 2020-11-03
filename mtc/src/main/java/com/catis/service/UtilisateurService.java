@@ -24,16 +24,18 @@ public class UtilisateurService {
 		utilisateurRepository.findAll().forEach(utilisateurs::add);
 		return utilisateurs;
 	}
-	public Utilisateur findUtilisateurById(String idUtilisateur) {
+	public Utilisateur findUtilisateurById(Long idUtilisateur) {
 		return utilisateurRepository.findById(idUtilisateur).get();
 	}
 	public Utilisateur findUtilisateurByLogin(String login) {
 		return utilisateurRepository.findByLogin(login);
 	}
-	public void deleteUtilisateurById(String idCaissierCaisse) {
+	public void deleteUtilisateurById(Long idCaissierCaisse) {
 		utilisateurRepository.deleteById(idCaissierCaisse);
 	}
 	public Utilisateur authentification(Utilisateur user) {
 		return utilisateurRepository.findByLogin(user.getLogin());
 	}
+	
+	
 }

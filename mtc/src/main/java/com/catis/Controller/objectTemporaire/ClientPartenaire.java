@@ -8,12 +8,13 @@ import com.catis.model.Partenaire;
 
 public class ClientPartenaire {
 	private long clientId;
-	private long contactId;
+	private long contactId;;
 	private long vendeurId;
-	private String description;
+	private String variants;
 	private String nom;
+	private String email;
 	private String prenom;
-	private Date dateNaiss; // date de naissance
+	private String dateNaiss; // date de naissance
 	private String lieuDeNaiss; // lieu de naissance
 	private String passport; 
 	private String permiDeConduire;
@@ -21,15 +22,17 @@ public class ClientPartenaire {
 	private String telephone;
 	private Partenaire partenaire;
 	
-	public ClientPartenaire(long clientId, long contactId, long vendeurId, String description, String nom,
-			String prenom, Date dateNaiss, String lieuDeNaiss, String passport, String permiDeConduire, String cni,
+	
+	public ClientPartenaire(long clientId, long contactId, long vendeurId, String variants, String nom, String email,
+			String prenom, String dateNaiss, String lieuDeNaiss, String passport, String permiDeConduire, String cni,
 			String telephone, Partenaire partenaire) {
 		super();
 		this.clientId = clientId;
 		this.contactId = contactId;
 		this.vendeurId = vendeurId;
-		this.description = description;
+		this.variants = variants;
 		this.nom = nom;
+		this.email = email;
 		this.prenom = prenom;
 		this.dateNaiss = dateNaiss;
 		this.lieuDeNaiss = lieuDeNaiss;
@@ -49,11 +52,12 @@ public class ClientPartenaire {
 	public void setClientId(long clientId) {
 		this.clientId = clientId;
 	}
-	public String getDescription() {
-		return description;
+	
+	public String getVariants() {
+		return variants;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setVariants(String variants) {
+		this.variants = variants;
 	}
 	public String getNom() {
 		return nom;
@@ -67,10 +71,10 @@ public class ClientPartenaire {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public Date getDateNaiss() {
+	public String getDateNaiss() {
 		return dateNaiss;
 	}
-	public void setDateNaiss(Date dateNaiss) {
+	public void setDateNaiss(String dateNaiss) {
 		this.dateNaiss = dateNaiss;
 	}
 	public String getLieuDeNaiss() {
@@ -120,6 +124,12 @@ public class ClientPartenaire {
 	}
 	public void setVendeurId(long vendeurId) {
 		this.vendeurId = vendeurId;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

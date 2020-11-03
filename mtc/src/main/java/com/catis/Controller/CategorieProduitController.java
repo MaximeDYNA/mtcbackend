@@ -40,15 +40,15 @@ public class CategorieProduitController {
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
 	
-	@RequestMapping("/api/v1/categorieproduits/{idString}/listesproduits")
-	public ResponseEntity<Object> listerLesProduits(@PathVariable String idString) throws IllegalArgumentException{
+	@RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
+	public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException{
 		try {
 			List<ProduitEtTaxe> pets = new ArrayList<>();
 			List<Taxe> taxes;
 			ProduitEtTaxe pet; 
-			Long id = Long.valueOf(idString);
+			Long id = Long.valueOf(categorieId);
 			for(Produit produit : produitService.findByCategorieProduit(id).stream()
-												.filter(prod -> !prod.getLibelle().equalsIgnoreCase("contre visite"))
+												.filter(prod -> !prod.getLibelle().equalsIgnoreCase("cv"))
 												.collect(Collectors.toList())) {
 				pet = new ProduitEtTaxe();
 				pet.setProduit(produit);
@@ -64,7 +64,7 @@ public class CategorieProduitController {
 		}
 		catch(java.lang.IllegalArgumentException il) {
 			LOGGER.error("Identifiant catégorie produit incorrect");
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Identifiant catégorie produit incorrect", null);
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Identifiant catégorie produit incorrect", null);
 		}
 		
 	}

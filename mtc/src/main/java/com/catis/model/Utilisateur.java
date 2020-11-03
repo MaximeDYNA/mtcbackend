@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -17,45 +19,44 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_utilisateur")
 public class Utilisateur {
 	@Id
-	private String idUtilisateur;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long utilisateurId;
 	private String login;
 	private String motDePasse;
 	private String idOrganisation;
 	
 	@ManyToOne
-
 	private Partenaire partenaire;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="user")
-	@JsonIgnore
-	private Set<Caissier> caissiers;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="utilisateur")
-	@JsonIgnore
-	private Set<Controleur> controleurs;
+	
 
+	
 
-	public Utilisateur(String idUtilisateur, String login, String motDePasse, String idOrganisation,
-			Partenaire partenaire, Set<Caissier> caissiers, Set<Controleur> controleurs) {
+	public Utilisateur(Long utilisateurId, String login, String motDePasse, String idOrganisation,
+			Partenaire partenaire ) {
 		super();
-		this.idUtilisateur = idUtilisateur;
+		utilisateurId = utilisateurId;
 		this.login = login;
 		this.motDePasse = motDePasse;
 		this.idOrganisation = idOrganisation;
 		this.partenaire = partenaire;
-		this.caissiers = caissiers;
-		this.controleurs = controleurs;
+		
 	}
+
 
 	public Utilisateur() {
 	}
 
-	public String getIdUtilisateur() {
-		return idUtilisateur;
+	
+	public Long getUtilisateurId() {
+		return utilisateurId;
 	}
 
-	public void setIdUtilisateur(String idUtilisateur) {
-		this.idUtilisateur = idUtilisateur;
+
+	public void setUtilisateurId(Long utilisateurId) {
+		utilisateurId = utilisateurId;
 	}
+
 
 	public String getLogin() {
 		return login;
@@ -64,7 +65,7 @@ public class Utilisateur {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-
+	@JsonIgnore
 	public String getMotDePasse() {
 		return motDePasse;
 	}
@@ -81,21 +82,8 @@ public class Utilisateur {
 		this.partenaire = partenaire;
 	}
 
-	public Set<Caissier> getCaissiers() {
-		return caissiers;
-	}
-
-	public void setCaissiers(Set<Caissier> caissiers) {
-		this.caissiers = caissiers;
-	}
-
-	public Set<Controleur> getControleurs() {
-		return controleurs;
-	}
-
-	public void setControleurs(Set<Controleur> controleurs) {
-		this.controleurs = controleurs;
-	}
+	
+	
 
 	public String getIdOrganisation() {
 		return idOrganisation;

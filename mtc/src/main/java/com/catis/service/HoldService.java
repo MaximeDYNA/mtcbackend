@@ -38,7 +38,9 @@ public class HoldService {
 	}
 	@Transactional
 	public void deleteHoldBySessionCaisse(Long sessionCaisseId) {
+		if(!posaleRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId).isEmpty())
 		 posaleRepository.deleteBySessionCaisse_SessionCaisseId(sessionCaisseId);
+		if(!holdRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId).isEmpty())
 		holdRepository.deleteBySessionCaisse_SessionCaisseId(sessionCaisseId);
 	}
 	
@@ -51,6 +53,9 @@ public class HoldService {
 	}
 	
 	public Hold findByHoldId(Long holdId) {
+		if(holdId==null) {
+			return null;
+		}
 		return holdRepository.findById(holdId).get();
 	}
 	

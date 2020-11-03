@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.exception.DecaissementExistantException;
+import com.catis.Controller.exception.InformationIncompleteException;
 import com.catis.Controller.exception.ProduitNonDisponibleException;
 import com.catis.Controller.objectTemporaire.Card;
 import com.catis.Controller.objectTemporaire.HoldData;
@@ -47,11 +48,15 @@ public class PosaleController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/posales")
 	public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData){
-		
-			try {
-						LOGGER.info("Ajout d'un produit dans un onglet");
-						if(posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId()))
+			
+			
+				try {
+					LOGGER.info("Ajout d'un produit dans un onglet");
+						if(posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId())) {
 							throw new DecaissementExistantException();
+
+						}
+							
 						Hold hold = hs.findByHoldId(posaleData.getHoldId());
 						Posales posale = new Posales();
 						posale.setHold(hold);
@@ -82,7 +87,9 @@ public class PosaleController {
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/posaleslist")
 	public ResponseEntity<Object> listPosales(@RequestBody HoldData holdData){
 		try {
-				LOGGER.info("liste des produits de l'onglet "+holdData.getNumber());
+				if(!holdData.isValid())
+					throw new InformationIncompleteException("Bien vouloir envoyer toutes les informations de l'onglet");
+				LOGGER.info("liste des produits de l'onglet "+holdData.getSessionCaisseId());
 				Card card;
 				List<Card> cards = new ArrayList<>();
 				List<Taxe> taxes = new ArrayList<>();

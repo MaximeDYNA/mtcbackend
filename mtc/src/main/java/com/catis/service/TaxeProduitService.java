@@ -19,6 +19,6 @@ public class TaxeProduitService {
 		return taxeProduitRepository.findByProduit_ProduitId(produitId);
 	}
 	public List<TaxeProduit> findByLibelle(String reference){
-		return taxeProduitRepository.findByProduit_LibelleContainsIgnoreCase(reference);
+		return taxeProduitRepository.findByProduit_LibelleIgnoreCase(reference);
 	}
 }

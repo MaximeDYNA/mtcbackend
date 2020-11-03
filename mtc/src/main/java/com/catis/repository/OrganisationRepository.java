@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.Organisation;
 
-public interface OrganisationRepository extends CrudRepository<Organisation, String>{
+public interface OrganisationRepository extends CrudRepository<Organisation, Long>{
 
 }

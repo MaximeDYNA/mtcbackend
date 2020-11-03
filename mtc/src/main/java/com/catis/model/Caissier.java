@@ -32,15 +32,13 @@ public class Caissier {
 	@JsonIgnore
 	private Set<CaissierCaisse> caissierCaisses;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="caissier")
-	@JsonIgnore
-	private Set<SessionCaisse> sessionCaisse;
+
 	
 	public Caissier() {
 	}
 
 	public Caissier(String caissier_id, String codeCaissier, String idOrganisation, Partenaire partenaire,
-			Utilisateur user, Set<CaissierCaisse> caissierCaisses, Set<SessionCaisse> sessionCaisse) {
+			Utilisateur user, Set<CaissierCaisse> caissierCaisses) {
 		super();
 		this.caissier_id = caissier_id;
 		this.codeCaissier = codeCaissier;
@@ -48,7 +46,7 @@ public class Caissier {
 		this.partenaire = partenaire;
 		this.user = user;
 		this.caissierCaisses = caissierCaisses;
-		this.sessionCaisse = sessionCaisse;
+		
 	}
 
 	public String getCaissier_id() {
@@ -106,19 +104,6 @@ public class Caissier {
 
 
 
-	public Set<SessionCaisse> getSessionCaisse() {
-		return sessionCaisse;
-	}
-
-
-
-
-
-
-	public void setSessionCaisse(Set<SessionCaisse> sessionCaisse) {
-		this.sessionCaisse = sessionCaisse;
-	}
-	
 	
 	
 }

@@ -10,5 +10,5 @@ import com.catis.model.TaxeProduit;
 public interface TaxeProduitRepository extends CrudRepository<TaxeProduit, Long>{
 
 	List<TaxeProduit> findByProduit_ProduitId(Long produitId);
-	List<TaxeProduit> findByProduit_LibelleContainsIgnoreCase(String libelle);
+	List<TaxeProduit> findByProduit_LibelleIgnoreCase(String libelle);
 }
