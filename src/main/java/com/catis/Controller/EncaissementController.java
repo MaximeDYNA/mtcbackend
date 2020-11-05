@@ -22,6 +22,7 @@ import com.catis.model.OperationCaisse;
 import com.catis.model.Posales;
 import com.catis.model.Produit;
 import com.catis.model.Vente;
+import com.catis.model.Visite;
 import com.catis.service.CarteGriseService;
 import com.catis.service.ClientService;
 import com.catis.service.ContactService;
@@ -32,6 +33,7 @@ import com.catis.service.ProduitService;
 import com.catis.service.SessionCaisseService;
 import com.catis.service.VendeurService;
 import com.catis.service.VenteService;
+import com.catis.service.VisiteService;
 
 @RestController
 @CrossOrigin
@@ -59,7 +61,8 @@ public class EncaissementController {
 	private DetailVenteService detailVenteService;
 	@Autowired
 	private PosaleService posaleService;
-	
+	@Autowired
+	private VisiteService visiteService;
 	
 
 	
@@ -71,6 +74,7 @@ public class EncaissementController {
 	
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
+			Visite visite= new Visite();
 			
 			DetailVente detailVente;
 			Produit produit;
@@ -114,6 +118,9 @@ public class EncaissementController {
 				
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
+				/*-----------------Visite-----------------*/
+					visiteService.ajouterVisite(carteGrise);
+				/*----------------------------------------*/
 				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
 				detailVente.setReference(posale.getReference());
@@ -129,6 +136,7 @@ public class EncaissementController {
 			/* --------------------------*/
 
 					ocs.addOperationCaisse(op);
+			
 				/*}
 				//else 
 					throw new ContactVideException("Erreur : Veuillez renseigner le contact");*/

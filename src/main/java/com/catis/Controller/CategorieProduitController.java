@@ -23,6 +23,9 @@ import com.catis.service.CategorieProduitService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 
 @RestController
 @CrossOrigin
@@ -41,7 +44,11 @@ public class CategorieProduitController {
 	private static Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
 	
 	@RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
-	public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException{
+	@ApiOperation(value="produits par catégorie",
+	notes = "renvoi la liste des produits et les taxes associées au produit",
+	response = ProduitEtTaxe.class)
+	public ResponseEntity<Object> listerLesProduits(@ApiParam(value="id de la catégorie", required= true)
+													@PathVariable String categorieId) throws IllegalArgumentException{
 		try {
 			List<ProduitEtTaxe> pets = new ArrayList<>();
 			List<Taxe> taxes;

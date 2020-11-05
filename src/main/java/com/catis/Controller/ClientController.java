@@ -47,10 +47,11 @@ public class ClientController {
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/clients")
 	public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 			LOGGER.info("Ajout d'un client...");
-	try {
+	
 			Client client = new Client();
 			Partenaire partenaire = new Partenaire();
 			partenaire.setCni(clientPartenaire.getCni());
+			System.out.println("*******************"+clientPartenaire.getDateNaiss());
 			if(clientPartenaire.getDateNaiss()!=null) {
 				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss()); 
 				partenaire.setDateNaiss(date);
@@ -72,7 +73,7 @@ public class ClientController {
 			clientService.addCustomer(client);
 			LOGGER.info("Ajout de "+ partenaire.getNom() +" réussi");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", client);
-		}
+		/*try {}
 		catch (DataIntegrityViolationException integrity) {
 			LOGGER.error("Duplicata de champ unique");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
@@ -81,7 +82,7 @@ public class ClientController {
 			LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
 					+ "l'ajout d'un client", null);
-		}
+		}*/
 		
 		
 		

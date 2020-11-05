@@ -5,9 +5,14 @@ import java.util.List;
 import com.catis.model.Produit;
 import com.catis.model.Taxe;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel(description="produits et ses taxes")
 public class ProduitEtTaxe {
 
+	@ApiModelProperty(notes = "le produit")
 	private Produit produit;
+	@ApiModelProperty(notes = "les taxes")
 	private List<Taxe> taxe;
 
 	public ProduitEtTaxe() {

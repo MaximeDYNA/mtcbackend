@@ -44,7 +44,7 @@ public class ContactController {
 	@RequestMapping(method= RequestMethod.POST, value="/api/v1/contacts")
 	public ResponseEntity<Object> addContact(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 			LOGGER.info("Ajout d'un client...");
-	try {
+	
 			Contact contact = new Contact();
 			Partenaire partenaire = new Partenaire();
 			partenaire.setCni(clientPartenaire.getCni());
@@ -69,7 +69,7 @@ public class ContactController {
 			contactService.addContact(contact);
 			LOGGER.info("Ajout de "+ partenaire.getNom() +" réussi");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", contact);
-		}
+		/*try {}
 		catch (DataIntegrityViolationException integrity) {
 			LOGGER.error("Duplicata de champ unique");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
@@ -78,7 +78,7 @@ public class ContactController {
 			LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
 					+ "l'ajout d'un client", null);
-		}		
+		}	*/	
 	}
 	@RequestMapping(value="/api/v1/contacts")
 	private ResponseEntity<Object> getContacts() {

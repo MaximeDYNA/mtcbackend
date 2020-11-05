@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.catis.Controller.objectTemporaire.HoldData;
+import com.catis.Controller.objectTemporaire.ProduitEtTaxe;
 import com.catis.model.Hold;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
@@ -24,8 +25,10 @@ import com.catis.service.SessionCaisseService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
-@CrossOrigin(origins={"*"})
+@CrossOrigin
 public class HoldController {
 
 	@Autowired
@@ -102,6 +105,23 @@ public class HoldController {
 					LOGGER.info("sélection des onglets d'une session ID...");
 	
 					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id "+ sessionCaisseId, holdService.findHoldBySessionCaisse(sessionCaisseId));
+			 	} 
+			 catch (Exception e) { 
+				 return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
+						 	"Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
+			  }
+			
+		
+	}
+	@RequestMapping(method=RequestMethod.POST, value="/api/v1/hold/refresh")
+	@ApiOperation(value="rafraichit l'onglet",
+	notes = "efface tous les produits du panier")
+	public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
+			
+			 try {
+					LOGGER.info("rafraichissement de l'onglet");
+					ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id "+ holdData.getSessionCaisseId(), null);
 			 	} 
 			 catch (Exception e) { 
 				 return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
