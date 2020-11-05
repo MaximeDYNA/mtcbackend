@@ -53,7 +53,7 @@ public class ClientController {
 			partenaire.setCni(clientPartenaire.getCni());
 			System.out.println("*******************"+clientPartenaire.getDateNaiss());
 			if(clientPartenaire.getDateNaiss()!=null) {
-				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss()); 
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss()); ;
 				partenaire.setDateNaiss(date);
 			}
 			else
