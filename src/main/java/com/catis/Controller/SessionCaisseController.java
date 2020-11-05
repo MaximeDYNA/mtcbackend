@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.Controller.objectTemporaire.CloseSessionData;
-import com.catis.Controller.objectTemporaire.OpenData;
 import com.catis.model.Hold;
 import com.catis.model.SessionCaisse;
+import com.catis.objectTemporaire.CloseSessionData;
+import com.catis.objectTemporaire.OpenData;
 import com.catis.security.Connexion;
 import com.catis.service.HoldService;
 import com.catis.service.OrganisationService;

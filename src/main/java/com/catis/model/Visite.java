@@ -21,8 +21,9 @@ public class Visite {
 	private boolean contreVisite;
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
-	private String statut;
+	private int statut;
 	private String idOrganisation;
+	private boolean encours;
 	
 	@ManyToOne
 	@JoinColumn(name="idCaissier")
@@ -45,7 +46,7 @@ public class Visite {
 
 
 
-	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, String statut,
+	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
 			String idOrganisation, Caissier caissier, CarteGrise carteGrise) {
 		super();
 		this.idVisite = idVisite;
@@ -160,11 +161,11 @@ public class Visite {
 
 
 
-	public String getStatut() {
+	public int getStatut() {
 		return statut;
 	}
 
-	public void setStatut(String statut) {
+	public void setStatut(int statut) {
 		this.statut = statut;
 	}
 
@@ -190,6 +191,16 @@ public class Visite {
 
 	public void setCarteGrise(CarteGrise carteGrise) {
 		this.carteGrise = carteGrise;
+	}
+
+
+	public boolean isEncours() {
+		return encours;
+	}
+
+
+	public void setEncours(boolean encours) {
+		this.encours = encours;
 	}
 	
 	

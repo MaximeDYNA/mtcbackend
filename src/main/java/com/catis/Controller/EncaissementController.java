@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.exception.ContactVideException;
-import com.catis.Controller.objectTemporaire.Encaissement;
-import com.catis.Controller.objectTemporaire.EncaissementResponse;
 import com.catis.model.CarteGrise;
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
@@ -23,6 +21,8 @@ import com.catis.model.Posales;
 import com.catis.model.Produit;
 import com.catis.model.Vente;
 import com.catis.model.Visite;
+import com.catis.objectTemporaire.Encaissement;
+import com.catis.objectTemporaire.EncaissementResponse;
 import com.catis.service.CarteGriseService;
 import com.catis.service.ClientService;
 import com.catis.service.ContactService;

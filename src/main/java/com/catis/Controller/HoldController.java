@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.catis.Controller.objectTemporaire.HoldData;
-import com.catis.Controller.objectTemporaire.ProduitEtTaxe;
+
 import com.catis.model.Hold;
+import com.catis.objectTemporaire.HoldData;
+import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.SessionCaisseService;

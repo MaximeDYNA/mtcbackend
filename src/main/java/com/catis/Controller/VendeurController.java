@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.Controller.objectTemporaire.ClientPartenaire;
 import com.catis.model.Contact;
 import com.catis.model.Partenaire;
 import com.catis.model.Vendeur;
+import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 import com.catis.service.VendeurService;

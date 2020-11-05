@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.Controller.objectTemporaire.ProduitEtTaxe;
 import com.catis.model.Produit;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
+import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.CategorieProduitService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;

@@ -27,14 +27,14 @@ import com.catis.service.TaxeProduitService;
 import com.catis.service.TaxeService;
 import com.catis.service.VisiteService;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.Controller.objectTemporaire.HoldData;
-import com.catis.Controller.objectTemporaire.ProduitEtTaxe;
 import com.catis.model.CarteGrise;
 import com.catis.model.Posales;
 import com.catis.model.Produit;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 import com.catis.model.Visite;
+import com.catis.objectTemporaire.HoldData;
+import com.catis.objectTemporaire.ProduitEtTaxe;
 
 @RestController
 @CrossOrigin

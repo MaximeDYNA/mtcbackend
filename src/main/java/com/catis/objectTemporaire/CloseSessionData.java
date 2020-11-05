@@ -1,4 +1,4 @@
-package com.catis.Controller.objectTemporaire;
+package com.catis.objectTemporaire;
 
 public class CloseSessionData {
 	private Long sessionCaisseId;

@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,16 +36,17 @@ public class VisiteService {
 		Visite visite = new Visite();
 		if(viensPourContreVisite(cg.getNumImmatriculation())) {
 			visite.setContreVisite(true);
+			visite.setEncours(true);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
-			visite.setStatut("à mettre à jour");
+			visite.setStatut(0);
 	
 		}
 		else {
 			visite.setContreVisite(false);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
-			visite.setStatut("à mettre à jour");
+			visite.setStatut(0);
 		}
 			
 		return visiteRepository.save(visite);
@@ -54,4 +56,16 @@ public class VisiteService {
 				.stream().filter(visites -> visites.getDateFin()==null).collect(Collectors.toList())
 				.isEmpty();
 	}
+	public List<Visite> enCoursVisitList(){
+		List<Visite> visiteEnCours = new ArrayList<>();
+		visiteRepository.findByEncoursTrue().forEach(visiteEnCours::add);
+		return visiteEnCours;
+	}
+	public void terminerInspection(Long visiteId) {
+		Visite visite = new Visite();
+		visite = visiteRepository.findById(visiteId).get();
+		visite.setEncours(false);
+		visite.setDateFin(LocalDateTime.now());	
+		visite.setStatut(4);
+		}
 }
