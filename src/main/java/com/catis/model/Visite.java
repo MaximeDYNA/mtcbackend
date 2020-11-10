@@ -36,16 +36,6 @@ public class Visite {
 	
 	}
 
-
-	
-
-
-
-
-
-
-
-
 	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
 			String idOrganisation, Caissier caissier, CarteGrise carteGrise) {
 		super();
@@ -58,14 +48,6 @@ public class Visite {
 		this.caissier = caissier;
 		this.carteGrise = carteGrise;
 	}
-
-
-
-
-
-
-
-
 
 
 
@@ -110,27 +92,9 @@ public class Visite {
 	}
 
 
-
-
-
-
-
-
-
-
-
 	public void setDateDebut(LocalDateTime dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-
-
-
-
-
-
-
-
-
 
 
 	public LocalDateTime getDateFin() {
@@ -138,27 +102,9 @@ public class Visite {
 	}
 
 
-
-
-
-
-
-
-
-
-
 	public void setDateFin(LocalDateTime dateFin) {
 		this.dateFin = dateFin;
 	}
-
-
-
-
-
-
-
-
-
 
 
 	public int getStatut() {

@@ -67,5 +67,9 @@ public class VisiteService {
 		visite.setEncours(false);
 		visite.setDateFin(LocalDateTime.now());	
 		visite.setStatut(4);
-		}
+	}
+	public List<Visite> listParStatus(int status){
+		return visiteRepository.findByStatut(status);
+	}
+	
 }
