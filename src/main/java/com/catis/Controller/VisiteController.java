@@ -1,7 +1,9 @@
 package com.catis.Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.model.Visite;
 import com.catis.objectTemporaire.GraphView;
 import com.catis.objectTemporaire.KabanViewVisit;
-import com.catis.service.DynamicQueryForViews;
+import com.catis.objectTemporaire.Listview;
+import com.catis.service.CarteGriseService;
+import com.catis.service.ProduitService;
+import com.catis.service.VariableView;
+import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
 
 @RestController
@@ -24,7 +31,16 @@ public class VisiteController {
 
 	@Autowired
 	private VisiteService vs;
+	@Autowired
+	private ProduitService ps;
+	@Autowired
+	private VenteService venteService;
+	@Autowired
+	private CarteGriseService cgs;
+	
 	private static Logger log  = LoggerFactory.getLogger(VisiteController.class);
+	
+	private VariableView v;
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visitesencours")
 	public ResponseEntity<Object> listDesVisitesEncours(){
 		try {
@@ -59,7 +75,8 @@ public class VisiteController {
 		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
-					+ " de la liste des visite en cours", null);
+					+ " de la liste des visi"
+					+ "te en cours", null);
 		}
 		
 	}
@@ -67,7 +84,13 @@ public class VisiteController {
 	public ResponseEntity<Object> listforGraphView(){
 		try {
 			log.info("Graphe view visit");
-			List <GraphView> graphViews = new ArrayList<>();
+			List <Object> graphViews = new ArrayList<>();
+			int[] datas = new int[9];
+			for(int i=0;i<datas.length;i++) {
+				datas[i]=vs.listParStatus(i).size();
+			}
+			Map<String, int[]> result = new HashMap<>();
+			result.put("tab", datas);
 			graphViews.add(new GraphView("maj",  vs.listParStatus(0).size()));
 			graphViews.add(new GraphView("A inspecter",  vs.listParStatus(1).size()));
 			graphViews.add(new GraphView("En cours test",  vs.listParStatus(2).size()));
@@ -78,7 +101,7 @@ public class VisiteController {
 			graphViews.add(new GraphView("Accepté",  vs.listParStatus(7).size()));
 			graphViews.add(new GraphView("Refusé",vs.listParStatus(8).size()));
 			
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage graph view visit", graphViews);
+			return ApiResponseHandler.generateResponses(HttpStatus.OK, true, "Affichage graph view visit", graphViews,datas);
 		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
@@ -86,4 +109,35 @@ public class VisiteController {
 		}
 		
 	}
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visite/listview")
+	public ResponseEntity<Object> listforlistView(){
+		try {
+			log.info("list view visit");
+			
+			List<Visite> visites = vs.enCoursVisitList();
+			List<Listview> listVisit = new ArrayList<>();
+			for(Visite visite: visites) {
+				Listview lv = new Listview();
+				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+						.getNumImmatriculation())
+						.getLibelle());
+				lv.setClient(venteService.findByVisite(visite.getIdVisite()).getClient().getPartenaire().getNom());
+				lv.setDate(visite.getDateDebut());
+				lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+				lv.setStatut(visite.statutRender(visite.getStatut()));
+				lv.setType(visite.typeRender());
+				listVisit.add(lv);
+				lv.setId(visite.getIdVisite());
+				
+			}
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+			
+			
+		} catch (Exception e) {
+			log.error("Erreur lors de l'affichage de la liste des visite en cours");
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
+		}
+		
+	}
+	
 }

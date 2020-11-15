@@ -17,8 +17,12 @@ public class CarteGriseService {
 	public CarteGrise addCarteGrise(CarteGrise carteGrise) {
 		return cgr.save(carteGrise);
 	}
+	public CarteGrise findCarteGriseById(Long carteGriseId) {
+		return cgr.findById(carteGriseId).get();
+	}
 	public List<CarteGrise> findByImmatriculationOuCarteGrise(String imOrCha){
 		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
 	}
+	
 	
 }

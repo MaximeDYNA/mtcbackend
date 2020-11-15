@@ -2,34 +2,40 @@ package com.catis.objectTemporaire;
 
 public class GraphView {
 
-	private String columnname;
-	private int number;
+	private String name;
+	private int value;
+
 	
 	public GraphView() {
+		
+	}
+
+	
+	public GraphView(String name, int value) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.name = name;
+		this.value = value;
+		
 	}
 
-	public GraphView(String columnname, int number) {
-		super();
-		this.columnname = columnname;
-		this.number = number;
+
+	public String getName() {
+		return name;
 	}
 
-	public String getColumnname() {
-		return columnname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setColumnname(String columnname) {
-		this.columnname = columnname;
+	public int getValue() {
+		return value;
 	}
 
-	public int getNumber() {
-		return number;
+	public void setValue(int value) {
+		this.value = value;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+
+	
 	
 }

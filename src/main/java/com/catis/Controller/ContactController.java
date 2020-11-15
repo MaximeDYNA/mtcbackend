@@ -83,6 +83,7 @@ public class ContactController {
 	@RequestMapping(value="/api/v1/contacts")
 	private ResponseEntity<Object> getContacts() {
 		LOGGER.info("liste des Contacts...");
+		System.out.println(contactService.getContacts().get(0).getVentes().size());
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
 	}
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/contacts/{keyword}")

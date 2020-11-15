@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.Controller.message.Message;
 import com.catis.model.Client;
 import com.catis.model.Partenaire;
+import com.catis.model.Produit;
 import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.ClientService;
 import com.catis.service.OrganisationService;
@@ -92,6 +94,34 @@ public class ClientController {
 	public  ResponseEntity<Object> listeDesClients(){
 		LOGGER.info("liste des clients...");
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientService.findAllCustomer());
+	}
+	@RequestMapping(method = RequestMethod.GET, value="/api/v1/clients/listview")
+	public  ResponseEntity<Object> listeDesClientsView(){
+		LOGGER.info("listview clients...");
+		try {
+			LOGGER.info("Liste des produits");
+			Map<String ,Object> listView; 
+			List<Map<String ,Object>> mapList = new ArrayList<>();
+			for(Client c : clientService.findAllCustomer()) {
+				listView = new HashMap<>();
+				listView.put("id", c.getClientId());
+				listView.put("nom", c.getPartenaire().getNom());
+				listView.put("prenom", c.getPartenaire().getPrenom());
+				listView.put("email", c.getPartenaire().getEmail());
+				listView.put("tel", c.getPartenaire().getTelephone());
+				listView.put("cni", c.getPartenaire().getCni());
+				listView.put("createdDate", c.getCreatedDate());
+				listView.put("modifiedDate", c.getModifiedDate());
+				listView.put("description", c.getDescription());
+				mapList.add(listView);
+			}
+			
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+			
+		} catch (Exception e) {
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Client", null);
+		}
+
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/clients/{keyword}")

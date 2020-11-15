@@ -128,7 +128,7 @@ public class EncaissementController {
 				cgs.addCarteGrise(carteGrise);
 			}
 			/* ---------Opération de caisse------------*/
-			op.setLibelle(ocs.type(encaissement.isType()));
+			op.setType(encaissement.isType());
 			op.setMontant(encaissement.getMontantEncaisse());
 			op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
 			op.setNumeroTicket(ocs.genererTicket());

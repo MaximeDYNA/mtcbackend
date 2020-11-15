@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.catis.objectTemporaire.GraphView;
+
 @Entity
 @Table(name="t_visite")
 public class Visite {
@@ -149,5 +151,44 @@ public class Visite {
 		this.encours = encours;
 	}
 	
-	
+	public String statutRender(int code) {
+		if(code==0) {
+			return "maj";
+		}
+		else if(code==1) {
+			return "A inspecter";
+		}
+		else if(code==2) {
+			return "En cours test";
+		}
+		else if(code==3) {
+			return "A signer";
+		}
+		else if(code==4) {
+			return "A imprimer";
+		}
+		else if(code==5) {
+			return "A enregister";
+		}
+		else if(code==6) {
+			return "A certifier";
+		}
+		else if(code==7) {
+			return "Accepté";
+		}
+		else if(code==8) {
+			return "Refusé";
+		}
+		else {
+			return "erreur";
+		}
+		
+	}
+	public String typeRender() {
+		if(this.contreVisite) {
+			return "CV";
+		}
+		else
+			return "VTP";
+	}
 }

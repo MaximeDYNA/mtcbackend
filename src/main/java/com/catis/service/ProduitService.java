@@ -43,16 +43,22 @@ public class ProduitService {
 	}
 	public Produit findByImmatriculation(String imOrCha) {
 		if(cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha).isEmpty()) {
+			
 			return null;
 		}
 		else {
 				List <Produit> produits = new ArrayList<>();
+				
 				for(CarteGrise cg : cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha) ) {
+				
 				produits.add(cg.getProduit());
 				}
 			return produits.get(0);
 		}
 		
+	}
+	public Produit addProduit(Produit produit) {
+		return produitRepository.save(produit);
 	}
 	
 }
