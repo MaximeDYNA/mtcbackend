@@ -6,4 +6,5 @@ import com.catis.model.Vehicule;
 
 public interface VehiculeRepository extends CrudRepository<Vehicule, Long> {
 
+	Vehicule findByChassis(String chassis);
 }

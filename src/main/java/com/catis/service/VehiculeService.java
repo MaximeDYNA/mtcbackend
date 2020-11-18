@@ -26,4 +26,8 @@ public class VehiculeService {
 	public Vehicule findById(Long id){
 		return vehiculeRepo.findById(id).get();
 	}
+	public Vehicule findByChassis(String chassis){
+		return vehiculeRepo.findByChassis(chassis);
+	}
+	
 }
