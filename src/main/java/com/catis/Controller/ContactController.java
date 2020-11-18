@@ -9,7 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,11 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.model.Client;
 import com.catis.model.Contact;
 import com.catis.model.Partenaire;
+import com.catis.objectTemporaire.ClientContactHandler;
 import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.ContactService;
 import com.catis.service.OrganisationService;
@@ -43,7 +44,7 @@ public class ContactController {
 	
 	@RequestMapping(method= RequestMethod.POST, value="/api/v1/contacts")
 	public ResponseEntity<Object> addContact(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
-			LOGGER.info("Ajout d'un client...");
+			LOGGER.info("Ajout d'un contact...");
 	
 			Contact contact = new Contact();
 			Partenaire partenaire = new Partenaire();
@@ -83,8 +84,25 @@ public class ContactController {
 	@RequestMapping(value="/api/v1/contacts")
 	private ResponseEntity<Object> getContacts() {
 		LOGGER.info("liste des Contacts...");
-		System.out.println(contactService.getContacts().get(0).getVentes().size());
+	
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
+	}
+	@RequestMapping(method=RequestMethod.POST, value="/api/v1/contacts/addtocustomer")
+	public ResponseEntity<Object> ajouterAuClient(@RequestBody ClientContactHandler cch) {
+		try {
+			LOGGER.info("liste des Contacts...");
+			Client client = new Client();
+			client.setClientId(cch.getClientId());
+			Contact contact = contactService.findById(cch.getContactId());
+			contact.setClient(client);
+			
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", contactService.addContact(contact) );
+			
+		} catch (Exception e) {
+			LOGGER.error("Une erreur est survenue");
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "success", null );
+		}
+		
 	}
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/contacts/{keyword}")
 	public  ResponseEntity<Object> search(@PathVariable String keyword){

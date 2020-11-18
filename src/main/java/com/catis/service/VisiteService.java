@@ -19,6 +19,11 @@ public class VisiteService {
 	@Autowired
 	private VisiteRepository visiteRepository;
 	
+	public List<Visite> findAll(){
+		List<Visite> visites = new ArrayList<Visite>();
+		visiteRepository.findAll().forEach(visites::add);
+		return visites;
+	}
 	public List<Visite> findByReference(String ref){
 		return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(ref, ref);
 	}
@@ -51,6 +56,9 @@ public class VisiteService {
 			
 		return visiteRepository.save(visite);
 	}
+	public Visite modifierVisite(Visite visite) {
+		return visiteRepository.save(visite);
+	}
 	public boolean visiteEncours(String imCha) {
 		return !visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
 				.stream().filter(visites -> visites.getDateFin()==null).collect(Collectors.toList())
@@ -70,6 +78,13 @@ public class VisiteService {
 	}
 	public List<Visite> listParStatus(int status){
 		return visiteRepository.findByStatut(status);
+	}
+	public void commencerInspection(Long visiteId) {
+		Visite visite = new Visite();
+		visite = visiteRepository.findById(visiteId).get();
+		visite.setDateFin(LocalDateTime.now());	
+		visite.setStatut(2);
+		visiteRepository.save(visite);
 	}
 	
 }

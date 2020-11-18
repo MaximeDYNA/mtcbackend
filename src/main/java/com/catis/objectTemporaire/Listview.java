@@ -3,17 +3,19 @@ package com.catis.objectTemporaire;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.catis.model.Produit;
+
 public class Listview {
 
 	private Long id;
-    private String categorie; 
+    private Produit categorie; 
     private String type;
     private String reference;
     private String client; 
     private String date;
     private String statut;
 
-	public Listview(Long id, String categorie, String type, String reference, String client, String date,
+	public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
 			String statut) {
 		super();
 		this.id = id;
@@ -33,10 +35,10 @@ public class Listview {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCategorie() {
+	public Produit getCategorie() {
 		return categorie;
 	}
-	public void setCategorie(String categorie) {
+	public void setCategorie(Produit categorie) {
 		this.categorie = categorie;
 	}
 	public String getType() {

@@ -133,6 +133,8 @@ public class ClientController {
 			if(clientService.findByPartenaire(p.getPartenaireId())!=null) {
 				cp = new ClientPartenaire();
 				cp.setNom(p.getNom());
+	
+				
 				cp.setPrenom(p.getPrenom());
 				cp.setTelephone(p.getTelephone());
 				cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
@@ -142,4 +144,16 @@ public class ClientController {
 		}
 	return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires );
 	}
+
+@RequestMapping(method = RequestMethod.GET, value="/api/v1/clients/{key}/contacts")
+public  ResponseEntity<Object> contact(@PathVariable Long key){
+	try {
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientService.findCustomerById(key).getContact() );
+
+	} catch (Exception e) {
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", null );
+		// TODO: handle exception
+	}
+
+}
 }

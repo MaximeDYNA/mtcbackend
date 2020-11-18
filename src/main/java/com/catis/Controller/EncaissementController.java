@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.Controller.exception.ContactVideException;
 import com.catis.model.CarteGrise;
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
 import com.catis.model.Posales;
 import com.catis.model.Produit;
+import com.catis.model.Vehicule;
 import com.catis.model.Vente;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.Encaissement;
@@ -79,7 +79,7 @@ public class EncaissementController {
 			DetailVente detailVente;
 			Produit produit;
 			CarteGrise carteGrise;
-			
+			Vehicule vehicule;
 			/* ---------client------------*/
 				vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
 			/*------------------------------*/
@@ -112,8 +112,10 @@ public class EncaissementController {
 			for(Posales posale 	:  posaleService.findActivePosale()) {
 				detailVente = new DetailVente();
 				produit = new Produit();
+				vehicule = new Vehicule();
 				produit = produitService.findById(posale.getProduit().getProduitId());
 				carteGrise = new CarteGrise();
+				
 				produit.setProduit_id(posale.getProduit().getProduitId());
 				
 				carteGrise.setNumImmatriculation(posale.getReference());

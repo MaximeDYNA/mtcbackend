@@ -32,6 +32,17 @@ public class Client extends JournalData {
 	@JsonIgnore
 	Set<Vente> ventes;
 	
+	@OneToMany(mappedBy="client")
+	@JsonIgnore
+	Set<Contact> contact;
+	public Set<Contact> getContact() {
+		return contact;
+	}
+
+	public void setContact(Set<Contact> contact) {
+		this.contact = contact;
+	}
+
 	public Client() {
 	}	
 

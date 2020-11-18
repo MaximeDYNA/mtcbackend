@@ -29,6 +29,9 @@ public class Contact {
 	@ManyToOne
 	private Partenaire partenaire;
 
+	@ManyToOne
+	private Client client;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="contact")
 	@JsonIgnore
 	private Set<Vente> ventes;
@@ -75,6 +78,14 @@ public class Contact {
 
 	public void setVentes(Set<Vente> ventes) {
 		this.ventes = ventes;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	
 	

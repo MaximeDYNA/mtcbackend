@@ -20,13 +20,8 @@ public class ModeleVehicule {
 	private String description;
 	private String idOganisation;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="modeleVehicule")
-	@JsonIgnore
-	private Set<Vehicule> vehicule;
+
 	
-	@ManyToOne
-	@JoinColumn(name="idMarqueVehicule")
-	private MarqueVehicule marqueVehicule;
 
 	public ModeleVehicule() {
 		super();
@@ -34,14 +29,14 @@ public class ModeleVehicule {
 	}
 
 	
-	public ModeleVehicule(String idModele, String description, String idOganisation, Set<Vehicule> vehicule,
-			MarqueVehicule marqueVehicule) {
+	public ModeleVehicule(String idModele, String description, String idOganisation 
+			) {
 		super();
 		this.idModele = idModele;
 		this.description = description;
 		this.idOganisation = idOganisation;
-		this.vehicule = vehicule;
-		this.marqueVehicule = marqueVehicule;
+		
+		
 	}
 
 
@@ -69,22 +64,8 @@ public class ModeleVehicule {
 		this.idOganisation = idOganisation;
 	}
 
-	public Set<Vehicule> getVehicule() {
-		return vehicule;
-	}
-
-	public void setVehicule(Set<Vehicule> vehicule) {
-		this.vehicule = vehicule;
-	}
-
-	public MarqueVehicule getMarqueVehicule() {
-		return marqueVehicule;
-	}
-
-	public void setMarqueVehicule(MarqueVehicule marqueVehicule) {
-		this.marqueVehicule = marqueVehicule;
-	}
 	
+
 	
 	
 }

@@ -31,7 +31,7 @@ public class Vente extends JournalData{
 	private Long idVente;
 	private double montantTotal;
 	private double montantHT;
-	
+	private int statut;
 	@ManyToOne
 	private Client client;
 	
@@ -263,6 +263,25 @@ public class Vente extends JournalData{
 		this.visite = visite;
 	}
 
+	public int getStatut() {
+		return statut;
+	}
 
+	public void setStatut(int statut) {
+		this.statut = statut;
+	}
+
+	public String getLibelleStatut() {
+		if(this.statut ==0)
+			return "payé";
+		else if(this.statut ==1) {
+			return "partiellement payé";
+		}
+		else if(this.statut == 2) {
+			return "impayé";
+		}
+		else
+			return "statut erroné";
+	}
 
 }

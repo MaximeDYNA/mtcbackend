@@ -1,5 +1,7 @@
 package com.catis.model;
 
+import java.util.Set;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -9,11 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -27,6 +31,11 @@ public class ProprietaireVehicule extends JournalData {
 	
 	@ManyToOne
 	private Partenaire partenaire;
+	
+	@OneToMany(mappedBy="proprietaireVehicule")
+	@JsonIgnore
+	private Set<CarteGrise> cartegrises;
+	
 	private String description;
 	
 	public ProprietaireVehicule() {
@@ -97,6 +106,33 @@ public class ProprietaireVehicule extends JournalData {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+
+
+
+
+
+
+	public Set<CarteGrise> getCartegrises() {
+		return cartegrises;
+	}
+
+
+
+
+
+
+
+	public void setCartegrises(Set<CarteGrise> cartegrises) {
+		this.cartegrises = cartegrises;
+	}
+
+
+
+
+
+
+
 	
 	
 }

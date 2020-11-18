@@ -58,7 +58,7 @@ public class SessionCaisseController {
 		try {
 			Date now = new Date();
 			SessionCaisse sessionCaisse = new SessionCaisse();
-			sessionCaisse.setOrganisationId(os.findByOrganisationId(0L));
+			sessionCaisse.setOrganisationId(os.findByOrganisationId(1L));
 			sessionCaisse.setDateHeureOuverture(now);
 			sessionCaisse.setActive(true);
 			sessionCaisse.setMontantOuverture(openData.getMontantOuverture());

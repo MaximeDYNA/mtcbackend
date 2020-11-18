@@ -3,19 +3,27 @@ package com.catis.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="t_ligne")
-public class Ligne {
+public class Ligne extends JournalData {
 	
 	@Id
-	private String idLigne;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long idLigne;
 	private String description;
 	private String idOrganisation;
 	
@@ -23,7 +31,7 @@ public class Ligne {
 	@JsonIgnore
 	private Set<LigneMachine> ligneMachines;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="ligne")
+	@OneToMany( mappedBy="ligne")
 	@JsonIgnore
 	private Set<Inspection> inspections;
 
@@ -33,7 +41,7 @@ public class Ligne {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Ligne(String idLigne, String description, String idOrganisation, Set<LigneMachine> ligneMachines,
+	public Ligne(Long idLigne, String description, String idOrganisation, Set<LigneMachine> ligneMachines,
 			Set<Inspection> inspections) {
 		this.idLigne = idLigne;
 		this.description = description;
@@ -42,11 +50,11 @@ public class Ligne {
 		this.inspections = inspections;
 	}
 
-	public String getIdLigne() {
+	public Long getIdLigne() {
 		return idLigne;
 	}
 
-	public void setIdLigne(String idLigne) {
+	public void setIdLigne(Long idLigne) {
 		this.idLigne = idLigne;
 	}
 
