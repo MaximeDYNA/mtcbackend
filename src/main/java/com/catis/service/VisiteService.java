@@ -77,7 +77,7 @@ public class VisiteService {
 		visite.setStatut(4);
 	}
 	public List<Visite> listParStatus(int status){
-		return visiteRepository.findByStatut(status);
+		return visiteRepository.findByEncoursTrueAndStatut(status);
 	}
 	public void commencerInspection(Long visiteId) {
 		Visite visite = new Visite();

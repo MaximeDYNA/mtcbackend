@@ -12,5 +12,5 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 	List<Visite> findByContreVisiteFalse();
 	List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 	List<Visite> findByEncoursTrue();
-	List<Visite> findByStatut(int status);
+	List<Visite> findByEncoursTrueAndStatut(int status);
 }

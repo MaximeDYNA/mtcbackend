@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,18 @@ public class VisiteController {
 		try {
 			log.info("Liste des visites en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", vs.enCoursVisitList());
+		} catch (Exception e) {
+			log.error("Erreur lors de l'affichage de la liste des visite en cours");
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
+					+ " de la liste des visite en cours", null);
+		}
+		
+	}
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visite/codestatut/{status}")
+	public ResponseEntity<Object> visiteByStatut(@PathVariable int status){
+		try {
+			log.info("Liste des visites en cours");
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", vs.listParStatus(status));
 		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"

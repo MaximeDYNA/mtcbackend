@@ -46,31 +46,10 @@ public class Vehicule extends JournalData {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="vehicule")
 	@JsonIgnore
 	Set<CarteGrise> carteGrise; 
-	
-
-	
 
 	public Vehicule() {
 		
 	}
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
 
 	public Vehicule(CarteGriseReceived cgr) {
 		super();
@@ -88,23 +67,6 @@ public class Vehicule extends JournalData {
 		
 	
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	public Vehicule(Long vehiculeId, String typeVehicule, String carrosserie, int placeAssise, String chassis,
