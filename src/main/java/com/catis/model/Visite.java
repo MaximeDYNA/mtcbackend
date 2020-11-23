@@ -180,7 +180,7 @@ public class Visite {
 			return "Refusé";
 		}
 		else if(code==9) {
-			return "Refusé";
+			return "A approuver";
 		}
 		else {
 			return "erreur";
