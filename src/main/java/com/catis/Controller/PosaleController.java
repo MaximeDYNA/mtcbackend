@@ -49,8 +49,7 @@ public class PosaleController {
 	private static Logger LOGGER = LoggerFactory.getLogger(PosaleController.class);
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/posales")
-	public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData){
-			
+	public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData){			
 			
 				try {
 					LOGGER.info("Ajout d'un produit dans un onglet");
@@ -95,8 +94,7 @@ public class PosaleController {
 				LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
 						+ "bien vouloir le signaler à l'équipe CATIS", null);
-				}
-		
+				}		
 	}
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/posaleslist")
 	public ResponseEntity<Object> listPosales(@RequestBody HoldData holdData){
