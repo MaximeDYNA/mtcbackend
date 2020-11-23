@@ -179,6 +179,9 @@ public class Visite {
 		else if(code==8) {
 			return "Refusé";
 		}
+		else if(code==9) {
+			return "Refusé";
+		}
 		else {
 			return "erreur";
 		}

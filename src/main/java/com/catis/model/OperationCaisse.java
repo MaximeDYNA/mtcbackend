@@ -36,7 +36,6 @@ public class OperationCaisse extends JournalData {
 	private Taxe taxe;
 	
 	@ManyToOne
-	@JoinColumn(name="idSessionCaisse")
 	private SessionCaisse sessionCaisse;
 	
 	private String numeroTicket;

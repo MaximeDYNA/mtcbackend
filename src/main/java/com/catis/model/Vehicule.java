@@ -210,6 +210,38 @@ public class Vehicule extends JournalData {
 		this.carteGrise = carteGrise;
 	}
 
+	public int getPuissAdmin() {
+		return puissAdmin;
+	}
+
+	public void setPuissAdmin(int puissAdmin) {
+		this.puissAdmin = puissAdmin;
+	}
+
+	public int getPoidsTotalCha() {
+		return poidsTotalCha;
+	}
+
+	public void setPoidsTotalCha(int poidsTotalCha) {
+		this.poidsTotalCha = poidsTotalCha;
+	}
+
+	public int getPoidsVide() {
+		return poidsVide;
+	}
+
+	public void setPoidsVide(int poidsVide) {
+		this.poidsVide = poidsVide;
+	}
+
+	public int getChargeUtile() {
+		return chargeUtile;
+	}
+
+	public void setChargeUtile(int chargeUtile) {
+		this.chargeUtile = chargeUtile;
+	}
+
 	
 	
 	

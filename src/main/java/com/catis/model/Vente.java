@@ -284,4 +284,11 @@ public class Vente extends JournalData{
 			return "statut erroné";
 	}
 
+	/*public double getMontantEncaisse() {
+		double montantDejaEncaisse = 0;
+		for(OperationCaisse o : operationCaisse) {
+			montantDejaEncaisse += o.getMontant();
+		}
+		return montantDejaEncaisse;
+	}*/
 }

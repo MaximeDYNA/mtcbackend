@@ -27,5 +27,9 @@ public class CategorieProduitService {
 		return categoProduitRepository.findByLibelle(libelle);
 				
 	}
+	public CategorieProduit findById(Long id){
+		return categoProduitRepository.findById(id).get();
+				
+	}
 	
 }

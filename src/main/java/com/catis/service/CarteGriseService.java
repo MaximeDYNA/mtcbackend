@@ -29,6 +29,9 @@ public class CarteGriseService {
 	public List<CarteGrise> findByImmatriculationOuCarteGrise(String imOrCha){
 		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
 	}
+	public List<CarteGrise> findBychassis(String chassis){
+		return cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis);
+	}
 	
 	
 }

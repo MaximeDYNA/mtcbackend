@@ -28,9 +28,13 @@ public class CarteGrise extends JournalData{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long carteGriseId;
+	
 	private String numImmatriculation;
+	
 	private String preImmatriculation;// immatriculation précédente
+	
 	private Date dateDebutValid; //debut de validité
+	
 	private Date dateFinValid;// fin de validité
 	private String ssdt_id;
 	private String commune;	
@@ -57,6 +61,7 @@ public class CarteGrise extends JournalData{
 	Set<Visite> visites; 
 	
 	public CarteGrise(CarteGriseReceived c) {
+
 		this.numImmatriculation = c.getNumImmatriculation();
 		this.preImmatriculation = c.getPreImmatriculation();
 		this.dateDebutValid = c.getDateDebutValid();

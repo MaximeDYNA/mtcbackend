@@ -55,9 +55,8 @@ public class VehiculeController {
 		try {
 			
 			 LOGGER.info("recherche de véhicule...");
-			 List<Vehicule> vehicules = new ArrayList<>();
-			 vehicules.add(vehiculeService.findByChassis(chassis));
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès",vehicules );
+
+			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès",vehiculeService.findByChassis(chassis) );
 		  }
 			catch(Exception e) {
 				LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");

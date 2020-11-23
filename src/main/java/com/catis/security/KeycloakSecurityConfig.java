@@ -110,7 +110,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	       // expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/iam/accounts/promoters*").hasRole("PROMOTER");
 	       // expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/iam/accounts/supervisors*").hasRole("SUPERVISOR");
 	      // expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("caissier");
-	        expressionInterceptUrlRegistry.antMatchers().permitAll().antMatchers("/api/v1/catproducts*").hasRole("caissier")
+	       expressionInterceptUrlRegistry.antMatchers().permitAll()
 	        .anyRequest().permitAll();
 	    }
 

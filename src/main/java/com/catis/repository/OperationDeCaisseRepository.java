@@ -12,4 +12,6 @@ public interface OperationDeCaisseRepository extends CrudRepository<OperationCai
 	List<OperationCaisse> findByTypeTrue();
 	List<OperationCaisse> findByVente_IdVente(Long idVente);
 	List<OperationCaisse> findByTypeTrueAndVente_IdVente(Long idVente);
+	List<OperationCaisse> findBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
+	
 }

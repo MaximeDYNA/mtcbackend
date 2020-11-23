@@ -36,6 +36,10 @@ public class OperationCaisseService {
 		
 		return start;
 	}
+	
+	public List<OperationCaisse> findBySession(Long sessionCaisseId){
+		return operationCaisseRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
+	}
 	public int randomNumber() {
 		Random rand = new Random();
 		return rand.nextInt(1000);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.Controller.exception.ContactVideException;
 import com.catis.model.CarteGrise;
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
@@ -70,7 +71,7 @@ public class EncaissementController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
-	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement){
+	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException{
 	
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
@@ -121,7 +122,7 @@ public class EncaissementController {
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
-					visiteService.ajouterVisite(carteGrise);
+					visiteService.ajouterVisite(carteGrise, encaissement.getMontantEncaisse());
 				/*----------------------------------------*/
 				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
@@ -132,18 +133,23 @@ public class EncaissementController {
 			/* ---------Opération de caisse------------*/
 			op.setType(encaissement.isType());
 			op.setMontant(encaissement.getMontantEncaisse());
+			
 			op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
 			op.setNumeroTicket(ocs.genererTicket());
 			op.setVente(vente);
 			/* --------------------------*/
-
-					ocs.addOperationCaisse(op);
+				if(op.getMontant()>0) {
+					if(encaissement.getContactId()!= 0)
+						ocs.addOperationCaisse(op);
+					else 
+					throw new ContactVideException("Erreur : Veuillez renseigner le contact");
+				}
+					
 			
-				/*}
-				//else 
-					throw new ContactVideException("Erreur : Veuillez renseigner le contact");*/
+				
+				
 			
-			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()));
+			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang() );
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
 		/*	try
 		{}

@@ -119,15 +119,15 @@ public class HoldController {
 	notes = "efface tous les produits du panier")
 	public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
 			
-			 try {
+			 
 					LOGGER.info("rafraichissement de l'onglet");
 					ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
 					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id "+ holdData.getSessionCaisseId(), null);
-			 	} 
+			 /*	try {} 
 			 catch (Exception e) { 
 				 return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
 						 	"Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
-			  }
+			  }*/
 			
 		
 	}

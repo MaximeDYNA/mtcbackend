@@ -31,27 +31,37 @@ public class VisiteService {
 		return visiteRepository.findById(i).get();
 	}
 	public boolean viensPourContreVisite(String imCha) {
-		return	!visiteRepository.findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
+		try {
+			return!visiteRepository.findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
 				.stream()
 				.filter(visites -> Duration.between(visites.getDateFin(), LocalDateTime.now() ).toDays() <= 15)
 				.collect(Collectors.toList()).isEmpty();
-		 
+		} catch (Exception e) {
+			return false;
+		}
 	}
-	public Visite ajouterVisite(CarteGrise cg) {
+	
+	public Visite ajouterVisite(CarteGrise cg, double montantEncaisse) {
 		Visite visite = new Visite();
+		if(montantEncaisse==0) {
+			visite.setStatut(8);
+		}
+		else
+			visite.setStatut(0);
+		
 		if(viensPourContreVisite(cg.getNumImmatriculation())) {
 			visite.setContreVisite(true);
 			visite.setEncours(true);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
-			visite.setStatut(0);
+			
 	
 		}
 		else {
 			visite.setContreVisite(false);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
-			visite.setStatut(0);
+			
 		}
 			
 		return visiteRepository.save(visite);

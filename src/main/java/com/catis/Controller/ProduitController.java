@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.CarteGrise;
@@ -31,14 +29,16 @@ import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 import com.catis.objectTemporaire.HoldData;
 import com.catis.objectTemporaire.ProduitEtTaxe;
-import com.catis.objectTemporaire.ProduitView;
 import com.catis.repository.FilesStorageService;
 import com.catis.service.CarteGriseService;
+import com.catis.service.CategorieProduitService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
 import com.catis.service.TaxeService;
 import com.catis.service.VisiteService;
+
+import pl.allegro.finance.tradukisto.MoneyConverters;
 
 @RestController
 @CrossOrigin
@@ -52,7 +52,8 @@ public class ProduitController {
 	private VisiteService visiteService;
 	@Autowired
 	private PosaleService posaleService;
-	
+	@Autowired
+	private CategorieProduitService categorieProduitService;
 	@Autowired
 	private TaxeProduitService tps;
 	@Autowired
@@ -70,10 +71,24 @@ public class ProduitController {
 	}
 	
 	@RequestMapping(method= RequestMethod.POST, value="/api/v1/produits")
-	public ResponseEntity<Object> addProduit(@RequestParam("file") ProduitView p) {
-			Produit produit = new Produit(p);
+	public ResponseEntity<Object> addProduit(
+	@RequestParam("produitId")Long produitId,
+	@RequestParam("libelle") String libelle,
+	@RequestParam("description") String description,
+	@RequestParam("prix") double prix,
+	@RequestParam("delaiValidite") int delaiValidite,
+	@RequestParam("file") MultipartFile file,
+	@RequestParam("categorieProduitId") Long categorieProduitId) {
+			
 		    try {
-		      storageService.save(p.getFile());
+		    	
+		    	Produit produit = new Produit();
+		    	produit.setLibelle(libelle);
+		    	produit.setDescription(description);
+		    	produit.setPrix(prix);
+		    	produit.setDelaiValidite(delaiValidite);
+		    	produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
+		    	produit.setImg(produitService.saveImage(file));
 		      LOGGER.info("liste des catégories...");
 		      return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	produitService.addProduit(produit));
 		      

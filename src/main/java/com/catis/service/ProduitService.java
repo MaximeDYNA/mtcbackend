@@ -1,16 +1,21 @@
 package com.catis.service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.catis.model.CarteGrise;
 import com.catis.model.Produit;
 import com.catis.repository.CarteGriseRepository;
 import com.catis.repository.ProduitRepository;
+
 
 @Service
 public class ProduitService {
@@ -20,7 +25,13 @@ public class ProduitService {
 	@Autowired
 	private CarteGriseRepository cgr;
 	
-	
+	public String saveImage(MultipartFile imageFile) throws Exception{
+		String folder = "/uploaded/";
+		byte[] bytes = imageFile.getBytes();
+		Path path = Paths.get(folder + imageFile.getOriginalFilename());
+		Files.write(path, bytes);
+		return folder + imageFile.getOriginalFilename();
+	}
 
 	public List<Produit> findAllProduit(){
 		List<Produit> produits = new ArrayList<>();

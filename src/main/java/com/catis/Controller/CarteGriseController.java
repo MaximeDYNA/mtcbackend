@@ -54,11 +54,11 @@ public class CarteGriseController {
 	public  ResponseEntity<Object> search(@PathVariable String imCha){
 		LOGGER.info("Recherche carte grise...");
 		try {
-				
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", cgs.findByImmatriculationOuCarteGrise(imCha));
+				//cgs.findByImmatriculationOuCarteGrise(imCha)
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findBychassis(imCha));
 			} 
 		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Une erreur est survenue", null );
+				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
 				  
 		}
 	}
@@ -66,7 +66,7 @@ public class CarteGriseController {
 	public  ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR){
 		LOGGER.info("Recherche carte grise...");
 		
-				
+				System.out.println("......"+carteGriseR.getCarteGriseId());
 				CarteGrise carteGrise = new CarteGrise(carteGriseR);
 				//initialise le vehicule avec les éléments reçus par la vue
 				Vehicule vehicule = new Vehicule(carteGriseR);
@@ -106,7 +106,9 @@ public class CarteGriseController {
 				listView.put("immatriculation", c.getNumImmatriculation());
 				listView.put("proprietaire", c.getProprietaireVehicule().getPartenaire().getNom());
 				listView.put("montant", c.getMontantPaye());
-				//listView.put("marque", c.getMarqueVehicule());
+				
+				//listView.put("marque", c.getMarqueVehicule());				
+				
 				listView.put("createdDate", c.getCreatedDate());
 				listView.put("modifiedDate", c.getModifiedDate());
 				mapList.add(listView);
