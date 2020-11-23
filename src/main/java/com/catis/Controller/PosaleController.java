@@ -3,6 +3,7 @@ package com.catis.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.catis.objectTemporaire.Card;
 import com.catis.objectTemporaire.HoldData;
 import com.catis.objectTemporaire.PosaleData;
 import com.catis.objectTemporaire.PosaleDataForDelete;
+import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
@@ -57,6 +59,7 @@ public class PosaleController {
 
 						}
 							
+						
 						Hold hold = hs.findByHoldId(posaleData.getHoldId());
 						Posales posale = new Posales();
 						posale.setHold(hold);
@@ -64,8 +67,19 @@ public class PosaleController {
 						posale.setReference(posaleData.getReference());
 						posale.setStatus(true);
 						posale.setSessionCaisse(hold.getSessionCaisse());
+						
+						ProduitEtTaxe card = new ProduitEtTaxe();
+						card.setProduit(posaleService.addPosales(posale).getProduit());
+						
+						List <Taxe> taxes = new ArrayList<>();
+						for(TaxeProduit tp : tps.findByProduitId(card.getProduit().getProduitId())) {
+							taxes.add(tp.getTaxe());
+						}
+						card.setTaxe(taxes);
+						
+						
 		
-					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", posaleService.addPosales(posale));
+					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", card );
 				} 
 				catch (DataIntegrityViolationException integrity) {
 					LOGGER.error("Duplicata de champ unique");
