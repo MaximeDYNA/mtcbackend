@@ -19,19 +19,6 @@ pipeline {
 		
 		}
 	}
-	
-	stage('Code Analysis')
-          {
-            steps
-             {
-              
-			  script
-              {
-                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
-              }
-			  
-            }
-          }
 		  
 	stage('Building image') {
       steps{
