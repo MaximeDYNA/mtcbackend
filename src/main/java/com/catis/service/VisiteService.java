@@ -44,7 +44,7 @@ public class VisiteService {
 	public Visite ajouterVisite(CarteGrise cg, double montantEncaisse) {
 		Visite visite = new Visite();
 		if(montantEncaisse==0) {
-			visite.setStatut(8);
+			visite.setStatut(9);
 		}
 		else
 			visite.setStatut(0);
@@ -59,11 +59,14 @@ public class VisiteService {
 		}
 		else {
 			visite.setContreVisite(false);
+			visite.setEncours(true);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
 			
 		}
-			
+			if(cg.getProduit().getProduitId()==1) {
+				return visite;
+			}
 		return visiteRepository.save(visite);
 	}
 	public Visite modifierVisite(Visite visite) {
