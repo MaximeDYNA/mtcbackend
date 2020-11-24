@@ -3,6 +3,8 @@ pipeline {
     registry = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
+	  IMAGE = readMavenPom().getArtifactId()
+        VERSION = readMavenPom().getVersion()
   }
   agent any
   stages {
@@ -13,34 +15,17 @@ pipeline {
         sh "mvn clean install -DskipTests=true"
 		}
 	}
-	
-	stage('Code Analysis')
-          {
-            steps
-             {
-              script
-              {
-                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
-              }
-            }
-          }
 		  
 	stage('Building image') {
+	      when {
+                branch 'master'  //only run these steps on the master branch
+            }
       steps{
         script {
-          dockerImage = docker.build('managementtools')
-        }
-      }
-    }
-    stage('Deploy Image') {
-      steps{
-        script {
-        
-			 docker.withRegistry('http://51.210.48.154:5000') {
-            dockerImage.push("${env.BUILD_NUMBER}")
-            dockerImage.push("latest")
-
-          }
+          sh """
+	  docker build -t ${IMAGE} .
+	  docker tag ${IMAGE} ${IMAGE}:${VERSION}
+	  """
         }
       }
     }
