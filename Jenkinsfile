@@ -18,7 +18,7 @@ pipeline {
 	  
       steps{
         script {
-          sh """
+         sudo sh """
 	  docker build -t mtc .
 	  docker tag mtc mtc:1.0
 	  """
