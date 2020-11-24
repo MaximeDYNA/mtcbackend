@@ -10,23 +10,48 @@ pipeline {
 	stage('clone'){
 	steps{
 		git branch: 'master', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
-        sh "mvn clean install -DskipTests=true"
+        sh "mvn clean package -DskipTests=true"
+		
+		sh " mkdir -p /home/mtcbackend"
+		sh "pwd && ls -la target "
+		sh "cp target/mtc-*.war /home/mtcbackend"
+		sh "cp Dockerfile /home/mtcbackend"
+		
 		}
 	}
+	
+	stage('Code Analysis')
+          {
+            steps
+             {
+              
+			  script
+              {
+                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
+              }
+			  
+            }
+          }
 		  
 	stage('Building image') {
-	  
       steps{
         script {
-         sudo sh """
-	  docker build -t mtc .
-	  docker tag mtc localhost:5000/mtc
-	  docker push localhost:5000/mtc
-	  """
+          dockerImage = docker.build("managementtools", "-f /home/mtcbackend/Dockerfile .")
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+        
+			 docker.withRegistry('http://51.210.48.154:5000') {
+            dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push("latest")
+
+          }
         }
       }
     }
 	
 	}
 }
-
