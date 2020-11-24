@@ -18,10 +18,9 @@ pipeline {
 	stage('changedirectory'){
 	steps{
 	
-		sh " sudo -s mkdir -p /home/mtcbackend"
-		sh "sudo pwd && ls -la target "
-		sh "sudo cp target/mtc-*.war /home/mtcbackend"
-		sh "sudo cp Dockerfile /home/mtcbackend"
+		sh " pwd && ls -la target "
+		sh " cp target/mtc-*.war /home/mtcbackend"
+		sh " cp Dockerfile /home/mtcbackend"
 		
 		}
 	}
