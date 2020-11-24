@@ -3,6 +3,8 @@ pipeline {
     registry = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
+	  IMAGE = readMavenPom().getArtifactId()
+    VERSION = readMavenPom().getVersion()
   }
   agent any
   stages {
@@ -23,14 +25,22 @@ pipeline {
               }
             }
           }
-		  
-	stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build managementtools
+	  
+	  stage('Build Image') {
+            when {
+                branch 'master'  //only run these steps on the master branch
+            }
+            steps {
+                /*
+                 * Multiline strings can be used for larger scripts. It is also possible to put scripts in your shared library
+                 * and load them with 'libaryResource'
+                 */
+                sh """
+          dockerImage = docker build -t ${IMAGE} .
+      
+            }
         }
-      }
-    }
+
     stage('Deploy Image') {
       steps{
         script {
@@ -43,5 +53,6 @@ pipeline {
         }
       }
     }
+	 
 	}
 }
