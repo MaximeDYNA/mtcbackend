@@ -24,24 +24,11 @@ pipeline {
 		
 		}
 	}
-	
-	stage('Code Analysis')
-          {
-            steps
-             {
-              
-			  script
-              {
-                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
-              }
-			  
-            }
-          }
 		  
 	stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build("managementtools", "-f /home/mtcbackend/Dockerfile .")
+       		def projectImage = docker.build("imageName:1.0", "-f /home/mtcbackend/Dockerfile .")
         }
       }
     }
@@ -50,8 +37,8 @@ pipeline {
         script {
         
 			 docker.withRegistry('http://51.210.48.154:5000') {
-            dockerImage.push("${env.BUILD_NUMBER}")
-            dockerImage.push("latest")
+            projectImage.push("${env.BUILD_NUMBER}")
+            projectImage.push("latest")
 
           }
         }
