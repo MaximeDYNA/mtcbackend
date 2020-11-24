@@ -1,17 +1,21 @@
 pipeline {
   environment {
-    registry = "gustavoapolinario/docker-test"
+    0 = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
   agent any
+  stages {
+   
 	stage('clone'){
+	steps{
 		git credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
 		script {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
               }
         sh "mvn clean install -DskipTests=true"
+		}
 	}
 	stage('Test')
     {
@@ -51,4 +55,5 @@ pipeline {
         }
       }
     }
+	}
 }
