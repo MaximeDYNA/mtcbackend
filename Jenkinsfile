@@ -9,7 +9,7 @@ pipeline {
    
 	stage('clone'){
 	steps{
-		git credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
+		git 'https://github.com/CATIS-DEVELOPER/mtc.git'
 		script {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
