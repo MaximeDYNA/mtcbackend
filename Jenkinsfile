@@ -3,8 +3,6 @@ pipeline {
     registry = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
-	  IMAGE = readMavenPom().getArtifactId()
-        VERSION = readMavenPom().getVersion()
   }
   agent any
   stages {
@@ -23,8 +21,8 @@ pipeline {
       steps{
         script {
           sh """
-	  docker build -t ${IMAGE} .
-	  docker tag ${IMAGE} ${IMAGE}:${VERSION}
+	  docker build -t mtc .
+	  docker tag mtc mtc:1.0
 	  """
         }
       }
