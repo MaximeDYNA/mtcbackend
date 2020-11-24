@@ -13,14 +13,6 @@ pipeline {
         sh "mvn clean install -DskipTests=true"
 		}
 	}
-	stage('Test')
-    {
-            steps
-            {
-              sh "${mvnCmd} test -Dspring.profiles.active=test"
-              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-            }
-    }
 	stage('Code Analysis')
           {
             steps
