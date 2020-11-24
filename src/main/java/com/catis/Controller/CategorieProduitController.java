@@ -10,14 +10,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.model.CategorieProduit;
 import com.catis.model.Produit;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
+import com.catis.objectTemporaire.ListViewCatProduit;
 import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.CategorieProduitService;
 import com.catis.service.ProduitService;
@@ -29,6 +34,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @CrossOrigin
+@Validated
 public class CategorieProduitController {
 
 	/*
@@ -41,7 +47,7 @@ public class CategorieProduitController {
 	@Autowired
 	private TaxeProduitService tps;
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 	
 	@RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
 	@ApiOperation(value="produits par catégorie",
@@ -76,11 +82,49 @@ public class CategorieProduitController {
 		
 	}
 
-	@RequestMapping("/api/v1/categorieproduits") 
-	public ResponseEntity<Object> ListerLesCategorieProduits(){
-		LOGGER.info("liste des catégories..."); 
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success",  cateProduitService.listeCategorieProduit());
+	@RequestMapping(method=RequestMethod.POST, value="/api/v1/categorieproduits") 
+	public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieProduit categorieProduit){
+		try {
+			LOGGER.info("Ajout d'une catégorie"); 
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  cateProduitService.addCategorieProduit(categorieProduit));
+		} catch (Exception e) {
+			LOGGER.error("Erreur lors de l'ajout d'une catégorie."); 
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
+		}
+		
 	}
-	
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/catproducts") 
+	public ResponseEntity<Object> categorieProduits(){
+		try {
+			LOGGER.info("Liste des catégories"); 
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  cateProduitService.listeCategorieProduit());
+		} catch (Exception e) {
+			LOGGER.error("Erreur lors de l'ajout d'une catégorie."); 
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
+		}
+		
+	}
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/catproducts/listview") 
+	public ResponseEntity<Object> catProduits(){
+		
+			
+			LOGGER.info("Liste des catégories");
+			List<ListViewCatProduit> l = new ArrayList<>();
+			for(CategorieProduit cp : cateProduitService.listeCategorieProduit() ) {
+				ListViewCatProduit lvct = new ListViewCatProduit();
+				
+				lvct.setLibelle(cp.getLibelle());				
+				lvct.setCreatedDate(cp.getCreatedDate());
+				lvct.setModifiedDate(cp.getModifiedDate());
+				lvct.setActiveStatus(cp.getActiveStatus());
+				l.add(lvct);
+			}
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  l);
+		/*try{} catch (Exception e) {
+			LOGGER.error("Erreur lors de l'affichage des catégories de produit."); 
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
+		}*/
+		
+	}
 
 }

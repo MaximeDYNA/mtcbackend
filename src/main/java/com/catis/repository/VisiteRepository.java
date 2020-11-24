@@ -7,8 +7,10 @@ import com.catis.model.Visite;
 
 public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
+	
 	List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 	List<Visite> findByContreVisiteFalse();
 	List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 	List<Visite> findByEncoursTrue();
+	List<Visite> findByEncoursTrueAndStatut(int status);
 }

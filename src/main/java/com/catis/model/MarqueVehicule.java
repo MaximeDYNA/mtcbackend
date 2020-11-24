@@ -3,43 +3,55 @@ package com.catis.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_marquevehicule")
-public class MarqueVehicule {
+public class MarqueVehicule extends JournalData{
 	@Id
-	private String idMarqueVehicule;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long marqueVehiculeId;
+	private String libelle;
 	private String description;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="marqueVehicule")
 	@JsonIgnore
-	private Set<ModeleVehicule> modeleVehicule;
+	Set<Vehicule> vehicule; 
 
 	public MarqueVehicule() {
-		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
-	public MarqueVehicule(String idMarqueVehicule, String description, Set<ModeleVehicule> modeleVehicule) {
+	public MarqueVehicule(Long marqueVehiculeId, String description, Set<Vehicule> vehicule) {
 		super();
-		this.idMarqueVehicule = idMarqueVehicule;
+		this.marqueVehiculeId = marqueVehiculeId;
 		this.description = description;
-		this.modeleVehicule = modeleVehicule;
+		this.vehicule = vehicule;
 	}
 
-	public String getIdMarqueVehicule() {
-		return idMarqueVehicule;
+	public Long getMarqueVehiculeId() {
+		return marqueVehiculeId;
 	}
 
-	public void setIdMarqueVehicule(String idMarqueVehicule) {
-		this.idMarqueVehicule = idMarqueVehicule;
+
+
+	public void setMarqueVehiculeId(Long marqueVehiculeId) {
+		this.marqueVehiculeId = marqueVehiculeId;
 	}
+
+
 
 	public String getDescription() {
 		return description;
@@ -49,14 +61,23 @@ public class MarqueVehicule {
 		this.description = description;
 	}
 
-	public Set<ModeleVehicule> getModeleVehicule() {
-		return modeleVehicule;
+
+	public Set<Vehicule> getVehicule() {
+		return vehicule;
 	}
 
-	public void setModeleVehicule(Set<ModeleVehicule> modeleVehicule) {
-		this.modeleVehicule = modeleVehicule;
+
+	public void setVehicule(Set<Vehicule> vehicule) {
+		this.vehicule = vehicule;
 	}
-	
-	
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
 	
 }

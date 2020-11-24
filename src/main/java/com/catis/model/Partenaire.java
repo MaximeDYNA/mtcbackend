@@ -48,15 +48,36 @@ public class Partenaire {
 	@JoinColumn(name="organisationId", nullable = false)
     private Organisation organisation;
 	
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
 	@JsonIgnore
 	Set<ProprietaireVehicule> proprietaireVehicule;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
 	@JsonIgnore
+	Set<Client> client;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
+	Set<Contact> contact;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
 	Set<Utilisateur> utilisateurs;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
+	Set<Adresse> adresses;
 	
+	public Set<Adresse> getAdresses() {
+		return adresses;
+	}
+
+	public void setAdresses(Set<Adresse> adresses) {
+		this.adresses = adresses;
+	}
+
 	@OneToMany(mappedBy="partenaire")
 	@JsonIgnore
 	Set<Controleur> controleurs;
@@ -208,6 +229,22 @@ public class Partenaire {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Set<Client> getClient() {
+		return client;
+	}
+
+	public void setClient(Set<Client> client) {
+		this.client = client;
+	}
+
+	public Set<Contact> getContact() {
+		return contact;
+	}
+
+	public void setContact(Set<Contact> contact) {
+		this.contact = contact;
 	}
 	
 	

@@ -2,10 +2,9 @@ package com.catis.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,18 @@ public class VenteService {
 	public Vente addVente(Vente vente) {
 		return venteRepository.save(vente);			
 	}
+	public List<Vente> findAll() {
+		List<Vente> ventes = new ArrayList<>();
+		venteRepository.findAll().forEach(ventes::add);
+		return ventes;			
+	}
 	public Vente findById(Long id) {
 		return venteRepository.findById(id).get();
 	}
+	public Vente findByVisite(Long id) {
+		return venteRepository.findByVisite_IdVisite(id);
+	}
+	
 	public String genererNumFacture() {
 		Date now = new Date();
 		DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");

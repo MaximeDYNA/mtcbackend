@@ -3,31 +3,35 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_vente")
 
-public class Vente {
+public class Vente extends JournalData{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long idVente;
 	private double montantTotal;
 	private double montantHT;
+	private int statut;
 	@ManyToOne
 	private Client client;
 	
@@ -37,6 +41,8 @@ public class Vente {
 	@ManyToOne
 	private Contact contact;
 	
+	@OneToOne
+	private Visite visite;
 	@ManyToOne
 	private SessionCaisse sessionCaisse;
 	
@@ -234,5 +240,48 @@ public class Vente {
 	}
 
 
+
+
+
+
+
+
+
+	public Visite getVisite() {
+		return visite;
+	}
+
+
+
+
+
+
+
+
+
+	public void setVisite(Visite visite) {
+		this.visite = visite;
+	}
+
+	public int getStatut() {
+		return statut;
+	}
+
+	public void setStatut(int statut) {
+		this.statut = statut;
+	}
+
+	public String getLibelleStatut() {
+		if(this.statut ==0)
+			return "payé";
+		else if(this.statut ==1) {
+			return "partiellement payé";
+		}
+		else if(this.statut == 2) {
+			return "impayé";
+		}
+		else
+			return "statut erroné";
+	}
 
 }
