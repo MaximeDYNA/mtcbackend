@@ -15,9 +15,7 @@ pipeline {
 	}
 		  
 	stage('Building image') {
-	      when {
-                branch 'master'  //only run these steps on the master branch
-            }
+	  
       steps{
         script {
           sh """
