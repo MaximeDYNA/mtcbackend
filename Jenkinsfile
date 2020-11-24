@@ -20,7 +20,8 @@ pipeline {
         script {
          sudo sh """
 	  docker build -t mtc .
-	  docker tag mtc mtc:1.0
+	  docker tag mtc localhost:5000/mtc
+	  docker push localhost:5000/mtc
 	  """
         }
       }
