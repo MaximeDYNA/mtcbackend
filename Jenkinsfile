@@ -46,7 +46,6 @@ pipeline {
         script {
           
           docker.withRegistry( 'http://51.210.48.154:5000' ) {
-            dockerImage.push("$BUILD_NUMBER")
              dockerImage.push('latest')
 
           }
