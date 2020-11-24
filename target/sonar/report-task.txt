@@ -1,6 +1,0 @@
-projectKey=com.catis:mtc
-serverUrl=http://51.210.48.154:9000
-serverVersion=7.5.0.20543
-dashboardUrl=http://51.210.48.154:9000/dashboard?id=com.catis%3Amtc
-ceTaskId=AXV_BgQ_7W_W9NB4oRBH
-ceTaskUrl=http://51.210.48.154:9000/api/ce/task?id=AXV_BgQ_7W_W9NB4oRBH

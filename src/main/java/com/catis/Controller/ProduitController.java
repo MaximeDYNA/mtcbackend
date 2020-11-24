@@ -191,7 +191,11 @@ public class ProduitController {
 					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets );
 				}
 			
-			} catch (Exception e) {
+			}
+			catch (VisiteEnCoursException vece) {
+				LOGGER.error("Veuillez signaler cette erreur à Franck");
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une visite est actuellement en cours pour ce véhicule", null);
+			}catch (Exception e) {
 				LOGGER.error("Veuillez signaler cette erreur à Franck");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
 			}
