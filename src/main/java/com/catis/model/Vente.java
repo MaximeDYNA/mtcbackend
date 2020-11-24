@@ -32,7 +32,7 @@ public class Vente extends JournalData{
 	private double montantTotal;
 	private double montantHT;
 	private int statut;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
 	
 	@ManyToOne

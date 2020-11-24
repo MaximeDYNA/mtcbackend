@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.model.Client;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.GraphView;
 import com.catis.objectTemporaire.KabanViewVisit;
@@ -138,15 +139,20 @@ public class VisiteController {
 	public ResponseEntity<Object> listforlistView(){
 		
 			log.info("list view visit");
-			
-			List<Visite> visites = vs.enCoursVisitList();
 			List<Listview> listVisit = new ArrayList<>();
-			for(Visite visite: visites) {
+			for(Visite visite: vs.enCoursVisitList()) {
 				Listview lv = new Listview();
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
-			
-				lv.setClient(venteService.findByVisite(visite.getIdVisite()).getClient().getPartenaire().getNom());
+				
+				if (venteService.findByVisite(visite.getIdVisite())
+						 == null)
+					lv.setClient(null);
+				else
+				lv.setClient(venteService.findByVisite(visite.getIdVisite())
+						.getClient()
+						.getPartenaire()
+						.getNom());
 				lv.setDate(visite.getDateDebut());
 				lv.setReference(visite.getCarteGrise().getNumImmatriculation());
 				lv.setStatut(visite.statutRender(visite.getStatut()));
