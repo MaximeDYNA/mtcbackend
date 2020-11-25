@@ -3,4 +3,4 @@ ARG WAR_FILE=*.war
 COPY ${WAR_FILE} /usr/local/tomcat/webapps/
 WORKDIR /usr/local/tomcat/webapps
 EXPOSE 8086
-ENTRYPOINT ["java", "-jar", "managementtools-0.0.1-SNAPSHOT.war"]
+ENTRYPOINT ["java", "-jar", "managementtools-0.0.1.war"]
