@@ -38,7 +38,7 @@ pipeline {
       steps{
         script {
         
-			 docker.withRegistry('51.210.48.154:5000') {
+			 docker.withRegistry('http://51.210.48.154:5000') {
             dockerImage.push("${env.BUILD_NUMBER}")
             dockerImage.push("latest")
 
