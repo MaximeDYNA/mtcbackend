@@ -1,5 +1,6 @@
 FROM tomcat:9.0.38
-VOLUME /tmp
-COPY mtc-0.0.1.war /usr/local/tomcat/webapps/mtc-0.0.1.war
+ARG WAR_FILE=target/*.war
+COPY ${WAR_FILE} /usr/local/tomcat/webapps/
+WORKDIR /usr/local/tomcat/webapps
 EXPOSE 8086
-ENTRYPOINT [ "sh", "-c", "java -Dspring.profiles.active=docker -Djava.security.egd=file:/dev/./urandom -jar /usr/local/tomcat/webapps/mtc-0.0.1.war" ]
+ENTRYPOINT ["java", "-jar", "managementtools-0.0.1-SNAPSHOT.war"]
