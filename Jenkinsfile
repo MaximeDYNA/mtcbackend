@@ -27,6 +27,7 @@ pipeline {
 		  
 	stage('Building image') {
       steps{
+	 echo 'Starting to build docker image'
         script {
        		def projectImage = docker.build("imageName:1.0", "-f /home/mtcbackend/Dockerfile .")
         }
