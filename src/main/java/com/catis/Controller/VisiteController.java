@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.model.Client;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.GraphView;
 import com.catis.objectTemporaire.KabanViewVisit;
@@ -170,5 +172,20 @@ public class VisiteController {
 		}*/
 		
 	}
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visites/approuver/{visiteId}")
+	public ResponseEntity<Object> approuver(@PathVariable Long visiteId){
+		try {
+			log.info("Demande d'approbation d'une visite...");
+			Visite visite = vs.findById(visiteId);
+			visite = vs.approuver(visite);
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Visite approuvée avec succès", visite);
+		} catch (Exception e) {
+			log.error("Erreur lors de l'approbation");
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'approbation", null);
+		}
+		
+	}
+	
+	
 	
 }

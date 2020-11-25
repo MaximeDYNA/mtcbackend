@@ -24,6 +24,12 @@ public class VisiteService {
 		visiteRepository.findAll().forEach(visites::add);
 		return visites;
 	}
+	public Visite approuver(Visite visite){
+		visite.setStatut(0);
+		visiteRepository.save(visite);
+		return visiteRepository.save(visite);
+	}
+	
 	public List<Visite> findByReference(String ref){
 		return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(ref, ref);
 	}

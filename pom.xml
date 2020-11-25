@@ -11,7 +11,6 @@
 	<groupId>com.catis</groupId>
 	<artifactId>mtc</artifactId>
 	<version>0.0.1</version>
-	<packaging>war</packaging>
 	<name>mtc</name>
 	<description>projet de securisation des vignettes automobiles</description>
 	<properties>
@@ -114,11 +113,6 @@
 	        <artifactId>hibernate-validator</artifactId>
 	        <version>6.0.13.Final</version>
 	    </dependency> 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 	<dependencyManagement> 
 	   <dependencies> 
