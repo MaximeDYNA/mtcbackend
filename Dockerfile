@@ -1,3 +1,6 @@
-ADD *.war /usr/local/tomcat/webapps/
+FROM tomcat:9.0.38
+ARG WAR_FILE=*.war
+COPY ${WAR_FILE} /usr/local/tomcat/webapps/
+WORKDIR /usr/local/tomcat/webapps
 EXPOSE 8086
-CMD ["catalina.sh", "run"]
+ENTRYPOINT ["java", "-jar", "managementtools-0.0.1-SNAPSHOT.war"]
