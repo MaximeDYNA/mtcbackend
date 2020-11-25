@@ -30,7 +30,7 @@ pipeline {
 	 echo 'Starting to build docker image'
         script {
 		def dockerfile = 'Dockerfile'
-		def projectImage = docker.build("management-image", "-f ${dockerfile} /home/mtcbackend")
+		def dockerImage = docker.build("management-image", "-f ${dockerfile} /home/mtcbackend")
         }
       }
     }
@@ -39,8 +39,8 @@ pipeline {
         script {
         
 			 docker.withRegistry('http://51.210.48.154:5000') {
-            projectImage.push("${env.BUILD_NUMBER}")
-            projectImage.push("latest")
+            dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push("latest")
 
           }
         }
