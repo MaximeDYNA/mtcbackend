@@ -30,7 +30,7 @@ pipeline {
 	 echo 'Starting to build docker image'
         script {
 		def dockerfile = 'Dockerfile'
-		def dockerImage = docker.build("management-image", "-f ${dockerfile} /home/mtcbackend")
+		dockerImage = docker.build("management-image", "-f ${dockerfile} /home/mtcbackend")
         }
       }
     }
