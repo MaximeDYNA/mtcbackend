@@ -29,7 +29,7 @@ pipeline {
       steps{
 	 echo 'Starting to build docker image'
         script {
-		sh "docker build -f /home/mtcbackend/Dockerfile -t management ./"
+		def projectImage = docker.build("management-image", "/home/mtcbackend")
         }
       }
     }
