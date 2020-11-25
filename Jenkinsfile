@@ -29,7 +29,8 @@ pipeline {
       steps{
 	 echo 'Starting to build docker image'
         script {
-		def projectImage = docker.build("management-image", "/home/mtcbackend")
+		def dockerfile = 'Dockerfile'
+		def projectImage = docker.build("management-image", "-f ${dockerfile} /home/mtcbackend")
         }
       }
     }
