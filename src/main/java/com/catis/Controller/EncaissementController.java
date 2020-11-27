@@ -31,6 +31,7 @@ import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
+import com.catis.service.ProprietaireVehiculeService;
 import com.catis.service.SessionCaisseService;
 import com.catis.service.VendeurService;
 import com.catis.service.VenteService;
@@ -64,6 +65,8 @@ public class EncaissementController {
 	private PosaleService posaleService;
 	@Autowired
 	private VisiteService visiteService;
+	@Autowired
+	private ProprietaireVehiculeService pvs;
 	
 
 	
@@ -118,17 +121,26 @@ public class EncaissementController {
 				carteGrise = new CarteGrise();
 				
 				produit.setProduit_id(posale.getProduit().getProduitId());
-				
+				if(encaissement.getClientId()!=0)
+					carteGrise.setProprietaireVehicule(
+							pvs.addClientToProprietaire(clientService
+									.findCustomerById(encaissement.getClientId()))
+							);
+				else
+					carteGrise.setProprietaireVehicule(
+							pvs.addContactToProprietaire(contactService
+									.findById(encaissement.getContactId())));
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
-					visiteService.ajouterVisite(carteGrise, encaissement.getMontantEncaisse());
+					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise),
+													encaissement.getMontantEncaisse());
 				/*----------------------------------------*/
 				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
 				detailVente.setReference(posale.getReference());
 				dvs.addVente(detailVente);
-				cgs.addCarteGrise(carteGrise);
+				
 			}
 			/* ---------Opération de caisse------------*/
 			op.setType(encaissement.isType());

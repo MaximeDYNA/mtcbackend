@@ -16,6 +16,14 @@ public class CarteGriseService {
 	private CarteGriseRepository cgr;
 	
 	public CarteGrise addCarteGrise(CarteGrise carteGrise) {
+		if(cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(carteGrise.getNumImmatriculation(), 
+				carteGrise.getNumImmatriculation()).isEmpty())
+		return cgr.save(carteGrise);
+		else
+		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(carteGrise.getNumImmatriculation(), 
+				carteGrise.getNumImmatriculation()).get(0);
+	}
+	public CarteGrise updateCarteGrise(CarteGrise carteGrise) {
 		return cgr.save(carteGrise);
 	}
 	public List<CarteGrise> findAll() {

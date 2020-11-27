@@ -26,7 +26,7 @@ public class ProduitService {
 	private CarteGriseRepository cgr;
 	
 	public String saveImage(MultipartFile imageFile) throws Exception{
-		String folder = "/uploaded/";
+		String folder = "uploaded/";
 		byte[] bytes = imageFile.getBytes();
 		Path path = Paths.get(folder + imageFile.getOriginalFilename());
 		Files.write(path, bytes);

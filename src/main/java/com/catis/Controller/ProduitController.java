@@ -72,15 +72,14 @@ public class ProduitController {
 	
 	@RequestMapping(method= RequestMethod.POST, value="/api/v1/produits")
 	public ResponseEntity<Object> addProduit(
-	@RequestParam("produitId")Long produitId,
 	@RequestParam("libelle") String libelle,
 	@RequestParam("description") String description,
 	@RequestParam("prix") double prix,
 	@RequestParam("delaiValidite") int delaiValidite,
 	@RequestParam("file") MultipartFile file,
-	@RequestParam("categorieProduitId") Long categorieProduitId) {
+	@RequestParam("categorieProduitId") Long categorieProduitId) throws Exception {
 			
-		    try {
+		    
 		    	
 		    	Produit produit = new Produit();
 		    	produit.setLibelle(libelle);
@@ -92,11 +91,11 @@ public class ProduitController {
 		      LOGGER.info("liste des catégories...");
 		      return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	produitService.addProduit(produit));
 		      
-		    } 
+		   /* try {} 
 		    catch (Exception e) {
 		    	LOGGER.error("Erreur lors de l'ajout d'un produit");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
-		    }
+		    }*/
 		    
 		    
 		

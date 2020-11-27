@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityListeners;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.CarteGrise;
@@ -15,6 +19,7 @@ import com.catis.model.Visite;
 import com.catis.repository.VisiteRepository;
 
 @Service
+
 public class VisiteService {
 	@Autowired
 	private VisiteRepository visiteRepository;
@@ -96,7 +101,7 @@ public class VisiteService {
 		visite.setStatut(4);
 	}
 	public List<Visite> listParStatus(int status){
-		return visiteRepository.findByEncoursTrueAndStatut(status);
+		return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
 	}
 	public void commencerInspection(Long visiteId) {
 		Visite visite = new Visite();

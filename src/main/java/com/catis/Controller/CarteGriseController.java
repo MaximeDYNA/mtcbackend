@@ -62,19 +62,39 @@ public class CarteGriseController {
 				  
 		}
 	}
+	@GetMapping("/api/v1/cartegrises")
+	public  ResponseEntity<Object> findAll(){
+		LOGGER.info("Recherche carte grise...");
+		try {
+				//cgs.findByImmatriculationOuCarteGrise(imCha)
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findAll());
+			} 
+		catch(Exception e){ 
+				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
+				  
+		}
+	}
 	@PostMapping("/api/v1/cartegrise")
 	public  ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR){
-		LOGGER.info("Recherche carte grise...");
+		LOGGER.info("mise à jour demandé...");
 		
-				System.out.println("......"+carteGriseR.getCarteGriseId());
+				System.out.println("......"+carteGriseR.getVisiteId());
 				CarteGrise carteGrise = new CarteGrise(carteGriseR);
+				
 				//initialise le vehicule avec les éléments reçus par la vue
+				
 				Vehicule vehicule = new Vehicule(carteGriseR);
+				
 				//set modifie l'energie du vehicule
+				
 				vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+				
 				// retrouve l'objet visite en bd
+				
 				Visite visite = visiteService.findById(carteGriseR.getVisiteId());
+				
 				//recupère l'id de la cg
+				
 				carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
 				carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
 				vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
@@ -84,7 +104,7 @@ public class CarteGriseController {
 				visite.setStatut(1);
 				visiteService.modifierVisite(visite);
 				
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.addCarteGrise(carteGrise));
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.updateCarteGrise(carteGrise));
 			/*try {} 
 		catch(Exception e){ 
 			

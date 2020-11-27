@@ -50,12 +50,6 @@ public class JournalData {
 		this.activeStatus = activeStatus;
 	}
 
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-
 	public void setModifiedDate(LocalDateTime modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}

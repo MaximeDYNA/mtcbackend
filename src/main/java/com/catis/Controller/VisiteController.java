@@ -61,6 +61,7 @@ public class VisiteController {
 	public ResponseEntity<Object> visiteByStatut(@PathVariable int status){
 		try {
 			log.info("Liste des visites en cours");
+			
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", vs.listParStatus(status));
 		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
@@ -142,7 +143,42 @@ public class VisiteController {
 		
 			log.info("list view visit");
 			List<Listview> listVisit = new ArrayList<>();
-			for(Visite visite: vs.enCoursVisitList()) {
+			for(Visite visite: vs.listParStatus(0)) {
+				Listview lv = new Listview();
+				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+						.getNumImmatriculation()));
+				
+				if (venteService.findByVisite(visite.getIdVisite())
+						 == null)
+					lv.setClient(null);
+				else
+				lv.setClient(venteService.findByVisite(visite.getIdVisite())
+						.getClient()
+						.getPartenaire()
+						.getNom());
+				lv.setDate(visite.getDateDebut());
+				lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+				lv.setStatut(visite.statutRender(visite.getStatut()));
+				lv.setType(visite.typeRender());
+				listVisit.add(lv);
+				lv.setId(visite.getIdVisite());
+				
+			}
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+			
+			
+		/*try {} catch (Exception e) {
+			log.error("Erreur lors de l'affichage de la liste des visite en cours");
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
+		}*/
+		
+	}
+	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visite/listview/{statutCode}")
+	public ResponseEntity<Object> listforlistView(@PathVariable int statutCode ){
+		
+			log.info("list view visit");
+			List<Listview> listVisit = new ArrayList<>();
+			for(Visite visite: vs.listParStatus(statutCode)) {
 				Listview lv = new Listview();
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
@@ -183,7 +219,6 @@ public class VisiteController {
 			log.error("Erreur lors de l'approbation");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'approbation", null);
 		}
-		
 	}
 	
 	
