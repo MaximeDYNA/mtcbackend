@@ -16,6 +16,8 @@ public class DetailVenteService {
 	public void addVente(DetailVente detailVente) {
 		detailVenteRepository.save(detailVente);
 	}
+	
+	
 	public void addVentes(List<DetailVente> detailVentes) {
 		for(DetailVente detailVente : detailVentes) {
 			detailVenteRepository.save(detailVente);

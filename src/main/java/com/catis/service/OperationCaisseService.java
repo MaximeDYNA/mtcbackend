@@ -2,9 +2,9 @@ package com.catis.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,9 @@ public class OperationCaisseService {
 	public void addOperationCaisse(OperationCaisse op) {
 		operationCaisseRepository.save(op);
 	}
+	public List<OperationCaisse> encaissementList(){
+		return operationCaisseRepository.findByTypeTrue();
+	}
 	
 	public String genererTicket() {
 		Date now = new Date();
@@ -32,6 +35,10 @@ public class OperationCaisseService {
 		;
 		
 		return start;
+	}
+	
+	public List<OperationCaisse> findBySession(Long sessionCaisseId){
+		return operationCaisseRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
 	}
 	public int randomNumber() {
 		Random rand = new Random();
@@ -44,5 +51,12 @@ public class OperationCaisseService {
 		}
 		else
 			return "Décaissement";
+	}
+	public double montantTotalEncaisse(Long idVente) {
+		double montant =0;
+		for(OperationCaisse o : operationCaisseRepository.findByTypeTrueAndVente_IdVente(idVente)) {
+			montant += o.getMontant();
+		}
+		return montant;
 	}
 }

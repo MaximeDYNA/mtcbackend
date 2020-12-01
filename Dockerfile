@@ -1,5 +1,5 @@
-FROM tomcat:9.0.38
-VOLUME /tmp
-COPY ./target/mtc.war /usr/local/tomcat/webapps/mtc.war
-EXPOSE 8086
-ENTRYPOINT [ "sh", "-c", "java -Dspring.profiles.active=docker -Djava.security.egd=file:/dev/./urandom -jar /usr/local/tomcat/webapps/mtc.war" ]
+FROM openjdk:8-jdk-alpine
+WORKDIR /usr/app
+COPY ./target/mtc-* ./
+EXPOSE 8080
+CMD ["java", "-jar", "mtc-0.0.1.jar"]

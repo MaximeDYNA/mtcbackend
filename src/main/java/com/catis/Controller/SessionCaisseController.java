@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +18,8 @@ import com.catis.model.Hold;
 import com.catis.model.SessionCaisse;
 import com.catis.objectTemporaire.CloseSessionData;
 import com.catis.objectTemporaire.OpenData;
-import com.catis.security.Connexion;
 import com.catis.service.HoldService;
+import com.catis.service.OperationCaisseService;
 import com.catis.service.OrganisationService;
 import com.catis.service.SessionCaisseService;
 import com.catis.service.UtilisateurService;
@@ -31,6 +30,8 @@ public class SessionCaisseController {
 
 	@Autowired
 	private SessionCaisseService sessionCaisseService;
+	@Autowired
+	private OperationCaisseService operationCaisse;
 	@Autowired
 	private HoldService hs;
 	@Autowired
@@ -55,10 +56,10 @@ public class SessionCaisseController {
 	public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
 		LOGGER.info("ouverture de caisse en cours...");
 		
-		try {
+		
 			Date now = new Date();
 			SessionCaisse sessionCaisse = new SessionCaisse();
-			sessionCaisse.setOrganisationId(os.findByOrganisationId(0L));
+			sessionCaisse.setOrganisationId(os.findByOrganisationId(1L));
 			sessionCaisse.setDateHeureOuverture(now);
 			sessionCaisse.setActive(true);
 			sessionCaisse.setMontantOuverture(openData.getMontantOuverture());
@@ -72,11 +73,11 @@ public class SessionCaisseController {
 			hs.addHold(hold);
 			LOGGER.info("Bonjour "+sessionCaisse.getUser().getPartenaire().getPrenom()+", votre caisse est ouverte");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
-		}
+		/*try {}
 		catch(Exception e){
 			LOGGER.error("Une erreur est survenu");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur", null);
-		}
+		}*/
 		
 	}
 	@RequestMapping("/api/v1/sessioncaisses")
@@ -89,8 +90,8 @@ public class SessionCaisseController {
 		
 			LOGGER.info("Fermeture session caisse...");
 			hs.deleteHoldBySessionCaisse(closeSessionData.getSessionCaisseId());
-			
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.fermerSessionCaisse(closeSessionData.getSessionCaisseId(), closeSessionData.getMontantFermeture()));
+			sessionCaisseService.fermerSessionCaisse(closeSessionData.getSessionCaisseId(), closeSessionData.getMontantFermeture());
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", operationCaisse.findBySession(closeSessionData.getSessionCaisseId()));
 		/*try {} catch (Exception e) {
 			LOGGER.error("Erreur lors de la suppression de l'onglet");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu "

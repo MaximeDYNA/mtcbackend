@@ -4,9 +4,10 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,13 +18,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="t_controleur")
 public class Controleur {
 	@Id
-	private String idControleur;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long idControleur;
 	private String agremment;
 	private int score;
-	private String idOrganisation;
 	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)//id utilisateur optionel
-	@JoinColumn(name="idUtilisateur")
+	@ManyToOne(optional = true)//id utilisateur optionel
 	private Utilisateur utilisateur;
 	
 	@ManyToOne
@@ -37,23 +37,23 @@ public class Controleur {
 
 	}
 
-	public Controleur(String idControleur, String agremment, int score, String idOrganisation, Utilisateur utilisateur,
+	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur,
 			Partenaire partenaire, Set<Inspection> inspections) {
 		super();
 		this.idControleur = idControleur;
 		this.agremment = agremment;
 		this.score = score;
-		this.idOrganisation = idOrganisation;
+		
 		this.utilisateur = utilisateur;
 		this.partenaire = partenaire;
 		this.inspections = inspections;
 	}
 
-	public String getIdControleur() {
+	public Long getIdControleur() {
 		return idControleur;
 	}
 
-	public void setIdControleur(String idControleur) {
+	public void setIdControleur(Long idControleur) {
 		this.idControleur = idControleur;
 	}
 
@@ -71,14 +71,6 @@ public class Controleur {
 
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
 	}
 
 	

@@ -19,6 +19,7 @@ import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
 import com.catis.model.Posales;
 import com.catis.model.Produit;
+import com.catis.model.Vehicule;
 import com.catis.model.Vente;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.Encaissement;
@@ -30,6 +31,7 @@ import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
+import com.catis.service.ProprietaireVehiculeService;
 import com.catis.service.SessionCaisseService;
 import com.catis.service.VendeurService;
 import com.catis.service.VenteService;
@@ -63,6 +65,8 @@ public class EncaissementController {
 	private PosaleService posaleService;
 	@Autowired
 	private VisiteService visiteService;
+	@Autowired
+	private ProprietaireVehiculeService pvs;
 	
 
 	
@@ -70,7 +74,7 @@ public class EncaissementController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
-	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement){
+	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException{
 	
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
@@ -79,7 +83,7 @@ public class EncaissementController {
 			DetailVente detailVente;
 			Produit produit;
 			CarteGrise carteGrise;
-			
+			Vehicule vehicule;
 			/* ---------client------------*/
 				vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
 			/*------------------------------*/
@@ -112,36 +116,52 @@ public class EncaissementController {
 			for(Posales posale 	:  posaleService.findActivePosale()) {
 				detailVente = new DetailVente();
 				produit = new Produit();
+				vehicule = new Vehicule();
 				produit = produitService.findById(posale.getProduit().getProduitId());
 				carteGrise = new CarteGrise();
-				produit.setProduit_id(posale.getProduit().getProduitId());
 				
+				produit.setProduit_id(posale.getProduit().getProduitId());
+				if(encaissement.getClientId()!=0)
+					carteGrise.setProprietaireVehicule(
+							pvs.addClientToProprietaire(clientService
+									.findCustomerById(encaissement.getClientId()))
+							);
+				else
+					carteGrise.setProprietaireVehicule(
+							pvs.addContactToProprietaire(contactService
+									.findById(encaissement.getContactId())));
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
-					visiteService.ajouterVisite(carteGrise);
+					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise),
+													encaissement.getMontantEncaisse());
 				/*----------------------------------------*/
 				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
 				detailVente.setReference(posale.getReference());
 				dvs.addVente(detailVente);
-				cgs.addCarteGrise(carteGrise);
+				
 			}
 			/* ---------Opération de caisse------------*/
-			op.setLibelle(ocs.type(encaissement.isType()));
+			op.setType(encaissement.isType());
 			op.setMontant(encaissement.getMontantEncaisse());
+			
 			op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
 			op.setNumeroTicket(ocs.genererTicket());
 			op.setVente(vente);
 			/* --------------------------*/
-
-					ocs.addOperationCaisse(op);
+				if(op.getMontant()>0) {
+					if(encaissement.getContactId()!= 0)
+						ocs.addOperationCaisse(op);
+					else 
+					throw new ContactVideException("Erreur : Veuillez renseigner le contact");
+				}
+					
 			
-				/*}
-				//else 
-					throw new ContactVideException("Erreur : Veuillez renseigner le contact");*/
+				
+				
 			
-			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()));
+			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang() );
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
 		/*	try
 		{}

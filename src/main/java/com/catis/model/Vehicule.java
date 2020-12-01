@@ -1,60 +1,108 @@
 package com.catis.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+import com.catis.objectTemporaire.CarteGriseReceived;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="t_vehicule")
-public class Vehicule {
+@EntityListeners(AuditingEntityListener.class)
+public class Vehicule extends JournalData {
 	@Id
-	private String idVehicule;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long vehiculeId;
 	private String typeVehicule;
 	private String carrosserie;
-	private String enregistrement;
+	private int placeAssise;
 	private String chassis;
 	private Date dateMiseEnCirculation;
 	private Date premiereMiseEnCirculation;
-	private String energie;
+	private int puissAdmin; // Puissance Administrative
+	private int poidsTotalCha; // poids total en charge
+	private int poidsVide;
+	private int chargeUtile; // charge utile
 	private int cylindre; //cm3
 	
 	@ManyToOne
-	@JoinColumn(name="idModele")
-	private ModeleVehicule modeleVehicule;
-	
-	
+	private MarqueVehicule marqueVehicule;
+	@ManyToOne
+	private Energie energie;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="vehicule")
+	@JsonIgnore
+	Set<CarteGrise> carteGrise; 
 
-	public Vehicule(String idVehicule, String typeVehicule, String carrosserie, String enregistrement, String chassis,
-			Date dateMiseEnCirculation, Date premiereMiseEnCirculation, String energie, int cylindre,
-			ModeleVehicule modeleVehicule) {
+	public Vehicule() {
+		
+	}
+
+	public Vehicule(CarteGriseReceived cgr) {
 		super();
-		this.idVehicule = idVehicule;
+		this.typeVehicule = cgr.getTypeVehicule();
+		this.vehiculeId = cgr.getVehiculeId();
+		this.carrosserie = cgr.getCarrosserie();
+		this.placeAssise = cgr.getPlaces();
+		this.chassis = cgr.getChassis();
+		this.premiereMiseEnCirculation = cgr.getPremiereMiseEnCirculation();
+		this.puissAdmin = cgr.getPuissAdmin();
+		this.poidsTotalCha = cgr.getPoidsTotalCha();
+		this.poidsVide = cgr.getPoidsVide();
+		this.chargeUtile = cgr.getChargeUtile();
+		this.cylindre = cgr.getCylindre();
+		
+	
+	}
+
+
+	public Vehicule(Long vehiculeId, String typeVehicule, String carrosserie, int placeAssise, String chassis,
+			Date dateMiseEnCirculation, Date premiereMiseEnCirculation, Energie energie, int cylindre,
+			MarqueVehicule marqueVehicule, Set<CarteGrise> carteGrise) {
+		super();
+		this.vehiculeId = vehiculeId;
 		this.typeVehicule = typeVehicule;
 		this.carrosserie = carrosserie;
-		this.enregistrement = enregistrement;
+		this.placeAssise = placeAssise;
 		this.chassis = chassis;
 		this.dateMiseEnCirculation = dateMiseEnCirculation;
 		this.premiereMiseEnCirculation = premiereMiseEnCirculation;
 		this.energie = energie;
 		this.cylindre = cylindre;
-		this.modeleVehicule = modeleVehicule;
+		this.marqueVehicule = marqueVehicule;
+		this.carteGrise = carteGrise;
 	}
 
-	public Vehicule() {
-		
+
+
+
+
+
+	public Long getVehiculeId() {
+		return vehiculeId;
 	}
-	
-	public String getIdVehicule() {
-		return idVehicule;
+
+
+
+	public void setVehiculeId(Long vehiculeId) {
+		this.vehiculeId = vehiculeId;
 	}
-	public void setIdVehicule(String idVehicule) {
-		this.idVehicule = idVehicule;
-	}
-	
+
+
+
 	public String getTypeVehicule() {
 		return typeVehicule;
 	}
@@ -67,12 +115,7 @@ public class Vehicule {
 	public void setCarrosserie(String carrosserie) {
 		this.carrosserie = carrosserie;
 	}
-	public String getEnregistrement() {
-		return enregistrement;
-	}
-	public void setEnregistrement(String enregistrement) {
-		this.enregistrement = enregistrement;
-	}
+	
 	public String getChassis() {
 		return chassis;
 	}
@@ -91,12 +134,25 @@ public class Vehicule {
 	public void setPremiereMiseEnCirculation(Date premiereMiseEnCirculation) {
 		this.premiereMiseEnCirculation = premiereMiseEnCirculation;
 	}
-	public String getEnergie() {
+	
+	public Energie getEnergie() {
 		return energie;
 	}
-	public void setEnergie(String energie) {
+
+
+
+
+
+
+	public void setEnergie(Energie energie) {
 		this.energie = energie;
 	}
+
+
+
+
+
+
 	public int getCylindre() {
 		return cylindre;
 	}
@@ -104,12 +160,86 @@ public class Vehicule {
 		this.cylindre = cylindre;
 	}
 
-	public ModeleVehicule getModeleVehicule() {
-		return modeleVehicule;
+	
+
+
+
+	public int getPlaceAssise() {
+		return placeAssise;
 	}
 
-	public void setModeleVehicule(ModeleVehicule modeleVehicule) {
-		this.modeleVehicule = modeleVehicule;
+
+
+
+
+
+	public void setPlaceAssise(int placeAssise) {
+		this.placeAssise = placeAssise;
+	}
+
+
+
+
+
+
+	public MarqueVehicule getMarqueVehicule() {
+		return marqueVehicule;
+	}
+
+
+
+
+
+
+	public void setMarqueVehicule(MarqueVehicule marqueVehicule) {
+		this.marqueVehicule = marqueVehicule;
+	}
+
+
+
+
+
+
+	public Set<CarteGrise> getCarteGrise() {
+		return carteGrise;
+	}
+
+
+
+	public void setCarteGrise(Set<CarteGrise> carteGrise) {
+		this.carteGrise = carteGrise;
+	}
+
+	public int getPuissAdmin() {
+		return puissAdmin;
+	}
+
+	public void setPuissAdmin(int puissAdmin) {
+		this.puissAdmin = puissAdmin;
+	}
+
+	public int getPoidsTotalCha() {
+		return poidsTotalCha;
+	}
+
+	public void setPoidsTotalCha(int poidsTotalCha) {
+		this.poidsTotalCha = poidsTotalCha;
+	}
+
+	public int getPoidsVide() {
+		return poidsVide;
+	}
+
+	public void setPoidsVide(int poidsVide) {
+		this.poidsVide = poidsVide;
+	}
+
+	public int getChargeUtile() {
+		return chargeUtile;
+	}
+
+	public void setChargeUtile(int chargeUtile) {
+		this.chargeUtile = chargeUtile;
 	}
 
 	

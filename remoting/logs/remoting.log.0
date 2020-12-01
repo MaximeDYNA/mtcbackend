@@ -1,0 +1,11 @@
+nov. 06, 2020 2:47:56 PM org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver resolve
+INFOS: Remoting server accepts the following protocols: [JNLP4-connect, Ping]
+nov. 06, 2020 2:48:01 PM org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver isPortVisible
+AVERTISSEMENT: connect timed out
+nov. 06, 2020 2:48:01 PM hudson.remoting.jnlp.GuiListener$2 run
+GRAVE: http://51.210.48.154:8083/ provided port:36077 is not reachable
+java.io.IOException: http://51.210.48.154:8083/ provided port:36077 is not reachable
+	at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve(JnlpAgentEndpointResolver.java:314)
+	at hudson.remoting.Engine.innerRun(Engine.java:694)
+	at hudson.remoting.Engine.run(Engine.java:519)
+

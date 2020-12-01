@@ -13,6 +13,7 @@ public class Encaissement {
 	private double montantHT;
 	private String numeroTicket;
 	private long sessionCaisseId;
+	private String lang;
 	private List<ProduitVue> produitVue;
 	
 	
@@ -119,6 +120,14 @@ public class Encaissement {
 
 	public void setMontantHT(double montantHT) {
 		this.montantHT = montantHT;
+	}
+
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 	

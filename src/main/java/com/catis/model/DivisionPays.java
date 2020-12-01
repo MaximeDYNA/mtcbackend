@@ -2,22 +2,37 @@ package com.catis.model;
 
 
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
+
 
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_divisionpays")
-public class DivisionPays {
+public class DivisionPays extends JournalData{
+	
 	@Id
-	private String idDivisionPays;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long divisionPaysId;
 	
 	@ManyToOne
-	@JoinColumn(name="idPays")
-	private Pays Pays;
+	private Pays pays;
+	@OneToMany(mappedBy = "divisionPays")
+	Set<Adresse> adresses;
 	private String libelle;
 	private String description;
 	
@@ -25,45 +40,36 @@ public class DivisionPays {
 	private String idDivisionPaysParent;
 
 	public DivisionPays() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
-
-	public DivisionPays(String idDivisionPays, com.catis.model.Pays pays, String libelle, String description,
+	public DivisionPays(Long divisionPaysId, Pays pays, String libelle, String description,
 			String idDivisionPaysParent) {
 		super();
-		this.idDivisionPays = idDivisionPays;
-		Pays = pays;
+		this.divisionPaysId = divisionPaysId;
+		this.pays = pays;
 		this.libelle = libelle;
 		this.description = description;
 		this.idDivisionPaysParent = idDivisionPaysParent;
 	}
 
-
-
-
-
-	public String getIdDivisionPays() {
-		return idDivisionPays;
+	public Long getDivisionPaysId() {
+		return divisionPaysId;
 	}
 
-	public void setIdDivisionPays(String idDivisionPays) {
-		this.idDivisionPays = idDivisionPays;
+	public void setDivisionPaysId(Long divisionPaysId) {
+		this.divisionPaysId = divisionPaysId;
 	}
-
 
 	public Pays getPays() {
-		return Pays;
+		return pays;
 	}
 
 
 	public void setPays(Pays pays) {
-		Pays = pays;
+		this.pays = pays;
 	}
-
-
-
 
 	public String getIdDivisionPaysParent() {
 		return idDivisionPaysParent;
@@ -91,6 +97,16 @@ public class DivisionPays {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+	public Set<Adresse> getAdresses() {
+		return adresses;
+	}
+
+
+	public void setAdresses(Set<Adresse> adresses) {
+		this.adresses = adresses;
 	}
 
 

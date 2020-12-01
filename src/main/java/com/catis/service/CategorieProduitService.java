@@ -20,4 +20,16 @@ public class CategorieProduitService {
 		categoProduitRepository.findAll().forEach(categorieProduites::add);
 		return categorieProduites;
 	}
+	public CategorieProduit addCategorieProduit(CategorieProduit cp) {
+		return categoProduitRepository.save(cp);
+	}
+	public List<CategorieProduit> findByLibelle(String libelle){
+		return categoProduitRepository.findByLibelle(libelle);
+				
+	}
+	public CategorieProduit findById(Long id){
+		return categoProduitRepository.findById(id).get();
+				
+	}
+	
 }

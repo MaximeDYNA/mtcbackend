@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,15 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_partenaire")
-public class Partenaire {
+public class Partenaire extends JournalData{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,15 +51,36 @@ public class Partenaire {
 	@JoinColumn(name="organisationId", nullable = false)
     private Organisation organisation;
 	
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
 	@JsonIgnore
 	Set<ProprietaireVehicule> proprietaireVehicule;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
 	@JsonIgnore
+	Set<Client> client;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
+	Set<Contact> contact;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
 	Set<Utilisateur> utilisateurs;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JsonIgnore
+	Set<Adresse> adresses;
 	
+	public Set<Adresse> getAdresses() {
+		return adresses;
+	}
+
+	public void setAdresses(Set<Adresse> adresses) {
+		this.adresses = adresses;
+	}
+
 	@OneToMany(mappedBy="partenaire")
 	@JsonIgnore
 	Set<Controleur> controleurs;
@@ -208,6 +232,22 @@ public class Partenaire {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Set<Client> getClient() {
+		return client;
+	}
+
+	public void setClient(Set<Client> client) {
+		this.client = client;
+	}
+
+	public Set<Contact> getContact() {
+		return contact;
+	}
+
+	public void setContact(Set<Contact> contact) {
+		this.contact = contact;
 	}
 	
 	

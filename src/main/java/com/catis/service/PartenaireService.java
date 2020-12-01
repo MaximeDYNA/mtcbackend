@@ -25,14 +25,14 @@ public class PartenaireService {
 		partenaireRepository.findAll().forEach(partenaires::add);
 		return partenaires;
 	}
-	public Partenaire findPartenaireById(String idPartenaire) {
+	public Partenaire findPartenaireById(Long idPartenaire) {
 		return partenaireRepository.findById(idPartenaire).get();
 	}
 	public List<Partenaire> findPartenaireByNom(String nom) {
 		return partenaireRepository
 				.findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
 	}
-	public void deletePartenaireById(String idPartenaire) {
+	public void deletePartenaireById(Long idPartenaire) {
 		partenaireRepository.deleteById(idPartenaire);
 	}
 	public boolean partenaireAlreadyExist(Partenaire partenaire) {

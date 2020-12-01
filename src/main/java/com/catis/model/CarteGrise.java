@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,46 +14,43 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+import com.catis.objectTemporaire.CarteGriseReceived;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="t_cartegrise")
-public class CarteGrise {
+@EntityListeners(AuditingEntityListener.class)
+public class CarteGrise extends JournalData{
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long carteGriseId;
+	
 	private String numImmatriculation;
+	
 	private String preImmatriculation;// immatriculation précédente
+	
 	private Date dateDebutValid; //debut de validité
+	
 	private Date dateFinValid;// fin de validité
 	private String ssdt_id;
-	private String Commune;
+	private String commune;	
 	private double montantPaye;
 	private boolean vehiculeGage; // véhicule gagé
 	private String genreVehicule;
-	private String marqueVehicule;
-	private String typeVehicule;
-	private String carrosserie;
 	private String enregistrement;
-	private String chassis;
-	private Date dateMiseEnCirculation;
-	private Date premiereMiseEnCirculation;
-	private String energie;
-	private int cylindre; //cm3
-	private int puissAdmin; // Puissance Administrative
-	private int poidsTotalCha; // poids total en charge
-	private int poidsVide;
-	private int chargeUtile; // charge utile
+	
 	private Date dateDelivrance;
 	private String lieuDedelivrance;// lieu de délivrance
 	private String centre_ssdt;
 	
 	@ManyToOne
-	@JoinColumn(name="idProprietaireVehicule")
 	private ProprietaireVehicule proprietaireVehicule;
 	
 	@ManyToOne
-	@JoinColumn(name="idVehicule")
 	private Vehicule vehicule;
 	
 	@ManyToOne
@@ -62,6 +60,26 @@ public class CarteGrise {
 	@JsonIgnore
 	Set<Visite> visites; 
 	
+	public CarteGrise(CarteGriseReceived c) {
+
+		this.numImmatriculation = c.getNumImmatriculation();
+		this.preImmatriculation = c.getPreImmatriculation();
+		this.dateDebutValid = c.getDateDebutValid();
+		this.dateFinValid = c.getDateFinValid();
+		this.ssdt_id = c.getSsdt_id();
+		this.commune = c.getCommune();
+		this.montantPaye = c.getMontantPaye();
+		this.vehiculeGage = c.isVehiculeGage();
+		this.genreVehicule = c.getGenreVehicule();
+		
+		
+		this.enregistrement = c.getEnregistrement();
+		this.dateDelivrance = c.getDateDelivrance();
+		this.lieuDedelivrance = c.getLieuDedelivrance();
+		this.centre_ssdt = c.getCentre_ssdt();
+
+	}
+
 	public String getEnregistrement() {
 		return enregistrement;
 	}
@@ -81,6 +99,8 @@ public class CarteGrise {
 	public CarteGrise() {
 	}
 
+
+
 	
 
 	
@@ -88,11 +108,9 @@ public class CarteGrise {
 	
 	public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
 			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
-			String genreVehicule, String marqueVehicule, String typeVehicule, String carrosserie, String enregistrement,
-			String chassis, Date dateMiseEnCirculation, Date premiereMiseEnCirculation, String energie, int cylindre,
-			int puissAdmin, int poidsTotalCha, int poidsVide, int chargeUtile, Date dateDelivrance,
-			String lieuDedelivrance, String centre_ssdt, ProprietaireVehicule proprietaireVehicule, Vehicule vehicule,
-			Produit produit, Set<Visite> visites) {
+			String genreVehicule, String enregistrement, Date dateDelivrance, String lieuDedelivrance,
+			String centre_ssdt, ProprietaireVehicule proprietaireVehicule, Vehicule vehicule, Produit produit,
+			Set<Visite> visites) {
 		super();
 		this.carteGriseId = carteGriseId;
 		this.numImmatriculation = numImmatriculation;
@@ -100,23 +118,11 @@ public class CarteGrise {
 		this.dateDebutValid = dateDebutValid;
 		this.dateFinValid = dateFinValid;
 		this.ssdt_id = ssdt_id;
-		Commune = commune;
+		this.commune = commune;
 		this.montantPaye = montantPaye;
 		this.vehiculeGage = vehiculeGage;
 		this.genreVehicule = genreVehicule;
-		this.marqueVehicule = marqueVehicule;
-		this.typeVehicule = typeVehicule;
-		this.carrosserie = carrosserie;
 		this.enregistrement = enregistrement;
-		this.chassis = chassis;
-		this.dateMiseEnCirculation = dateMiseEnCirculation;
-		this.premiereMiseEnCirculation = premiereMiseEnCirculation;
-		this.energie = energie;
-		this.cylindre = cylindre;
-		this.puissAdmin = puissAdmin;
-		this.poidsTotalCha = poidsTotalCha;
-		this.poidsVide = poidsVide;
-		this.chargeUtile = chargeUtile;
 		this.dateDelivrance = dateDelivrance;
 		this.lieuDedelivrance = lieuDedelivrance;
 		this.centre_ssdt = centre_ssdt;
@@ -175,11 +181,11 @@ public class CarteGrise {
 	}
 
 	public String getCommune() {
-		return Commune;
+		return commune;
 	}
 
 	public void setCommune(String commune) {
-		Commune = commune;
+		this.commune = commune;
 	}
 
 	public double getMontantPaye() {
@@ -206,114 +212,7 @@ public class CarteGrise {
 		this.genreVehicule = genreVehicule;
 	}
 
-	public String getMarqueVehicule() {
-		return marqueVehicule;
-	}
-
-	public void setMarqueVehicule(String marqueVehicule) {
-		this.marqueVehicule = marqueVehicule;
-	}
-
-	public String getTypeVehicule() {
-		return typeVehicule;
-	}
-
-	public void setTypeVehicule(String typeVehicule) {
-		this.typeVehicule = typeVehicule;
-	}
-
-	public String getCarrosserie() {
-		return carrosserie;
-	}
-
-	public void setCarrosserie(String carrosserie) {
-		this.carrosserie = carrosserie;
-	}
-
-	public String getEnrgistrement() {
-		return enregistrement;
-	}
-
-	public void setEnrgistrement(String enregistrement) {
-		this.enregistrement = enregistrement;
-	}
-
-	public String getChassis() {
-		return chassis;
-	}
-
-	public void setChassis(String chassis) {
-		this.chassis = chassis;
-	}
-
-	public Date getDateMiseEnCirculation() {
-		return dateMiseEnCirculation;
-	}
-
-	public void setDateMiseEnCirculation(Date dateMiseEnCirculation) {
-		this.dateMiseEnCirculation = dateMiseEnCirculation;
-	}
-
-	public Date getPremiereMiseEnCirculation() {
-		return premiereMiseEnCirculation;
-	}
-
-	public void setPremiereMiseEnCirculation(Date premiereMiseEnCirculation) {
-		this.premiereMiseEnCirculation = premiereMiseEnCirculation;
-	}
-
-	public String getEnergie() {
-		return energie;
-	}
-
-	public void setEnergie(String energie) {
-		this.energie = energie;
-	}
-
-	public int getCylindre() {
-		return cylindre;
-	}
-
-	public void setCylindre(int cylindre) {
-		this.cylindre = cylindre;
-	}
-
-	public int getPuissAdmin() {
-		return puissAdmin;
-	}
-
-	public void setPuissAdmin(int puissAdmin) {
-		this.puissAdmin = puissAdmin;
-	}
-
-	public int getPoidsTotalCha() {
-		return poidsTotalCha;
-	}
-
-	public void setPoidsTotalCha(int poidsTotalCha) {
-		this.poidsTotalCha = poidsTotalCha;
-	}
-
-	public int getPoidsVide() {
-		return poidsVide;
-	}
-
-	public void setPoidsVide(int poidsVide) {
-		this.poidsVide = poidsVide;
-	}
-
-	public int getChargeUtile() {
-		return chargeUtile;
-	}
-
-	public void setChargeUtile(int chargeUtile) {
-		this.chargeUtile = chargeUtile;
-	}
-
-	public Date getDateDelivrance() {
-		return dateDelivrance;
-	}
-
+	
 	public void setDateDelivrance(Date dateDelivrance) {
 		this.dateDelivrance = dateDelivrance;
 	}
@@ -357,6 +256,10 @@ public class CarteGrise {
 	public void setProduit(Produit produit) {
 		this.produit = produit;
 	}
-	
+
+	public Date getDateDelivrance() {
+		return dateDelivrance;
+	}
+
 	
 }

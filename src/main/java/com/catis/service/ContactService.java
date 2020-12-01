@@ -15,8 +15,8 @@ public class ContactService {
 	@Autowired
 	private ContactRepository contactRepository;
 	
-	public void addContact(Contact contact) {
-		contactRepository.save(contact);
+	public Contact addContact(Contact contact) {
+		return contactRepository.save(contact);
 	}
 	public List<Contact> getContacts(){
 		List<Contact> contacts = new ArrayList<>();

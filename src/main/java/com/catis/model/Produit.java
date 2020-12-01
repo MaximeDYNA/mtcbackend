@@ -1,7 +1,9 @@
 package com.catis.model;
 
 import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,11 +13,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+import com.catis.objectTemporaire.ProduitView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_produit")
-public class Produit {
+@EntityListeners(AuditingEntityListener.class)
+public class Produit extends JournalData{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -50,6 +57,14 @@ public class Produit {
 	
 	public Produit() {
 		
+	}
+	public Produit(ProduitView p) {
+		
+		this.libelle = p.getLibelle();
+		this.description = p.getDescription();
+		this.prix = p.getPrix();
+		this.delaiValidite = p.getDelaiValidite();
+		this.categorieProduit.setCategorieProduitId(p.getCategorieProduitId());
 	}
 
 	public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,

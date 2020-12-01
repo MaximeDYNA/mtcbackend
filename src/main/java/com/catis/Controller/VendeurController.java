@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.Controller.message.Message;
+import com.catis.model.Client;
 import com.catis.model.Contact;
 import com.catis.model.Partenaire;
 import com.catis.model.Vendeur;
@@ -46,11 +50,12 @@ public class VendeurController {
 		LOGGER.info("liste des vendeurs...");
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", vendeurService.findAllVendeur());
 	}
+	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/vendeurs")
 	@Transactional
 	public ResponseEntity<Object> addVendeur(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 		LOGGER.info("Ajout d'un vendeur...");
-try {
+		try {
 		Vendeur vendeur = new Vendeur();
 		Partenaire partenaire = new Partenaire();
 		partenaire.setCni(clientPartenaire.getCni());
@@ -89,6 +94,35 @@ try {
 	
 	
 }
+	@RequestMapping(method = RequestMethod.GET, value="/api/v1/vendeurs/listview")
+	public  ResponseEntity<Object> listeDesClientsView(){
+		LOGGER.info("listview vendeurs...");
+		try {
+			LOGGER.info("Liste des vendeurs");
+			Map<String ,Object> listView; 
+			List<Map<String ,Object>> mapList = new ArrayList<>();
+			for(Vendeur v : vendeurService.findAllVendeur()) {
+				listView = new HashMap<>();
+				listView.put("id", v.getVendeurId());
+				listView.put("nom", v.getPartenaire().getNom());
+				listView.put("prenom", v.getPartenaire().getPrenom());
+				listView.put("email", v.getPartenaire().getEmail());
+				listView.put("tel", v.getPartenaire().getTelephone());
+				listView.put("cni", v.getPartenaire().getCni());
+				listView.put("createdDate", v.getPartenaire().getCreatedDate());
+				listView.put("modifiedDate", v.getPartenaire().getModifiedDate());
+				listView.put("description", v.getDescription());
+				mapList.add(listView);
+			}
+			
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+			
+		} catch (Exception e) {
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Vente", null);
+		}
+
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value="/api/v1/search/vendeurs/{keyword}")
 	public  ResponseEntity<Object> search(@PathVariable String keyword){
 		LOGGER.info("Recherche vendeurs...");

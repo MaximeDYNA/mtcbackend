@@ -3,32 +3,44 @@ package com.catis.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+import com.catis.objectTemporaire.InpectionReceived;
+
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="t_inspection")
-public class Inspection {
+public class Inspection extends JournalData {
 	@Id
-	private String idInspection;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long idInspection;
 	private Date dateDebut;
 	private Date dateFin;
 	private String signature; // chemin image signature du controleur
-	private String idOrganisation;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idControleur")
+	private Produit produit;
+	private double kilometrage;
+	private String chassis;
+	private int essieux;
+	private String position;
+
+	@ManyToOne
 	private Controleur controleur;
 
 	@ManyToOne
-	@JoinColumn(name="idLigne")
 	private Ligne ligne;
 	
 	@OneToOne
-	@JoinColumn(name="idVisite")
 	private Visite visite;
 
 	public Inspection() {
@@ -36,25 +48,42 @@ public class Inspection {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Inspection(String idInspection, Date dateDebut, Date dateFin, String signature, String idOrganisation,
-			Controleur controleur, Ligne ligne, Visite visite) {
+	public Inspection(InpectionReceived i) {
+		super();
+		this.idInspection = i.getIdInspection();
+		this.dateDebut = i.getDateDebut();
+		this.dateFin = i.getDateFin();
+		this.signature = i.getSignature();
+		this.kilometrage = i.getKilometrage();
+		this.chassis = i.getChassis();
+		this.essieux = i.getEssieux();
+		this.position = i.getPosition();
+	}
+
+
+
+
+
+
+
+
+
+	public Inspection(Long idInspection, Date dateDebut, Date dateFin, String signature, Produit produit,
+			double kilometrage, String chassis, int essieux, String position, Controleur controleur, Ligne ligne,
+			Visite visite) {
 		super();
 		this.idInspection = idInspection;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.signature = signature;
-		this.idOrganisation = idOrganisation;
+		this.produit = produit;
+		this.kilometrage = kilometrage;
+		this.chassis = chassis;
+		this.essieux = essieux;
+		this.position = position;
 		this.controleur = controleur;
 		this.ligne = ligne;
 		this.visite = visite;
-	}
-
-	public String getIdInspection() {
-		return idInspection;
-	}
-
-	public void setIdInspection(String idInspection) {
-		this.idInspection = idInspection;
 	}
 
 	public Date getDateDebut() {
@@ -81,13 +110,6 @@ public class Inspection {
 		this.signature = signature;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
-	}
 
 	public Controleur getControleur() {
 		return controleur;
@@ -112,6 +134,105 @@ public class Inspection {
 	public void setVisite(Visite visite) {
 		this.visite = visite;
 	}
+
+
+
+
+	public Long getIdInspection() {
+		return idInspection;
+	}
+
+
+
+
+	public void setIdInspection(Long idInspection) {
+		this.idInspection = idInspection;
+	}
+
+
+
+
+	public Produit getProduit() {
+		return produit;
+	}
+
+
+
+
+	public void setProduit(Produit produit) {
+		this.produit = produit;
+	}
+
+
+
+
+	public double getKilometrage() {
+		return kilometrage;
+	}
+
+
+
+
+	public void setKilometrage(double kilometrage) {
+		this.kilometrage = kilometrage;
+	}
+
+
+
+
+	public String getChassis() {
+		return chassis;
+	}
+
+
+
+
+	public void setChassis(String chassis) {
+		this.chassis = chassis;
+	}
+
+
+
+
+	public int getEssieux() {
+		return essieux;
+	}
+
+
+
+
+	public void setEssieux(int essieux) {
+		this.essieux = essieux;
+	}
+
+
+
+
+
+
+
+
+
+	public String getPosition() {
+		return position;
+	}
+
+
+
+
+
+
+
+
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+
+
+
+	
 	
 	
 }

@@ -1,5 +1,8 @@
 package com.catis.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ public class HoldService {
 	private HoldRepository holdRepository;
 	@Autowired
 	private PosaleRepository posaleRepository;
+	@Autowired
+	private SessionCaisseService scs;
 	
 	public Hold addHold(Hold hold) {
 		return holdRepository.save(hold);
@@ -30,11 +35,20 @@ public class HoldService {
 			return 0;
 	}
 	@Transactional
-	public void deleteHoldByNumber(Long number, Long sessionCaisseId) {
+	public void deleteHoldByNumber(Long number, Long sessionCaisseId) throws ParseException {
 		for(Posales posale : posaleRepository.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId)) {
 			posaleRepository.delete(posale);
 		}
 		holdRepository.deleteByNumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
+		if(findHoldBySessionCaisse(sessionCaisseId).isEmpty()) {
+			Hold hold = new Hold();
+			hold.setNumber(1L);
+			hold.setSessionCaisse(scs.findSessionCaisseById(sessionCaisseId));
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+			Date date = format.parse(format.format(new Date())); 
+			hold.setTime(date);
+			addHold(hold);
+		}
 	}
 	@Transactional
 	public void deleteHoldBySessionCaisse(Long sessionCaisseId) {

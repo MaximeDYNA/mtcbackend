@@ -1,19 +1,34 @@
 package com.catis.objectTemporaire;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
+
+import pl.allegro.finance.tradukisto.MoneyConverters;
+import pl.allegro.finance.tradukisto.ValueConverters;
 
 public class EncaissementResponse {
 
 	private OperationCaisse operationCaisse;
 	private List<DetailVente> detailVentes;
 	
-	public EncaissementResponse(OperationCaisse operationCaisse, List<DetailVente> detailVentes) {
+	private String lang;
+	private String moneyAsWords;
+	public EncaissementResponse(OperationCaisse operationCaisse, List<DetailVente> detailVentes, String lang) {
 		super();
+		ValueConverters converter;
+		if(lang.equalsIgnoreCase("fr")) {
+			 converter = ValueConverters.FRENCH_INTEGER;
+		}
+		else
+			converter = ValueConverters.ENGLISH_INTEGER;
+		
 		this.operationCaisse = operationCaisse;
+		
 		this.detailVentes = detailVentes;
+		this.moneyAsWords = converter.asWords( (int)operationCaisse.getMontant());
 	}
 	public EncaissementResponse() {
 		super();
@@ -31,5 +46,12 @@ public class EncaissementResponse {
 	public void setDetailVentes(List<DetailVente> detailVentes) {
 		this.detailVentes = detailVentes;
 	}
+	public String getMoneyAsWords() {
+		return moneyAsWords;
+	}
+	public void setMoneyAsWords(String moneyAsWords) {
+		this.moneyAsWords = moneyAsWords;
+	}
+	
 	
 }

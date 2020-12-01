@@ -1,6 +1,7 @@
 package com.catis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,14 +10,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 @Entity
 @Table(name = "t_operationdecaisse")
-public class OperationCaisse {
+@EntityListeners(AuditingEntityListener.class)
+public class OperationCaisse extends JournalData {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long operationDeCaisseId;
 	
-	private String libelle;
+	private boolean type;
 	private double montant;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idCaissierCaisse")
@@ -30,7 +36,6 @@ public class OperationCaisse {
 	private Taxe taxe;
 	
 	@ManyToOne
-	@JoinColumn(name="idSessionCaisse")
 	private SessionCaisse sessionCaisse;
 	
 	private String numeroTicket;
@@ -43,11 +48,15 @@ public class OperationCaisse {
 
 
 
-	public OperationCaisse(long operationDeCaisseId, String libelle, double montant, CaissierCaisse caissierCaisse,
+	
+
+
+
+	public OperationCaisse(long operationDeCaisseId, boolean type, double montant, CaissierCaisse caissierCaisse,
 			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
 		super();
 		this.operationDeCaisseId = operationDeCaisseId;
-		this.libelle = libelle;
+		this.type = type;
 		this.montant = montant;
 		this.caissierCaisse = caissierCaisse;
 		this.vente = vente;
@@ -55,6 +64,10 @@ public class OperationCaisse {
 		this.sessionCaisse = sessionCaisse;
 		this.numeroTicket = numeroTicket;
 	}
+
+
+
+
 
 
 
@@ -70,13 +83,26 @@ public class OperationCaisse {
 
 
 
-	public String getLibelle() {
-		return libelle;
+	
+	public boolean isType() {
+		return type;
 	}
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
+
+
+
+
+
+
+	public void setType(boolean type) {
+		this.type = type;
 	}
+
+
+
+
+
+
 
 	public double getMontant() {
 		return montant;
@@ -159,6 +185,11 @@ public class OperationCaisse {
 	}
 
 	
-	
+	public String getLibelle() {
+		if(type) {
+			return "Décaissement";
+		}
+		return "Encaissement";
+	}
 	
 }
