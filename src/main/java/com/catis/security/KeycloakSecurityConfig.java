@@ -1,5 +1,7 @@
 package com.catis.security;
 
+import java.util.List;
+
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -94,24 +96,15 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
 	        super.configure(http);
 	        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
-	                .and() //
-	                
+	                .and()               
 	                .csrf().disable()
-	               //
-//	                .anonymous().disable() //
-	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
-	                .and() //
-	                .authorizeRequests()
-                    //.antMatchers("/resources/**", "/signup", "/about").permitAll()         
-                    ;                             
-                    //.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")   
-                    //.anyRequest().authenticated();
-
-	       // expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/iam/accounts/promoters*").hasRole("PROMOTER");
-	       // expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/iam/accounts/supervisors*").hasRole("SUPERVISOR");
-	      expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("caissier");
-	       expressionInterceptUrlRegistry.antMatchers().permitAll()
-	        .anyRequest().permitAll();
+	                .anonymous().disable()
+	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	                .and()
+	                .authorizeRequests();
+	            
+	       expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER");
+	       expressionInterceptUrlRegistry.anyRequest().authenticated();
 	    }
 
 	    @SuppressWarnings({ "rawtypes", "unchecked" })

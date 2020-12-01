@@ -56,7 +56,7 @@ public class SessionCaisseController {
 	public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
 		LOGGER.info("ouverture de caisse en cours...");
 		
-		try {
+		
 			Date now = new Date();
 			SessionCaisse sessionCaisse = new SessionCaisse();
 			sessionCaisse.setOrganisationId(os.findByOrganisationId(1L));
@@ -73,11 +73,11 @@ public class SessionCaisseController {
 			hs.addHold(hold);
 			LOGGER.info("Bonjour "+sessionCaisse.getUser().getPartenaire().getPrenom()+", votre caisse est ouverte");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
-		}
+		/*try {}
 		catch(Exception e){
 			LOGGER.error("Une erreur est survenu");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur", null);
-		}
+		}*/
 		
 	}
 	@RequestMapping("/api/v1/sessioncaisses")
