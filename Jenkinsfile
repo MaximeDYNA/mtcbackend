@@ -6,7 +6,7 @@ pipeline {
   }
   agent any
 	stage('clone'){
-		git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
+		git credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
 		script {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
