@@ -1,7 +1,5 @@
 package com.catis.security;
 
-import java.util.List;
-
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -102,9 +100,9 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and()
 	                .authorizeRequests();
-	            
 	       expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER");
-	       expressionInterceptUrlRegistry.anyRequest().authenticated();
+	       expressionInterceptUrlRegistry.anyRequest().permitAll();
+	       
 	    }
 
 	    @SuppressWarnings({ "rawtypes", "unchecked" })

@@ -133,6 +133,7 @@ public class EncaissementController {
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
+				System.out.println("Montant encaissé "+ encaissement.getMontantEncaisse());
 					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise),
 													encaissement.getMontantEncaisse());
 				/*----------------------------------------*/
@@ -143,7 +144,6 @@ public class EncaissementController {
 				
 			}
 			/* ---------Opération de caisse------------*/
-			op.setType(encaissement.isType());
 			op.setMontant(encaissement.getMontantEncaisse());
 			
 			op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
@@ -155,11 +155,7 @@ public class EncaissementController {
 						ocs.addOperationCaisse(op);
 					else 
 					throw new ContactVideException("Erreur : Veuillez renseigner le contact");
-				}
-					
-			
-				
-				
+				}			
 			
 			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang() );
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );

@@ -7,7 +7,7 @@ public class Encaissement {
 	private long clientId;
 	private long vendeurId;
 	private long contactId;
-	private boolean type;
+	private int type;
 	private double montantTotal;
 	private double montantEncaisse;
 	private double montantHT;
@@ -106,11 +106,13 @@ public class Encaissement {
 		return super.toString();
 	}
 
-	public boolean isType() {
+	
+
+	public int getType() {
 		return type;
 	}
 
-	public void setType(boolean type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 

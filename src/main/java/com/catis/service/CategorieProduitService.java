@@ -21,6 +21,7 @@ public class CategorieProduitService {
 		return categorieProduites;
 	}
 	public CategorieProduit addCategorieProduit(CategorieProduit cp) {
+		cp.setActiveStatus(true);
 		return categoProduitRepository.save(cp);
 	}
 	public List<CategorieProduit> findByLibelle(String libelle){
