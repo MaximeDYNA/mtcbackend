@@ -33,13 +33,14 @@ public class OperationCaisseController {
 			LOGGER.info("Liste des adresses demandée");
 			Map<String ,Object> reglementListView; 
 			List<Map<String ,Object>> mapList = new ArrayList<>();
-			for(OperationCaisse o : ocs.encaissementList()) {
+			for(OperationCaisse o : ocs.encaissementList(2)) {
 				reglementListView = new HashMap<>();
 				reglementListView.put("id", o.getOperationDeCaisseId());
-				reglementListView.put("montant", o.getMontant());
+				
 				reglementListView.put("ticket", o.getNumeroTicket());
-				reglementListView.put("taxe", o.getTaxe().getValeur());
-				reglementListView.put("pays", o.getSessionCaisse().getUser().getLogin());
+				reglementListView.put("montant", o.getMontant());
+				//reglementListView.put("taxe", o.getTaxe().getValeur());
+				reglementListView.put("nom", o.getVente().getContact().getPartenaire().getNom());
 				reglementListView.put("createdDate", o.getCreatedDate());
 				reglementListView.put("modifiedDate", o.getModifiedDate());
 				mapList.add(reglementListView);

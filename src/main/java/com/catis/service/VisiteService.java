@@ -52,9 +52,9 @@ public class VisiteService {
 		}
 	}
 	
-	public Visite ajouterVisite(CarteGrise cg, double montantEncaisse) {
+	public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse) {
 		Visite visite = new Visite();
-		if(montantEncaisse==0) {
+		if(montantEncaisse < montantTotal) {
 			visite.setStatut(9);
 		}
 		else
