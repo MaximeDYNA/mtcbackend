@@ -22,8 +22,9 @@ public class OperationCaisseService {
 	public void addOperationCaisse(OperationCaisse op) {
 		operationCaisseRepository.save(op);
 	}
-	public List<OperationCaisse> encaissementList(){
-		return operationCaisseRepository.findByTypeTrue();
+	public List<OperationCaisse> encaissementList(int type){
+		
+		return operationCaisseRepository.findByType(type);
 	}
 	
 	public String genererTicket() {

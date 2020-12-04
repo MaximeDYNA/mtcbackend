@@ -1,5 +1,11 @@
 package com.catis.security;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -30,6 +36,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import com.catis.Controller.configuration.JsonReader;
+import com.google.gson.JsonObject;
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -100,6 +109,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and()
 	                .authorizeRequests();
+
 	       expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER");
 	       expressionInterceptUrlRegistry.anyRequest().permitAll();
 	       

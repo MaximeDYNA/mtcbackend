@@ -107,7 +107,7 @@ public class EncaissementController {
 			/* --------------------------*/
 				
 			/* ---------vente------------*/
-				vente.setNumFacture(venteService.genererNumFacture());;
+				vente.setNumFacture(venteService.genererNumFacture());
 			/* --------------------------*/
 			
 			
@@ -134,7 +134,7 @@ public class EncaissementController {
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
 				System.out.println("Montant encaissé "+ encaissement.getMontantEncaisse());
-					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise),
+					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(), 
 													encaissement.getMontantEncaisse());
 				/*----------------------------------------*/
 				detailVente.setProduit(produit);
