@@ -102,16 +102,15 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    protected void configure(HttpSecurity http) throws Exception {
 
 	        super.configure(http);
-	        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
+	        //ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
+	                http.httpBasic().disable().cors()
 	                .and()               
 	                .csrf().disable()
-	                .anonymous().disable()
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	                .and()
-	                .authorizeRequests();
-
-	       expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER");
-	       expressionInterceptUrlRegistry.anyRequest().permitAll();
+	                .and().authorizeRequests()
+	                .antMatchers("/images/**").permitAll()
+	                .antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
+	                .anyRequest().permitAll();
 	       
 	    }
 
