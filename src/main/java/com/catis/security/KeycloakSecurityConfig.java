@@ -109,6 +109,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and().authorizeRequests()
 	                .antMatchers("/images/**").permitAll()
+	                .antMatchers("/uploaded/**").permitAll()
 	                .antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
 	                .anyRequest().permitAll();
 	       
