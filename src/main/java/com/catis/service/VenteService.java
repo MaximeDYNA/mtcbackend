@@ -32,7 +32,7 @@ public class VenteService {
 	public Vente findByVisite(Long id) {
 		return venteRepository.findByVisite_IdVisite(id);
 	}
-	
+
 	public String genererNumFacture() {
 		Date now = new Date();
 		DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");

@@ -184,12 +184,13 @@ public class VisiteController {
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
 				
-				if (venteService.findByVisite(visite.getIdVisite())
+				if (visite.getCarteGrise().getProprietaireVehicule()
+						.getPartenaire()
+						.getNom()
 						 == null)
 					lv.setClient(null);
 				else
-				lv.setClient(venteService.findByVisite(visite.getIdVisite())
-						.getClient()
+				lv.setClient(visite.getCarteGrise().getProprietaireVehicule()
 						.getPartenaire()
 						.getNom());
 				lv.setDate(visite.getDateDebut());

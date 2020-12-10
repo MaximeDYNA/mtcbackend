@@ -38,30 +38,31 @@ public class VenteController {
 
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/ventes/listview")
 	public ResponseEntity<Object> listVentes(){
-		try {
+		
 			LOGGER.info("Liste vente");
 			Map<String ,Object> venteListView; 
 			List<Map<String ,Object>> mapList = new ArrayList<>();
 			for(Vente v : venteService.findAll()) {
 				venteListView = new HashMap<>();
 				venteListView.put("id", v.getIdVente());
-				venteListView.put("client", v.getClient().getPartenaire().getNom() + " "+ v.getClient().getPartenaire().getPrenom());
+				venteListView.put("client",  v.getClient().getPartenaire().getNom() + " "+ v.getClient().getPartenaire().getPrenom());
 				venteListView.put("vendeur", v.getVendeur().getPartenaire().getNom() + " "+ v.getVendeur().getPartenaire().getPrenom());
 				venteListView.put("montantTotal", v.getMontantTotal());
-				venteListView.put("contact", v.getContact().getPartenaire().getNom() + " "+ v.getContact().getPartenaire().getPrenom());
+				venteListView.put("contact", v.getContact().getPartenaire().getNom()+ " "+ v.getContact().getPartenaire().getPrenom());
 				venteListView.put("montantHT", v.getMontantHT());
 				venteListView.put("facture", v.getNumFacture());
 				venteListView.put("montantEncaisse", ocs.montantTotalEncaisse(v.getIdVente()));
 				//venteListView.put("statut", v.getLibelleStatut());
 				venteListView.put("createdDate", v.getCreatedDate());
 
-				mapList.add(venteListView);
-			}
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "Vente", mapList );
+				mapList.add(venteListView);}
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "Vente", mapList );
+			/*try {}
+			
 		} catch (Exception e) {
 			LOGGER.error(Message.ERREUR_LIST_VIEW +"Vente");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
-		}
+		}*/
 	}
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/ventes/{id}/detailsvente/listview")
 	public ResponseEntity<Object> listVentes(@PathVariable Long id){
@@ -95,4 +96,6 @@ public class VenteController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}
 	}
+	
+
 }
