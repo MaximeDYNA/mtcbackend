@@ -75,7 +75,8 @@ public class EncaissementController {
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
 	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException{
-	
+		try
+		{
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
 			Visite visite= new Visite();
@@ -159,20 +160,19 @@ public class EncaissementController {
 			
 			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang() );
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
-		/*	try
-		{}
+			}
 		catch(java.util.NoSuchElementException nosuch) {
 			LOGGER.error("Une valeur referencée n'existe pas");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une valeur referencée n'existe pas", null);
-		}*/
-		/*catch(ContactVideException c) {
+		}
+		catch(ContactVideException c) {
 			LOGGER.error("Veuillez renseigner le contact");
 			return ApiResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false, "Veuillez renseigner le contact, si l'erreur persiste contactez CATIS", null);
-		}*/
-	/*	catch(Exception e) {
+		}
+		catch(Exception e) {
 			LOGGER.error("Une erreur est survenue");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur au web master CATIS", null);
-		}*/
+		}
 		
 		
 	}

@@ -1,0 +1,35 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>visites</title>
+    <bookmarks>
+        <bookmark name="visites" href="#visites"></bookmark>
+    </bookmarks>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+
+<body>
+<!--  img class="logo" src="images/logo.png"/>-->
+<span class="titles-style" th:text="|Visites / Count: ${#lists.size(visites)}|"></span>
+
+<!-- Students Table -->
+<div id="visites">
+    <div th:if="${not #lists.isEmpty(visites)}">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+              
+                <th>Contre-visite</th>
+            </tr>
+            <tr th:each="visite : ${visites}">
+                <td th:text="${visite.idVisite}"></td>
+               
+                <td th:text="${visite.contreVisite}"></td>
+            </tr>
+         </table>
+    </div>
+</div>
+
+</body>
+</html>
