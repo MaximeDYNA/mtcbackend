@@ -28,4 +28,7 @@ public class InspectionService {
 	
 		return inspectionR.findById(id).get();
 	}
+	public Inspection findInspectionByVisite(Long idvisite) {
+		return inspectionR.findByVisite_IdVisite(idvisite);
+	}
 }
