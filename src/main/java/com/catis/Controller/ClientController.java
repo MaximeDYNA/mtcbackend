@@ -48,6 +48,7 @@ public class ClientController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/clients")
 	public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
+		try {
 			LOGGER.info("Ajout d'un client...");
 	
 			Client client = new Client();
@@ -75,7 +76,7 @@ public class ClientController {
 			clientService.addCustomer(client);
 			LOGGER.info("Ajout de "+ partenaire.getNom() +" réussi");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", client);
-		/*try {}
+		}
 		catch (DataIntegrityViolationException integrity) {
 			LOGGER.error("Duplicata de champ unique");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
@@ -84,7 +85,7 @@ public class ClientController {
 			LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
 					+ "l'ajout d'un client", null);
-		}*/
+		}
 		
 		
 		

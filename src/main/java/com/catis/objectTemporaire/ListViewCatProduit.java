@@ -30,16 +30,30 @@ public class ListViewCatProduit {
 		return createdDate;
 	}
 	public void setCreatedDate(LocalDateTime dateCrea) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.createdDate = dateCrea.format(formatter);
+		if(dateCrea == null) {
+			this.createdDate = "1993-03-25";
+		}
+		else
+		{
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			this.createdDate = dateCrea.format(formatter);
+		}
+		
 		 
 	}
 	public String getModifiedDate() {
 		return modifiedDate;
 	}
 	public void setModifiedDate(LocalDateTime dateModif) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.modifiedDate = dateModif.format(formatter);
+		if(dateModif == null) {
+			this.modifiedDate = "1993-03-25";
+		}
+		else
+		{
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			this.modifiedDate = dateModif.format(formatter);
+		}
+		
 	}
 	public String getLibelle() {
 		return libelle;

@@ -22,7 +22,7 @@ public class OperationCaisse extends JournalData {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long operationDeCaisseId;
 	
-	private boolean type;
+	private int type;
 	private double montant;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idCaissierCaisse")
@@ -52,7 +52,7 @@ public class OperationCaisse extends JournalData {
 
 
 
-	public OperationCaisse(long operationDeCaisseId, boolean type, double montant, CaissierCaisse caissierCaisse,
+	public OperationCaisse(long operationDeCaisseId, int type, double montant, CaissierCaisse caissierCaisse,
 			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
 		super();
 		this.operationDeCaisseId = operationDeCaisseId;
@@ -84,7 +84,7 @@ public class OperationCaisse extends JournalData {
 
 
 	
-	public boolean isType() {
+	public int isType() {
 		return type;
 	}
 
@@ -94,7 +94,7 @@ public class OperationCaisse extends JournalData {
 
 
 
-	public void setType(boolean type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
@@ -186,10 +186,16 @@ public class OperationCaisse extends JournalData {
 
 	
 	public String getLibelle() {
-		if(type) {
+		if(this.type==0) {
+			return "Mise en compte";
+		}
+		if(this.type==1) {
+			return "Encaissement";
+		}
+		if(this.type==2) {
 			return "Décaissement";
 		}
-		return "Encaissement";
+		return "Erreur";
 	}
 	
 }

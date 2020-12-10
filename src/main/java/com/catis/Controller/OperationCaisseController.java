@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,19 +28,19 @@ public class OperationCaisseController {
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(OperationCaisseController.class);
 	
-	@GetMapping("/api/v1/reglement/listview")
-	public ResponseEntity<Object> reglementListView() {
+	@GetMapping("/api/v1/operationcaisse/{code}/listview")
+	public ResponseEntity<Object> reglementListView(@PathVariable int code) {
 		try {
 			LOGGER.info("Liste des adresses demandée");
 			Map<String ,Object> reglementListView; 
 			List<Map<String ,Object>> mapList = new ArrayList<>();
-			for(OperationCaisse o : ocs.encaissementList()) {
+			for(OperationCaisse o : ocs.encaissementList(code)) {
 				reglementListView = new HashMap<>();
 				reglementListView.put("id", o.getOperationDeCaisseId());
-				reglementListView.put("montant", o.getMontant());
 				reglementListView.put("ticket", o.getNumeroTicket());
-				reglementListView.put("taxe", o.getTaxe().getValeur());
-				reglementListView.put("pays", o.getSessionCaisse().getUser().getLogin());
+				reglementListView.put("montant", o.getMontant());
+				//reglementListView.put("taxe", o.getTaxe().getValeur());
+				reglementListView.put("nom", o.getVente().getContact().getPartenaire().getNom());
 				reglementListView.put("createdDate", o.getCreatedDate());
 				reglementListView.put("modifiedDate", o.getModifiedDate());
 				mapList.add(reglementListView);

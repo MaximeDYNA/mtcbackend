@@ -28,6 +28,7 @@ import com.catis.model.Produit;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 import com.catis.objectTemporaire.HoldData;
+import com.catis.objectTemporaire.ListViewCatProduit;
 import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.repository.FilesStorageService;
 import com.catis.service.CarteGriseService;
@@ -37,8 +38,6 @@ import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
 import com.catis.service.TaxeService;
 import com.catis.service.VisiteService;
-
-import pl.allegro.finance.tradukisto.MoneyConverters;
 
 @RestController
 @CrossOrigin
@@ -206,15 +205,21 @@ public class ProduitController {
 		LOGGER.info("Liste des produits");
 		Map<String ,Object> produitsListView; 
 		List<Map<String ,Object>> mapList = new ArrayList<>();
+		
+		ListViewCatProduit pv;
+		
 		for(Produit p : produitService.findAllProduit()) {
 			produitsListView = new HashMap<>();
+			pv = new ListViewCatProduit();
+			pv.setCreatedDate(p.getCreatedDate());
+			pv.setModifiedDate(p.getModifiedDate());
 			produitsListView.put("id", p.getProduitId());
 			produitsListView.put("libelle", p.getLibelle());
 			produitsListView.put("description", p.getDescription());
 			produitsListView.put("prix", p.getPrix());
 			produitsListView.put("CategorieProduit", p.getCategorieProduit().getLibelle());
-			produitsListView.put("createdDate", p.getCreatedDate());
-			produitsListView.put("modifiedDate", p.getModifiedDate());
+			produitsListView.put("createdDate", pv.getCreatedDate());
+			produitsListView.put("modifiedDate", pv.getModifiedDate());
 			mapList.add(produitsListView);
 		}
 		

@@ -6,7 +6,7 @@ pipeline {
   }
   agent any
 	stage('clone'){
-		git credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
+		git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
 		script {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
@@ -44,7 +44,7 @@ pipeline {
         script {
           
           docker.withRegistry( 'http://51.210.48.154:5000' ) {
-            dockerImage.push("$BUILD_NUMBER")
+            /*dockerImage.push("$BUILD_NUMBER")*/
              dockerImage.push('latest')
 
           }

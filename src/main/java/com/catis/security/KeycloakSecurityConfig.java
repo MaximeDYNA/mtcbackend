@@ -1,7 +1,11 @@
 package com.catis.security;
 
-import java.util.List;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -32,6 +36,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import com.catis.Controller.configuration.JsonReader;
+import com.google.gson.JsonObject;
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -95,16 +102,17 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    protected void configure(HttpSecurity http) throws Exception {
 
 	        super.configure(http);
-	        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
+	        //ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
+	                http.httpBasic().disable().cors()
 	                .and()               
 	                .csrf().disable()
-	                .anonymous().disable()
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	                .and()
-	                .authorizeRequests();
-	            
-	       expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER");
-	       expressionInterceptUrlRegistry.anyRequest().authenticated();
+	                .and().authorizeRequests()
+	                .antMatchers("/images/**").permitAll()
+	                .antMatchers("/uploaded/**").permitAll()
+	                .antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
+	                .anyRequest().permitAll();
+	       
 	    }
 
 	    @SuppressWarnings({ "rawtypes", "unchecked" })

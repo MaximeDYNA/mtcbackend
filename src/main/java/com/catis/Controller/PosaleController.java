@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.catis.Controller.exception.DecaissementExistantException;
 import com.catis.Controller.exception.InformationIncompleteException;
 import com.catis.Controller.exception.ProduitNonDisponibleException;
+import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.Hold;
 import com.catis.model.Posales;
 import com.catis.model.Taxe;
@@ -28,10 +29,12 @@ import com.catis.objectTemporaire.HoldData;
 import com.catis.objectTemporaire.PosaleData;
 import com.catis.objectTemporaire.PosaleDataForDelete;
 import com.catis.objectTemporaire.ProduitEtTaxe;
+import com.catis.service.CarteGriseService;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
+import com.catis.service.VisiteService;
 
 @RestController
 @CrossOrigin
@@ -39,6 +42,8 @@ public class PosaleController {
 
 	@Autowired
 	private PosaleService posaleService;
+	@Autowired
+	private VisiteService visiteService;
 	@Autowired
 	private HoldService hs;
 	@Autowired
@@ -63,6 +68,8 @@ public class PosaleController {
 						Posales posale = new Posales();
 						posale.setHold(hold);
 						posale.setProduit(produitService.findById(posaleData.getProduitId()));
+						if(visiteService.visiteEncours(posaleData.getReference()))
+							throw new VisiteEnCoursException();
 						posale.setReference(posaleData.getReference());
 						posale.setStatus(true);
 						posale.setSessionCaisse(hold.getSessionCaisse());
