@@ -1,91 +1,115 @@
 package com.catis.model;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "t_valeurtest")
+import com.catis.model.GieglanFile.StatusType;
+
+@Entity @Table(name = "t_valeurtest")
 public class ValeurTest {
 
-	@Id
-	@Column(name = "uuid", nullable = false, updatable = false)
-	private UUID idValeurTest;
-	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "uuid")
+	private Long idValeurTest;
+
 	private String code;
-	private double valeur;
+
+	private String valeur;
+
+	private Integer crc;
+
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "varchar(255) default 'INITIALIZED'")
+	private StatusType status;
+
 	private String description;
+
 	private String idOrganisation;
 	
 	@ManyToOne
-	@JoinColumn(name="idMesure")
 	private Mesure mesure;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idMachine")
-	private Machine machine;
-	
+	private GieglanFile gieglanFile;
+
 	public ValeurTest() {
-		
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	
-
-
-	public ValeurTest(UUID idValeurTest, String code, double valeur, String description, String idOrganisation,
-			Mesure mesure, Machine machine) {
+	public ValeurTest(Long idValeurTest, String code, String valeur, Integer crc, StatusType status, String description,
+			String idOrganisation, Mesure mesure, GieglanFile gieglanFile) {
 		super();
 		this.idValeurTest = idValeurTest;
 		this.code = code;
 		this.valeur = valeur;
+		this.crc = crc;
+		this.status = status;
 		this.description = description;
 		this.idOrganisation = idOrganisation;
 		this.mesure = mesure;
-		this.machine = machine;
+		this.gieglanFile = gieglanFile;
 	}
 
-
-
-	public UUID getIdValeurTest() {
+	public Long getIdValeurTest() {
 		return idValeurTest;
 	}
 
-
-
-
-	public void setIdValeurTest(UUID idValeurTest) {
+	public void setIdValeurTest(Long idValeurTest) {
 		this.idValeurTest = idValeurTest;
 	}
-
-
-
 
 	public String getCode() {
 		return code;
 	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public double getValeur() {
+
+	public String getValeur() {
 		return valeur;
 	}
-	public void setValeur(double valeur) {
+
+	public void setValeur(String valeur) {
 		this.valeur = valeur;
 	}
+
+	public Integer getCrc() {
+		return crc;
+	}
+
+	public void setCrc(Integer crc) {
+		this.crc = crc;
+	}
+
+	public StatusType getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusType status) {
+		this.status = status;
+	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public String getIdOrganisation() {
 		return idOrganisation;
 	}
+
 	public void setIdOrganisation(String idOrganisation) {
 		this.idOrganisation = idOrganisation;
 	}
@@ -98,19 +122,15 @@ public class ValeurTest {
 		this.mesure = mesure;
 	}
 
-
-
-	public Machine getMachine() {
-		return machine;
+	public GieglanFile getGieglanFile() {
+		return gieglanFile;
 	}
 
-
-
-	public void setMachine(Machine machine) {
-		this.machine = machine;
+	public void setGieglanFile(GieglanFile gieglanFile) {
+		this.gieglanFile = gieglanFile;
 	}
-	
-	
 	
 	
 }
+
+

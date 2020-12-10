@@ -2,7 +2,9 @@ package com.catis.model;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -40,6 +43,16 @@ public class Visite extends JournalData {
 	
 	@ManyToOne
 	private CarteGrise carteGrise;
+	
+	public List<RapportDeVisite> getRapportDeVisites() {
+		return rapportDeVisites;
+	}
+
+	public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
+		this.rapportDeVisites = rapportDeVisites;
+	}
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+	private List<RapportDeVisite> rapportDeVisites;
 
 	public Visite() {
 	

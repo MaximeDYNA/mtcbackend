@@ -1,9 +1,12 @@
 package com.catis.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,36 +17,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_categorietest")
 public class CategorieTest {
 	
-	@Id
-	private String idCategorieTest;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long idCategorieTest;
+
 	private String libelle;
+
 	private String description;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="categorietest")
-	@JsonIgnore
-	Set<Mesure> mesures;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="categorieTest")
 	@JsonIgnore
-	Set<CategorieTestMachine> categorieTestMachine;
+	private Set<CategorieTestMachine> categorieTestMachines;
+	
+	@OneToMany(mappedBy = "categorieTest")
+	private Set<CategorieTestVehicule> categorieTestVehicules;
 
-	public CategorieTest() {
-	}
-
-	public CategorieTest(String idCategorieTest, String libelle, String description, Set<Mesure> mesures,
-			Set<CategorieTestMachine> categorieTestMachine) {
-		this.idCategorieTest = idCategorieTest;
-		this.libelle = libelle;
-		this.description = description;
-		this.mesures = mesures;
-		this.categorieTestMachine = categorieTestMachine;
-	}
-
-	public String getIdCategorieTest() {
+	public Long getIdCategorieTest() {
 		return idCategorieTest;
 	}
 
-	public void setIdCategorieTest(String idCategorieTest) {
+	public void setIdCategorieTest(Long idCategorieTest) {
 		this.idCategorieTest = idCategorieTest;
 	}
 
@@ -63,20 +55,36 @@ public class CategorieTest {
 		this.description = description;
 	}
 
-	public Set<Mesure> getMesures() {
-		return mesures;
+	public Set<CategorieTestMachine> getCategorieTestMachines() {
+		return categorieTestMachines;
 	}
 
-	public void setMesures(Set<Mesure> mesures) {
-		this.mesures = mesures;
+	public void setCategorieTestMachines(Set<CategorieTestMachine> categorieTestMachines) {
+		this.categorieTestMachines = categorieTestMachines;
 	}
 
-	public Set<CategorieTestMachine> getCategorieTestMachine() {
-		return categorieTestMachine;
+	public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+		return categorieTestVehicules;
 	}
 
-	public void setCategorieTestMachine(Set<CategorieTestMachine> categorieTestMachine) {
-		this.categorieTestMachine = categorieTestMachine;
+	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+		this.categorieTestVehicules = categorieTestVehicules;
 	}
+
+	public CategorieTest(Long idCategorieTest, String libelle, String description,
+			Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules) {
+		super();
+		this.idCategorieTest = idCategorieTest;
+		this.libelle = libelle;
+		this.description = description;
+		this.categorieTestMachines = categorieTestMachines;
+		this.categorieTestVehicules = categorieTestVehicules;
+	}
+
+	public CategorieTest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 }

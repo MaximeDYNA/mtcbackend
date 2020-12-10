@@ -55,9 +55,6 @@ public class Adresse extends JournalData{
 	}
 
 
-
-	
-
 	public Long getAdresseId() {
 		return adresseId;
 	}

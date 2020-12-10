@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -13,8 +15,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_caisse")
 public class Caisse {
-	@Id
-	private String caisse_id;
+	
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long caisse_id;
 	
 	private String description;
 	private String idOrganisation; 
@@ -22,29 +25,14 @@ public class Caisse {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="caisse")
 	@JsonIgnore
 	private Set<CaissierCaisse> caissiercaisses;
-	
-	
-	
-	public Caisse() {
+
+	public Long getCaisse_id() {
+		return caisse_id;
 	}
 
-	
-
-
-
-	public Caisse(String caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses
-			) {
-		super();
+	public void setCaisse_id(Long caisse_id) {
 		this.caisse_id = caisse_id;
-		this.description = description;
-		this.idOrganisation = idOrganisation;
-		this.caissiercaisses = caissiercaisses;
-		
 	}
-
-
-
-
 
 	public String getDescription() {
 		return description;
@@ -52,14 +40,6 @@ public class Caisse {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getIdCaisse() {
-		return caisse_id;
-	}
-
-	public void setIdCaisse(String idCaisse) {
-		this.caisse_id = idCaisse;
 	}
 
 	public String getIdOrganisation() {
@@ -70,37 +50,26 @@ public class Caisse {
 		this.idOrganisation = idOrganisation;
 	}
 
-
-
 	public Set<CaissierCaisse> getCaissiercaisses() {
 		return caissiercaisses;
 	}
 
+	public Caisse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
+	public Caisse(Long caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses) {
+		super();
+		this.caisse_id = caisse_id;
+		this.description = description;
+		this.idOrganisation = idOrganisation;
+		this.caissiercaisses = caissiercaisses;
+	}
 
 	public void setCaissiercaisses(Set<CaissierCaisse> caissiercaisses) {
 		this.caissiercaisses = caissiercaisses;
 	}
-
-
-
-
-
-	public String getCaisse_id() {
-		return caisse_id;
-	}
-
-
-
-
-
-	public void setCaisse_id(String caisse_id) {
-		this.caisse_id = caisse_id;
-	}
-
-
-
-
-
-
+	
+	
 }

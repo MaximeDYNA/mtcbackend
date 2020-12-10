@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -16,8 +18,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_caissier")
 public class Caissier {
-	@Id
-	private String caissier_id;
+
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long caissier_id;
+	
 	private String codeCaissier;
 	private String idOrganisation;
 
@@ -37,7 +41,7 @@ public class Caissier {
 	public Caissier() {
 	}
 
-	public Caissier(String caissier_id, String codeCaissier, String idOrganisation, Partenaire partenaire,
+	public Caissier(Long caissier_id, String codeCaissier, String idOrganisation, Partenaire partenaire,
 			Utilisateur user, Set<CaissierCaisse> caissierCaisses) {
 		super();
 		this.caissier_id = caissier_id;
@@ -49,11 +53,11 @@ public class Caissier {
 		
 	}
 
-	public String getCaissier_id() {
+	public Long getCaissier_id() {
 		return caissier_id;
 	}
 
-	public void setCaissier_id(String idCaissier) {
+	public void setCaissier_id(Long idCaissier) {
 		this.caissier_id = idCaissier;
 	}
 

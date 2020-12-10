@@ -54,22 +54,18 @@ public class Produit extends JournalData{
 	@JoinColumn(name="categorieProduitId")
 	private CategorieProduit categorieProduit;
 	
-	
+	@OneToMany(mappedBy = "produit")
+	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
+
 	public Produit() {
-		
-	}
-	public Produit(ProduitView p) {
-		
-		this.libelle = p.getLibelle();
-		this.description = p.getDescription();
-		this.prix = p.getPrix();
-		this.delaiValidite = p.getDelaiValidite();
-		this.categorieProduit.setCategorieProduitId(p.getCategorieProduitId());
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
 			Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
-			Set<Posales> posales, CategorieProduit categorieProduit) {
+			Set<Posales> posales, CategorieProduit categorieProduit,
+			Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
 		super();
 		this.produitId = produitId;
 		this.libelle = libelle;
@@ -82,27 +78,15 @@ public class Produit extends JournalData{
 		this.taxeProduit = taxeProduit;
 		this.posales = posales;
 		this.categorieProduit = categorieProduit;
+		this.categorieVehiculeProduits = categorieVehiculeProduits;
 	}
-
 
 	public Long getProduitId() {
 		return produitId;
 	}
 
-
-
-	public void setProduit_id(Long produit_id) {
-		this.produitId = produit_id;
-	}
-
-
-
-	public CategorieProduit getCategorieProduit() {
-		return categorieProduit;
-	}
-
-	public void setCategorieProduit(CategorieProduit categorieProduit) {
-		this.categorieProduit = categorieProduit;
+	public void setProduit_id(Long produitId) {
+		this.produitId = produitId;
 	}
 
 	public String getLibelle() {
@@ -116,14 +100,33 @@ public class Produit extends JournalData{
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public double getPrix() {
 		return prix;
 	}
+
 	public void setPrix(double prix) {
 		this.prix = prix;
+	}
+
+	public int getDelaiValidite() {
+		return delaiValidite;
+	}
+
+	public void setDelaiValidite(int delaiValidite) {
+		this.delaiValidite = delaiValidite;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public Set<DetailVente> getDetailVente() {
@@ -134,75 +137,45 @@ public class Produit extends JournalData{
 		this.detailVente = detailVente;
 	}
 
-
-
-	public int getDelaiValidite() {
-		return delaiValidite;
-	}
-
-
-
-	public void setDelaiValidite(int delaiValidite) {
-		this.delaiValidite = delaiValidite;
-	}
-
-
-
-	public Set<TaxeProduit> getTaxeProduit() {
-		return taxeProduit;
-	}
-
-
-
-	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
-		this.taxeProduit = taxeProduit;
-	}
-
-
-
 	public Set<CarteGrise> getCarteGrise() {
 		return carteGrise;
 	}
-
-
 
 	public void setCarteGrise(Set<CarteGrise> carteGrise) {
 		this.carteGrise = carteGrise;
 	}
 
-
-
-	public void setProduitId(Long produitId) {
-		this.produitId = produitId;
+	public Set<TaxeProduit> getTaxeProduit() {
+		return taxeProduit;
 	}
 
-
+	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
+		this.taxeProduit = taxeProduit;
+	}
 
 	public Set<Posales> getPosales() {
 		return posales;
 	}
 
-
-
 	public void setPosales(Set<Posales> posales) {
 		this.posales = posales;
 	}
 
-
-
-	public String getImg() {
-		return img;
+	public CategorieProduit getCategorieProduit() {
+		return categorieProduit;
 	}
 
-
-
-	public void setImg(String img) {
-		this.img = img;
+	public void setCategorieProduit(CategorieProduit categorieProduit) {
+		this.categorieProduit = categorieProduit;
 	}
 
+	public Set<CategorieVehiculeProduit> getCategorieVehiculeProduits() {
+		return categorieVehiculeProduits;
+	}
 
-
-	
+	public void setCategorieVehiculeProduits(Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
+		this.categorieVehiculeProduits = categorieVehiculeProduits;
+	}
 	
 	
 }

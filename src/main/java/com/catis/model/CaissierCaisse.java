@@ -4,6 +4,8 @@ package com.catis.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,8 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_caissiercaisse")
 public class CaissierCaisse {
-	@Id
-	private String caissier_caisse_id;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long caissier_caisse_id;
 	
 	private String idOrganisation;
 	
@@ -33,7 +35,7 @@ public class CaissierCaisse {
 		
 	}
 
-	public CaissierCaisse(String caissier_caisse_id, String idOrganisation, Caisse caisse, Caissier caissier) {
+	public CaissierCaisse(Long caissier_caisse_id, String idOrganisation, Caisse caisse, Caissier caissier) {
 		super();
 		this.caissier_caisse_id = caissier_caisse_id;
 		this.idOrganisation = idOrganisation;
@@ -42,11 +44,11 @@ public class CaissierCaisse {
 		
 	}
 
-	public String getCaissier_caisse_id() {
+	public Long getCaissier_caisse_id() {
 		return caissier_caisse_id;
 	}
 
-	public void setCaissier_caisse_id(String caissier_caisse_id) {
+	public void setCaissier_caisse_id(Long caissier_caisse_id) {
 		this.caissier_caisse_id = caissier_caisse_id;
 	}
 

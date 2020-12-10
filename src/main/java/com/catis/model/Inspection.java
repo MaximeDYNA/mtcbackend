@@ -1,13 +1,16 @@
 package com.catis.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -42,6 +45,9 @@ public class Inspection extends JournalData {
 	
 	@OneToOne
 	private Visite visite;
+	
+	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
+	private Set<GieglanFile> gieglanFiles;
 
 	public Inspection() {
 		super();
@@ -60,17 +66,9 @@ public class Inspection extends JournalData {
 		this.position = i.getPosition();
 	}
 
-
-
-
-
-
-
-
-
 	public Inspection(Long idInspection, Date dateDebut, Date dateFin, String signature, Produit produit,
 			double kilometrage, String chassis, int essieux, String position, Controleur controleur, Ligne ligne,
-			Visite visite) {
+			Visite visite, Set<GieglanFile> gieglanFiles) {
 		super();
 		this.idInspection = idInspection;
 		this.dateDebut = dateDebut;
@@ -84,6 +82,15 @@ public class Inspection extends JournalData {
 		this.controleur = controleur;
 		this.ligne = ligne;
 		this.visite = visite;
+		this.gieglanFiles = gieglanFiles;
+	}
+
+	public Long getIdInspection() {
+		return idInspection;
+	}
+
+	public void setIdInspection(Long idInspection) {
+		this.idInspection = idInspection;
 	}
 
 	public Date getDateDebut() {
@@ -110,6 +117,45 @@ public class Inspection extends JournalData {
 		this.signature = signature;
 	}
 
+	public Produit getProduit() {
+		return produit;
+	}
+
+	public void setProduit(Produit produit) {
+		this.produit = produit;
+	}
+
+	public double getKilometrage() {
+		return kilometrage;
+	}
+
+	public void setKilometrage(double kilometrage) {
+		this.kilometrage = kilometrage;
+	}
+
+	public String getChassis() {
+		return chassis;
+	}
+
+	public void setChassis(String chassis) {
+		this.chassis = chassis;
+	}
+
+	public int getEssieux() {
+		return essieux;
+	}
+
+	public void setEssieux(int essieux) {
+		this.essieux = essieux;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
 
 	public Controleur getControleur() {
 		return controleur;
@@ -135,104 +181,11 @@ public class Inspection extends JournalData {
 		this.visite = visite;
 	}
 
-
-
-
-	public Long getIdInspection() {
-		return idInspection;
+	public Set<GieglanFile> getGieglanFiles() {
+		return gieglanFiles;
 	}
 
-
-
-
-	public void setIdInspection(Long idInspection) {
-		this.idInspection = idInspection;
+	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
+		this.gieglanFiles = gieglanFiles;
 	}
-
-
-
-
-	public Produit getProduit() {
-		return produit;
-	}
-
-
-
-
-	public void setProduit(Produit produit) {
-		this.produit = produit;
-	}
-
-
-
-
-	public double getKilometrage() {
-		return kilometrage;
-	}
-
-
-
-
-	public void setKilometrage(double kilometrage) {
-		this.kilometrage = kilometrage;
-	}
-
-
-
-
-	public String getChassis() {
-		return chassis;
-	}
-
-
-
-
-	public void setChassis(String chassis) {
-		this.chassis = chassis;
-	}
-
-
-
-
-	public int getEssieux() {
-		return essieux;
-	}
-
-
-
-
-	public void setEssieux(int essieux) {
-		this.essieux = essieux;
-	}
-
-
-
-
-
-
-
-
-
-	public String getPosition() {
-		return position;
-	}
-
-
-
-
-
-
-
-
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-
-
-
-	
-	
-	
 }
