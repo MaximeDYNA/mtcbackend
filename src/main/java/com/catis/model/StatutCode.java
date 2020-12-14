@@ -1,16 +1,22 @@
 package com.catis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 
 
 @Entity
 @Table(name="t_statut_code")
-public class StatutCode {
+@EntityListeners(AuditingEntityListener.class)
+public class StatutCode extends JournalData{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

@@ -1,18 +1,26 @@
 package com.catis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 @Entity
 @Table(name="t_lignemachine")
-public class LigneMachine {
+@EntityListeners(AuditingEntityListener.class)
+public class LigneMachine extends JournalData {
 	/*table pivot qui nous permet de savoir quels sont les machines par lignes et les lignes
 		par machine*/
-	@Id
-	private String ligneMachine;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long ligneMachine;
 	private String idOrganisation;
 	@ManyToOne
 	@JoinColumn(name="idMachine")
@@ -31,18 +39,18 @@ public class LigneMachine {
 	public LigneMachine() {
 
 	}
-	public LigneMachine(String ligneMachine, Machine machine, Ligne ligne) {
+	public LigneMachine(Long ligneMachine, Machine machine, Ligne ligne) {
 		super();
 		this.ligneMachine = ligneMachine;
 		this.machine = machine;
 		this.ligne = ligne;
 	}
 
-	public String getLigneMachine() {
+	public Long getLigneMachine() {
 		return ligneMachine;
 	}
 
-	public void setLigneMachine(String ligneMachine) {
+	public void setLigneMachine(Long ligneMachine) {
 		this.ligneMachine = ligneMachine;
 	}
 

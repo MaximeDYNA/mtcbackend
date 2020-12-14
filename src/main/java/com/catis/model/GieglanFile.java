@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -15,11 +16,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 /**
  * @author AubryYvan
  */
 @Entity
-public class GieglanFile {
+@EntityListeners(AuditingEntityListener.class)
+public class GieglanFile extends JournalData {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

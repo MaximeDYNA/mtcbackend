@@ -35,7 +35,8 @@ public class Visite extends JournalData {
 	private LocalDateTime dateFin;
 	private int statut;
 	private String idOrganisation;
-	@Column(columnDefinition = "boolean default true")
+
+	@Column(columnDefinition = "bit default 1")
 	private boolean encours;
 	
 	@ManyToOne
