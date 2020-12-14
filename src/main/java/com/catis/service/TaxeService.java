@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 import com.catis.repository.TaxeProduitRepository;
+import com.catis.repository.TaxeRepository;
 
 @Service
 public class TaxeService {
 
 	@Autowired
 	private TaxeProduitRepository taxeProduitRepository;
+	@Autowired
+	private TaxeRepository taxeRepository;
 	
 	public List<Taxe> taxListByLibelle(String libelle){
 		List<Taxe> taxes = new ArrayList<>();
@@ -24,5 +27,7 @@ public class TaxeService {
 		
 		return taxes;
 	}
-	
+	public Taxe findByNom(String nom) {
+		return taxeRepository.findByNom(nom);
+	}
 }

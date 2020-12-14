@@ -118,13 +118,27 @@
 		</h3>
 	  </div>
 	  <div class="col-6" style="border: 2px solid black">
-	  	<p class="text-left font-weight-bold">
-		  	Client/ Customer: <br>
-			Adresse / Address: <br>
-			Montant payé HT / Amount ex.VAT : <br>
-			TVA / VAT : <br>
-			Montant payé TTC / Amount inc. VAT: <br>
-		</p>
+	  	<span class="text-left font-weight-bold">
+		  	Client/ Customer:
+		</span>
+			<span th:utext="${owner}"></span><br>
+		<span class="text-left font-weight-bold">
+			Adresse / Address:
+		</span> 
+			<span th:utext="${adresse}"></span><br>
+			<span style="margin-left: 150px;" th:utext="${tel}"></span><br>
+			
+		<span class="text-left font-weight-bold">
+			Montant payé HT / Amount ex.VAT : 
+		</span>
+			<span th:utext="${prixHt}"></span><br>
+		<span class="text-left font-weight-bold">
+			TVA / VAT : 
+		</span> <span th:utext="${taxe}"></span><br>
+		<span class="text-left font-weight-bold">
+			Montant payé TTC / Amount inc. VAT: 
+		</span><span th:utext="${prixHt} + ${prixHt} * ${taxe}/100"></span><br>
+		
 	  </div>
     
   </div>
@@ -174,14 +188,20 @@
 			</h4>
 			<table th:each="categorieTest : ${categorieTests}" class="table">
 	            <tr th:if="${categorieTest.libelle != 'pollution' and categorieTest.libelle != 'freins' }">
-	            	<table  class="table">
-	            		<tr th:each="testList : ${categorieTests.testList}">	
-	            			<th th:text="${categorieTest.libelle}"></th>             		
-		            		<th th:text="${testList.libelle}"></th>
+	            	<table  class="table align-top" style="border: 1px solid black;">
+	            		<tr >	
+	            			<td class="text-center font-weight-bold"
+	            			 th:text="${categorieTest.libelle}"></td>
+	            			<td class="text-center font-weight-bold"
+	            			 th:each="testList : ${categorieTests.testlist}">            		
+		            			<span th:text="${testList.libelle}"></span>
+		            		</td>
 	            		</tr>
-	            		<tr th:each="testList : ${categorieTests.testList}">
+	            		<tr>
 	            			<td></td>
-		            		<td th:text="${test.valeur}"></td>
+		            		<td class="text-center" th:each="testList : ${categorieTests.testlist}">
+		            			<span th:text="${testList.valeur}"></span>
+		            		</td>
 	            		</tr>
 	            	</table>
 	            </tr>
@@ -190,10 +210,10 @@
 		            	<tr>
 		            		<td th th:text="${categorieTest.libelle}" >	         				            		
 		            		</td>
-		            		<td th:each="testList : ${categorieTest.testList}">	
+		            		<td th:each="testList : ${categorieTest.testlist}">	
 		            			<th th:text="${testList.libelle}"></th>             		
 		            		</td>
-		            		<td >	
+		            		<td>	
 		            			<th th:text="${testList.valeur}"></th>             		
 		            		</td>
 		            	</tr>

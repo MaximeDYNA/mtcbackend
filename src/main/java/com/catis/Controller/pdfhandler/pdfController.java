@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,10 +23,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.catis.Controller.configuration.QRCodeGenerator;
 import com.catis.model.Inspection;
+import com.catis.model.Taxe;
 import com.catis.model.Visite;
+import com.catis.objectTemporaire.CategorieTests;
 import com.catis.objectTemporaire.Listview;
+import com.catis.objectTemporaire.TestList;
 import com.catis.service.InspectionService;
 import com.catis.service.PdfService;
+import com.catis.service.TaxeService;
+import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
 import com.google.zxing.WriterException;
 import com.lowagie.text.DocumentException;
@@ -37,19 +44,25 @@ public class pdfController {
 	 	
 	    private PdfService pdfService;
 	    private InspectionService inspectionService;
+	    private VenteService venteService;
+	    private TaxeService taxeService;
 	    
 	    @Autowired
-	    public pdfController(VisiteService visiteService, PdfService pdfService, InspectionService inspection) {
+	    public pdfController(VisiteService visiteService, PdfService pdfService,
+	    		InspectionService inspection, VenteService venteService, TaxeService taxProduitService) {
 			super();
 			this.visiteService = visiteService;
 			this.pdfService = pdfService;
 			this.inspectionService = inspection;
+			this.venteService = venteService;
+			this.taxeService = taxProduitService;
 		}
 		@GetMapping("/visites/{id}")
 	    public ModelAndView studentsView(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
 	    	
 	    		Visite v = visiteService.findById(id);
-	    		Inspection i = inspectionService.findInspectionByVisite(v.getIdVisite()); 
+	    		Inspection i = inspectionService.findInspectionByVisite(v.getIdVisite());
+	    		Taxe tp = taxeService.findByNom("TVA");
 		    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YY HH:mm");
 		    	String pattern = "dd/MM/YY";
 		    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -75,7 +88,21 @@ public class pdfController {
 		        modelAndView.addObject("aff", v.getCarteGrise().getCentre_ssdt() );
 		        modelAndView.addObject("owner", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getNom() +" "+ 
 		        								v.getCarteGrise().getProprietaireVehicule().getPartenaire().getPrenom());
+		        modelAndView.addObject("adresse", v.getCarteGrise().getCommune()); 
+		        modelAndView.addObject("tel", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getTelephone()); 
+		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()); 		
+		        modelAndView.addObject("taxe", tp.getValeur());
+		        ArrayList testlist =  new ArrayList() {{
+		            add(new TestList("eff ag",10));
+		            add(new TestList("eff ad",20));
+		            add(new TestList("eff rg",20));
+		        }};
+		        CategorieTests ct = new CategorieTests( "suspension", testlist);
+		        
+		        modelAndView.addObject("categorieTests", ct );
+		        
 		        modelAndView.setViewName("visites");
+		        
 		        return modelAndView;
 			
 	    	
