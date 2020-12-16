@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Partenaire extends JournalData{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long partenaireId;
 	@NotEmpty
 	
@@ -100,7 +100,7 @@ public class Partenaire extends JournalData{
 			String permiDeConduire, String cni, Organisation organisation,
 			Set<ProprietaireVehicule> proprietaireVehicule, Set<Utilisateur> utilisateurs, Set<Controleur> controleurs,
 			Set<Caissier> caissiers) {
-		super();
+		
 		this.partenaireId = id;
 		this.nom = nom;
 		this.prenom = prenom;

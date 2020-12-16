@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CategorieProduit extends JournalData {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long categorieProduitId;
 	private String libelle;
 	private String description;
@@ -32,13 +32,11 @@ public class CategorieProduit extends JournalData {
 
 	
 	public CategorieProduit() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
 	public CategorieProduit(Long categorieProduitId, String libelle, String description, Set<Produit> produits) {
-		super();
 		this.categorieProduitId = categorieProduitId;
 		this.libelle = libelle;
 		this.description = description;

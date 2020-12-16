@@ -18,16 +18,16 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class StatutCode extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String libelle;
 	private String type;
 	public StatutCode() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 	public StatutCode(Long id, String libelle, String type) {
-		super();
+	
 		this.id = id;
 		this.libelle = libelle;
 		this.type = type;

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Vehicule extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long vehiculeId;
 	private String typeVehicule;
 	private String carrosserie;
@@ -52,7 +52,7 @@ public class Vehicule extends JournalData {
 	}
 
 	public Vehicule(CarteGriseReceived cgr) {
-		super();
+		
 		this.typeVehicule = cgr.getTypeVehicule();
 		this.vehiculeId = cgr.getVehiculeId();
 		this.carrosserie = cgr.getCarrosserie();

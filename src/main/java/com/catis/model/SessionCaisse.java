@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class SessionCaisse extends JournalData {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long sessionCaisseId;
 	
 	
@@ -84,7 +84,7 @@ public class SessionCaisse extends JournalData {
 	public SessionCaisse(Long sessionCaisseId, Date dateHeureOuverture, Date dateHeureFermeture,
 			Organisation organisationId, Utilisateur user, double montantOuverture, boolean active,
 			Set<OperationCaisse> operationCaisse, Set<Vente> vente, Set<Hold> holds, Set<Posales> posales) {
-		super();
+		
 		this.sessionCaisseId = sessionCaisseId;
 		this.dateHeureOuverture = dateHeureOuverture;
 		this.dateHeureFermeture = dateHeureFermeture;

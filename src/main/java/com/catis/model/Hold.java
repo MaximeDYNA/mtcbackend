@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Hold extends JournalData {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long holdId;
 	
 	@Column(unique=true)
@@ -52,7 +52,7 @@ public class Hold extends JournalData {
 
 
 	public Hold(Long holdId, Long number, Date time, SessionCaisse sessionCaisse) {
-		super();
+
 		this.holdId = holdId;
 		this.number = number;
 		this.time = time;

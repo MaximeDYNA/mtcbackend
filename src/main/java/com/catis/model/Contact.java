@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Contact extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long contactId;
 	
 	private String description;
@@ -46,7 +46,6 @@ public class Contact extends JournalData {
 	}
 
 	public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
-		super();
 		this.contactId = contactId;
 		this.description = description;
 		this.partenaire = partenaire;

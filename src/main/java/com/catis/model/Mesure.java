@@ -26,7 +26,9 @@ public class Mesure extends JournalData {
 	private Long idMesure;
 	private String code;
 	private String description;
-	private String idOrganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="mesure")
 	@JsonIgnore
@@ -41,23 +43,31 @@ public class Mesure extends JournalData {
 	
 	
 	public Mesure() {
-		super();
+	
 		// TODO Auto-generated constructor stub
 	}
 
 
 
-	public Mesure(Long idMesure, String code, String description, String idOrganisation, Set<ValeurTest> valeurtests,
+	
+
+
+
+	public Mesure(Long idMesure, String code, String description, Organisation organisation, Set<ValeurTest> valeurtests,
 			Formule formule, CategorieTestVehicule categorieTestVehicule) {
-		super();
+		
 		this.idMesure = idMesure;
 		this.code = code;
 		this.description = description;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.valeurtests = valeurtests;
 		this.formule = formule;
 		this.categorieTestVehicule = categorieTestVehicule;
 	}
+
+
+
+
 
 
 
@@ -97,15 +107,26 @@ public class Mesure extends JournalData {
 
 
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+
+
+
+	public Organisation getOganisation() {
+		return organisation;
 	}
 
 
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+
+
+	public void setOganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
+
+
+
+
 
 
 

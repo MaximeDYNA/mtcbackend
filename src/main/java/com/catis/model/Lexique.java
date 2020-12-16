@@ -3,14 +3,20 @@ package com.catis.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 @Entity
-public class Lexique {
+@EntityListeners(AuditingEntityListener.class)
+public class Lexique extends JournalData {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,4 +37,87 @@ public class Lexique {
 	private Lexique parent;
 	
 	private String decision;
+
+	public Lexique() {
+	
+	}
+
+	public Lexique(Long id, String libelle, String code, Boolean visuel, VersionLexique versionLexique,
+			Set<Lexique> childs, Lexique parent, String decision) {
+		
+		this.id = id;
+		this.libelle = libelle;
+		this.code = code;
+		Visuel = visuel;
+		this.versionLexique = versionLexique;
+		this.childs = childs;
+		this.parent = parent;
+		this.decision = decision;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Boolean getVisuel() {
+		return Visuel;
+	}
+
+	public void setVisuel(Boolean visuel) {
+		Visuel = visuel;
+	}
+
+	public VersionLexique getVersionLexique() {
+		return versionLexique;
+	}
+
+	public void setVersionLexique(VersionLexique versionLexique) {
+		this.versionLexique = versionLexique;
+	}
+
+	public Set<Lexique> getChilds() {
+		return childs;
+	}
+
+	public void setChilds(Set<Lexique> childs) {
+		this.childs = childs;
+	}
+
+	public Lexique getParent() {
+		return parent;
+	}
+
+	public void setParent(Lexique parent) {
+		this.parent = parent;
+	}
+
+	public String getDecision() {
+		return decision;
+	}
+
+	public void setDecision(String decision) {
+		this.decision = decision;
+	}
+	
+	
 }

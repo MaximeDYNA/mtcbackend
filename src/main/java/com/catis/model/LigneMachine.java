@@ -21,26 +21,23 @@ public class LigneMachine extends JournalData {
 		par machine*/
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ligneMachine;
-	private String idOrganisation;
 	@ManyToOne
 	@JoinColumn(name="idMachine")
 	private Machine machine;
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
-	}
+	
 
 	@ManyToOne
 	@JoinColumn(name="idLigne")
 	private Ligne ligne;
 
+	@ManyToOne
+	private Organisation organisation;
+
 	public LigneMachine() {
 
 	}
 	public LigneMachine(Long ligneMachine, Machine machine, Ligne ligne) {
-		super();
+		
 		this.ligneMachine = ligneMachine;
 		this.machine = machine;
 		this.ligne = ligne;
@@ -68,6 +65,12 @@ public class LigneMachine extends JournalData {
 
 	public void setLigne(Ligne ligne) {
 		this.ligne = ligne;
+	}
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
 
 	

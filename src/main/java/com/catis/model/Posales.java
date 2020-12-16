@@ -23,7 +23,7 @@ import com.sun.istack.NotNull;
 public class Posales extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long posalesId;
 	
 	
@@ -49,7 +49,7 @@ public class Posales extends JournalData {
 	
 	public Posales(Long posalesId, Produit produit, boolean status, SessionCaisse sessionCaisse, Hold hold,
 			String reference) {
-		super();
+		
 		this.posalesId = posalesId;
 		this.produit = produit;
 		this.status = status;

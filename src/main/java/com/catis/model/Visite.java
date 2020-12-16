@@ -34,7 +34,9 @@ public class Visite extends JournalData {
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private int statut;
-	private String idOrganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 
 	@Column(columnDefinition = "bit default 1")
 	private boolean encours;
@@ -66,20 +68,27 @@ public class Visite extends JournalData {
 	
 	}
 
+	
+
+
+
 	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
-			String idOrganisation, Caissier caissier, CarteGrise carteGrise) {
-		super();
+			Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
+			CarteGrise carteGrise, List<RapportDeVisite> rapportDeVisites) {
+	
 		this.idVisite = idVisite;
 		this.contreVisite = contreVisite;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.statut = statut;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
+		this.encours = encours;
 		this.caissier = caissier;
+		this.inspection = inspection;
+		this.process = process;
 		this.carteGrise = carteGrise;
+		this.rapportDeVisites = rapportDeVisites;
 	}
-
-
 
 	public boolean isContreVisite() {
 		return contreVisite;
@@ -145,12 +154,29 @@ public class Visite extends JournalData {
 		this.statut = statut;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
+	public Inspection getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(Inspection inspection) {
+		this.inspection = inspection;
+	}
+
+	public VerbalProcess getProcess() {
+		return process;
+	}
+
+	public void setProcess(VerbalProcess process) {
+		this.process = process;
 	}
 
 	public Caissier getCaissier() {

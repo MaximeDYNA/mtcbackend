@@ -22,7 +22,8 @@ public class CategorieTestMachine extends JournalData {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategorieTestMachine;
 	
-	private String idOrganisation;
+	@ManyToOne
+	private Organisation organisation;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idcategorietest")
@@ -33,18 +34,20 @@ public class CategorieTestMachine extends JournalData {
 	private Machine machine;
 
 	public CategorieTestMachine() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CategorieTestMachine(Long idCategorieTestMachine, String idOrganisation, CategorieTest categorieTest,
+	
+
+	public CategorieTestMachine(Long idCategorieTestMachine, Organisation organisation, CategorieTest categorieTest,
 			Machine machine) {
-		super();
 		this.idCategorieTestMachine = idCategorieTestMachine;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.categorieTest = categorieTest;
 		this.machine = machine;
 	}
+
+
 
 	public Long getIdCategorieTestMachine() {
 		return idCategorieTestMachine;
@@ -54,13 +57,18 @@ public class CategorieTestMachine extends JournalData {
 		this.idCategorieTestMachine = idCategorieTestMachine;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
+
+
 
 	public CategorieTest getCategorieTest() {
 		return categorieTest;

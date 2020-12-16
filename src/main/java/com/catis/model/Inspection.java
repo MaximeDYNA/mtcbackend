@@ -24,7 +24,7 @@ import com.catis.objectTemporaire.InpectionReceived;
 @Table(name="t_inspection")
 public class Inspection extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idInspection;
 	private Date dateDebut;
 	private Date dateFin;
@@ -41,6 +41,9 @@ public class Inspection extends JournalData {
 	private Controleur controleur;
 
 	@ManyToOne
+	private Organisation organisation;
+	
+	@ManyToOne
 	private Ligne ligne;
 	
 	@OneToOne
@@ -50,12 +53,12 @@ public class Inspection extends JournalData {
 	private Set<GieglanFile> gieglanFiles;
 
 	public Inspection() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
 	public Inspection(InpectionReceived i) {
-		super();
+		
 		this.idInspection = i.getIdInspection();
 		this.dateDebut = i.getDateDebut();
 		this.dateFin = i.getDateFin();
@@ -66,9 +69,10 @@ public class Inspection extends JournalData {
 		this.position = i.getPosition();
 	}
 
+	
 	public Inspection(Long idInspection, Date dateDebut, Date dateFin, String signature, Produit produit,
-			double kilometrage, String chassis, int essieux, String position, Controleur controleur, Ligne ligne,
-			Visite visite, Set<GieglanFile> gieglanFiles) {
+			double kilometrage, String chassis, int essieux, String position, Controleur controleur,
+			Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles) {
 		super();
 		this.idInspection = idInspection;
 		this.dateDebut = dateDebut;
@@ -80,6 +84,7 @@ public class Inspection extends JournalData {
 		this.essieux = essieux;
 		this.position = position;
 		this.controleur = controleur;
+		this.organisation = organisation;
 		this.ligne = ligne;
 		this.visite = visite;
 		this.gieglanFiles = gieglanFiles;
@@ -188,4 +193,14 @@ public class Inspection extends JournalData {
 	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
 		this.gieglanFiles = gieglanFiles;
 	}
+
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+	
+	
 }

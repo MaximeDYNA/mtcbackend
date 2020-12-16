@@ -36,4 +36,71 @@ public class VersionLexique extends JournalData {
 
 	@OneToOne(mappedBy = "visite")
 	private VerbalProcess process;
+
+	public VersionLexique() {
+		
+		// TODO Auto-generated constructor stub
+	}
+
+	public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
+			List<RapportDeVisite> rapportDeVisites, VerbalProcess process) {
+	
+		this.id = id;
+		this.libelle = libelle;
+		this.date = date;
+		this.lexiques = lexiques;
+		this.rapportDeVisites = rapportDeVisites;
+		this.process = process;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Set<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+	public void setLexiques(Set<Lexique> lexiques) {
+		this.lexiques = lexiques;
+	}
+
+	public List<RapportDeVisite> getRapportDeVisites() {
+		return rapportDeVisites;
+	}
+
+	public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
+		this.rapportDeVisites = rapportDeVisites;
+	}
+
+	public VerbalProcess getProcess() {
+		return process;
+	}
+
+	public void setProcess(VerbalProcess process) {
+		this.process = process;
+	}
+	
+	
+	
 }

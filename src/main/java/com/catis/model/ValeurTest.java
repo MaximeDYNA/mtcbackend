@@ -1,27 +1,31 @@
 package com.catis.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.GieglanFile.StatusType;
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity @Table(name = "t_valeurtest")
 @EntityListeners(AuditingEntityListener.class)
 public class ValeurTest extends JournalData{
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "uuid")
 	private Long idValeurTest;
 
 	private String code;
@@ -36,7 +40,8 @@ public class ValeurTest extends JournalData{
 
 	private String description;
 
-	private String idOrganisation;
+	@ManyToOne
+	private Organisation organisation;
 	
 	@ManyToOne
 	private Mesure mesure;
@@ -45,23 +50,11 @@ public class ValeurTest extends JournalData{
 	private GieglanFile gieglanFile;
 
 	public ValeurTest() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
-	public ValeurTest(Long idValeurTest, String code, String valeur, Integer crc, StatusType status, String description,
-			String idOrganisation, Mesure mesure, GieglanFile gieglanFile) {
-		super();
-		this.idValeurTest = idValeurTest;
-		this.code = code;
-		this.valeur = valeur;
-		this.crc = crc;
-		this.status = status;
-		this.description = description;
-		this.idOrganisation = idOrganisation;
-		this.mesure = mesure;
-		this.gieglanFile = gieglanFile;
-	}
+	
 
 	public Long getIdValeurTest() {
 		return idValeurTest;
@@ -110,14 +103,20 @@ public class ValeurTest extends JournalData{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
+
+
 
 	public Mesure getMesure() {
 		return mesure;

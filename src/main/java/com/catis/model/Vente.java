@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Vente extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idVente;
 	private double montantTotal;
 	private double montantHT;
@@ -58,7 +58,7 @@ public class Vente extends JournalData{
 	
 	
 	public Vente() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
@@ -73,7 +73,7 @@ public class Vente extends JournalData{
 	public Vente(Long idVente, double montantTotal, double montantHT, Client client, Vendeur vendeur,
 			@NotEmpty @NotNull Contact contact, SessionCaisse sessionCaisse, Set<OperationCaisse> operationCaisse,
 			Set<DetailVente> detailventes, String numFacture) {
-		super();
+		
 		this.idVente = idVente;
 		this.montantTotal = montantTotal;
 		this.montantHT = montantHT;

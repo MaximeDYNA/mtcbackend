@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Taxe extends JournalData{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long taxeId;
 	
 	private String nom;
@@ -33,14 +33,9 @@ public class Taxe extends JournalData{
 	@OneToMany(mappedBy="taxe")
 	@JsonIgnore
 	private Set<TaxeProduit> taxeProduit;
-	
-	
-	
-
-	
 
 	public Taxe(Long taxeId, String nom, String description, double valeur, Set<TaxeProduit> taxeProduit) {
-		super();
+		
 		this.taxeId = taxeId;
 		this.nom = nom;
 		this.description = description;
@@ -48,14 +43,10 @@ public class Taxe extends JournalData{
 		this.taxeProduit = taxeProduit;
 	}
 
-
-
 	public Taxe() {
 
 	}
 
-	
-	
 	public Long getTaxeId() {
 		return taxeId;
 	}
@@ -64,8 +55,6 @@ public class Taxe extends JournalData{
 	public void setTaxeId(Long taxeId) {
 		this.taxeId = taxeId;
 	}
-
-
 
 	public String getNom() {
 		return nom;
@@ -79,25 +68,18 @@ public class Taxe extends JournalData{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-
 
 	public double getValeur() {
 		return valeur;
 	}
 
-
-
 	public void setValeur(double valeur) {
 		this.valeur = valeur;
 	}
 
-
-
 	public Set<TaxeProduit> getTaxeProduit() {
 		return taxeProduit;
 	}
-
 
 	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
 		this.taxeProduit = taxeProduit;

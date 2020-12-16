@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Controleur extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idControleur;
 	private String agremment;
 	private int score;
@@ -34,6 +34,9 @@ public class Controleur extends JournalData{
 	@ManyToOne
 	private Partenaire partenaire;
 	
+	@ManyToOne
+	private Organisation organisation;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="controleur")
 	@JsonIgnore
 	private Set<Inspection> inspections;
@@ -42,17 +45,18 @@ public class Controleur extends JournalData{
 
 	}
 
-	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur,
-			Partenaire partenaire, Set<Inspection> inspections) {
-		super();
+	
+	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
+			Organisation organisation, Set<Inspection> inspections) {
 		this.idControleur = idControleur;
 		this.agremment = agremment;
 		this.score = score;
-		
 		this.utilisateur = utilisateur;
 		this.partenaire = partenaire;
+		this.organisation = organisation;
 		this.inspections = inspections;
 	}
+
 
 	public Long getIdControleur() {
 		return idControleur;
@@ -118,6 +122,14 @@ public class Controleur extends JournalData{
 
 	public void setPartenaire(Partenaire partenaire) {
 		this.partenaire = partenaire;
+	}
+
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
 	
 	

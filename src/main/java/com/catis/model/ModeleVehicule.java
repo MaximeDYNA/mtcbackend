@@ -2,7 +2,10 @@ package com.catis.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,26 +18,32 @@ import com.catis.model.configuration.JournalData;
 public class ModeleVehicule extends JournalData {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idModele;
 	private String description;
-	private String idOganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 	
 
 	
 
 	public ModeleVehicule() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	
-	public ModeleVehicule(Long idModele, String description, String idOganisation 
-			) {
-		super();
+	
+
+
+	public ModeleVehicule(Long idModele, String description, Organisation organisation) {
 		this.idModele = idModele;
 		this.description = description;
-		this.idOganisation = idOganisation;	
+		this.organisation = organisation;
 	}
+
+
+
 
 
 	public Long getIdModele() {
@@ -53,11 +62,21 @@ public class ModeleVehicule extends JournalData {
 		this.description = description;
 	}
 
-	public String getIdOganisation() {
-		return idOganisation;
+
+
+
+
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOganisation(String idOganisation) {
-		this.idOganisation = idOganisation;
+
+
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
+
+
 }

@@ -2,6 +2,8 @@ package com.catis.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,6 +17,7 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class TaxeProduit extends JournalData {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long TaxeProduitId;
 	@ManyToOne
 	private Taxe taxe;
@@ -22,13 +25,13 @@ public class TaxeProduit extends JournalData {
 	private Produit produit;
 	
 	public TaxeProduit(Taxe taxe, Produit produit) {
-		super();
+		
 		this.taxe = taxe;
 		this.produit = produit;
 	}
 	
 	public TaxeProduit() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 

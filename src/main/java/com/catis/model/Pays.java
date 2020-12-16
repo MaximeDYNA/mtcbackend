@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_pays")
 public class Pays extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long paysId;
 	private String nomPays;
 	private String description;
@@ -35,7 +35,6 @@ public class Pays extends JournalData{
 	}
   
 	public Pays(Long paysId, String nomPays, Set<DivisionPays> divisionPays) {
-		super();
 		this.paysId = paysId;
 		this.nomPays = nomPays;
 		this.divisionPays = divisionPays;

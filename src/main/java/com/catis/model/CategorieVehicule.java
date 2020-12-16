@@ -29,13 +29,11 @@ public class CategorieVehicule extends JournalData {
 	private Set<CategorieTestVehicule> categorieTestVehicules;
 
 	public CategorieVehicule() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public CategorieVehicule(Long id, String type, Set<CategorieVehiculeProduit> categorieVehiculeProduits,
 			Set<CategorieTestVehicule> categorieTestVehicules) {
-		super();
 		this.id = id;
 		this.type = type;
 		this.categorieVehiculeProduits = categorieVehiculeProduits;

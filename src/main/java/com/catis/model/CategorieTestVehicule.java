@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -35,13 +36,11 @@ public class CategorieTestVehicule extends JournalData {
 	private Set<GieglanFile> gieglanFiles;
 
 	public CategorieTestVehicule() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public CategorieTestVehicule(Long id, CategorieTest categorieTest, CategorieVehicule categorieVehicule,
 			Set<Mesure> mesures, Set<GieglanFile> gieglanFiles) {
-		super();
 		this.id = id;
 		this.categorieTest = categorieTest;
 		this.categorieVehicule = categorieVehicule;

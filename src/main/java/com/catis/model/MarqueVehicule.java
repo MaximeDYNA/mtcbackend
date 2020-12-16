@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_marquevehicule")
 public class MarqueVehicule extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long marqueVehiculeId;
 	private String libelle;
 	private String description;
@@ -35,7 +35,7 @@ public class MarqueVehicule extends JournalData{
 	}
 
 	public MarqueVehicule(Long marqueVehiculeId, String description, Set<Vehicule> vehicule) {
-		super();
+	
 		this.marqueVehiculeId = marqueVehiculeId;
 		this.description = description;
 		this.vehicule = vehicule;

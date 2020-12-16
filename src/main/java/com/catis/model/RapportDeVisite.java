@@ -95,7 +95,7 @@ public class RapportDeVisite extends JournalData{
 
 	public RapportDeVisite(Long id, Double result, String decision, String codeMessage, Visite visite, Seuil seuil,
 			GieglanFile gieglanFile) {
-		super();
+		
 		this.id = id;
 		this.result = result;
 		this.decision = decision;
@@ -106,7 +106,7 @@ public class RapportDeVisite extends JournalData{
 	}
 
 	public RapportDeVisite() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 }

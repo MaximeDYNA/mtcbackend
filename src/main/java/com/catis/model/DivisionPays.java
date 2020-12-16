@@ -26,7 +26,7 @@ import com.catis.model.configuration.JournalData;
 public class DivisionPays extends JournalData{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long divisionPaysId;
 	
 	@ManyToOne
@@ -35,23 +35,26 @@ public class DivisionPays extends JournalData{
 	Set<Adresse> adresses;
 	private String libelle;
 	private String description;
-	
-	
-	private String idDivisionPaysParent;
+
+	@OneToMany(mappedBy = "parent")
+	private Set<DivisionPays> childs;
+	@ManyToOne
+	private DivisionPays parent;
 
 	public DivisionPays() {
 		
 	}
 
+	public DivisionPays(Long divisionPaysId, Pays pays, Set<Adresse> adresses, String libelle, String description,
+			Set<DivisionPays> childs, DivisionPays parent) {
 
-	public DivisionPays(Long divisionPaysId, Pays pays, String libelle, String description,
-			String idDivisionPaysParent) {
-		super();
 		this.divisionPaysId = divisionPaysId;
 		this.pays = pays;
+		this.adresses = adresses;
 		this.libelle = libelle;
 		this.description = description;
-		this.idDivisionPaysParent = idDivisionPaysParent;
+		this.childs = childs;
+		this.parent = parent;
 	}
 
 	public Long getDivisionPaysId() {
@@ -71,15 +74,6 @@ public class DivisionPays extends JournalData{
 		this.pays = pays;
 	}
 
-	public String getIdDivisionPaysParent() {
-		return idDivisionPaysParent;
-	}
-
-
-
-	public void setIdDivisionPaysParent(String idDivisionPaysParent) {
-		this.idDivisionPaysParent = idDivisionPaysParent;
-	}
 
 
 
@@ -107,6 +101,22 @@ public class DivisionPays extends JournalData{
 
 	public void setAdresses(Set<Adresse> adresses) {
 		this.adresses = adresses;
+	}
+
+	public Set<DivisionPays> getChilds() {
+		return childs;
+	}
+
+	public void setChilds(Set<DivisionPays> childs) {
+		this.childs = childs;
+	}
+
+	public DivisionPays getParent() {
+		return parent;
+	}
+
+	public void setParent(DivisionPays parent) {
+		this.parent = parent;
 	}
 
 

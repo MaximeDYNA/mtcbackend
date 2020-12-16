@@ -25,9 +25,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ProprietaireVehicule extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long proprietaireVehiculeId;
-	private String idOrganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 	
 	@ManyToOne
 	private Partenaire partenaire;
@@ -43,24 +45,15 @@ public class ProprietaireVehicule extends JournalData {
 	}
 
 
-
+	public ProprietaireVehicule(Long proprietaireVehiculeId, Organisation organisation, Partenaire partenaire,
+			Set<CarteGrise> cartegrises, String description) {
 	
-
-
-
-	public ProprietaireVehicule(Long proprietaireVehiculeId, String idOrganisation, Partenaire partenaire,
-			String description) {
-		super();
 		this.proprietaireVehiculeId = proprietaireVehiculeId;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.partenaire = partenaire;
+		this.cartegrises = cartegrises;
 		this.description = description;
 	}
-
-
-
-
-
 
 
 	public Long getProprietaireVehiculeId() {
@@ -75,20 +68,6 @@ public class ProprietaireVehicule extends JournalData {
 
 	public void setProprietaireVehiculeId(Long proprietaireVehiculeId) {
 		this.proprietaireVehiculeId = proprietaireVehiculeId;
-	}
-
-
-
-
-
-
-
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
 	}
 
 	public Partenaire getPartenaire() {
@@ -125,6 +104,16 @@ public class ProprietaireVehicule extends JournalData {
 
 	public void setCartegrises(Set<CarteGrise> cartegrises) {
 		this.cartegrises = cartegrises;
+	}
+
+
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
 
 

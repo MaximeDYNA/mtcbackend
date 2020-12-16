@@ -18,7 +18,7 @@ import com.catis.model.configuration.JournalData;
 public class Adresse extends JournalData{
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long adresseId;
 	private String nom;
 	private String description;
@@ -43,7 +43,6 @@ public class Adresse extends JournalData{
 
 	public Adresse(Long adresseId, String nom, String description, Organisation organisation, Pays pays,
 			DivisionPays divisionPays) {
-		super();
 		this.adresseId = adresseId;
 		this.nom = nom;
 		this.description = description;

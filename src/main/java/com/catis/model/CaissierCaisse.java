@@ -1,4 +1,4 @@
-package com.catis.model;
+ package com.catis.model;
 
 
 
@@ -25,7 +25,8 @@ public class CaissierCaisse extends JournalData {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long caissier_caisse_id;
 	
-	private String idOrganisation;
+	@ManyToOne
+	private Organisation organisation;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="caisse_id")
@@ -41,14 +42,17 @@ public class CaissierCaisse extends JournalData {
 		
 	}
 
-	public CaissierCaisse(Long caissier_caisse_id, String idOrganisation, Caisse caisse, Caissier caissier) {
-		super();
+	
+
+	public CaissierCaisse(Long caissier_caisse_id, Organisation organisation, Caisse caisse, Caissier caissier) {
+	
 		this.caissier_caisse_id = caissier_caisse_id;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.caisse = caisse;
 		this.caissier = caissier;
-		
 	}
+
+
 
 	public Long getCaissier_caisse_id() {
 		return caissier_caisse_id;
@@ -58,12 +62,14 @@ public class CaissierCaisse extends JournalData {
 		this.caissier_caisse_id = caissier_caisse_id;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
 
 	public Caisse getCaisse() {

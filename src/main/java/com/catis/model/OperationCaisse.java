@@ -19,7 +19,7 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class OperationCaisse extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long operationDeCaisseId;
 	
 	private int type;
@@ -54,7 +54,7 @@ public class OperationCaisse extends JournalData {
 
 	public OperationCaisse(long operationDeCaisseId, int type, double montant, CaissierCaisse caissierCaisse,
 			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
-		super();
+
 		this.operationDeCaisseId = operationDeCaisseId;
 		this.type = type;
 		this.montant = montant;

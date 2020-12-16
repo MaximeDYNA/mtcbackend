@@ -24,35 +24,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Utilisateur extends JournalData{
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long utilisateurId;
 	private String login;
 	private String motDePasse;
-	private String idOrganisation;
+	@ManyToOne
+	private Organisation organisation;
 	
 	@ManyToOne
 	private Partenaire partenaire;
-	
-	
 
 	
-
-	public Utilisateur(Long utilisateurId, String login, String motDePasse, String idOrganisation,
-			Partenaire partenaire ) {
-		super();
-		utilisateurId = utilisateurId;
-		this.login = login;
-		this.motDePasse = motDePasse;
-		this.idOrganisation = idOrganisation;
-		this.partenaire = partenaire;
-		
-	}
-
 
 	public Utilisateur() {
 	}
 
 	
+	public Utilisateur(Long utilisateurId, String login, String motDePasse, Organisation organisation,
+			Partenaire partenaire) {
+		
+		this.utilisateurId = utilisateurId;
+		this.login = login;
+		this.motDePasse = motDePasse;
+		this.organisation = organisation;
+		this.partenaire = partenaire;
+	}
+
+
 	public Long getUtilisateurId() {
 		return utilisateurId;
 	}
@@ -87,16 +85,19 @@ public class Utilisateur extends JournalData{
 		this.partenaire = partenaire;
 	}
 
+
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
 	
 	
 
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
-	}
 	
 	
 }

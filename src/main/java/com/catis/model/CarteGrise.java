@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CarteGrise extends JournalData{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long carteGriseId;
 	
 	private String numImmatriculation;
@@ -111,7 +111,6 @@ public class CarteGrise extends JournalData{
 			String genreVehicule, String enregistrement, Date dateDelivrance, String lieuDedelivrance,
 			String centre_ssdt, ProprietaireVehicule proprietaireVehicule, Vehicule vehicule, Produit produit,
 			Set<Visite> visites) {
-		super();
 		this.carteGriseId = carteGriseId;
 		this.numImmatriculation = numImmatriculation;
 		this.preImmatriculation = preImmatriculation;

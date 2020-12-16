@@ -29,13 +29,11 @@ public class Formule extends JournalData {
 	@OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
 	private Set<Seuil> seuils;
 
-	public Formule() {
-		super();
+	public Formule() {	
 		// TODO Auto-generated constructor stub
 	}
 
 	public Formule(Long id, String description, Set<Mesure> mesures, Set<Seuil> seuils) {
-		super();
 		this.id = id;
 		this.description = description;
 		this.mesures = mesures;

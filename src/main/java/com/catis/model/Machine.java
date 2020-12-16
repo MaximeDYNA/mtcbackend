@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,7 +26,9 @@ public class Machine extends JournalData {
 	private String numSerie; // numéro de série
 	private String fabriquant;
 	private String model;
-	private String idOrganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="machine")
 	@JsonIgnore
@@ -39,23 +42,27 @@ public class Machine extends JournalData {
 	private Set<GieglanFile> gieglanFiles;
 
 	public Machine() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
-	public Machine(Long idMachine, String numSerie, String fabriquant, String model, String idOrganisation,
+	
+
+	public Machine(Long idMachine, String numSerie, String fabriquant, String model, Organisation organisation,
 			Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine,
 			Set<GieglanFile> gieglanFiles) {
-		super();
+	
 		this.idMachine = idMachine;
 		this.numSerie = numSerie;
 		this.fabriquant = fabriquant;
 		this.model = model;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.ligneMachines = ligneMachines;
 		this.categorieTestMachine = categorieTestMachine;
 		this.gieglanFiles = gieglanFiles;
 	}
+
+
 
 	public Long getIdMachine() {
 		return idMachine;
@@ -89,13 +96,22 @@ public class Machine extends JournalData {
 		this.model = model;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
+	
+
+	
+
+
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
+
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
 	}
+
+
 
 	public Set<LigneMachine> getLigneMachines() {
 		return ligneMachines;

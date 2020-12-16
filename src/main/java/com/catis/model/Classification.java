@@ -30,12 +30,10 @@ public class Classification extends JournalData {
 	private Set<Seuil> seuils;
 
 	public Classification() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Classification(Long id, String code, Set<Seuil> seuils) {
-		super();
 		this.id = id;
 		this.code = code;
 		this.seuils = seuils;

@@ -60,12 +60,12 @@ public class Caisse extends JournalData{
 	}
 
 	public Caisse() {
-		super();
+	
 		// TODO Auto-generated constructor stub
 	}
 
 	public Caisse(Long caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses) {
-		super();
+
 		this.caisse_id = caisse_id;
 		this.description = description;
 		this.idOrganisation = idOrganisation;

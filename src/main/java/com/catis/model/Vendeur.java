@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Vendeur extends JournalData {
 	//entité capable d'avoir des commisions sur une vente
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long vendeurId;
 	
 	private String description;
@@ -40,7 +40,7 @@ public class Vendeur extends JournalData {
 	}
 
 	public Vendeur(long vendeurId, String description, Partenaire partenaire) {
-		super();
+	
 		this.vendeurId = vendeurId;
 		this.description = description;
 		this.partenaire = partenaire;

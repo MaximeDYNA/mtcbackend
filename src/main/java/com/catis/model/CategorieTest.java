@@ -78,7 +78,6 @@ public class CategorieTest extends JournalData{
 
 	public CategorieTest(Long idCategorieTest, String libelle, String description,
 			Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules) {
-		super();
 		this.idCategorieTest = idCategorieTest;
 		this.libelle = libelle;
 		this.description = description;
@@ -86,8 +85,7 @@ public class CategorieTest extends JournalData{
 		this.categorieTestVehicules = categorieTestVehicules;
 	}
 
-	public CategorieTest() {
-		super();
+	public CategorieTest() {	
 		// TODO Auto-generated constructor stub
 	}
 	

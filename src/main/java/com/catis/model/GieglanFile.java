@@ -66,14 +66,12 @@ public class GieglanFile extends JournalData {
 	}
 
 	public GieglanFile() {
-		super();
-		// TODO Auto-generated constructor stub
+	
 	}
 
 	public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
 			Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
 			CategorieTestVehicule categorieTestVehicule) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.fileCreatedAt = fileCreatedAt;

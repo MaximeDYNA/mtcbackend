@@ -18,19 +18,18 @@ import com.catis.objectTemporaire.CarteGriseReceived;
 public class Energie extends JournalData{
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long energieId;
 	private String libelle;
 	
 	public Energie() {
-		super();
+	
 		// TODO Auto-generated constructor stub
 	}
 	public Energie(CarteGriseReceived cgr) {
 		this.energieId = cgr.getEnergieId();
 	}
 	public Energie(Long energieId, String libelle) {
-		super();
 		this.energieId = energieId;
 		this.libelle = libelle;
 	}

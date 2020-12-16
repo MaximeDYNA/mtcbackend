@@ -19,7 +19,7 @@ import com.catis.model.configuration.JournalData;
 public class DetailVente extends JournalData {
 	//table pivot entre produit et vente
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long idDetailVente;
 	private String reference;
 	
@@ -42,7 +42,6 @@ public class DetailVente extends JournalData {
 
 
 	public DetailVente(long idDetailVente, String reference, Produit produit, Vente vente) {
-		super();
 		this.idDetailVente = idDetailVente;
 		this.reference = reference;
 		this.produit = produit;

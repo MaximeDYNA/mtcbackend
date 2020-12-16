@@ -43,13 +43,13 @@ public class Seuil extends JournalData {
 	private Formule formule;
 
 	public Seuil() {
-		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
 	public Seuil(Long id, double value, char operande, String codeMessage, String decision,
 			Set<RapportDeVisite> rapportDeVisites, Classification classification, Formule formule) {
-		super();
+		
 		this.id = id;
 		this.value = value;
 		this.operande = operande;
