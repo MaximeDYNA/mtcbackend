@@ -8,11 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,24 +32,28 @@ public class Organisation extends JournalData {
 	@JsonIgnore
 	Set<Partenaire> partenaires;
 	
+	@OneToMany(mappedBy = "parentOrganisation")
+	private Set<Organisation> childOrganisations; 
+
+	@ManyToOne
+	private Organisation parentOrganisation;
+	
 	private String patente;
 	private String statutJurique;
 	private String numeroDeContribuable;
-	private String idOrganisationParent;
 	
 	public Organisation() {
 		
 	}
 
 	public Organisation(Long organisationId, Set<Adresse> adresse, String patente, String statutJurique,
-			String numeroDeContribuable, String idOrganisationParent) {
+			String numeroDeContribuable) {
 		super();
 		this.organisationId = organisationId;
 		this.adresse = adresse;
 		this.patente = patente;
 		this.statutJurique = statutJurique;
 		this.numeroDeContribuable = numeroDeContribuable;
-		this.idOrganisationParent = idOrganisationParent;
 	}
 
 
@@ -72,21 +76,6 @@ public class Organisation extends JournalData {
 
 	public void setOrganisationId(Long organisationId) {
 		this.organisationId = organisationId;
-	}
-
-
-
-
-
-
-
-
-	public String getIdOrganisationParent() {
-		return idOrganisationParent;
-	}
-
-	public void setIdOrganisationParent(String idOrganisationParent) {
-		this.idOrganisationParent = idOrganisationParent;
 	}
 
 	public String getPatente() {

@@ -1,10 +1,13 @@
 package com.catis.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Lexique {
@@ -16,8 +19,16 @@ public class Lexique {
 
 	private String code;
 
-	private String Visuel;
+	private Boolean Visuel;
 
 	@ManyToOne
 	private VersionLexique versionLexique;
+	
+	@OneToMany(mappedBy = "parent")
+	private Set<Lexique> childs;
+
+	@ManyToOne
+	private Lexique parent;
+	
+	private String decision;
 }
