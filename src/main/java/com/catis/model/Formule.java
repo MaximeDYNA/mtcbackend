@@ -18,18 +18,19 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class Formule extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String description;
-	
+
 	@OneToMany(mappedBy = "formule")
 	private Set<Mesure> mesures;
-	
+
 	@OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
 	private Set<Seuil> seuils;
 
-	public Formule() {	
+	public Formule() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -71,5 +72,5 @@ public class Formule extends JournalData {
 	public void setSeuils(Set<Seuil> seuils) {
 		this.seuils = seuils;
 	}
-	
+
 }

@@ -19,22 +19,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_client")
 @EntityListeners(AuditingEntityListener.class)
 public class Client extends JournalData {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long clientId;
 	private String description;
 
 	@ManyToOne
 	private Partenaire partenaire;
-	
-	@OneToMany(mappedBy="client")
+
+	@OneToMany(mappedBy = "client")
 	@JsonIgnore
 	Set<Vente> ventes;
-	
-	@OneToMany(mappedBy="client")
+
+	@OneToMany(mappedBy = "client")
 	@JsonIgnore
 	Set<Contact> contact;
+
 	public Set<Contact> getContact() {
 		return contact;
 	}
@@ -44,7 +45,7 @@ public class Client extends JournalData {
 	}
 
 	public Client() {
-	}	
+	}
 
 	public Client(long clientId, String description, Partenaire partenaire) {
 

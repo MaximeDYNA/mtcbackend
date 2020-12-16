@@ -19,25 +19,25 @@ import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="t_controleur")
+@Table(name = "t_controleur")
 @EntityListeners(AuditingEntityListener.class)
-public class Controleur extends JournalData{
+public class Controleur extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idControleur;
 	private String agremment;
 	private int score;
-	
-	@ManyToOne(optional = true)//id utilisateur optionel
+
+	@ManyToOne(optional = true) // id utilisateur optionel
 	private Utilisateur utilisateur;
-	
+
 	@ManyToOne
 	private Partenaire partenaire;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="controleur")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
 	@JsonIgnore
 	private Set<Inspection> inspections;
 
@@ -45,7 +45,6 @@ public class Controleur extends JournalData{
 
 	}
 
-	
 	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
 			Organisation organisation, Set<Inspection> inspections) {
 		this.idControleur = idControleur;
@@ -56,7 +55,6 @@ public class Controleur extends JournalData{
 		this.organisation = organisation;
 		this.inspections = inspections;
 	}
-
 
 	public Long getIdControleur() {
 		return idControleur;
@@ -82,39 +80,21 @@ public class Controleur extends JournalData{
 		this.score = score;
 	}
 
-	
-
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
 	}
-
-
-
-
 
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
 
-
-
-
-
 	public Set<Inspection> getInspections() {
 		return inspections;
 	}
 
-
-
-
-
 	public void setInspections(Set<Inspection> inspections) {
 		this.inspections = inspections;
 	}
-
-
-
-
 
 	public Partenaire getPartenaire() {
 		return partenaire;
@@ -131,6 +111,5 @@ public class Controleur extends JournalData{
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
-	
-	
+
 }

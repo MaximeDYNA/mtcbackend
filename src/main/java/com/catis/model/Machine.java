@@ -18,23 +18,24 @@ import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="t_machine")
+@Table(name = "t_machine")
 @EntityListeners(AuditingEntityListener.class)
 public class Machine extends JournalData {
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idMachine;
 	private String numSerie; // numéro de série
 	private String fabriquant;
 	private String model;
-	
+
 	@ManyToOne
 	private Organisation organisation;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="machine")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "machine")
 	@JsonIgnore
 	private Set<LigneMachine> ligneMachines;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="machine")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "machine")
 	@JsonIgnore
 	private Set<CategorieTestMachine> categorieTestMachine;
 
@@ -42,16 +43,14 @@ public class Machine extends JournalData {
 	private Set<GieglanFile> gieglanFiles;
 
 	public Machine() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	public Machine(Long idMachine, String numSerie, String fabriquant, String model, Organisation organisation,
 			Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine,
 			Set<GieglanFile> gieglanFiles) {
-	
+
 		this.idMachine = idMachine;
 		this.numSerie = numSerie;
 		this.fabriquant = fabriquant;
@@ -61,8 +60,6 @@ public class Machine extends JournalData {
 		this.categorieTestMachine = categorieTestMachine;
 		this.gieglanFiles = gieglanFiles;
 	}
-
-
 
 	public Long getIdMachine() {
 		return idMachine;
@@ -96,22 +93,13 @@ public class Machine extends JournalData {
 		this.model = model;
 	}
 
-	
-
-	
-
-
 	public Organisation getOrganisation() {
 		return organisation;
 	}
 
-
-
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
-
-
 
 	public Set<LigneMachine> getLigneMachines() {
 		return ligneMachines;

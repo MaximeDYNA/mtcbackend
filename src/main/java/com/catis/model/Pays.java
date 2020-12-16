@@ -19,27 +19,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_pays")
-public class Pays extends JournalData{
+public class Pays extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long paysId;
 	private String nomPays;
 	private String description;
-	
-	@OneToMany(mappedBy="pays")
+
+	@OneToMany(mappedBy = "pays")
 	@JsonIgnore
-	Set <DivisionPays> divisionPays;
+	Set<DivisionPays> divisionPays;
 
 	public Pays() {
-		
+
 	}
-  
+
 	public Pays(Long paysId, String nomPays, Set<DivisionPays> divisionPays) {
 		this.paysId = paysId;
 		this.nomPays = nomPays;
 		this.divisionPays = divisionPays;
 	}
-
 
 	public String getNomPays() {
 		return nomPays;
@@ -49,13 +48,9 @@ public class Pays extends JournalData{
 		this.nomPays = nomPays;
 	}
 
-
-
 	public Set<DivisionPays> getDivisionPays() {
 		return divisionPays;
 	}
-
-
 
 	public void setDivisionPays(Set<DivisionPays> divisionPays) {
 		this.divisionPays = divisionPays;
@@ -77,7 +72,4 @@ public class Pays extends JournalData{
 		this.description = description;
 	}
 
-
-	
-	
 }

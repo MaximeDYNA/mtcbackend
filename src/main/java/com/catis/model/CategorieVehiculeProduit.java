@@ -14,8 +14,9 @@ import com.catis.model.configuration.JournalData;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class CategorieVehiculeProduit extends JournalData {
-	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
@@ -25,7 +26,7 @@ public class CategorieVehiculeProduit extends JournalData {
 	private Produit produit;
 
 	public CategorieVehiculeProduit() {
-	
+
 		// TODO Auto-generated constructor stub
 	}
 
@@ -58,5 +59,5 @@ public class CategorieVehiculeProduit extends JournalData {
 	public void setProduit(Produit produit) {
 		this.produit = produit;
 	}
-	
+
 }

@@ -25,55 +25,46 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_vente")
 
-public class Vente extends JournalData{
+public class Vente extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idVente;
 	private double montantTotal;
 	private double montantHT;
 	private int statut;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
-	
+
 	@ManyToOne
 	private Vendeur vendeur;
-	
+
 	@ManyToOne
 	private Contact contact;
-	
+
 	@OneToOne
 	private Visite visite;
 	@ManyToOne
 	private SessionCaisse sessionCaisse;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="vente")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
 	@JsonIgnore
 	private Set<OperationCaisse> operationCaisse;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="vente")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
 	@JsonIgnore
 	private Set<DetailVente> detailventes;
-	
+
 	private String numFacture;
-	
-	
+
 	public Vente() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
-
-
-
-
-	
-
-
-
 
 	public Vente(Long idVente, double montantTotal, double montantHT, Client client, Vendeur vendeur,
 			@NotEmpty @NotNull Contact contact, SessionCaisse sessionCaisse, Set<OperationCaisse> operationCaisse,
 			Set<DetailVente> detailventes, String numFacture) {
-		
+
 		this.idVente = idVente;
 		this.montantTotal = montantTotal;
 		this.montantHT = montantHT;
@@ -86,63 +77,37 @@ public class Vente extends JournalData{
 		this.numFacture = numFacture;
 	}
 
-
-
-
-
-
-
-
-
 	public Set<OperationCaisse> getOperationCaisse() {
 		return operationCaisse;
 	}
-
 
 	public void setOperationCaisse(Set<OperationCaisse> operationCaisse) {
 		this.operationCaisse = operationCaisse;
 	}
 
-
-
-
 	public Long getIdVente() {
 		return idVente;
 	}
-
-
-
 
 	public Client getClient() {
 		return client;
 	}
 
-
-
-
 	public void setClient(Client client) {
 		this.client = client;
 	}
-
-
-
 
 	public void setIdVente(long idVente) {
 		this.idVente = idVente;
 	}
 
-
-
-
 	public double getMontantTotal() {
 		return montantTotal;
 	}
 
-
 	public void setMontantTotal(double montantTotal) {
 		this.montantTotal = montantTotal;
 	}
-
 
 	public Set<DetailVente> getDetailventes() {
 		return detailventes;
@@ -152,112 +117,53 @@ public class Vente extends JournalData{
 		this.detailventes = detailventes;
 	}
 
-
-
-
 	public Vendeur getVendeur() {
 		return vendeur;
 	}
-
-
-
 
 	public void setVendeur(Vendeur vendeur) {
 		this.vendeur = vendeur;
 	}
 
-
-
-
 	public Contact getContact() {
 		return contact;
 	}
-
-
-
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
 
-
-
-
 	public SessionCaisse getSessionCaisse() {
 		return sessionCaisse;
 	}
-
-
-
 
 	public void setSessionCaisse(SessionCaisse sessionCaisse) {
 		this.sessionCaisse = sessionCaisse;
 	}
 
-
-
-
 	public String getNumFacture() {
 		return numFacture;
 	}
-
-
-
 
 	public void setNumFacture(String numFacture) {
 		this.numFacture = numFacture;
 	}
 
-
-
-
 	public void setIdVente(Long idVente) {
 		this.idVente = idVente;
 	}
-
-
-
-
-
-
-
-
 
 	public double getMontantHT() {
 		return montantHT;
 	}
 
-
-
-
-
-
-
-
-
 	public void setMontantHT(double montantHT) {
 		this.montantHT = montantHT;
 	}
 
-
-
-
-
-
-
-
-
 	public Visite getVisite() {
 		return visite;
 	}
-
-
-
-
-
-
-
-
 
 	public void setVisite(Visite visite) {
 		this.visite = visite;
@@ -272,23 +178,19 @@ public class Vente extends JournalData{
 	}
 
 	public String getLibelleStatut() {
-		if(this.statut ==0)
+		if (this.statut == 0)
 			return "payé";
-		else if(this.statut ==1) {
+		else if (this.statut == 1) {
 			return "partiellement payé";
-		}
-		else if(this.statut == 2) {
+		} else if (this.statut == 2) {
 			return "impayé";
-		}
-		else
+		} else
 			return "statut erroné";
 	}
 
-	/*public double getMontantEncaisse() {
-		double montantDejaEncaisse = 0;
-		for(OperationCaisse o : operationCaisse) {
-			montantDejaEncaisse += o.getMontant();
-		}
-		return montantDejaEncaisse;
-	}*/
+	/*
+	 * public double getMontantEncaisse() { double montantDejaEncaisse = 0;
+	 * for(OperationCaisse o : operationCaisse) { montantDejaEncaisse +=
+	 * o.getMontant(); } return montantDejaEncaisse; }
+	 */
 }

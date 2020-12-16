@@ -1,7 +1,5 @@
 package com.catis.model;
 
-
-
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -17,18 +15,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
-
-
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_divisionpays")
-public class DivisionPays extends JournalData{
-	
+public class DivisionPays extends JournalData {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long divisionPaysId;
-	
+
 	@ManyToOne
 	private Pays pays;
 	@OneToMany(mappedBy = "divisionPays")
@@ -42,7 +37,7 @@ public class DivisionPays extends JournalData{
 	private DivisionPays parent;
 
 	public DivisionPays() {
-		
+
 	}
 
 	public DivisionPays(Long divisionPaysId, Pays pays, Set<Adresse> adresses, String libelle, String description,
@@ -69,13 +64,9 @@ public class DivisionPays extends JournalData{
 		return pays;
 	}
 
-
 	public void setPays(Pays pays) {
 		this.pays = pays;
 	}
-
-
-
 
 	public String getLibelle() {
 		return libelle;
@@ -93,11 +84,9 @@ public class DivisionPays extends JournalData{
 		this.description = description;
 	}
 
-
 	public Set<Adresse> getAdresses() {
 		return adresses;
 	}
-
 
 	public void setAdresses(Set<Adresse> adresses) {
 		this.adresses = adresses;
@@ -118,6 +107,5 @@ public class DivisionPays extends JournalData{
 	public void setParent(DivisionPays parent) {
 		this.parent = parent;
 	}
-
 
 }

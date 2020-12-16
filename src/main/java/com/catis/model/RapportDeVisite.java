@@ -17,9 +17,10 @@ import com.catis.model.configuration.JournalData;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class RapportDeVisite extends JournalData{
+public class RapportDeVisite extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private Double result;
@@ -95,7 +96,7 @@ public class RapportDeVisite extends JournalData{
 
 	public RapportDeVisite(Long id, Double result, String decision, String codeMessage, Visite visite, Seuil seuil,
 			GieglanFile gieglanFile) {
-		
+
 		this.id = id;
 		this.result = result;
 		this.decision = decision;
@@ -106,7 +107,7 @@ public class RapportDeVisite extends JournalData{
 	}
 
 	public RapportDeVisite() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
 }

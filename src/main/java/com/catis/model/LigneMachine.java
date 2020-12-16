@@ -14,20 +14,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 
 @Entity
-@Table(name="t_lignemachine")
+@Table(name = "t_lignemachine")
 @EntityListeners(AuditingEntityListener.class)
 public class LigneMachine extends JournalData {
-	/*table pivot qui nous permet de savoir quels sont les machines par lignes et les lignes
-		par machine*/
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	/*
+	 * table pivot qui nous permet de savoir quels sont les machines par lignes et
+	 * les lignes par machine
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ligneMachine;
 	@ManyToOne
-	@JoinColumn(name="idMachine")
+	@JoinColumn(name = "idMachine")
 	private Machine machine;
-	
 
 	@ManyToOne
-	@JoinColumn(name="idLigne")
+	@JoinColumn(name = "idLigne")
 	private Ligne ligne;
 
 	@ManyToOne
@@ -36,8 +38,9 @@ public class LigneMachine extends JournalData {
 	public LigneMachine() {
 
 	}
+
 	public LigneMachine(Long ligneMachine, Machine machine, Ligne ligne) {
-		
+
 		this.ligneMachine = ligneMachine;
 		this.machine = machine;
 		this.ligne = ligne;
@@ -66,14 +69,13 @@ public class LigneMachine extends JournalData {
 	public void setLigne(Ligne ligne) {
 		this.ligne = ligne;
 	}
+
 	public Organisation getOrganisation() {
 		return organisation;
 	}
+
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
 
-	
-	
-	
 }

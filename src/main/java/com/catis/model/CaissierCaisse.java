@@ -1,6 +1,4 @@
- package com.catis.model;
-
-
+package com.catis.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,42 +15,36 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caissiercaisse")
 public class CaissierCaisse extends JournalData {
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long caissier_caisse_id;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="caisse_id")
+	@JoinColumn(name = "caisse_id")
 	private Caisse caisse;
-	
+
 	@ManyToOne
-	@JoinColumn(name="caissier_id")
+	@JoinColumn(name = "caissier_id")
 	private Caissier caissier;
-	
-	
-	
+
 	public CaissierCaisse() {
-		
+
 	}
 
-	
-
 	public CaissierCaisse(Long caissier_caisse_id, Organisation organisation, Caisse caisse, Caissier caissier) {
-	
+
 		this.caissier_caisse_id = caissier_caisse_id;
 		this.organisation = organisation;
 		this.caisse = caisse;
 		this.caissier = caissier;
 	}
-
-
 
 	public Long getCaissier_caisse_id() {
 		return caissier_caisse_id;
@@ -61,8 +53,6 @@ public class CaissierCaisse extends JournalData {
 	public void setCaissier_caisse_id(Long caissier_caisse_id) {
 		this.caissier_caisse_id = caissier_caisse_id;
 	}
-
-	
 
 	public Organisation getOrganisation() {
 		return organisation;
@@ -88,7 +78,4 @@ public class CaissierCaisse extends JournalData {
 		this.caissier = caissier;
 	}
 
-	
-
-	
 }

@@ -1,6 +1,5 @@
 package com.catis.model;
 
-
 import java.util.Date;
 import java.util.Set;
 
@@ -20,36 +19,29 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 @Table(name = "t_hold")
 @EntityListeners(AuditingEntityListener.class)
 public class Hold extends JournalData {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long holdId;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private Long number;
 	private Date time;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	private SessionCaisse sessionCaisse;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="hold")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hold")
 	private Set<Posales> posales;
-	
+
 	public Hold() {
-		
+
 	}
-
-	
-
-	
-
-
 
 	public Hold(Long holdId, Long number, Date time, SessionCaisse sessionCaisse) {
 
@@ -59,18 +51,13 @@ public class Hold extends JournalData {
 		this.sessionCaisse = sessionCaisse;
 	}
 
-
-
 	public Long getHoldId() {
 		return holdId;
 	}
 
-
-
 	public void setHoldId(Long holdId) {
 		this.holdId = holdId;
 	}
-
 
 	public Long getNumber() {
 		return number;
@@ -80,41 +67,30 @@ public class Hold extends JournalData {
 		this.number = number;
 	}
 
-	
-
 	public Date getTime() {
 		return time;
 	}
 
-
-
 	public void setTime(Date time) {
 		this.time = time;
 	}
-
 
 	@JsonIgnore
 	public SessionCaisse getSessionCaisse() {
 		return sessionCaisse;
 	}
 
-
-
 	public void setSessionCaisse(SessionCaisse sessionCaisse) {
 		this.sessionCaisse = sessionCaisse;
 	}
-
 
 	@JsonIgnore
 	public Set<Posales> getPosales() {
 		return posales;
 	}
 
-
 	public void setPosales(Set<Posales> posales) {
 		this.posales = posales;
 	}
-	
-	
 
 }

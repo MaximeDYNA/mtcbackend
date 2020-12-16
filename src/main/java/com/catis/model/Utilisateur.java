@@ -22,27 +22,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_utilisateur")
 @EntityListeners(AuditingEntityListener.class)
-public class Utilisateur extends JournalData{
+public class Utilisateur extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long utilisateurId;
 	private String login;
 	private String motDePasse;
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne
 	private Partenaire partenaire;
-
-	
 
 	public Utilisateur() {
 	}
 
-	
 	public Utilisateur(Long utilisateurId, String login, String motDePasse, Organisation organisation,
 			Partenaire partenaire) {
-		
+
 		this.utilisateurId = utilisateurId;
 		this.login = login;
 		this.motDePasse = motDePasse;
@@ -50,16 +47,13 @@ public class Utilisateur extends JournalData{
 		this.partenaire = partenaire;
 	}
 
-
 	public Long getUtilisateurId() {
 		return utilisateurId;
 	}
 
-
 	public void setUtilisateurId(Long utilisateurId) {
 		utilisateurId = utilisateurId;
 	}
-
 
 	public String getLogin() {
 		return login;
@@ -68,6 +62,7 @@ public class Utilisateur extends JournalData{
 	public void setLogin(String login) {
 		this.login = login;
 	}
+
 	@JsonIgnore
 	public String getMotDePasse() {
 		return motDePasse;
@@ -85,19 +80,12 @@ public class Utilisateur extends JournalData{
 		this.partenaire = partenaire;
 	}
 
-
 	public Organisation getOrganisation() {
 		return organisation;
 	}
-
 
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
 
-	
-	
-
-	
-	
 }

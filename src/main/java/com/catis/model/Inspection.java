@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -21,10 +22,10 @@ import com.catis.objectTemporaire.InpectionReceived;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="t_inspection")
+@Table(name = "t_inspection")
 public class Inspection extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idInspection;
 	private Date dateDebut;
 	private Date dateFin;
@@ -42,23 +43,24 @@ public class Inspection extends JournalData {
 
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne
 	private Ligne ligne;
-	
+
 	@OneToOne
+	@JoinColumn(name="idVisite")
 	private Visite visite;
-	
+
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
 	private Set<GieglanFile> gieglanFiles;
 
 	public Inspection() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
 
 	public Inspection(InpectionReceived i) {
-		
+
 		this.idInspection = i.getIdInspection();
 		this.dateDebut = i.getDateDebut();
 		this.dateFin = i.getDateFin();
@@ -69,7 +71,6 @@ public class Inspection extends JournalData {
 		this.position = i.getPosition();
 	}
 
-	
 	public Inspection(Long idInspection, Date dateDebut, Date dateFin, String signature, Produit produit,
 			double kilometrage, String chassis, int essieux, String position, Controleur controleur,
 			Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles) {
@@ -201,6 +202,5 @@ public class Inspection extends JournalData {
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
-	
-	
+
 }

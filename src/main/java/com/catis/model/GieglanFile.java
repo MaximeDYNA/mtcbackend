@@ -27,7 +27,8 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class GieglanFile extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
@@ -58,15 +59,15 @@ public class GieglanFile extends JournalData {
 	private CategorieTestVehicule categorieTestVehicule;
 
 	public enum FileType {
-	    MEASURE, MACHINE, CARD_REGISTRATION
+		MEASURE, MACHINE, CARD_REGISTRATION
 	}
 
 	public enum StatusType {
-	    INITIALIZED, REJECTED, VALIDATED
+		INITIALIZED, REJECTED, VALIDATED
 	}
 
 	public GieglanFile() {
-	
+
 	}
 
 	public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
@@ -164,5 +165,4 @@ public class GieglanFile extends JournalData {
 		this.categorieTestVehicule = categorieTestVehicule;
 	}
 
-	
 }

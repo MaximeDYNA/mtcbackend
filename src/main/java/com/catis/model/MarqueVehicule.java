@@ -19,23 +19,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_marquevehicule")
-public class MarqueVehicule extends JournalData{
+public class MarqueVehicule extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long marqueVehiculeId;
 	private String libelle;
 	private String description;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="marqueVehicule")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "marqueVehicule")
 	@JsonIgnore
-	Set<Vehicule> vehicule; 
+	Set<Vehicule> vehicule;
 
 	public MarqueVehicule() {
 
 	}
 
 	public MarqueVehicule(Long marqueVehiculeId, String description, Set<Vehicule> vehicule) {
-	
+
 		this.marqueVehiculeId = marqueVehiculeId;
 		this.description = description;
 		this.vehicule = vehicule;
@@ -45,13 +45,9 @@ public class MarqueVehicule extends JournalData{
 		return marqueVehiculeId;
 	}
 
-
-
 	public void setMarqueVehiculeId(Long marqueVehiculeId) {
 		this.marqueVehiculeId = marqueVehiculeId;
 	}
-
-
 
 	public String getDescription() {
 		return description;
@@ -61,11 +57,9 @@ public class MarqueVehicule extends JournalData{
 		this.description = description;
 	}
 
-
 	public Set<Vehicule> getVehicule() {
 		return vehicule;
 	}
-
 
 	public void setVehicule(Set<Vehicule> vehicule) {
 		this.vehicule = vehicule;
@@ -79,5 +73,4 @@ public class MarqueVehicule extends JournalData{
 		this.libelle = libelle;
 	}
 
-	
 }

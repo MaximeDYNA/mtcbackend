@@ -19,32 +19,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="t_ligne")
+@Table(name = "t_ligne")
 public class Ligne extends JournalData {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idLigne;
 	private String description;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="ligne")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne")
 	@JsonIgnore
 	private Set<LigneMachine> ligneMachines;
-	
-	@OneToMany( mappedBy="ligne")
+
+	@OneToMany(mappedBy = "ligne")
 	@JsonIgnore
 	private Set<Inspection> inspections;
 
-	
 	public Ligne() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	public Ligne(Long idLigne, String description, Organisation organisation, Set<LigneMachine> ligneMachines,
 			Set<Inspection> inspections) {
@@ -55,8 +52,6 @@ public class Ligne extends JournalData {
 		this.ligneMachines = ligneMachines;
 		this.inspections = inspections;
 	}
-
-
 
 	public Long getIdLigne() {
 		return idLigne;
@@ -74,18 +69,13 @@ public class Ligne extends JournalData {
 		this.description = description;
 	}
 
-	
 	public Organisation getOrganisation() {
 		return organisation;
 	}
 
-
-
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
-
-
 
 	public Set<LigneMachine> getLigneMachines() {
 		return ligneMachines;
@@ -102,6 +92,5 @@ public class Ligne extends JournalData {
 	public void setInspections(Set<Inspection> inspections) {
 		this.inspections = inspections;
 	}
-	
-	
+
 }

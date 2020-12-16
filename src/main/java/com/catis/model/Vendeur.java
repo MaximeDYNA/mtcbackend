@@ -17,30 +17,29 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 @Table(name = "t_vendeur")
 @EntityListeners(AuditingEntityListener.class)
 public class Vendeur extends JournalData {
-	//entité capable d'avoir des commisions sur une vente
+	// entité capable d'avoir des commisions sur une vente
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long vendeurId;
-	
+
 	private String description;
 
 	@ManyToOne
 	private Partenaire partenaire;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="vendeur")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vendeur")
 	@JsonIgnore
 	private Set<Vente> ventes;
-	
+
 	public Vendeur() {
 	}
 
 	public Vendeur(long vendeurId, String description, Partenaire partenaire) {
-	
+
 		this.vendeurId = vendeurId;
 		this.description = description;
 		this.partenaire = partenaire;
@@ -49,7 +48,6 @@ public class Vendeur extends JournalData {
 	public Long getVendeurId() {
 		return vendeurId;
 	}
-
 
 	public void setVendeurId(Long vendeurId) {
 		this.vendeurId = vendeurId;

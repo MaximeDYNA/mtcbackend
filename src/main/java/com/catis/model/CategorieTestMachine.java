@@ -18,26 +18,25 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietestmachine")
 public class CategorieTestMachine extends JournalData {
-	//table pivot entre catégorietest et machine
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	// table pivot entre catégorietest et machine
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategorieTestMachine;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idcategorietest")
+	@JoinColumn(name = "idcategorietest")
 	private CategorieTest categorieTest;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idMachine")
+	@JoinColumn(name = "idMachine")
 	private Machine machine;
 
 	public CategorieTestMachine() {
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	public CategorieTestMachine(Long idCategorieTestMachine, Organisation organisation, CategorieTest categorieTest,
 			Machine machine) {
@@ -47,8 +46,6 @@ public class CategorieTestMachine extends JournalData {
 		this.machine = machine;
 	}
 
-
-
 	public Long getIdCategorieTestMachine() {
 		return idCategorieTestMachine;
 	}
@@ -57,18 +54,13 @@ public class CategorieTestMachine extends JournalData {
 		this.idCategorieTestMachine = idCategorieTestMachine;
 	}
 
-	
 	public Organisation getOrganisation() {
 		return organisation;
 	}
 
-
-
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
-
-
 
 	public CategorieTest getCategorieTest() {
 		return categorieTest;
@@ -85,6 +77,5 @@ public class CategorieTestMachine extends JournalData {
 	public void setMachine(Machine machine) {
 		this.machine = machine;
 	}
-	
-	
+
 }

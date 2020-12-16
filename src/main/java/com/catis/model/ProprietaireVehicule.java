@@ -21,33 +21,32 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="t_proprietairevehicule")
+@Table(name = "t_proprietairevehicule")
 public class ProprietaireVehicule extends JournalData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long proprietaireVehiculeId;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne
 	private Partenaire partenaire;
-	
-	@OneToMany(mappedBy="proprietaireVehicule")
+
+	@OneToMany(mappedBy = "proprietaireVehicule")
 	@JsonIgnore
 	private Set<CarteGrise> cartegrises;
-	
+
 	private String description;
-	
+
 	public ProprietaireVehicule() {
 
 	}
 
-
 	public ProprietaireVehicule(Long proprietaireVehiculeId, Organisation organisation, Partenaire partenaire,
 			Set<CarteGrise> cartegrises, String description) {
-	
+
 		this.proprietaireVehiculeId = proprietaireVehiculeId;
 		this.organisation = organisation;
 		this.partenaire = partenaire;
@@ -55,16 +54,9 @@ public class ProprietaireVehicule extends JournalData {
 		this.description = description;
 	}
 
-
 	public Long getProprietaireVehiculeId() {
 		return proprietaireVehiculeId;
 	}
-
-
-
-
-
-
 
 	public void setProprietaireVehiculeId(Long proprietaireVehiculeId) {
 		this.proprietaireVehiculeId = proprietaireVehiculeId;
@@ -86,42 +78,20 @@ public class ProprietaireVehicule extends JournalData {
 		this.description = description;
 	}
 
-
-
-
-
-
-
 	public Set<CarteGrise> getCartegrises() {
 		return cartegrises;
 	}
-
-
-
-
-
-
 
 	public void setCartegrises(Set<CarteGrise> cartegrises) {
 		this.cartegrises = cartegrises;
 	}
 
-
 	public Organisation getOrganisation() {
 		return organisation;
 	}
-
 
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
 
-
-
-
-
-
-
-	
-	
 }

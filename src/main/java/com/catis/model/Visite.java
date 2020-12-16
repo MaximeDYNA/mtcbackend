@@ -23,37 +23,37 @@ import com.catis.model.configuration.JournalData;
 import com.catis.objectTemporaire.GraphView;
 
 @Entity
-@Table(name="t_visite")
+@Table(name = "t_visite")
 @EntityListeners(AuditingEntityListener.class)
 public class Visite extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idVisite;
 	private boolean contreVisite;
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private int statut;
-	
+
 	@ManyToOne
 	private Organisation organisation;
 
 	@Column(columnDefinition = "bit default 1")
 	private boolean encours;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idCaissier")
+	@JoinColumn(name = "idCaissier")
 	private Caissier caissier;
-	
+
 	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
 	private Inspection inspection;
-	
+
 	@OneToOne(mappedBy = "visite")
 	private VerbalProcess process;
-	
+
 	@ManyToOne
 	private CarteGrise carteGrise;
-	
+
 	public List<RapportDeVisite> getRapportDeVisites() {
 		return rapportDeVisites;
 	}
@@ -61,21 +61,18 @@ public class Visite extends JournalData {
 	public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
 		this.rapportDeVisites = rapportDeVisites;
 	}
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
 	private List<RapportDeVisite> rapportDeVisites;
 
 	public Visite() {
-	
+
 	}
-
-	
-
-
 
 	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
 			Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
 			CarteGrise carteGrise, List<RapportDeVisite> rapportDeVisites) {
-	
+
 		this.idVisite = idVisite;
 		this.contreVisite = contreVisite;
 		this.dateDebut = dateDebut;
@@ -94,57 +91,33 @@ public class Visite extends JournalData {
 		return contreVisite;
 	}
 
-
-
-
-
-
-
-
-
 	public void setContreVisite(boolean contreVisite) {
 		this.contreVisite = contreVisite;
 	}
-
-
-
-
-
-
-
-
 
 	public Long getIdVisite() {
 		return idVisite;
 	}
 
-
-
 	public void setIdVisite(Long idVisite) {
 		this.idVisite = idVisite;
 	}
-
-
 
 	public LocalDateTime getDateDebut() {
 		return dateDebut;
 	}
 
-
 	public void setDateDebut(LocalDateTime dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-
 
 	public LocalDateTime getDateFin() {
 		return dateFin;
 	}
 
-
 	public void setDateFin(LocalDateTime dateFin) {
 		this.dateFin = dateFin;
 	}
-
 
 	public int getStatut() {
 		return statut;
@@ -154,7 +127,6 @@ public class Visite extends JournalData {
 		this.statut = statut;
 	}
 
-	
 	public Organisation getOrganisation() {
 		return organisation;
 	}
@@ -195,57 +167,45 @@ public class Visite extends JournalData {
 		this.carteGrise = carteGrise;
 	}
 
-
 	public boolean isEncours() {
 		return encours;
 	}
 
-
 	public void setEncours(boolean encours) {
 		this.encours = encours;
 	}
-	
+
 	public String statutRender(int code) {
-		if(code==0) {
+		if (code == 0) {
 			return "maj";
-		}
-		else if(code==1) {
+		} else if (code == 1) {
 			return "A inspecter";
-		}
-		else if(code==2) {
+		} else if (code == 2) {
 			return "En cours test";
-		}
-		else if(code==3) {
+		} else if (code == 3) {
 			return "A signer";
-		}
-		else if(code==4) {
+		} else if (code == 4) {
 			return "A imprimer";
-		}
-		else if(code==5) {
+		} else if (code == 5) {
 			return "A enregister";
-		}
-		else if(code==6) {
+		} else if (code == 6) {
 			return "A certifier";
-		}
-		else if(code==7) {
+		} else if (code == 7) {
 			return "Accepté";
-		}
-		else if(code==8) {
+		} else if (code == 8) {
 			return "Refusé";
-		}
-		else if(code==9) {
+		} else if (code == 9) {
 			return "A approuver";
-		}
-		else {
+		} else {
 			return "erreur";
 		}
-		
+
 	}
+
 	public String typeRender() {
-		if(this.contreVisite) {
+		if (this.contreVisite) {
 			return "CV";
-		}
-		else
+		} else
 			return "VTP";
 	}
 }

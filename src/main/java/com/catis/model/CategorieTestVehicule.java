@@ -20,7 +20,8 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class CategorieTestVehicule extends JournalData {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
@@ -29,9 +30,9 @@ public class CategorieTestVehicule extends JournalData {
 	@ManyToOne
 	private CategorieVehicule categorieVehicule;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="categorieTestVehicule")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTestVehicule")
 	private Set<Mesure> mesures;
-	
+
 	@OneToMany(mappedBy = "categorieTestVehicule")
 	private Set<GieglanFile> gieglanFiles;
 
@@ -87,6 +88,5 @@ public class CategorieTestVehicule extends JournalData {
 	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
 		this.gieglanFiles = gieglanFiles;
 	}
-	
-	
+
 }

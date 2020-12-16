@@ -19,15 +19,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caisse")
-public class Caisse extends JournalData{
-	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class Caisse extends JournalData {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long caisse_id;
-	
+
 	private String description;
-	private String idOrganisation; 
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="caisse")
+	private String idOrganisation;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
 	@JsonIgnore
 	private Set<CaissierCaisse> caissiercaisses;
 
@@ -60,7 +61,7 @@ public class Caisse extends JournalData{
 	}
 
 	public Caisse() {
-	
+
 		// TODO Auto-generated constructor stub
 	}
 
@@ -75,6 +76,5 @@ public class Caisse extends JournalData{
 	public void setCaissiercaisses(Set<CaissierCaisse> caissiercaisses) {
 		this.caissiercaisses = caissiercaisses;
 	}
-	
-	
+
 }

@@ -19,38 +19,30 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class OperationCaisse extends JournalData {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long operationDeCaisseId;
-	
+
 	private int type;
 	private double montant;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idCaissierCaisse")
+	@JoinColumn(name = "idCaissierCaisse")
 	private CaissierCaisse caissierCaisse;
-	
+
 	@ManyToOne
 	private Vente vente;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idTaxe")
+	@JoinColumn(name = "idTaxe")
 	private Taxe taxe;
-	
+
 	@ManyToOne
 	private SessionCaisse sessionCaisse;
-	
+
 	private String numeroTicket;
-	
-	
 
 	public OperationCaisse() {
 
 	}
-
-
-
-	
-
-
 
 	public OperationCaisse(long operationDeCaisseId, int type, double montant, CaissierCaisse caissierCaisse,
 			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
@@ -65,44 +57,21 @@ public class OperationCaisse extends JournalData {
 		this.numeroTicket = numeroTicket;
 	}
 
-
-
-
-
-
-
 	public long getOperationDeCaisseId() {
 		return operationDeCaisseId;
 	}
-
-
 
 	public void setOperationDeCaisseId(long operationDeCaisseId) {
 		this.operationDeCaisseId = operationDeCaisseId;
 	}
 
-
-
-	
 	public int isType() {
 		return type;
 	}
 
-
-
-
-
-
-
 	public void setType(int type) {
 		this.type = type;
 	}
-
-
-
-
-
-
 
 	public double getMontant() {
 		return montant;
@@ -136,66 +105,33 @@ public class OperationCaisse extends JournalData {
 		this.taxe = taxe;
 	}
 
-
-
-
-
-
-
-
-
 	public String getNumeroTicket() {
 		return numeroTicket;
 	}
-
-
-
-
-
-
-
-
-
 
 	public void setNumeroTicket(String numeroTicket) {
 		this.numeroTicket = numeroTicket;
 	}
 
-
-
-
-
-
-
-
-
-
 	public SessionCaisse getSessionCaisse() {
 		return sessionCaisse;
 	}
-
-
-
-
-
-
 
 	public void setSessionCaisse(SessionCaisse sessionCaisse) {
 		this.sessionCaisse = sessionCaisse;
 	}
 
-	
 	public String getLibelle() {
-		if(this.type==0) {
+		if (this.type == 0) {
 			return "Mise en compte";
 		}
-		if(this.type==1) {
+		if (this.type == 1) {
 			return "Encaissement";
 		}
-		if(this.type==2) {
+		if (this.type == 2) {
 			return "Décaissement";
 		}
 		return "Erreur";
 	}
-	
+
 }

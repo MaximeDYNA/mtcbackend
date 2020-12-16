@@ -20,19 +20,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietest")
-public class CategorieTest extends JournalData{
-	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class CategorieTest extends JournalData {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategorieTest;
 
 	private String libelle;
 
 	private String description;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="categorieTest")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTest")
 	@JsonIgnore
 	private Set<CategorieTestMachine> categorieTestMachines;
-	
+
 	@OneToMany(mappedBy = "categorieTest")
 	private Set<CategorieTestVehicule> categorieTestVehicules;
 
@@ -85,9 +86,8 @@ public class CategorieTest extends JournalData{
 		this.categorieTestVehicules = categorieTestVehicules;
 	}
 
-	public CategorieTest() {	
+	public CategorieTest() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 }

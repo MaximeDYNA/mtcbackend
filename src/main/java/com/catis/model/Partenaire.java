@@ -24,55 +24,53 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_partenaire")
-public class Partenaire extends JournalData{
-	
+public class Partenaire extends JournalData {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long partenaireId;
 	@NotEmpty
-	
+
 	private String nom;
 	private String prenom;
-	@Column(nullable=true)
+	@Column(nullable = true)
 	private Date dateNaiss; // date de naissance
 	private String lieuDeNaiss; // lieu de naissance
-	@Column(unique=true)
+	@Column(unique = true)
 	private String passport;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String permiDeConduire;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String cni;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String telephone;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String email;
-	
+
 	@ManyToOne
-	@JoinColumn(name="organisationId", nullable = false)
-    private Organisation organisation;
-	
-	
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+	@JoinColumn(name = "organisationId", nullable = false)
+	private Organisation organisation;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
 	Set<ProprietaireVehicule> proprietaireVehicule;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Client> client;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Contact> contact;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Utilisateur> utilisateurs;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="partenaire")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Adresse> adresses;
-	
+
 	public Set<Adresse> getAdresses() {
 		return adresses;
 	}
@@ -81,26 +79,26 @@ public class Partenaire extends JournalData{
 		this.adresses = adresses;
 	}
 
-	@OneToMany(mappedBy="partenaire")
+	@OneToMany(mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Controleur> controleurs;
-	
-	@OneToMany(mappedBy="partenaire")
+
+	@OneToMany(mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Caissier> caissiers;
-	
-	@OneToMany(mappedBy="partenaire")
+
+	@OneToMany(mappedBy = "partenaire")
 	@JsonIgnore
 	Set<Vendeur> vendeurs;
 
 	public Partenaire() {
 	}
-	
+
 	public Partenaire(long id, String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
 			String permiDeConduire, String cni, Organisation organisation,
 			Set<ProprietaireVehicule> proprietaireVehicule, Set<Utilisateur> utilisateurs, Set<Controleur> controleurs,
 			Set<Caissier> caissiers) {
-		
+
 		this.partenaireId = id;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -115,7 +113,6 @@ public class Partenaire extends JournalData{
 		this.controleurs = controleurs;
 		this.caissiers = caissiers;
 	}
-
 
 	public Set<ProprietaireVehicule> getProprietaireVehicule() {
 		return proprietaireVehicule;
@@ -136,42 +133,55 @@ public class Partenaire extends JournalData{
 	public String getNom() {
 		return nom;
 	}
+
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
 	public String getPrenom() {
 		return prenom;
 	}
+
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
+
 	public Date getDateNaiss() {
 		return dateNaiss;
 	}
+
 	public void setDateNaiss(Date dateNaiss) {
 		this.dateNaiss = dateNaiss;
 	}
+
 	public String getLieuDeNaiss() {
 		return lieuDeNaiss;
 	}
+
 	public void setLieuDeNaiss(String lieuDeNaiss) {
 		this.lieuDeNaiss = lieuDeNaiss;
 	}
+
 	public String getPassport() {
 		return passport;
 	}
+
 	public void setPassport(String passport) {
 		this.passport = passport;
 	}
+
 	public String getPermiDeConduire() {
 		return permiDeConduire;
 	}
+
 	public void setPermiDeConduire(String permiDeConduire) {
 		this.permiDeConduire = permiDeConduire;
 	}
+
 	public String getCni() {
 		return cni;
 	}
+
 	public void setCni(String cni) {
 		this.cni = cni;
 	}
@@ -180,11 +190,9 @@ public class Partenaire extends JournalData{
 		return utilisateurs;
 	}
 
-
 	public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
 		this.utilisateurs = utilisateurs;
 	}
-
 
 	public Set<Controleur> getControleurs() {
 		return controleurs;
@@ -249,6 +257,5 @@ public class Partenaire extends JournalData{
 	public void setContact(Set<Contact> contact) {
 		this.contact = contact;
 	}
-	
-	
+
 }

@@ -17,14 +17,15 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class CategorieVehicule extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String type;
 
 	@OneToMany(mappedBy = "categorieVehicule")
 	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
-	
+
 	@OneToMany(mappedBy = "categorieVehicule")
 	private Set<CategorieTestVehicule> categorieTestVehicules;
 
@@ -71,6 +72,5 @@ public class CategorieVehicule extends JournalData {
 	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
 		this.categorieTestVehicules = categorieTestVehicules;
 	}
-	
-	
+
 }

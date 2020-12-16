@@ -21,45 +21,45 @@ import com.catis.objectTemporaire.CarteGriseReceived;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="t_cartegrise")
+@Table(name = "t_cartegrise")
 @EntityListeners(AuditingEntityListener.class)
-public class CarteGrise extends JournalData{
-	
+public class CarteGrise extends JournalData {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long carteGriseId;
-	
+
 	private String numImmatriculation;
-	
+
 	private String preImmatriculation;// immatriculation précédente
-	
-	private Date dateDebutValid; //debut de validité
-	
+
+	private Date dateDebutValid; // debut de validité
+
 	private Date dateFinValid;// fin de validité
 	private String ssdt_id;
-	private String commune;	
+	private String commune;
 	private double montantPaye;
 	private boolean vehiculeGage; // véhicule gagé
 	private String genreVehicule;
 	private String enregistrement;
-	
+
 	private Date dateDelivrance;
 	private String lieuDedelivrance;// lieu de délivrance
 	private String centre_ssdt;
-	
+
 	@ManyToOne
 	private ProprietaireVehicule proprietaireVehicule;
-	
+
 	@ManyToOne
 	private Vehicule vehicule;
-	
+
 	@ManyToOne
 	private Produit produit;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="carteGrise")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "carteGrise")
 	@JsonIgnore
-	Set<Visite> visites; 
-	
+	Set<Visite> visites;
+
 	public CarteGrise(CarteGriseReceived c) {
 
 		this.numImmatriculation = c.getNumImmatriculation();
@@ -71,8 +71,7 @@ public class CarteGrise extends JournalData{
 		this.montantPaye = c.getMontantPaye();
 		this.vehiculeGage = c.isVehiculeGage();
 		this.genreVehicule = c.getGenreVehicule();
-		
-		
+
 		this.enregistrement = c.getEnregistrement();
 		this.dateDelivrance = c.getDateDelivrance();
 		this.lieuDedelivrance = c.getLieuDedelivrance();
@@ -99,13 +98,6 @@ public class CarteGrise extends JournalData{
 	public CarteGrise() {
 	}
 
-
-
-	
-
-	
-
-	
 	public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
 			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
 			String genreVehicule, String enregistrement, Date dateDelivrance, String lieuDedelivrance,
@@ -211,7 +203,6 @@ public class CarteGrise extends JournalData{
 		this.genreVehicule = genreVehicule;
 	}
 
-	
 	public void setDateDelivrance(Date dateDelivrance) {
 		this.dateDelivrance = dateDelivrance;
 	}
@@ -260,5 +251,4 @@ public class CarteGrise extends JournalData{
 		return dateDelivrance;
 	}
 
-	
 }

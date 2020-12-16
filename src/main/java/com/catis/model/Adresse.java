@@ -15,31 +15,28 @@ import com.catis.model.configuration.JournalData;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_adresse")
-public class Adresse extends JournalData{
+public class Adresse extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long adresseId;
 	private String nom;
 	private String description;
-	
+
 	@ManyToOne
 	private Organisation organisation;
-	
+
 	@ManyToOne
 	private Partenaire partenaire;
-	
+
 	@ManyToOne
 	private Pays pays;
-	
+
 	@ManyToOne
 	private DivisionPays divisionPays;
-		
-	
+
 	public Adresse() {
 	}
-
-	
 
 	public Adresse(Long adresseId, String nom, String description, Organisation organisation, Pays pays,
 			DivisionPays divisionPays) {
@@ -51,18 +48,13 @@ public class Adresse extends JournalData{
 		this.divisionPays = divisionPays;
 	}
 
-
 	public Long getAdresseId() {
 		return adresseId;
 	}
 
-
-
 	public void setAdresseId(Long adresseId) {
 		this.adresseId = adresseId;
 	}
-
-
 
 	public String getDescription() {
 		return description;
@@ -104,17 +96,12 @@ public class Adresse extends JournalData{
 		this.nom = nom;
 	}
 
-
-
 	public Partenaire getPartenaire() {
 		return partenaire;
 	}
-
-
 
 	public void setPartenaire(Partenaire partenaire) {
 		this.partenaire = partenaire;
 	}
 
-	
 }

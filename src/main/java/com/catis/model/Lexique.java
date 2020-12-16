@@ -18,7 +18,8 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class Lexique extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String libelle;
@@ -29,22 +30,22 @@ public class Lexique extends JournalData {
 
 	@ManyToOne
 	private VersionLexique versionLexique;
-	
+
 	@OneToMany(mappedBy = "parent")
 	private Set<Lexique> childs;
 
 	@ManyToOne
 	private Lexique parent;
-	
+
 	private String decision;
 
 	public Lexique() {
-	
+
 	}
 
 	public Lexique(Long id, String libelle, String code, Boolean visuel, VersionLexique versionLexique,
 			Set<Lexique> childs, Lexique parent, String decision) {
-		
+
 		this.id = id;
 		this.libelle = libelle;
 		this.code = code;
@@ -118,6 +119,5 @@ public class Lexique extends JournalData {
 	public void setDecision(String decision) {
 		this.decision = decision;
 	}
-	
-	
+
 }

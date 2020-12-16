@@ -21,7 +21,8 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class VersionLexique extends JournalData {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String libelle;
@@ -38,13 +39,13 @@ public class VersionLexique extends JournalData {
 	private VerbalProcess process;
 
 	public VersionLexique() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
 
 	public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
 			List<RapportDeVisite> rapportDeVisites, VerbalProcess process) {
-	
+
 		this.id = id;
 		this.libelle = libelle;
 		this.date = date;
@@ -100,7 +101,5 @@ public class VersionLexique extends JournalData {
 	public void setProcess(VerbalProcess process) {
 		this.process = process;
 	}
-	
-	
-	
+
 }

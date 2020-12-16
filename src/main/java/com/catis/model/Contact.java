@@ -1,6 +1,5 @@
 package com.catis.model;
 
-
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -25,24 +24,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Contact extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long contactId;
-	
+
 	private String description;
-	
-	
+
 	@ManyToOne
 	private Partenaire partenaire;
 
 	@ManyToOne
 	private Client client;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="contact")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
 	@JsonIgnore
 	private Set<Vente> ventes;
-	
+
 	public Contact() {
-		
+
 	}
 
 	public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
@@ -91,10 +89,5 @@ public class Contact extends JournalData {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	
-	
 
-
-
-	
 }

@@ -22,10 +22,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_produit")
 @EntityListeners(AuditingEntityListener.class)
-public class Produit extends JournalData{
+public class Produit extends JournalData {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long produitId;
 	private String libelle;
 	private String description;
@@ -33,32 +33,31 @@ public class Produit extends JournalData{
 	private int delaiValidite;
 	private String img;
 
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
 	@JsonIgnore
 	private Set<DetailVente> detailVente;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
 	@JsonIgnore
 	private Set<CarteGrise> carteGrise;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="produit")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
 	@JsonIgnore
 	private Set<TaxeProduit> taxeProduit;
-	
-	@OneToMany( mappedBy="produit")
+
+	@OneToMany(mappedBy = "produit")
 	@JsonIgnore
 	private Set<Posales> posales;
-	
+
 	@ManyToOne
-	@JoinColumn(name="categorieProduitId")
+	@JoinColumn(name = "categorieProduitId")
 	private CategorieProduit categorieProduit;
-	
+
 	@OneToMany(mappedBy = "produit")
 	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
 
 	public Produit() {
-		
+
 		// TODO Auto-generated constructor stub
 	}
 
@@ -66,7 +65,7 @@ public class Produit extends JournalData{
 			Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
 			Set<Posales> posales, CategorieProduit categorieProduit,
 			Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
-		
+
 		this.produitId = produitId;
 		this.libelle = libelle;
 		this.description = description;
@@ -176,6 +175,5 @@ public class Produit extends JournalData{
 	public void setCategorieVehiculeProduits(Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
 		this.categorieVehiculeProduits = categorieVehiculeProduits;
 	}
-	
-	
+
 }
