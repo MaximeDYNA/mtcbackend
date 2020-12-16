@@ -183,43 +183,85 @@
 	  </div>
 	  <div class="col-6">
 		  <div class="row" style=" height:500px; border: 2px solid black">
-		  	<h4 class="text-center font-weight-bold">
-			  	RELEVE DES MESURES/ MEASUREMENT: <br>	
-			</h4>
-			<table th:each="categorieTest : ${categorieTests}" class="table">
-	            <tr th:if="${categorieTest.libelle != 'pollution' and categorieTest.libelle != 'freins' }">
-	            	<table  class="table align-top" style="border: 1px solid black;">
-	            		<tr >	
-	            			<td class="text-center font-weight-bold"
-	            			 th:text="${categorieTest.libelle}"></td>
-	            			<td class="text-center font-weight-bold"
-	            			 th:each="testList : ${categorieTests.testlist}">            		
-		            			<span th:text="${testList.libelle}"></span>
-		            		</td>
-	            		</tr>
-	            		<tr>
-	            			<td></td>
-		            		<td class="text-center" th:each="testList : ${categorieTests.testlist}">
-		            			<span th:text="${testList.valeur}"></span>
-		            		</td>
-	            		</tr>
-	            	</table>
-	            </tr>
-	            <tr th:unless="${categorieTest.libelle != 'pollution' and categorieTest.libelle != 'freins' }">
-	            	<table  class="table">
-		            	<tr>
-		            		<td th th:text="${categorieTest.libelle}" >	         				            		
-		            		</td>
-		            		<td th:each="testList : ${categorieTest.testlist}">	
-		            			<th th:text="${testList.libelle}"></th>             		
-		            		</td>
-		            		<td>	
-		            			<th th:text="${testList.valeur}"></th>             		
-		            		</td>
-		            	</tr>
-	            	</table>
-	            </tr>
-	         </table>
+		  	<div class="col">
+			  	<div class="text-center font-weight-bold d-flex align-items-start" style=" height:50px;">
+				  	<h4 class="">
+					  	RELEVE DES MESURES/ MEASUREMENT: <br>	
+					</h4>
+			  	</div>
+				<div  th:each="categorieTest : ${categorieTests}">
+					<table>
+			            <tr th:if="${categorieTest.libelle != 'pollution' AND categorieTest.libelle != 'freins' }">
+			            	<table style="height:85%; width:85%;">
+			            		<tr>	
+			            			<td class="text-center font-weight-bold"
+			            			style="border: 2px solid black"
+			            			th:text="${categorieTest.libelle}"></td>
+			            			<td class="text-center font-weight-bold"
+			            			 th:each="testList : ${categorieTest.testlist}"
+			            			 style="border: 2px solid black">            		
+				            			<span th:text="${testList.libelle}"></span>
+				            		</td>
+			            		</tr>
+			            		<tr>
+			            			<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+				            		<td class="text-center" th:each="testList : ${categorieTest.testlist}" 
+				            		style="border: 2px solid black">
+				            			<span th:text="${testList.valeur}"></span>
+				            		</td>
+			            		</tr>
+			            	</table>
+			            </tr>
+			            <tr th:unless="${categorieTest.libelle != 'pollution' AND categorieTest.libelle != 'freins' }">
+			            	<br>
+			            	<table style="height:85%;width:85%;">
+				            	<tr>
+				            		<td class="text-center font-weight-bold" th:text="${categorieTest.libelle}" style="width:110px; vertical-align: top; border: 2px solid black;
+				            																							border-right: 0px;">
+				            		</td>
+									<td>
+										<table>
+									         <div>	
+								            	<tr>
+									            	<td style="border: 2px solid black; width:60px; border-bottom: 0px; ">	
+										            	<span class="text-center font-weight-bold" th:text="${categorieTest.testlist[0].libelle}"></span>             		
+										            </td>
+										            <td style="border: 2px solid black; width:60px; border-bottom: 0px">	
+										            	<span th:text="${categorieTest.testlist[0].valeur}"></span>             		
+										            </td>
+									            </tr>
+						            		</div>
+					            		</table>
+					            	</td>
+				            	</tr>
+				            	
+					            <tr>
+					            	<td class="text-center font-weight-bold"  style="vertical-align: top; border: 0px solid black;">
+					            	</td>			            
+							        <td>
+							            <table>
+									         <div th:each="testList,index : ${categorieTest.testlist}">	
+								            	<tr th:if="${index.index > 0}">
+									            	<td style="width:60px; border: 2px solid black;">	
+										            	<span class="text-center font-weight-bold" th:text="${testList.libelle}"></span>             		
+										            </td>
+										            <td style="width:60px; border: 2px solid black;">	
+										            	<span th:text="${testList.valeur}"></span>             		
+										            </td>
+									            </tr>
+						            		</div>
+					            		</table>
+					            	</td>  				            		
+					            </tr>
+			            	</table>
+			            </tr>
+			           <br>
+		         </table>
+		         
+	         </div>
+	         
+		  	</div>
 		  </div>
 		  
 		  <div class="row">
@@ -234,16 +276,18 @@
 					      <p class="text-left font-weight-bold"> 
 					      	N° PV / SHEET N°:
 					      </p>
+					      <span th:utext="${id}"></span> <br>
 					</div>
 					<div class="row">
 					      <p class="text-left font-weight-bold"> 
 					      	CAT:
 					      </p>
+					      <span th:utext="${cat}"></span> <br>
 					</div>
 			    	<div class="row">
 			    		  <div class="col-3">
 						      <div  style="width: 120%; border: 2px solid black">
-							      <h1>XX</h1>
+							      <h1><span th:utext="${day}"></span></h1>
 							  </div>
 							  <div class="text-center font-weight-bold" >
 							      <p style="font-size: 6px;">Mois / Month</p>
@@ -251,12 +295,12 @@
 						 </div>
 						  <div class="col-5 d-flex  align-content-end flex-wrap">
 							  <p class="text-left font-weight-bold"> 
-						      	getMatricule();
+						      	 <span th:utext="${imm}"></span>
 						      </p>
 						  </div>
 						  <div class="col-3" >
 						     <div  style=" width: 120%; border: 2px solid black">
-							      <h1>XX</h1>
+							      <h1><span th:utext="${year}"></span></h1>
 							  </div>
 							  <div class="text-center font-weight-bold" >
 							      <p style="font-size: 6px;">Année / Year</p>

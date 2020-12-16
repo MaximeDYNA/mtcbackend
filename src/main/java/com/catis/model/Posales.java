@@ -2,6 +2,7 @@ package com.catis.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,13 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="t_posales")
-public class Posales {
+@EntityListeners(AuditingEntityListener.class)
+public class Posales extends JournalData {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

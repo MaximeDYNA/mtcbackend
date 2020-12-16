@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +67,8 @@ public class pdfController {
 	    		Inspection i = inspectionService.findInspectionByVisite(v.getIdVisite());
 	    		Taxe tp = taxeService.findByNom("TVA");
 		    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YY HH:mm");
+		    	DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("YY");
+		    	DateTimeFormatter monthFomatter = DateTimeFormatter.ofPattern("MM");
 		    	String pattern = "dd/MM/YY";
 		    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 				String type;
@@ -91,21 +96,35 @@ public class pdfController {
 		        modelAndView.addObject("adresse", v.getCarteGrise().getCommune()); 
 		        modelAndView.addObject("tel", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getTelephone()); 
 		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()); 		
-		        modelAndView.addObject("taxe", tp.getValeur());
-		        ArrayList testlist =  new ArrayList() {{
+		        modelAndView.addObject("taxe", tp.getValeur());	        
+		        LocalDateTime now = LocalDateTime.now(); 
+		        
+		        modelAndView.addObject("day", now.format(monthFomatter));
+		        modelAndView.addObject("year", now.format(formatter2));
+		        
+		        List<TestList> testlist =  new ArrayList() {{
 		            add(new TestList("eff ag",10));
 		            add(new TestList("eff ad",20));
 		            add(new TestList("eff rg",20));
+		            add(new TestList("Diss. AV",20));
+		            add(new TestList("Diss. AR",20));
 		        }};
-		        CategorieTests ct = new CategorieTests( "suspension", testlist);
-		        
-		        modelAndView.addObject("categorieTests", ct );
-		        
-		        modelAndView.setViewName("visites");
-		        
+		        List<TestList> testlistRipage =  new ArrayList() {{
+		            add(new TestList("ripage av", 6.5));
+		            add(new TestList("ripage arr",20));
+		           
+		        }};
+		        CategorieTests ct = new CategorieTests( "Suspension", testlist);
+		        CategorieTests cr = new CategorieTests( "ripage", testlistRipage);
+		        CategorieTests c = new CategorieTests( "freins", testlist);
+		        List<CategorieTests> cts = new ArrayList<>();
+		        cts.add(ct);
+		        cts.add(c);
+		        cts.add(cr);
+		        modelAndView.addObject("categorieTests", cts );		        
+		        modelAndView.setViewName("visites");		        
 		        return modelAndView;
-			
-	    	
+	
 	    }
 	    @GetMapping ("/visites/qrcode/{id}")
 	    public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {

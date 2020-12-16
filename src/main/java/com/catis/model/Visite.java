@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -34,12 +35,19 @@ public class Visite extends JournalData {
 	private LocalDateTime dateFin;
 	private int statut;
 	private String idOrganisation;
-	@Column(columnDefinition = "boolean default true")
+
+	@Column(columnDefinition = "bit default 1")
 	private boolean encours;
 	
 	@ManyToOne
 	@JoinColumn(name="idCaissier")
 	private Caissier caissier;
+	
+	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+	private Inspection inspection;
+	
+	@OneToOne(mappedBy = "visite")
+	private VerbalProcess process;
 	
 	@ManyToOne
 	private CarteGrise carteGrise;

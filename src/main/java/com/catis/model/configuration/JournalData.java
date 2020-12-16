@@ -19,7 +19,8 @@ public class JournalData {
  
     @LastModifiedDate
     private LocalDateTime modifiedDate;
-    @Column(columnDefinition = "boolean default true")
+
+    @Column(columnDefinition = "bit default 1")
     private boolean activeStatus;
     
 	public LocalDateTime getCreatedDate() {

@@ -1,13 +1,19 @@
 package com.catis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 @Entity
 @Table(name="t_taxeproduit")
-public class TaxeProduit {
+@EntityListeners(AuditingEntityListener.class)
+public class TaxeProduit extends JournalData {
 	@Id
 	private Long TaxeProduitId;
 	@ManyToOne

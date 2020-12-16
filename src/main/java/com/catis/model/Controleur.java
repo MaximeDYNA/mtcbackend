@@ -3,6 +3,7 @@ package com.catis.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="t_controleur")
-public class Controleur {
+@EntityListeners(AuditingEntityListener.class)
+public class Controleur extends JournalData{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long idControleur;

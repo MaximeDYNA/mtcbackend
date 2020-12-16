@@ -1,22 +1,21 @@
 package com.catis.model;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
 
 @Entity
 @Table(name = "t_modelevehicule")
-public class ModeleVehicule {
+@EntityListeners(AuditingEntityListener.class)
+public class ModeleVehicule extends JournalData {
+	
 	@Id
-	private String idModele;
+	private Long idModele;
 	private String description;
 	private String idOganisation;
 	
@@ -29,22 +28,20 @@ public class ModeleVehicule {
 	}
 
 	
-	public ModeleVehicule(String idModele, String description, String idOganisation 
+	public ModeleVehicule(Long idModele, String description, String idOganisation 
 			) {
 		super();
 		this.idModele = idModele;
 		this.description = description;
-		this.idOganisation = idOganisation;
-		
-		
+		this.idOganisation = idOganisation;	
 	}
 
 
-	public String getIdModele() {
+	public Long getIdModele() {
 		return idModele;
 	}
 
-	public void setIdModele(String idModele) {
+	public void setIdModele(Long idModele) {
 		this.idModele = idModele;
 	}
 
@@ -63,9 +60,4 @@ public class ModeleVehicule {
 	public void setIdOganisation(String idOganisation) {
 		this.idOganisation = idOganisation;
 	}
-
-	
-
-	
-	
 }

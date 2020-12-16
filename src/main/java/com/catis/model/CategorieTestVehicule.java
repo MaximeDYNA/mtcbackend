@@ -3,6 +3,7 @@ package com.catis.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.catis.model.configuration.JournalData;
+
 @Entity
-public class CategorieTestVehicule {
+@EntityListeners(AuditingEntityListener.class)
+public class CategorieTestVehicule extends JournalData {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
