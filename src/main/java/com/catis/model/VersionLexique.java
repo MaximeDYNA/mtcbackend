@@ -29,7 +29,7 @@ public class VersionLexique extends JournalData {
 
 	private Date date;
 
-	@OneToMany(mappedBy = "versionLexique")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique")
 	private Set<Lexique> lexiques;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")

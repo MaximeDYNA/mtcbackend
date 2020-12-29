@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+//import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +86,10 @@ public class AdresseController {
 		}
 	}
 
-	@RequestMapping(
+	 /*@RequestMapping(
             path="api/v1/userInfos", 
             method = RequestMethod.GET)
-    @ResponseBody
+   @ResponseBody
     public void getUserInformation(KeycloakAuthenticationToken token) {
         if(token != null){
             System.out.println("token :" + token);
@@ -105,6 +105,6 @@ public class AdresseController {
         }else{
             System.out.println("User not connected.");
         }
-    }
+    }*/
 
 }

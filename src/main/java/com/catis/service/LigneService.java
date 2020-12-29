@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.Ligne;
+import com.catis.repository.InspectionRepository;
 import com.catis.repository.LigneRepository;
 
 @Service
@@ -15,7 +16,8 @@ public class LigneService {
 	@Autowired
 	private LigneRepository ligneR;
 	
-	public Ligne addLigne(Ligne ligne) {
+	
+	 public Ligne addLigne(Ligne ligne) {
 		return ligneR.save(ligne);
 	}
 
@@ -28,4 +30,5 @@ public class LigneService {
 	
 		return ligneR.findById(id).get();
 	}
+	
 }

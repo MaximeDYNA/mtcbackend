@@ -1,6 +1,5 @@
 package com.catis.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_organisation")
@@ -26,57 +26,75 @@ public class Organisation extends JournalData {
 	private Long organisationId;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<ModeleVehicule> modelVehicule;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Caissier> caissier;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<CaissierCaisse> caissierCaisse;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Controleur> controleur;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<CategorieTestMachine> categorieTestMachine;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Ligne> ligne;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Inspection> inspection;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Machine> machine;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Adresse> adresse;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Mesure> mesure;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Visite> visite;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<ValeurTest> valeurTests;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Partenaire> partenaires;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<LigneMachine> ligneMachine;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<ProprietaireVehicule> proprietaireVehicule;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Utilisateur> utilisateurs;
-
+	
 	@OneToMany(mappedBy = "parentOrganisation")
+	@JsonIgnore
 	private Set<Organisation> childOrganisations;
 
 	@ManyToOne
+	@JsonIgnore
 	private Organisation parentOrganisation;
 
 	private String patente;

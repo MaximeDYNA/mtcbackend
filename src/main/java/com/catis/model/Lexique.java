@@ -27,6 +27,12 @@ public class Lexique extends JournalData {
 	private String code;
 
 	private Boolean Visuel;
+	
+	@ManyToOne
+	private Client client;
+	
+	@ManyToOne
+	private CategorieVehicule categorieVehicule;
 
 	@ManyToOne
 	private VersionLexique versionLexique;
@@ -119,5 +125,22 @@ public class Lexique extends JournalData {
 	public void setDecision(String decision) {
 		this.decision = decision;
 	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public CategorieVehicule getCategorieVehicule() {
+		return categorieVehicule;
+	}
+
+	public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
+		this.categorieVehicule = categorieVehicule;
+	}
+	
 
 }

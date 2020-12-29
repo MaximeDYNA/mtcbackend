@@ -25,6 +25,9 @@ public class CategorieVehicule extends JournalData {
 
 	@OneToMany(mappedBy = "categorieVehicule")
 	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
+	
+	@OneToMany(mappedBy = "categorieVehicule")
+	private Set<Lexique> lexique;
 
 	@OneToMany(mappedBy = "categorieVehicule")
 	private Set<CategorieTestVehicule> categorieTestVehicules;
@@ -71,6 +74,14 @@ public class CategorieVehicule extends JournalData {
 
 	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
 		this.categorieTestVehicules = categorieTestVehicules;
+	}
+
+	public Set<Lexique> getLexique() {
+		return lexique;
+	}
+
+	public void setLexique(Set<Lexique> lexique) {
+		this.lexique = lexique;
 	}
 
 }

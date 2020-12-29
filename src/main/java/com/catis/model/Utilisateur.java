@@ -29,6 +29,7 @@ public class Utilisateur extends JournalData {
 	private String login;
 	private String motDePasse;
 	@ManyToOne
+	@JsonIgnore
 	private Organisation organisation;
 
 	@ManyToOne

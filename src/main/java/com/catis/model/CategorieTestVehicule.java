@@ -23,6 +23,7 @@ public class CategorieTestVehicule extends JournalData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String type;
 
 	@ManyToOne
 	private CategorieTest categorieTest;
@@ -88,5 +89,14 @@ public class CategorieTestVehicule extends JournalData {
 	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
 		this.gieglanFiles = gieglanFiles;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 
 }

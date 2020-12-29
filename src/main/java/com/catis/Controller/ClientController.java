@@ -70,7 +70,7 @@ public class ClientController {
 			partenaire.setPassport(clientPartenaire.getPassport());
 			partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
 			partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-			partenaire.setOrganisation(os.findByOrganisationId(0L));
+			partenaire.setOrganisation(os.findByOrganisationId(1L));
 			client.setPartenaire(partenaireService.addPartenaire(partenaire));
 			client.setDescription(clientPartenaire.getVariants());
 			clientService.addCustomer(client);

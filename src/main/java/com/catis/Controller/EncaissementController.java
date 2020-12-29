@@ -75,8 +75,7 @@ public class EncaissementController {
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
 	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException{
-		try
-		{
+		
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
 			Visite visite= new Visite();
@@ -86,12 +85,14 @@ public class EncaissementController {
 			CarteGrise carteGrise;
 			Vehicule vehicule;
 			/* ---------client------------*/
-				vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
+				vente.setClient(clientService.findCustomerById(encaissement.getClientId()==0 ?
+																1 : encaissement.getClientId()));
 			/*------------------------------*/
 				
 			/* ---------Vendeur------------*/
 				
-				vente.setVendeur(vendeurService.findVendeurById(encaissement.getVendeurId()));
+				vente.setVendeur(vendeurService.findVendeurById(encaissement.getVendeurId()==0 ?
+																1 : encaissement.getVendeurId() ));
 			/*------------------------------*/
 				
 			/* ---------Contact------------*/
@@ -161,7 +162,8 @@ public class EncaissementController {
 			 EncaissementResponse e = new EncaissementResponse(op, detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang() );
 			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e );
 			}
-		catch(java.util.NoSuchElementException nosuch) {
+	/*try
+	{catch(java.util.NoSuchElementException nosuch) {
 			LOGGER.error("Une valeur referencée n'existe pas");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une valeur referencée n'existe pas", null);
 		}
@@ -175,5 +177,5 @@ public class EncaissementController {
 		}
 		
 		
-	}
+	}*/
 }

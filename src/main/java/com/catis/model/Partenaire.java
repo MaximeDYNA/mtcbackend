@@ -49,6 +49,7 @@ public class Partenaire extends JournalData {
 
 	@ManyToOne
 	@JoinColumn(name = "organisationId", nullable = false)
+	@JsonIgnore
 	private Organisation organisation;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")

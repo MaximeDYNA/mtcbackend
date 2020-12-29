@@ -64,7 +64,7 @@ public class ContactController {
 			partenaire.setPassport(clientPartenaire.getPassport());
 			partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
 			partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-			partenaire.setOrganisation(os.findByOrganisationId(0L));
+			partenaire.setOrganisation(os.findByOrganisationId(1L));
 			contact.setPartenaire(partenaireService.addPartenaire(partenaire));
 			contact.setDescription(clientPartenaire.getVariants());
 			contactService.addContact(contact);

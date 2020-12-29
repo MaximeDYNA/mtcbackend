@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.keycloak.KeycloakSecurityContext;
+//import org.keycloak.KeycloakSecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class CaisseController {
 	public void creerUneCaisse(@RequestBody Caisse caisse){
 		caisserservice.addCaisse(caisse);
 	}
-	@GetMapping(value="/userconnected")
+	/*@GetMapping(value="/userconnected")
     public ResponseEntity<Object> getTasks()
     {
 		 try {
@@ -63,5 +63,5 @@ public class CaisseController {
 	 private KeycloakSecurityContext getKeycloakSecurityContext()
 	    {
 	        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	    }
+	    }*/
 }

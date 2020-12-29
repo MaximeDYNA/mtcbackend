@@ -31,6 +31,10 @@ public class Client extends JournalData {
 	@OneToMany(mappedBy = "client")
 	@JsonIgnore
 	Set<Vente> ventes;
+	
+	@OneToMany(mappedBy = "client")
+	@JsonIgnore
+	Set<Lexique> lexiques;
 
 	@OneToMany(mappedBy = "client")
 	@JsonIgnore
@@ -84,6 +88,14 @@ public class Client extends JournalData {
 
 	public void setVentes(Set<Vente> ventes) {
 		this.ventes = ventes;
+	}
+
+	public Set<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+	public void setLexiques(Set<Lexique> lexiques) {
+		this.lexiques = lexiques;
 	}
 
 }

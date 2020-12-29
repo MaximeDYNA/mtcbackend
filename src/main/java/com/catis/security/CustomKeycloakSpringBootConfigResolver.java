@@ -1,4 +1,4 @@
-package com.catis.security;
+/*package com.catis.security;
 
 	import org.keycloak.adapters.KeycloakDeployment;
 	import org.keycloak.adapters.KeycloakDeploymentBuilder;
@@ -12,7 +12,7 @@ package com.catis.security;
 	 * 
 	 * @since 0.0.1
 	 * @version 0.0.1
-	 */
+	 
 	@Configuration
 	public class CustomKeycloakSpringBootConfigResolver extends KeycloakSpringBootConfigResolver {
 
@@ -29,3 +29,4 @@ package com.catis.security;
 
 	}
 
+*/
