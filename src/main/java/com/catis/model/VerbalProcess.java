@@ -1,10 +1,13 @@
 package com.catis.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,22 +25,74 @@ public class VerbalProcess extends JournalData {
 	private String reference;
 
 	private String signature; // qrc
+	
+	private boolean status;
 
 	@OneToOne
 	private Visite visite;
+	
+	@OneToMany(mappedBy = "verbalProcess")
+	private Set<RapportDeVisite> rapportDeVisites;
 
 	public VerbalProcess() {
 
 		// TODO Auto-generated constructor stub
 	}
 
-	public VerbalProcess(Long id, String reference, String signature, Visite visite) {
 
+
+
+
+
+
+	public boolean isStatus() {
+		return status;
+	}
+
+
+
+
+
+
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+
+
+
+
+
+
+	public VerbalProcess(Long id, String reference, String signature, boolean status, Visite visite,
+			Set<RapportDeVisite> rapportDeVisites) {
+		super();
 		this.id = id;
 		this.reference = reference;
 		this.signature = signature;
+		this.status = status;
 		this.visite = visite;
+		this.rapportDeVisites = rapportDeVisites;
 	}
+
+
+
+
+
+
+
+	public Set<RapportDeVisite> getRapportDeVisites() {
+		return rapportDeVisites;
+	}
+
+
+
+	public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
+		this.rapportDeVisites = rapportDeVisites;
+	}
+
+
 
 	public Long getId() {
 		return id;

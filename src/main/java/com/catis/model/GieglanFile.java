@@ -56,7 +56,7 @@ public class GieglanFile extends JournalData {
 	private Set<RapportDeVisite> rapportDeVisites;
 
 	@ManyToOne
-	private CategorieTestVehicule categorieTestVehicule;
+	private CategorieTest categorieTest;
 
 	public enum FileType {
 		MEASURE, MACHINE, CARD_REGISTRATION
@@ -70,20 +70,6 @@ public class GieglanFile extends JournalData {
 
 	}
 
-	public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
-			Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
-			CategorieTestVehicule categorieTestVehicule) {
-		this.id = id;
-		this.name = name;
-		this.fileCreatedAt = fileCreatedAt;
-		this.type = type;
-		this.status = status;
-		this.inspection = inspection;
-		this.machine = machine;
-		this.valeurTests = valeurTests;
-		this.rapportDeVisites = rapportDeVisites;
-		this.categorieTestVehicule = categorieTestVehicule;
-	}
 
 	public Long getId() {
 		return id;
@@ -115,14 +101,6 @@ public class GieglanFile extends JournalData {
 
 	public void setType(FileType type) {
 		this.type = type;
-	}
-
-	public StatusType getStatus() {
-		return status;
-	}
-
-	public void setStatus(StatusType status) {
-		this.status = status;
 	}
 
 	public Inspection getInspection() {
@@ -157,12 +135,33 @@ public class GieglanFile extends JournalData {
 		this.rapportDeVisites = rapportDeVisites;
 	}
 
-	public CategorieTestVehicule getCategorieTestVehicule() {
-		return categorieTestVehicule;
+
+	public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
+			Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
+			CategorieTest categorieTest) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.fileCreatedAt = fileCreatedAt;
+		this.type = type;
+		this.status = status;
+		this.inspection = inspection;
+		this.machine = machine;
+		this.valeurTests = valeurTests;
+		this.rapportDeVisites = rapportDeVisites;
+		this.categorieTest = categorieTest;
 	}
 
-	public void setCategorieTestVehicule(CategorieTestVehicule categorieTestVehicule) {
-		this.categorieTestVehicule = categorieTestVehicule;
+
+	public CategorieTest getCategorieTest() {
+		return categorieTest;
 	}
+
+
+	public void setCategorieTest(CategorieTest categorieTest) {
+		this.categorieTest = categorieTest;
+	}
+
+
 
 }

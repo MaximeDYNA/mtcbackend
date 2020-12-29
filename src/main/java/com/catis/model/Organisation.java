@@ -97,6 +97,9 @@ public class Organisation extends JournalData {
 	@JsonIgnore
 	private Organisation parentOrganisation;
 
+	@OneToMany(mappedBy = "organisation")
+	private Set<Caisse> caisses;
+
 	private String patente;
 	private String statutJurique;
 	private String numeroDeContribuable;
@@ -105,15 +108,17 @@ public class Organisation extends JournalData {
 
 	}
 
+	
+
 	public Organisation(Long organisationId, Set<ModeleVehicule> modelVehicule, Set<Caissier> caissier,
 			Set<CaissierCaisse> caissierCaisse, Set<Controleur> controleur,
 			Set<CategorieTestMachine> categorieTestMachine, Set<Ligne> ligne, Set<Inspection> inspection,
 			Set<Machine> machine, Set<Adresse> adresse, Set<Mesure> mesure, Set<Visite> visite,
 			Set<ValeurTest> valeurTests, Set<Partenaire> partenaires, Set<LigneMachine> ligneMachine,
 			Set<ProprietaireVehicule> proprietaireVehicule, Set<Utilisateur> utilisateurs,
-			Set<Organisation> childOrganisations, Organisation parentOrganisation, String patente, String statutJurique,
-			String numeroDeContribuable) {
-
+			Set<Organisation> childOrganisations, Organisation parentOrganisation, Set<Caisse> caisses, String patente,
+			String statutJurique, String numeroDeContribuable) {
+		super();
 		this.organisationId = organisationId;
 		this.modelVehicule = modelVehicule;
 		this.caissier = caissier;
@@ -133,10 +138,25 @@ public class Organisation extends JournalData {
 		this.utilisateurs = utilisateurs;
 		this.childOrganisations = childOrganisations;
 		this.parentOrganisation = parentOrganisation;
+		this.caisses = caisses;
 		this.patente = patente;
 		this.statutJurique = statutJurique;
 		this.numeroDeContribuable = numeroDeContribuable;
 	}
+
+
+
+	public Set<Caisse> getCaisses() {
+		return caisses;
+	}
+
+
+
+	public void setCaisses(Set<Caisse> caisses) {
+		this.caisses = caisses;
+	}
+
+
 
 	public Long getOrganisationId() {
 		return organisationId;

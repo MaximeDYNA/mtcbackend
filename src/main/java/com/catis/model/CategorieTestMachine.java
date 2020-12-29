@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,11 +26,9 @@ public class CategorieTestMachine extends JournalData {
 	private Organisation organisation;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idcategorietest")
 	private CategorieTest categorieTest;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idMachine")
 	private Machine machine;
 
 	public CategorieTestMachine() {

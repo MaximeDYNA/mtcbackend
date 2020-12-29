@@ -24,25 +24,18 @@ public class CategorieVehicule extends JournalData {
 	private String type;
 
 	@OneToMany(mappedBy = "categorieVehicule")
-	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
+	private Set<CategorieTestVehicule> categorieTestVehicules;
 	
 	@OneToMany(mappedBy = "categorieVehicule")
 	private Set<Lexique> lexique;
 
 	@OneToMany(mappedBy = "categorieVehicule")
-	private Set<CategorieTestVehicule> categorieTestVehicules;
+	private Set<Produit> produits;
 
 	public CategorieVehicule() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CategorieVehicule(Long id, String type, Set<CategorieVehiculeProduit> categorieVehiculeProduits,
-			Set<CategorieTestVehicule> categorieTestVehicules) {
-		this.id = id;
-		this.type = type;
-		this.categorieVehiculeProduits = categorieVehiculeProduits;
-		this.categorieTestVehicules = categorieTestVehicules;
-	}
 
 	public Long getId() {
 		return id;
@@ -60,21 +53,27 @@ public class CategorieVehicule extends JournalData {
 		this.type = type;
 	}
 
-	public Set<CategorieVehiculeProduit> getCategorieVehiculeProduits() {
-		return categorieVehiculeProduits;
+
+	public Set<Produit> getProduits() {
+		return produits;
 	}
 
-	public void setCategorieVehiculeProduits(Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
-		this.categorieVehiculeProduits = categorieVehiculeProduits;
-	}
 
-	public Set<CategorieTestVehicule> getCategorieTestVehicules() {
-		return categorieTestVehicules;
-	}
-
-	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+	public CategorieVehicule(Long id, String type, Set<CategorieTestVehicule> categorieTestVehicules,
+			Set<Lexique> lexique, Set<Produit> produits) {
+		super();
+		this.id = id;
+		this.type = type;
 		this.categorieTestVehicules = categorieTestVehicules;
+		this.lexique = lexique;
+		this.produits = produits;
 	}
+
+
+	public void setProduits(Set<Produit> produits) {
+		this.produits = produits;
+	}
+
 
 	public Set<Lexique> getLexique() {
 		return lexique;

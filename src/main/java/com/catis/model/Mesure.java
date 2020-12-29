@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -38,24 +39,12 @@ public class Mesure extends JournalData {
 	@ManyToOne
 	private Formule formule;
 
-	@ManyToOne
-	private CategorieTestVehicule categorieTestVehicule;
+	@ManyToMany
+	private Set<CategorieTestVehicule> categorieTestVehicules;
 
 	public Mesure() {
 
 		// TODO Auto-generated constructor stub
-	}
-
-	public Mesure(Long idMesure, String code, String description, Organisation organisation,
-			Set<ValeurTest> valeurtests, Formule formule, CategorieTestVehicule categorieTestVehicule) {
-
-		this.idMesure = idMesure;
-		this.code = code;
-		this.description = description;
-		this.organisation = organisation;
-		this.valeurtests = valeurtests;
-		this.formule = formule;
-		this.categorieTestVehicule = categorieTestVehicule;
 	}
 
 	public Long getIdMesure() {
@@ -106,12 +95,32 @@ public class Mesure extends JournalData {
 		this.formule = formule;
 	}
 
-	public CategorieTestVehicule getCategorieTestVehicule() {
-		return categorieTestVehicule;
+	public Organisation getOrganisation() {
+		return organisation;
 	}
 
-	public void setCategorieTestVehicule(CategorieTestVehicule categorieTestVehicule) {
-		this.categorieTestVehicule = categorieTestVehicule;
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
+	public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+		return categorieTestVehicules;
+	}
+
+	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+		this.categorieTestVehicules = categorieTestVehicules;
+	}
+
+	public Mesure(Long idMesure, String code, String description, Organisation organisation,
+			Set<ValeurTest> valeurtests, Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
+		super();
+		this.idMesure = idMesure;
+		this.code = code;
+		this.description = description;
+		this.organisation = organisation;
+		this.valeurtests = valeurtests;
+		this.formule = formule;
+		this.categorieTestVehicules = categorieTestVehicules;
 	}
 
 }

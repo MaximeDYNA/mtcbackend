@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -50,11 +49,10 @@ public class Produit extends JournalData {
 	private Set<Posales> posales;
 
 	@ManyToOne
-	@JoinColumn(name = "categorieProduitId")
 	private CategorieProduit categorieProduit;
 
-	@OneToMany(mappedBy = "produit")
-	private Set<CategorieVehiculeProduit> categorieVehiculeProduits;
+	@ManyToOne
+	private CategorieVehicule categorieVehicule;
 
 	public Produit() {
 
@@ -63,8 +61,7 @@ public class Produit extends JournalData {
 
 	public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
 			Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
-			Set<Posales> posales, CategorieProduit categorieProduit,
-			Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
+			Set<Posales> posales, CategorieProduit categorieProduit) {
 
 		this.produitId = produitId;
 		this.libelle = libelle;
@@ -77,7 +74,6 @@ public class Produit extends JournalData {
 		this.taxeProduit = taxeProduit;
 		this.posales = posales;
 		this.categorieProduit = categorieProduit;
-		this.categorieVehiculeProduits = categorieVehiculeProduits;
 	}
 
 	public Long getProduitId() {
@@ -166,14 +162,6 @@ public class Produit extends JournalData {
 
 	public void setCategorieProduit(CategorieProduit categorieProduit) {
 		this.categorieProduit = categorieProduit;
-	}
-
-	public Set<CategorieVehiculeProduit> getCategorieVehiculeProduits() {
-		return categorieVehiculeProduits;
-	}
-
-	public void setCategorieVehiculeProduits(Set<CategorieVehiculeProduit> categorieVehiculeProduits) {
-		this.categorieVehiculeProduits = categorieVehiculeProduits;
 	}
 
 }

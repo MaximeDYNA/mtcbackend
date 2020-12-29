@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -59,6 +58,9 @@ public class CarteGrise extends JournalData {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "carteGrise")
 	@JsonIgnore
 	Set<Visite> visites;
+	
+	@OneToMany(mappedBy = "carteGrise")
+	private Set<Control> controls;
 
 	public CarteGrise(CarteGriseReceived c) {
 
@@ -77,6 +79,33 @@ public class CarteGrise extends JournalData {
 		this.lieuDedelivrance = c.getLieuDedelivrance();
 		this.centre_ssdt = c.getCentre_ssdt();
 
+	}
+
+	public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
+			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
+			String genreVehicule, String enregistrement, Date dateDelivrance, String lieuDedelivrance,
+			String centre_ssdt, ProprietaireVehicule proprietaireVehicule, Vehicule vehicule, Produit produit,
+			Set<Visite> visites, Set<Control> controls) {
+		super();
+		this.carteGriseId = carteGriseId;
+		this.numImmatriculation = numImmatriculation;
+		this.preImmatriculation = preImmatriculation;
+		this.dateDebutValid = dateDebutValid;
+		this.dateFinValid = dateFinValid;
+		this.ssdt_id = ssdt_id;
+		this.commune = commune;
+		this.montantPaye = montantPaye;
+		this.vehiculeGage = vehiculeGage;
+		this.genreVehicule = genreVehicule;
+		this.enregistrement = enregistrement;
+		this.dateDelivrance = dateDelivrance;
+		this.lieuDedelivrance = lieuDedelivrance;
+		this.centre_ssdt = centre_ssdt;
+		this.proprietaireVehicule = proprietaireVehicule;
+		this.vehicule = vehicule;
+		this.produit = produit;
+		this.visites = visites;
+		this.controls = controls;
 	}
 
 	public String getEnregistrement() {
@@ -249,6 +278,14 @@ public class CarteGrise extends JournalData {
 
 	public Date getDateDelivrance() {
 		return dateDelivrance;
+	}
+
+	public Set<Control> getControls() {
+		return controls;
+	}
+
+	public void setControls(Set<Control> controls) {
+		this.controls = controls;
 	}
 
 }

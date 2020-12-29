@@ -43,24 +43,25 @@ public class Lexique extends JournalData {
 	@ManyToOne
 	private Lexique parent;
 
-	private String decision;
-
 	public Lexique() {
 
 	}
 
-	public Lexique(Long id, String libelle, String code, Boolean visuel, VersionLexique versionLexique,
-			Set<Lexique> childs, Lexique parent, String decision) {
 
+	public Lexique(Long id, String libelle, String code, Boolean visuel, Client client,
+			CategorieVehicule categorieVehicule, VersionLexique versionLexique, Set<Lexique> childs, Lexique parent) {
+		super();
 		this.id = id;
 		this.libelle = libelle;
 		this.code = code;
 		Visuel = visuel;
+		this.client = client;
+		this.categorieVehicule = categorieVehicule;
 		this.versionLexique = versionLexique;
 		this.childs = childs;
 		this.parent = parent;
-		this.decision = decision;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -116,14 +117,6 @@ public class Lexique extends JournalData {
 
 	public void setParent(Lexique parent) {
 		this.parent = parent;
-	}
-
-	public String getDecision() {
-		return decision;
-	}
-
-	public void setDecision(String decision) {
-		this.decision = decision;
 	}
 
 	public Client getClient() {

@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,7 +27,9 @@ public class Caisse extends JournalData {
 	private Long caisse_id;
 
 	private String description;
-	private String idOrganisation;
+	
+	@ManyToOne
+	private Organisation organisation;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
 	@JsonIgnore
@@ -48,14 +51,6 @@ public class Caisse extends JournalData {
 		this.description = description;
 	}
 
-	public String getIdOrganisation() {
-		return idOrganisation;
-	}
-
-	public void setIdOrganisation(String idOrganisation) {
-		this.idOrganisation = idOrganisation;
-	}
-
 	public Set<CaissierCaisse> getCaissiercaisses() {
 		return caissiercaisses;
 	}
@@ -65,11 +60,21 @@ public class Caisse extends JournalData {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Caisse(Long caisse_id, String description, String idOrganisation, Set<CaissierCaisse> caissiercaisses) {
+	
 
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
+	public Caisse(Long caisse_id, String description, Organisation organisation, Set<CaissierCaisse> caissiercaisses) {
+		super();
 		this.caisse_id = caisse_id;
 		this.description = description;
-		this.idOrganisation = idOrganisation;
+		this.organisation = organisation;
 		this.caissiercaisses = caissiercaisses;
 	}
 

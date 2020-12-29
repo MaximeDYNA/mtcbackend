@@ -36,6 +36,9 @@ public class CategorieTest extends JournalData {
 
 	@OneToMany(mappedBy = "categorieTest")
 	private Set<CategorieTestVehicule> categorieTestVehicules;
+	
+	@OneToMany(mappedBy = "categorieTest")
+	private Set<GieglanFile> gieglanFiles;
 
 	public Long getIdCategorieTest() {
 		return idCategorieTest;
@@ -77,13 +80,26 @@ public class CategorieTest extends JournalData {
 		this.categorieTestVehicules = categorieTestVehicules;
 	}
 
+
+
+	public Set<GieglanFile> getGieglanFiles() {
+		return gieglanFiles;
+	}
+
+	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
+		this.gieglanFiles = gieglanFiles;
+	}
+
 	public CategorieTest(Long idCategorieTest, String libelle, String description,
-			Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules) {
+			Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules,
+			Set<GieglanFile> gieglanFiles) {
+		super();
 		this.idCategorieTest = idCategorieTest;
 		this.libelle = libelle;
 		this.description = description;
 		this.categorieTestMachines = categorieTestMachines;
 		this.categorieTestVehicules = categorieTestVehicules;
+		this.gieglanFiles = gieglanFiles;
 	}
 
 	public CategorieTest() {
