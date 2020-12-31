@@ -25,7 +25,7 @@ public class RapportDeVisite extends JournalData {
 
 	private Double result;
 
-	private String decision;
+	private boolean decision;
 
 	private String codeMessage;
 
@@ -54,11 +54,11 @@ public class RapportDeVisite extends JournalData {
 		this.result = result;
 	}
 
-	public String getDecision() {
+	public boolean isDecision() {
 		return decision;
 	}
 
-	public void setDecision(String decision) {
+	public void setDecision(boolean decision) {
 		this.decision = decision;
 	}
 
@@ -94,9 +94,12 @@ public class RapportDeVisite extends JournalData {
 		this.gieglanFile = gieglanFile;
 	}
 
-	public RapportDeVisite(Long id, Double result, String decision, String codeMessage, Visite visite, Seuil seuil,
-			GieglanFile gieglanFile) {
+	@ManyToOne
+	private VerbalProcess verbalProcess;
 
+	public RapportDeVisite(Long id, Double result, boolean decision, String codeMessage, Visite visite, Seuil seuil,
+			GieglanFile gieglanFile, VerbalProcess verbalProcess) {
+		super();
 		this.id = id;
 		this.result = result;
 		this.decision = decision;
@@ -104,10 +107,21 @@ public class RapportDeVisite extends JournalData {
 		this.visite = visite;
 		this.seuil = seuil;
 		this.gieglanFile = gieglanFile;
+		this.verbalProcess = verbalProcess;
 	}
 
 	public RapportDeVisite() {
 
 		// TODO Auto-generated constructor stub
 	}
+
+	public VerbalProcess getVerbalProcess() {
+		return verbalProcess;
+	}
+
+	public void setVerbalProcess(VerbalProcess verbalProcess) {
+		this.verbalProcess = verbalProcess;
+	}
+	
+	
 }

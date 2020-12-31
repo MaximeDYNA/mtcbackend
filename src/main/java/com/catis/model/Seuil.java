@@ -28,11 +28,11 @@ public class Seuil extends JournalData {
 
 	private double value;
 
-	private char operande;
+	private String operande;
 
 	private String codeMessage;
 
-	private String decision;
+	private boolean decision;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
@@ -48,18 +48,7 @@ public class Seuil extends JournalData {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Seuil(Long id, double value, char operande, String codeMessage, String decision,
-			Set<RapportDeVisite> rapportDeVisites, Classification classification, Formule formule) {
-
-		this.id = id;
-		this.value = value;
-		this.operande = operande;
-		this.codeMessage = codeMessage;
-		this.decision = decision;
-		this.rapportDeVisites = rapportDeVisites;
-		this.classification = classification;
-		this.formule = formule;
-	}
+	
 
 	public Long getId() {
 		return id;
@@ -77,13 +66,7 @@ public class Seuil extends JournalData {
 		this.value = value;
 	}
 
-	public char getOperande() {
-		return operande;
-	}
-
-	public void setOperande(char operande) {
-		this.operande = operande;
-	}
+	
 
 	public String getCodeMessage() {
 		return codeMessage;
@@ -93,13 +76,45 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 	}
 
-	public String getDecision() {
+
+	public String getOperande() {
+		return operande;
+	}
+
+
+
+	public void setOperande(String operande) {
+		this.operande = operande;
+	}
+
+
+
+	public boolean isDecision() {
 		return decision;
 	}
 
-	public void setDecision(String decision) {
+
+
+	public void setDecision(boolean decision) {
 		this.decision = decision;
 	}
+
+
+
+	public Seuil(Long id, double value, String operande, String codeMessage, boolean decision,
+			Set<RapportDeVisite> rapportDeVisites, Classification classification, Formule formule) {
+		super();
+		this.id = id;
+		this.value = value;
+		this.operande = operande;
+		this.codeMessage = codeMessage;
+		this.decision = decision;
+		this.rapportDeVisites = rapportDeVisites;
+		this.classification = classification;
+		this.formule = formule;
+	}
+
+
 
 	public Set<RapportDeVisite> getRapportDeVisites() {
 		return rapportDeVisites;

@@ -2,15 +2,15 @@ package com.catis.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,11 +31,8 @@ public class CategorieTestVehicule extends JournalData {
 	@ManyToOne
 	private CategorieVehicule categorieVehicule;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTestVehicule")
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Mesure> mesures;
-
-	@OneToMany(mappedBy = "categorieTestVehicule")
-	private Set<GieglanFile> gieglanFiles;
 
 	public CategorieTestVehicule() {
 		// TODO Auto-generated constructor stub
@@ -47,7 +44,6 @@ public class CategorieTestVehicule extends JournalData {
 		this.categorieTest = categorieTest;
 		this.categorieVehicule = categorieVehicule;
 		this.mesures = mesures;
-		this.gieglanFiles = gieglanFiles;
 	}
 
 	public Long getId() {
@@ -80,14 +76,6 @@ public class CategorieTestVehicule extends JournalData {
 
 	public void setMesures(Set<Mesure> mesures) {
 		this.mesures = mesures;
-	}
-
-	public Set<GieglanFile> getGieglanFiles() {
-		return gieglanFiles;
-	}
-
-	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
-		this.gieglanFiles = gieglanFiles;
 	}
 
 	public String getType() {

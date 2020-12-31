@@ -42,9 +42,6 @@ public class ValeurTest extends JournalData {
 	private Organisation organisation;
 
 	@ManyToOne
-	private Mesure mesure;
-
-	@ManyToOne
 	private GieglanFile gieglanFile;
 
 	public ValeurTest() {
@@ -106,14 +103,6 @@ public class ValeurTest extends JournalData {
 
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
-	}
-
-	public Mesure getMesure() {
-		return mesure;
-	}
-
-	public void setMesure(Mesure mesure) {
-		this.mesure = mesure;
 	}
 
 	public GieglanFile getGieglanFile() {

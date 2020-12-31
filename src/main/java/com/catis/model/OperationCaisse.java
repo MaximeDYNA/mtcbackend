@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,14 +24,12 @@ public class OperationCaisse extends JournalData {
 	private int type;
 	private double montant;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idCaissierCaisse")
 	private CaissierCaisse caissierCaisse;
 
 	@ManyToOne
 	private Vente vente;
 
 	@ManyToOne
-	@JoinColumn(name = "idTaxe")
 	private Taxe taxe;
 
 	@ManyToOne

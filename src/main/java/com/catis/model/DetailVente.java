@@ -5,7 +5,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,7 +23,6 @@ public class DetailVente extends JournalData {
 	private String reference;
 
 	@ManyToOne
-	@JoinColumn(name = "idProduit")
 	private Produit produit;
 
 	@ManyToOne

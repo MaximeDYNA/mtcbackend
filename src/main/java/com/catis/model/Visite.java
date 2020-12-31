@@ -1,7 +1,6 @@
 package com.catis.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,7 +10,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -20,7 +18,6 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
-import com.catis.objectTemporaire.GraphView;
 
 @Entity
 @Table(name = "t_visite")
@@ -42,7 +39,6 @@ public class Visite extends JournalData {
 	private boolean encours;
 
 	@ManyToOne
-	@JoinColumn(name = "idCaissier")
 	private Caissier caissier;
 
 	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
@@ -53,6 +49,9 @@ public class Visite extends JournalData {
 
 	@ManyToOne
 	private CarteGrise carteGrise;
+	
+	@ManyToOne
+	private Control control;
 
 	public List<RapportDeVisite> getRapportDeVisites() {
 		return rapportDeVisites;
@@ -69,10 +68,18 @@ public class Visite extends JournalData {
 
 	}
 
+	public Control getControl() {
+		return control;
+	}
+
+	public void setControl(Control control) {
+		this.control = control;
+	}
+
 	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
 			Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
-			CarteGrise carteGrise, List<RapportDeVisite> rapportDeVisites) {
-
+			CarteGrise carteGrise, Control control, List<RapportDeVisite> rapportDeVisites) {
+		super();
 		this.idVisite = idVisite;
 		this.contreVisite = contreVisite;
 		this.dateDebut = dateDebut;
@@ -84,6 +91,7 @@ public class Visite extends JournalData {
 		this.inspection = inspection;
 		this.process = process;
 		this.carteGrise = carteGrise;
+		this.control = control;
 		this.rapportDeVisites = rapportDeVisites;
 	}
 
