@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -28,11 +29,15 @@ public class VersionLexique extends JournalData {
 	private String libelle;
 
 	private Date date;
+	
+	private String version;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique")
+	@JsonIgnore
 	private Set<Lexique> lexiques;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+	@JsonIgnore
 	private List<RapportDeVisite> rapportDeVisites;
 
 	@OneToOne(mappedBy = "visite")
@@ -100,6 +105,14 @@ public class VersionLexique extends JournalData {
 
 	public void setProcess(VerbalProcess process) {
 		this.process = process;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

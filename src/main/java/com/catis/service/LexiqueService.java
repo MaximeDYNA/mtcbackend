@@ -1,6 +1,8 @@
 package com.catis.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,7 @@ public class LexiqueService {
 	public Lexique findByCode(String code) {
 		return lexiqueRepository.findByCode(code);
 	}
-	
+	public List<Lexique> findByVersionLexique(Long versionLexiqueId) {
+		return lexiqueRepository.findByVersionLexique_id(versionLexiqueId);
+	}
 }

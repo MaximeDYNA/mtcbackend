@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -38,6 +39,7 @@ public class Lexique extends JournalData {
 	private VersionLexique versionLexique;
 
 	@OneToMany(mappedBy = "parent")
+	@JsonIgnore
 	private Set<Lexique> childs;
 
 	@ManyToOne

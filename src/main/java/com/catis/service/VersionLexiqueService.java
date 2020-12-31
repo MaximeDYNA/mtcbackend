@@ -1,5 +1,8 @@
 package com.catis.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +21,10 @@ public class VersionLexiqueService {
 	
 	public VersionLexique findById(Long id) {
 		return versionLexiqueRepo.findById(id).get();
+	}
+	public List<VersionLexique> findAll() {
+		List<VersionLexique> versionLexiques = new ArrayList<>();
+		versionLexiqueRepo.findAll().forEach(versionLexiques::add);
+		return versionLexiques;
 	}
 }

@@ -7,6 +7,7 @@ import com.catis.model.Lexique;
 public class LexiqueReceived {
 
 	private String nom;
+	private String version;
 	private List<LexiquePOJO> rows;
 	
 	public LexiqueReceived() {
@@ -29,6 +30,12 @@ public class LexiqueReceived {
 	}
 	public void setRows(List<LexiquePOJO> rows) {
 		this.rows = rows;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	
 }
