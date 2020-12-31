@@ -66,6 +66,16 @@ public class GieglanFile extends JournalData {
 		INITIALIZED, REJECTED, VALIDATED
 	}
 
+	public StatusType getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(StatusType status) {
+		this.status = status;
+	}
+
+
 	public GieglanFile() {
 
 	}

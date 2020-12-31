@@ -54,6 +54,14 @@ public class Produit extends JournalData {
 	@ManyToOne
 	private CategorieVehicule categorieVehicule;
 
+	public CategorieVehicule getCategorieVehicule() {
+		return categorieVehicule;
+	}
+
+	public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
+		this.categorieVehicule = categorieVehicule;
+	}
+
 	public Produit() {
 
 		// TODO Auto-generated constructor stub

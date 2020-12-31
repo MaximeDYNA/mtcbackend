@@ -32,10 +32,6 @@ public class Mesure extends JournalData {
 	@ManyToOne
 	private Organisation organisation;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mesure")
-	@JsonIgnore
-	private Set<ValeurTest> valeurtests;
-
 	@ManyToOne
 	private Formule formule;
 
@@ -79,14 +75,6 @@ public class Mesure extends JournalData {
 		this.organisation = organisation;
 	}
 
-	public Set<ValeurTest> getValeurtests() {
-		return valeurtests;
-	}
-
-	public void setValeurtests(Set<ValeurTest> valeurtests) {
-		this.valeurtests = valeurtests;
-	}
-
 	public Formule getFormule() {
 		return formule;
 	}
@@ -112,13 +100,12 @@ public class Mesure extends JournalData {
 	}
 
 	public Mesure(Long idMesure, String code, String description, Organisation organisation,
-			Set<ValeurTest> valeurtests, Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
+			Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
 		super();
 		this.idMesure = idMesure;
 		this.code = code;
 		this.description = description;
 		this.organisation = organisation;
-		this.valeurtests = valeurtests;
 		this.formule = formule;
 		this.categorieTestVehicules = categorieTestVehicules;
 	}

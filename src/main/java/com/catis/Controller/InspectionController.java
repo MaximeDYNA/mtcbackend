@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
+import com.catis.model.CarteGrise;
 import com.catis.model.Inspection;
+import com.catis.model.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
 import com.catis.service.ControleurService;
+import com.catis.service.GieglanFileService;
 import com.catis.service.InspectionService;
 import com.catis.service.LigneService;
 import com.catis.service.ProduitService;
@@ -34,6 +37,8 @@ public class InspectionController {
 	private ProduitService produitService;
 	@Autowired
 	private VisiteService visiteService;
+	@Autowired
+	private GieglanFileService gieglanFileService;
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 	
@@ -46,8 +51,10 @@ public class InspectionController {
 				inspection.setControleur(controleurService.findControleurById(inspectionReceived.getControleurId()));
 				inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
 				inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
-				inspection.setVisite(visiteService.findById(inspectionReceived.getVisiteId()));
+				Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
+				inspection.setVisite(visite);
 				visiteService.commencerInspection(inspectionReceived.getVisiteId());
+				this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
 				/*String[] result = "this is a test".split("\\s");
 			     for (int x=0; x<result.length; x++)
 			         System.out.println(result[x]);*/
