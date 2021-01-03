@@ -45,6 +45,8 @@ public class Lexique extends JournalData {
 	@ManyToOne
 	private Lexique parent;
 
+	private boolean haschild;
+	
 	public Lexique() {
 
 	}
@@ -135,6 +137,16 @@ public class Lexique extends JournalData {
 
 	public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
 		this.categorieVehicule = categorieVehicule;
+	}
+
+
+	public boolean isHaschild() {
+		return haschild;
+	}
+
+
+	public void setHaschild(boolean haschild) {
+		this.haschild = haschild;
 	}
 	
 

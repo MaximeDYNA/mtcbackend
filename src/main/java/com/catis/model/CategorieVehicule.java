@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -27,6 +28,7 @@ public class CategorieVehicule extends JournalData {
 	private Set<CategorieTestVehicule> categorieTestVehicules;
 	
 	@OneToMany(mappedBy = "categorieVehicule")
+	@JsonIgnore
 	private Set<Lexique> lexique;
 
 	@OneToMany(mappedBy = "categorieVehicule")

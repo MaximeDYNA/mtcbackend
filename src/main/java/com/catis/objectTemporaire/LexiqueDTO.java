@@ -7,7 +7,7 @@ public class LexiqueDTO {
 	private Long id;
 	private String name;
 	
-	private List<LexiqueDTO> children;
+	private List<LexiqueChildDTO> children;
 
 	
 	public LexiqueDTO() {
@@ -16,7 +16,7 @@ public class LexiqueDTO {
 	}
 
 
-	public LexiqueDTO(Long id, String name, List<LexiqueDTO> children) {
+	public LexiqueDTO(Long id, String name, List<LexiqueChildDTO> children) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -44,12 +44,12 @@ public class LexiqueDTO {
 	}
 
 
-	public List<LexiqueDTO> getChildren() {
+	public List<LexiqueChildDTO> getChildren() {
 		return children;
 	}
 
 
-	public void setChildren(List<LexiqueDTO> children) {
+	public void setChildren(List<LexiqueChildDTO> children) {
 		this.children = children;
 	}
 	

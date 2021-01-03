@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
@@ -41,4 +43,20 @@ public class VersionController {
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTOs );
 		
 	}
+	
+	@GetMapping("/api/v1/versionlists/{id}")
+	public ResponseEntity<Object> getVersion(@PathVariable Long id){
+		
+		VersionLexiqueDTO versionLexiqueDTO = new VersionLexiqueDTO();
+		VersionLexique dto = vls.findById(id) ;
+		versionLexiqueDTO.setId(dto.getId());
+		versionLexiqueDTO.setLibelle(dto.getLibelle());
+		versionLexiqueDTO.setCreatedDate(dto.getCreatedDate());
+		versionLexiqueDTO.setModifiedDate(dto.getModifiedDate());
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTO );
+		
+	}
+	
+	
+	
 }

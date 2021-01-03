@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.catis.Controller.message.Message;
 import com.catis.model.Lexique;
 import com.catis.model.VersionLexique;
+import com.catis.objectTemporaire.LexiqueChildDTO;
 import com.catis.objectTemporaire.LexiqueDTO;
 import com.catis.objectTemporaire.LexiquePOJO;
 import com.catis.objectTemporaire.LexiqueReceived;
@@ -75,10 +76,19 @@ public class LexiqueController {
 	}
 	
 	@GetMapping(value="/api/v1/lexiques/{id}")
+	public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id){
+		
+		Object c = lexiqueService.findByVersionLexique(id);
+		System.out.println(c);
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", c );
+	}
+	@GetMapping(value="/api/v1/lexiques/read/{id}")
 	public ResponseEntity<Object> readLexiques(@PathVariable Long id){
-		LexiqueDTO lexiqueDTO, lexiqueChildDTO;
+		
+		LexiqueDTO lexiqueDTO;
+		LexiqueChildDTO lexiqueChildDTO;
 		List<LexiqueDTO> parents = new ArrayList<>();
-		List<LexiqueDTO> children;
+		List<LexiqueChildDTO> children;
 		
 		for(Lexique l : lexiqueService.findByVersionLexique(id)) {
 			//le code recupère uniquement les parents et leurs enfants
@@ -87,8 +97,8 @@ public class LexiqueController {
 				lexiqueDTO.setId(l.getId());
 				lexiqueDTO.setName(l.getCode() +" :"+ l.getLibelle());
 				children = new ArrayList<>();
-				for(Lexique child :l.getChilds()) {
-					lexiqueChildDTO = new LexiqueDTO();
+				for(Lexique child : l.getChilds()) {
+					lexiqueChildDTO = new LexiqueChildDTO();
 					lexiqueChildDTO.setId(child.getId());
 					lexiqueChildDTO.setName(child.getCode() +" :"+ child.getLibelle());
 					children.add(lexiqueChildDTO);
@@ -97,7 +107,6 @@ public class LexiqueController {
 				parents.add(lexiqueDTO);
 			}			
 		}
-		
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", parents );
 	}
 }
