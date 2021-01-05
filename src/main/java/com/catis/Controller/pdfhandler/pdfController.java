@@ -103,24 +103,35 @@ public class pdfController {
 		        modelAndView.addObject("year", now.format(formatter2));
 		        
 		        List<TestList> testlist =  new ArrayList() {{
-		            add(new TestList("eff ag",10));
-		            add(new TestList("eff ad",20));
-		            add(new TestList("eff rg",20));
-		            add(new TestList("Diss. AV",20));
-		            add(new TestList("Diss. AR",20));
+		            add(new TestList("Eff AG \n LF Eff","10%"));
+		            add(new TestList("Eff AD","20%"));
+		            add(new TestList("Eff RG","20%"));
+		            add(new TestList("Diss. AV","20%"));
+		            add(new TestList("Diss. AR","20%"));
+		            add(new TestList("Diss. AR","20%"));
 		        }};
-		        List<TestList> testlistRipage =  new ArrayList() {{
-		            add(new TestList("ripage av", 6.5));
-		            add(new TestList("ripage arr",20));
+		        List<TestList> testlist2 =  new ArrayList() {{
+		            add(new TestList("eff AG","20%"));
+		            add(new TestList("eff AG","20%"));
 		           
 		        }};
-		        CategorieTests ct = new CategorieTests( "Suspension", testlist);
-		        CategorieTests cr = new CategorieTests( "ripage", testlistRipage);
-		        CategorieTests c = new CategorieTests( "freins", testlist);
+		        List<TestList> testlistRipage =  new ArrayList() {{
+		            add(new TestList("ripage av", "20%"));
+		            add(new TestList("ripage arr","20%"));
+		           
+		        }};
+		        CategorieTests ct = new CategorieTests( "SUSPENSION", testlist);
+		        CategorieTests cr = new CategorieTests( "RIPAGE / SHIFT.", testlistRipage);
+		        CategorieTests c = new CategorieTests( "FREINS / BRAKES", testlist2);
+		        CategorieTests pol = new CategorieTests( "POLLUTION", testlist2);
+		        CategorieTests phares = new CategorieTests( "PHARES / LAMPS", testlist2);
 		        List<CategorieTests> cts = new ArrayList<>();
 		        cts.add(ct);
-		        cts.add(c);
 		        cts.add(cr);
+		        cts.add(pol);
+		        cts.add(phares);
+		        cts.add(c);
+
 		        modelAndView.addObject("categorieTests", cts );		        
 		        modelAndView.setViewName("visites");		        
 		        return modelAndView;

@@ -6,6 +6,7 @@ import com.catis.model.Lexique;
 
 public class LexiqueReceived {
 
+	private Long id;
 	private String nom;
 	private String version;
 	private List<LexiquePOJO> rows;
@@ -36,6 +37,12 @@ public class LexiqueReceived {
 	}
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

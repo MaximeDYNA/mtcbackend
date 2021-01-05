@@ -3,13 +3,16 @@ package com.catis.objectTemporaire;
 public class TestList {
 
 	private String libelle;
-	private double valeur;
+	private String valeur;
 	
-	
-	public TestList(String libelle, double valeur) {
+	public TestList(String libelle, String valeur) {
 		super();
 		this.libelle = libelle;
 		this.valeur = valeur;
+	}
+	public TestList() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	public String getLibelle() {
 		return libelle;
@@ -17,12 +20,14 @@ public class TestList {
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-	public double getValeur() {
+	public String getValeur() {
 		return valeur;
 	}
-	public void setValeur(double valeur) {
+	public void setValeur(String valeur) {
 		this.valeur = valeur;
 	}
+	
+	
 	
 	
 }

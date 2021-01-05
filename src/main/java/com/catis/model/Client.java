@@ -22,7 +22,7 @@ public class Client extends JournalData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long clientId;
+	private Long clientId;
 	private String description;
 
 	@ManyToOne
@@ -66,11 +66,11 @@ public class Client extends JournalData {
 		this.description = description;
 	}
 
-	public long getClientId() {
+	public Long getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(long clientId) {
+	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 	}
 

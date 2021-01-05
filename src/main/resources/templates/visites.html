@@ -6,11 +6,16 @@
     <meta charset="UTF-8">
     <title>Visites View</title>
     <!-- Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css" data-th-href="@{/bootstrap-4.3.1-dist/css/bootstrap.min.css}">
 </head>
 <body>
+<div id="background" class="d-flex font-weight-bold justify-content-center align-content-end flex-wrap" style="bottom: 0">	
+	<span id="bg-text" style="border:10px solid gray; width: 1300px;
+ padding:10px 100px;">MINT COPY</span>			
+</div>
 <div class="container">
+
   <div class="row">
     <div class="col-sm">
       <p class="text-justify text-left">
@@ -54,11 +59,11 @@
 	  <span class="text-left font-weight-bold">
 	  	N° PV/SHEET N° :
 	  </span> 
-	  	<span th:utext="${id}"></span> <br>
+	  	<span style="color: gray;" th:utext="${id}"></span> <br>
 	  <span class="text-left font-weight-bold">
 		Date du contrôle / Date of control :
 	  </span>
-		<span th:utext="${date}"></span><br>
+		<span style="color: gray;" th:utext="${date}"></span><br>
 	  </div>
 	  <div class="col">
 	  	<img alt="QRcode" th:src="@{'/visites/qrcode/' +${id}}"/>    
@@ -68,11 +73,11 @@
 	  	<span class="text-left font-weight-bold">
 		  	Type de contrôle / Control type :
 		</span>
-		  	<span th:utext="${type}"></span> <br>
+		  	<span style="color: gray;" th:utext="${type}"></span> <br>
 		<span class="text-left font-weight-bold">  
 			Catégorie / Category:
 		</span>
-		  	<span th:utext="${cat}"></span> <br><br>
+		  	<span style="color: gray;" th:utext="${cat}"></span> <br><br>
 		
 	  </div>
     
@@ -81,35 +86,35 @@
 	  <div class="col-5" style="border: 2px solid black">
 		  <span class="text-left font-weight-bold">
 		  	Immatriculation/ reg. Number:
-		  </span> <span th:utext="${imm}"></span> <br>
+		  </span> <span style="color: gray;" th:utext="${imm}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			Marque / Brand: 
 		  </span>
-			<span th:utext="${marq}"></span> <br>
+			<span style="color: gray;" th:utext="${marq}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			N° chassis / Chassis N° :
 		  </span>
-		    <span th:utext="${chassis}"></span> <br>
+		    <span style="color: gray;" th:utext="${chassis}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			Energie / Energy :
 		  </span>
-			 <span th:utext="${energie}"></span> <br>
+			 <span style="color: gray;" th:utext="${energie}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			DMC / Date of first use :
 		  </span>
-		     <span th:utext="${dmc}"></span> <br>
+		     <span style="color: gray;" th:utext="${dmc}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			Kilométrage / Milaege :
 		  </span>
-		   	 <span th:utext="${kil}"></span> <br>
+		   	 <span style="color: gray;" th:utext="${kil}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			Affectation / Usage :
 		   </span>
-		    <span th:utext="${aff}"></span> <br>
+		    <span style="color: gray;" th:utext="${aff}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			Propriétaire / Owner:
 		  </span>
-		    <span th:utext="${owner}"></span><br>
+		    <span style="color: gray;" th:utext="${owner}"></span><br>
 		 
 	  </div>
 	  <div class="col">
@@ -121,23 +126,23 @@
 	  	<span class="text-left font-weight-bold">
 		  	Client/ Customer:
 		</span>
-			<span th:utext="${owner}"></span><br>
+			<span style="color: gray;" th:utext="${owner}"></span><br>
 		<span class="text-left font-weight-bold">
 			Adresse / Address:
 		</span> 
 			<span th:utext="${adresse}"></span><br>
-			<span style="margin-left: 150px;" th:utext="${tel}"></span><br>
+			<span  style="margin-left: 150px; color: gray;" th:utext="${tel}"></span><br>
 			
 		<span class="text-left font-weight-bold">
 			Montant payé HT / Amount ex.VAT : 
 		</span>
-			<span th:utext="${prixHt}"></span><br>
+			<span style="color: gray;" th:utext="${prixHt}"></span><br>
 		<span class="text-left font-weight-bold">
 			TVA / VAT : 
 		</span> <span th:utext="${taxe}"></span><br>
 		<span class="text-left font-weight-bold">
 			Montant payé TTC / Amount inc. VAT: 
-		</span><span th:utext="${prixHt} + ${prixHt} * ${taxe}/100"></span><br>
+		</span><span style="color: gray;" th:utext="${prixHt} + ${prixHt} * ${taxe}/100"></span><br>
 		
 	  </div>
     
@@ -157,23 +162,63 @@
 				    </li>
 			 	</ul>
 		  	</div>
-		  	<div th:if="${defautsAReparer != null}">
+		  	<div>
+		  		<h6 class="font-weight-bold">
+		  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
+		  			DEFECTS SUBJECT TO COUNTER INSPECTION</p> 
+		  		</h6>
+		  		
+		  		<ol class="text-left font-weight-bold">
+				    <li>
+				         <span style="color: gray;"> Commande de freins de stationnement: Absence de verrouillage</span>
+				    </li>
+				    <li>
+				         <span style="color: gray;"> Feu croisement AVG: Absence</span>
+				    </li>
+				    <li>
+				         <span style="color: gray;"> Feu croisement AVD: Absence</span>
+				    </li>
+				    <li>
+				         <span style="color: gray;"> Feu de route AVD: Absence</span>
+				    </li>
+			 	</ol>
+		  	</div>
+		  	
+		  	<div>
+		  		<h6 class="font-weight-bold">
+		  			<p>DEFAUTS A REPARER DES QUE POSSIBLE /<br>
+		  			DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p> 
+		  		</h6>
+		  		
+		  		<ol class="text-left font-weight-bold">
+				    <li>
+				         <span style="color: gray;"> Pare-brise: Mauvais état</span>
+				    </li>
+			 	</ol>
+		  	</div>
+		  	<!-- 	div th:if="${defautsAReparer != null}">
 		  		Défauts à reparer dès que possible
 		  		<ul class="text-left font-weight-bold">
 				    <li th:each="${index: #numbers.sequence(0, ${defautsAReparer.length})}">
 				        <span th:text="${index} ${defautsAReparer[index]}"></span>
 				    </li>
 			 	</ul>
-		  	</div>
-		  	<div th:if="${defautsAReparer == null}">
-		  		<p class="text-left font-weight-bold">
-				  	RESULTAT DU CONTROLE/ CONTROLE RESULT: <br>
-				</p>
-				<h1 class="text-center font-weight-bold">Décision/Decision</h1>
+		  	</div-->
+		  	<!--  div th:if="${defautsAReparer == null}"-->
+		  	<div>
+		  		
+				  <span class="text-left font-weight-bold">	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
+					<h2 class="text-left font-weight-bold">ACCEPTE/ACCEPTED</h2>
+				
 				<p class="text-left font-weight-bold">
-					JUSQU'AU / UNTIL: <br>
-					NOM et visa du contrôleur / Operator name and signature: <br>
+					JUSQU'AU / UNTIL: <span style="font-size: 25px;"> 01/03/2021 </span><br>
+					NOM et visa du contrôleur /<br> 
+					Operator name and signature: <span style="color: gray;"> TCHOKOTCHEU Franck</span>
 				</p>
+				<div class="float-right">
+					<img th:src="@{/images/capture.png}"/>
+				</div>
+				
 		  	</div>
 	  </div>
 	  <div class="col-1">
@@ -182,24 +227,265 @@
 		</h3>
 	  </div>
 	  <div class="col-6">
-		  <div class="row" style=" height:500px; border: 2px solid black">
+		  <div class="row" style=" height:600px; border: 2px solid black">
 		  	<div class="col">
-			  	<div class="text-center font-weight-bold d-flex align-items-start" style=" height:50px;">
+			  	<div class="text-center font-weight-bold d-flex align-items-start" style=" height:50px; margin: 0 auto;">
 				  	<h4 class="">
 					  	RELEVE DES MESURES/ MEASUREMENT: <br>	
 					</h4>
 			  	</div>
-				<div  th:each="categorieTest : ${categorieTests}">
+			  	<div>
+			  		<table>
+			  				<tr>
+			  					<td class="text-center font-weight-bold" 
+			  					style="height:5px; width:120px; 
+			  					border: 1px solid black; font-size: 15px;">SUSPENSION</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Eff AG<br>LF Eff
+			  					</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Eff AD<br>RF Eff
+			  					</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Eff RG<br>LR Eff
+			  					</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Eff RD<br>RR Eff
+			  					</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Diss. AV<br>F Diss.
+			  					</td>
+			  					<td class="text-center font-weight-bold"
+			  					style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Diss. AR<br>R Diss.
+			  					</td>
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			 20 %
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			30 %
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			70 %
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			40 %
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			90 %
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			99 %
+				            	</td>
+			  				</tr>
+			  		</table>
+			  		<br>
+			  		<table>
+			  				<tr>
+			  					<td class="text-center font-weight-bold" 
+			  					style="height:5px; width:120px; 
+			  					border: 1px solid black; font-size: 15px;">RIPAGE / SHIFT.</td>
+			  					<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Ripage avant <br>Front Deviation
+			  					</td>
+			  					<td  class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Ripage Arrière<br>Rear Deviation
+			  					</td>
+			  					
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			-4.3 mm/m
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			1.1 mm/m
+				            	</td>
+			  				</tr>
+			  		</table>
+			  		<br>
+			  		<table>
+			  				<tr>
+			  					<td class="text-center font-weight-bold" 
+			  					style="height:5px; width:120px; 
+			  					border: 1px solid black; font-size: 14px;">POLLUTION</td>
+			  					<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Opacité<br>Opacity
+			  					</td>
+			  					<td  class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; color: gray; font-size: 13px;">
+			  						1 m-1
+			  					</td>
+			  					
+			  				</tr>
+			  				
+			  		</table>
+			  		<br>
+			  		<table>
+			  				<tr>
+			  					<td class="text-center font-weight-bold" 
+			  					style="height:5px; width:120px; 
+			  					border: 1px solid black; font-size: 14px;">PHARES / LAMPS</td>
+			  					<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Feu Crois. Gauche<br>Left Headlamp
+			  					</td>
+			  					<td  class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;">
+			  						Feu Crois. Droit<br>Right Headlamp
+			  					</td>
+			  					
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			Correct
+				            	</td>
+				            	<td class="text-center" 
+				            		style="color: gray; border: 1px solid black">
+				            			Correct
+				            	</td>
+			  				</tr>
+			  		</table>
+			  		<br>
+			  		<table>
+			  				<tr>
+			  					<td class="text-center font-weight-bold" 
+			  					style="height:5px; width:120px; 
+			  					border: 1px solid black; font-size: 14px;">FREINS / BRAKES</td>
+			  					<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Eff Freins de service<br>Service Brake Eff
+			  					</td>
+			  					
+			  					<td class="text-center" 
+				            		style="color: gray; border: 1px solid black; width:195px;">
+				            			68 %
+				            	</td>
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					
+				            	
+				            	<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		Eff Freins de station.<br> Parking Brake Eff.
+			  					</td>
+			  					<td class="text-center" 
+				            		style="color: gray; border: 1px solid black; width:195px;">
+				            			25 %
+				            	</td>
+
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					
+				            	
+				            	<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		#1 Déséq / Unbal.
+			  					</td>
+			  					<td class="text-center" 
+				            		style="color: gray; border: 1px solid black; height:50px; width:195px;">
+				            			<table style="height:100%; width:100%">
+				            				<tr>
+				            					<td>
+				            						349 daN
+				            					</td>
+				            					<td style="vertical-align: top;">
+				            						3 %
+				            					</td>
+				            					<td>
+				            					360 daN
+				            					</td>
+				            				</tr>
+				            			</table>
+				            	</td>
+
+			  				</tr>
+			  				<tr>
+			  					<td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+			  					
+				            	
+				            	<td   class="text-center font-weight-bold"
+			  					style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;" >
+							  		#1 Déséq / Unbal.
+			  					</td>
+			  					<td class="text-center" 
+				            		style="color: gray; border: 1px solid black; height:50px; width:195px;">
+				            			<table style="height:100%; width:100%">
+				            				<tr>
+				            					<td>
+				            						349 daN
+				            					</td>
+				            					<td class="text-top" style="vertical-align: top;">
+				            						3 %
+				            					</td>
+				            					<td>
+				            						360 daN
+				            					</td>
+				            				</tr>
+				            			</table>
+				            	</td>
+
+			  				</tr>
+			  		</table>
+			  	</div>
+				<!--  div  th:each="categorieTest : ${categorieTests}">
 					<table>
-			            <tr th:if="${categorieTest.libelle != 'pollution' AND categorieTest.libelle != 'freins' }">
-			            	<table style="height:85%; width:85%;">
+			            <tr th:if="${categorieTest.libelle != 'POLLUTION' AND categorieTest.libelle != 'FREINS / BRAKES' }">
+			            	<table style="height:75%; width:95%; margin: 0 auto;">
 			            		<tr>	
 			            			<td class="text-center font-weight-bold"
-			            			style="border: 2px solid black"
+			            			style="height:10px; width:85px; border: 2px solid black; font-size: 12px;"
 			            			th:text="${categorieTest.libelle}"></td>
 			            			<td class="text-center font-weight-bold"
 			            			 th:each="testList : ${categorieTest.testlist}"
-			            			 style="border: 2px solid black">            		
+			            			 style="height:10px; width:10px; border: 2px solid black; font-size: 10px;">            		
 				            			<span th:text="${testList.libelle}"></span>
 				            		</td>
 			            		</tr>
@@ -207,27 +493,27 @@
 			            			<td style="border-left: 0px solid ;
 			            			 border-bottom: 0px solid ;"></td>
 				            		<td class="text-center" th:each="testList : ${categorieTest.testlist}" 
-				            		style="border: 2px solid black">
+				            		style="color: gray; border: 2px solid black">
 				            			<span th:text="${testList.valeur}"></span>
 				            		</td>
 			            		</tr>
 			            	</table>
 			            </tr>
-			            <tr th:unless="${categorieTest.libelle != 'pollution' AND categorieTest.libelle != 'freins' }">
-			            	<br>
-			            	<table style="height:85%;width:85%;">
+			            <tr th:unless="${categorieTest.libelle != 'POLLUTION' AND categorieTest.libelle != 'FREINS / BRAKES' }">
+			            	
+			            	<table style="height:100%;width:100%; margin: 0 auto;">
 				            	<tr>
-				            		<td class="text-center font-weight-bold" th:text="${categorieTest.libelle}" style="width:110px; vertical-align: top; border: 2px solid black;
-				            																							border-right: 0px;">
+				            		<td class="text-center font-weight-bold" th:text="${categorieTest.libelle}" style="width:138px;  border: 2px solid black;
+				            																							border-right: 0px; font-size: 15px">
 				            		</td>
 									<td>
 										<table>
 									         <div>	
 								            	<tr>
-									            	<td style="border: 2px solid black; width:60px; border-bottom: 0px; ">	
+									            	<td class="text-center font-weight-bold" style="border: 2px solid black; width:200px; border-bottom: 0px; ">	
 										            	<span class="text-center font-weight-bold" th:text="${categorieTest.testlist[0].libelle}"></span>             		
 										            </td>
-										            <td style="border: 2px solid black; width:60px; border-bottom: 0px">	
+										            <td class="text-center" style="color: gray; border: 2px solid black; width:200px; border-bottom: 0px">	
 										            	<span th:text="${categorieTest.testlist[0].valeur}"></span>             		
 										            </td>
 									            </tr>
@@ -240,13 +526,13 @@
 					            	<td class="text-center font-weight-bold"  style="vertical-align: top; border: 0px solid black;">
 					            	</td>			            
 							        <td>
-							            <table>
+							            <table style="height:100%;width:100%; margin: 0 auto;">
 									         <div th:each="testList,index : ${categorieTest.testlist}">	
 								            	<tr th:if="${index.index > 0}">
-									            	<td style="width:60px; border: 2px solid black;">	
+									            	<td class="text-center font-weight-bold" style="width:200px;  border: 2px solid black;">	
 										            	<span class="text-center font-weight-bold" th:text="${testList.libelle}"></span>             		
 										            </td>
-										            <td style="width:60px; border: 2px solid black;">	
+										            <td class="text-center" style=" width:200px; color: gray; border: 2px solid black;">	
 										            	<span th:text="${testList.valeur}"></span>             		
 										            </td>
 									            </tr>
@@ -259,7 +545,7 @@
 			           <br>
 		         </table>
 		         
-	         </div>
+	         </div-->
 	         
 		  	</div>
 		  </div>
@@ -272,42 +558,48 @@
 			      
 			    </div>
 			    <div class="col-7 font-weight-bold">
-			    	<div class="row">
-					      <p class="text-left font-weight-bold"> 
-					      	N° PV / SHEET N°:
-					      </p>
-					      <span th:utext="${id}"></span> <br>
-					</div>
-					<div class="row">
-					      <p class="text-left font-weight-bold"> 
-					      	CAT:
-					      </p>
-					      <span th:utext="${cat}"></span> <br>
-					</div>
-			    	<div class="row">
-			    		  <div class="col-3">
-						      <div  style="width: 120%; border: 2px solid black">
-							      <h1><span th:utext="${day}"></span></h1>
-							  </div>
-							  <div class="text-center font-weight-bold" >
-							      <p style="font-size: 6px;">Mois / Month</p>
-							  </div>
-						 </div>
-						  <div class="col-5 d-flex  align-content-end flex-wrap">
-							  <p class="text-left font-weight-bold"> 
-						      	 <span th:utext="${imm}"></span>
-						      </p>
-						  </div>
-						  <div class="col-3" >
-						     <div  style=" width: 120%; border: 2px solid black">
-							      <h1><span th:utext="${year}"></span></h1>
-							  </div>
-							  <div class="text-center font-weight-bold" >
-							      <p style="font-size: 6px;">Année / Year</p>
-							  </div>
-						  </div>
-						  
-					</div>
+			    	
+			    		<div class="row ">
+					    		<div class="d-flex justify-content-center">
+							      <p class="text-center font-weight-bold" > 
+							      	N° PV / SHEET N°:<span th:utext="${id}"></span> <br>
+							      </p>
+							      
+							    </div>
+							</div>
+							<div class="row">
+							      <p class="text-left font-weight-bold"> 
+							      	CAT:
+							      </p>
+							      <span th:utext="${cat}"></span> <br>
+							</div>
+					    	<div class="row">
+					    		  <div class="col-3">
+								      <div  style="width: 120%; border: 2px solid black">
+									      <h1><span th:utext="${day}"></span></h1>
+									  </div>
+									  <div class="text-center font-weight-bold" >
+									      <p style="font-size: 6px;">Mois / Month</p>
+									  </div>
+								 </div>
+								  <div class="col-5 d-flex  align-content-end flex-wrap">
+									  <p class="text-left font-weight-bold"> 
+								      	 <span th:utext="${imm}"></span>
+								      </p>
+								  </div>
+								  <div class="col-3" >
+								     <div  style=" width: 120%; border: 2px solid black">
+									      <h1><span th:utext="${year}"></span></h1>
+									  </div>
+									  <div class="text-center font-weight-bold" >
+									      <p style="font-size: 6px;">Année / Year</p>
+									  </div>
+								  </div>
+								  
+							</div>
+			    	
+			    	
+			    	
 			    </div>
 			    <div class="col">
 			     
@@ -315,12 +607,12 @@
 		  </div>
     </div>
   </div>
-  
-  
-</div>
+                </div>
+
+
 <footer class="page-footer font-small blue pt-4">
 	<center>
-	 <p>getInfoCompany();</p>
+	 <p>SATELLITE NGONO - DOUALA BONABERI- Tel: (+237) 655962263</p>
 	</center>
 </footer>
 
