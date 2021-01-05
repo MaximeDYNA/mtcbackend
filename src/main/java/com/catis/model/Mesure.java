@@ -1,5 +1,7 @@
 package com.catis.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -35,8 +37,11 @@ public class Mesure extends JournalData {
 	@ManyToOne
 	private Formule formule;
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "mesures")
 	private Set<CategorieTestVehicule> categorieTestVehicules;
+	
+	@OneToMany(mappedBy = "mesure")
+	private List<ValeurTest> valeurTests = new ArrayList<>();
 
 	public Mesure() {
 

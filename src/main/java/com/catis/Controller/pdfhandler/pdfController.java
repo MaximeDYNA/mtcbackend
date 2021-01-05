@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,11 +27,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.catis.Controller.configuration.QRCodeGenerator;
 import com.catis.model.Inspection;
+import com.catis.model.RapportDeVisite;
 import com.catis.model.Taxe;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.CategorieTests;
 import com.catis.objectTemporaire.Listview;
 import com.catis.objectTemporaire.TestList;
+import com.catis.repository.RapportDeVisiteRepo;
 import com.catis.service.InspectionService;
 import com.catis.service.PdfService;
 import com.catis.service.TaxeService;
@@ -44,6 +47,9 @@ public class pdfController {
 	
 		
 	 	private VisiteService visiteService;
+	 	
+	 	@Autowired
+	 	private RapportDeVisiteRepo rapportDeVisiteRepo;
 	 	
 	    private PdfService pdfService;
 	    private InspectionService inspectionService;
@@ -102,25 +108,39 @@ public class pdfController {
 		        modelAndView.addObject("day", now.format(monthFomatter));
 		        modelAndView.addObject("year", now.format(formatter2));
 		        
+		        List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(v);
+		        HashMap<String, String> results = new HashMap<>();
+		        rapports.forEach(rapport -> {
+		        	results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
+		        });
+		        
 		        List<TestList> testlist =  new ArrayList() {{
-		            add(new TestList("eff ag",10));
-		            add(new TestList("eff ad",20));
-		            add(new TestList("eff rg",20));
-		            add(new TestList("Diss. AV",20));
-		            add(new TestList("Diss. AR",20));
+		            add(new TestList("eff ag",results.get("1000")+"%"));
+		            add(new TestList("eff ad",results.get("1001")+"%"));
+		            add(new TestList("eff rg",results.get("1002")+"%"));
+		            add(new TestList("Diss. AV", results.get("1125")+"%"));
+		            add(new TestList("Diss. AR",results.get("1225")+"%"));
 		        }};
 		        List<TestList> testlistRipage =  new ArrayList() {{
-		            add(new TestList("ripage av", 6.5));
-		            add(new TestList("ripage arr",20));
+		            add(new TestList("ripage av", results.get("0401")+" mm/m"));
+		            add(new TestList("ripage arr",results.get("0402")+" mm/m"));
 		           
 		        }};
-		        CategorieTests ct = new CategorieTests( "Suspension", testlist);
-		        CategorieTests cr = new CategorieTests( "ripage", testlistRipage);
-		        CategorieTests c = new CategorieTests( "freins", testlist);
+		        List<TestList> testlistPollution = new ArrayList<>();
+		        testlistPollution.add(new TestList("Opacité/Opacity", results.get("0538")+" m-1"));
+		        
+		        List<TestList> testlistReglophare = new ArrayList<>();
+		        testlistReglophare.add(new TestList("Feu Crois. gauche", results.get("0490").equals("1.0") ? "Correct" : "Trop bas"));
+		        testlistReglophare.add(new TestList("Feu Crois. droite", results.get("0492").equals("1.0") ? "Correct" : "Trop bas"));
+		        CategorieTests cr = new CategorieTests( "RIPAGE", testlistRipage);
+		        CategorieTests c = new CategorieTests( "FREINS", testlist);
+		        CategorieTests cp = new CategorieTests("POLLUTION", testlistPollution);
+		        CategorieTests cre = new CategorieTests("PHARES /LAMPS", testlistReglophare);
 		        List<CategorieTests> cts = new ArrayList<>();
-		        cts.add(ct);
 		        cts.add(c);
 		        cts.add(cr);
+		        cts.add(cp);
+		        cts.add(cre);
 		        modelAndView.addObject("categorieTests", cts );		        
 		        modelAndView.setViewName("visites");		        
 		        return modelAndView;

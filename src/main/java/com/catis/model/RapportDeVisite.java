@@ -23,7 +23,7 @@ public class RapportDeVisite extends JournalData {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Double result;
+	private String result;
 
 	private boolean decision;
 
@@ -46,11 +46,11 @@ public class RapportDeVisite extends JournalData {
 		this.id = id;
 	}
 
-	public Double getResult() {
+	public String getResult() {
 		return result;
 	}
 
-	public void setResult(Double result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 
@@ -97,7 +97,7 @@ public class RapportDeVisite extends JournalData {
 	@ManyToOne
 	private VerbalProcess verbalProcess;
 
-	public RapportDeVisite(Long id, Double result, boolean decision, String codeMessage, Visite visite, Seuil seuil,
+	public RapportDeVisite(Long id, String result, boolean decision, String codeMessage, Visite visite, Seuil seuil,
 			GieglanFile gieglanFile, VerbalProcess verbalProcess) {
 		super();
 		this.id = id;
