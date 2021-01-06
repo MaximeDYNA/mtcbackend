@@ -60,6 +60,14 @@ public class pdfController {
 			this.venteService = venteService;
 			this.taxeService = taxProduitService;
 		}
+		@GetMapping("/visites/{id}/verso")
+	    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+	    	
+	    		        
+		        modelAndView.setViewName("pvVerso");		        
+		        return modelAndView;
+	
+	    }
 		@GetMapping("/visites/{id}")
 	    public ModelAndView studentsView(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
 	    	
@@ -95,8 +103,8 @@ public class pdfController {
 		        								v.getCarteGrise().getProprietaireVehicule().getPartenaire().getPrenom());
 		        modelAndView.addObject("adresse", v.getCarteGrise().getCommune()); 
 		        modelAndView.addObject("tel", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getTelephone()); 
-		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()); 		
-		        modelAndView.addObject("taxe", tp.getValeur());	        
+		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()==0?0:v.getCarteGrise().getProduit().getPrix()); 		
+		        modelAndView.addObject("taxe", tp.getValeur()==0?0:tp.getValeur());	        
 		        LocalDateTime now = LocalDateTime.now(); 
 		        
 		        modelAndView.addObject("day", now.format(monthFomatter));

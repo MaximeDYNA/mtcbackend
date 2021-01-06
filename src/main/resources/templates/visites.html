@@ -3,43 +3,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"></meta>
     <title>Visites View</title>
     <!-- Bootstrap -->
-    <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css" data-th-href="@{/bootstrap-4.3.1-dist/css/bootstrap.min.css}">
+    <script data-th-href="@{http://localhost:8080/bootstrap-4.3.1-dist/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" data-th-href="@{http://localhost:8080/bootstrap-4.3.1-dist/css/bootstrap.min.css}"></link>
 </head>
 <body>
-<div id="background" class="d-flex font-weight-bold justify-content-center align-content-end flex-wrap" style="bottom: 0">	
+<div id="background" class="d-flex font-weight-bold justify-content-center align-content-center flex-wrap" >	
 	<span id="bg-text" style="border:10px solid gray; width: 1300px;
- padding:10px 100px;">MINT COPY</span>			
+ padding:10px 10px;"><center>MINT COPY</center>	</span>		
 </div>
 <div class="container">
 
   <div class="row">
     <div class="col-sm">
       <p class="text-justify text-left">
-	      REPUBLIQUE DU CAMEROUN <br>
-	      PAIX - TRAVAIL - PATRIE <br>
-	      MINISTERE DES TRANSPORTS <br>
-	      SECRETARIAT GENERAL <br>
-	      DIRECTION DES TRANSPORTS ROUTIERS <br>
+	      REPUBLIQUE DU CAMEROUN <br/>
+	      PAIX - TRAVAIL - PATRIE <br/>
+	      MINISTERE DES TRANSPORTS <br/>
+	      SECRETARIAT GENERAL <br/>
+	      DIRECTION DES TRANSPORTS ROUTIERS <br/>
 	  </p>
     </div>
     
     <div class="col-2">
 	    <div class="d-flex justify-content-center">
-	    	<img src="/images/armoirie.PNG" class="img-fluid" alt="Armoirie du Cameroun">
+	    	<img th:src="@{../images/armoirie.PNG}" class="img-fluid" alt="Armoirie du Cameroun"/>
 	    </div>
     </div>
     
     <div class="col-sm">
       <p class="text-justify text-right">
-	      REPUBLIC OF CAMEROON <br>
-		  PEACE - WORK - FATHERLAND <br>
-		  MINISTRY OF TRANSPORT <br>
-		  GENERAL SECRETARIAT <br>
-	      DEPARTEMENT OF ROAD TRANSPORT<br>
+	      REPUBLIC OF CAMEROON <br/>
+		  PEACE - WORK - FATHERLAND <br/>
+		  MINISTRY OF TRANSPORT <br/>
+		  GENERAL SECRETARIAT <br/>
+	      DEPARTEMENT OF ROAD TRANSPORT<br/>
 	  </p> 
     </div>
   </div>
@@ -47,8 +47,8 @@
 	  <div class="col"></div>
 	  <div class="col-10">
 	  	<h3 class="text-center font-weight-bold">  	
-			      PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br>
-				  ROADWORTHINESS REPORT <br>	
+			      PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br/>
+				  ROADWORTHINESS REPORT <br/>	
 		</h3>
 	  </div>
 	  <div class="col"></div>
@@ -56,28 +56,27 @@
   </div>
    <div class="row">
 	  <div class="col-5">
-	  <span class="text-left font-weight-bold">
-	  	N° PV/SHEET N° :
-	  </span> 
-	  	<span style="color: gray;" th:utext="${id}"></span> <br>
-	  <span class="text-left font-weight-bold">
-		Date du contrôle / Date of control :
-	  </span>
-		<span style="color: gray;" th:utext="${date}"></span><br>
+		  <span class="text-left font-weight-bold">
+		  	N° PV/SHEET N° :
+		  </span> 
+		  	<span style="color: gray;" th:utext="${id}"></span> <br/>
+		  <span class="text-left font-weight-bold">
+			Date du contrôle / Date of control :
+		  </span>
+			<span style="color: gray;" th:utext="${date}"></span><br/>
 	  </div>
 	  <div class="col">
-	  	<img alt="QRcode" th:src="@{'/visites/qrcode/' +${id}}"/>    
-	  	
+	  	<img alt="QRcode" th:src="@{'../visites/qrcode/' +${id}}"/>    
 	  </div>
 	  <div class="col-5">
 	  	<span class="text-left font-weight-bold">
 		  	Type de contrôle / Control type :
 		</span>
-		  	<span style="color: gray;" th:utext="${type}"></span> <br>
+		  	<span style="color: gray;" th:utext="${type}"></span> <br/>
 		<span class="text-left font-weight-bold">  
 			Catégorie / Category:
 		</span>
-		  	<span style="color: gray;" th:utext="${cat}"></span> <br><br>
+		  	<span style="color: gray;" th:utext="${cat}"></span> <br/><br/>
 		
 	  </div>
     
@@ -86,35 +85,35 @@
 	  <div class="col-5" style="border: 2px solid black">
 		  <span class="text-left font-weight-bold">
 		  	Immatriculation/ reg. Number:
-		  </span> <span style="color: gray;" th:utext="${imm}"></span> <br>
+		  </span> <span style="color: gray;" th:utext="${imm}"></span> <br/>
 		  <span class="text-left font-weight-bold">
-			Marque / Brand: 
+			Marque / br/and: 
 		  </span>
-			<span style="color: gray;" th:utext="${marq}"></span> <br>
+			<span style="color: gray;" th:utext="${marq}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			N° chassis / Chassis N° :
 		  </span>
-		    <span style="color: gray;" th:utext="${chassis}"></span> <br>
+		    <span style="color: gray;" th:utext="${chassis}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			Energie / Energy :
 		  </span>
-			 <span style="color: gray;" th:utext="${energie}"></span> <br>
+			 <span style="color: gray;" th:utext="${energie}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			DMC / Date of first use :
 		  </span>
-		     <span style="color: gray;" th:utext="${dmc}"></span> <br>
+		     <span style="color: gray;" th:utext="${dmc}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			Kilométrage / Milaege :
 		  </span>
-		   	 <span style="color: gray;" th:utext="${kil}"></span> <br>
+		   	 <span style="color: gray;" th:utext="${kil}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			Affectation / Usage :
 		   </span>
-		    <span style="color: gray;" th:utext="${aff}"></span> <br>
+		    <span style="color: gray;" th:utext="${aff}"></span> <br/>
 		  <span class="text-left font-weight-bold">
 			Propriétaire / Owner:
 		  </span>
-		    <span style="color: gray;" th:utext="${owner}"></span><br>
+		    <span style="color: gray;" th:utext="${owner}"></span><br/>
 		 
 	  </div>
 	  <div class="col">
@@ -126,23 +125,23 @@
 	  	<span class="text-left font-weight-bold">
 		  	Client/ Customer:
 		</span>
-			<span style="color: gray;" th:utext="${owner}"></span><br>
+			<span style="color: gray;" th:utext="${owner}"></span><br/>
 		<span class="text-left font-weight-bold">
 			Adresse / Address:
 		</span> 
-			<span th:utext="${adresse}"></span><br>
-			<span  style="margin-left: 150px; color: gray;" th:utext="${tel}"></span><br>
+			<span th:utext="${adresse}"></span><br/>
+			<span  style="margin-left: 150px; color: gray;" th:utext="${tel}"></span><br/>
 			
 		<span class="text-left font-weight-bold">
 			Montant payé HT / Amount ex.VAT : 
 		</span>
-			<span style="color: gray;" th:utext="${prixHt}"></span><br>
+			<span style="color: gray;" th:utext="${prixHt}"></span><br/>
 		<span class="text-left font-weight-bold">
 			TVA / VAT : 
-		</span> <span th:utext="${taxe}"></span><br>
+		</span> <span th:utext="${taxe}"></span><br/>
 		<span class="text-left font-weight-bold">
 			Montant payé TTC / Amount inc. VAT: 
-		</span><span style="color: gray;" th:utext="${prixHt} + ${prixHt} * ${taxe}/100"></span><br>
+		</span><!-- span style="color: gray;" th:utext="${prixHt} + ${prixHt} * ${taxe}/100"></span--><br/>
 		
 	  </div>
     
@@ -151,7 +150,7 @@
 	  	<h3 class="text-left font-weight-bold">  	
 			      
 		</h3>
-	  </div>
+  </div>
   <div class="row">
 	  <div class="col-5" style=" height:925px; border: 2px solid black">
 		  	<div th:if="${defautsSoumisAContreVisites != null}">
@@ -164,7 +163,7 @@
 		  	</div>
 		  	<div>
 		  		<h6 class="font-weight-bold">
-		  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
+		  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
 		  			DEFECTS SUBJECT TO COUNTER INSPECTION</p> 
 		  		</h6>
 		  		
@@ -186,37 +185,29 @@
 		  	
 		  	<div>
 		  		<h6 class="font-weight-bold">
-		  			<p>DEFAUTS A REPARER DES QUE POSSIBLE /<br>
+		  			<p>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
 		  			DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p> 
 		  		</h6>
 		  		
 		  		<ol class="text-left font-weight-bold">
 				    <li>
-				         <span style="color: gray;"> Pare-brise: Mauvais état</span>
+				         <span style="color: gray;"> Pare-br/ise: Mauvais état</span>
 				    </li>
 			 	</ol>
 		  	</div>
-		  	<!-- 	div th:if="${defautsAReparer != null}">
-		  		Défauts à reparer dès que possible
-		  		<ul class="text-left font-weight-bold">
-				    <li th:each="${index: #numbers.sequence(0, ${defautsAReparer.length})}">
-				        <span th:text="${index} ${defautsAReparer[index]}"></span>
-				    </li>
-			 	</ul>
-		  	</div-->
-		  	<!--  div th:if="${defautsAReparer == null}"-->
+		  	
 		  	<div>
 		  		
 				  <span class="text-left font-weight-bold">	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
-					<h2 class="text-left font-weight-bold">ACCEPTE/ACCEPTED</h2>
+					<h2 class="text-left font-weight-bold">REFUSE/REFUSED</h2>
 				
 				<p class="text-left font-weight-bold">
-					JUSQU'AU / UNTIL: <span style="font-size: 25px;"> 01/03/2021 </span><br>
-					NOM et visa du contrôleur /<br> 
+					JUSQU'AU / UNTIL: <span style="font-size: 25px;"> 01/03/2021 </span><br/>
+					NOM et visa du contrôleur /<br/> 
 					Operator name and signature: <span style="color: gray;"> TCHOKOTCHEU Franck</span>
 				</p>
 				<div class="float-right">
-					<img th:src="@{/images/capture.png}"/>
+					<img th:src="@{../images/capture.png}"/>
 				</div>
 				
 		  	</div>
@@ -226,12 +217,12 @@
 			      
 		</h3>
 	  </div>
-	  <div class="col-6">
+	 <div class="col-6">
 		  <div class="row" style=" height:600px; border: 2px solid black">
 		  	<div class="col">
 			  	<div class="text-center font-weight-bold d-flex align-items-start" style=" height:50px; margin: 0 auto;">
 				  	<h4 class="">
-					  	RELEVE DES MESURES/ MEASUREMENT: <br>	
+					  	RELEVE DES MESURES/ MEASUREMENT: <br/>	
 					</h4>
 			  	</div>
 			  	<div>
@@ -243,32 +234,32 @@
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Eff AG<br>LF Eff
+							  		Eff AG<br/>LF Eff
 			  					</td>
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Eff AD<br>RF Eff
+			  						Eff AD<br/>RF Eff
 			  					</td>
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Eff RG<br>LR Eff
+			  						Eff RG<br/>LR Eff
 			  					</td>
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Eff RD<br>RR Eff
+			  						Eff RD<br/>RR Eff
 			  					</td>
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Diss. AV<br>F Diss.
+			  						Diss. AV<br/>F Diss.
 			  					</td>
 			  					<td class="text-center font-weight-bold"
 			  					style="height:5px; width:65px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Diss. AR<br>R Diss.
+			  						Diss. AR<br/>R Diss.
 			  					</td>
 			  				</tr>
 			  				<tr>
@@ -300,7 +291,7 @@
 				            	</td>
 			  				</tr>
 			  		</table>
-			  		<br>
+			  		<br/>
 			  		<table>
 			  				<tr>
 			  					<td class="text-center font-weight-bold" 
@@ -309,12 +300,12 @@
 			  					<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Ripage avant <br>Front Deviation
+							  		Ripage avant <br/>Front Deviation
 			  					</td>
 			  					<td  class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Ripage Arrière<br>Rear Deviation
+			  						Ripage Arrière<br/>Rear Deviation
 			  					</td>
 			  					
 			  				</tr>
@@ -332,7 +323,7 @@
 				            	</td>
 			  				</tr>
 			  		</table>
-			  		<br>
+			  		<br/>
 			  		<table>
 			  				<tr>
 			  					<td class="text-center font-weight-bold" 
@@ -341,7 +332,7 @@
 			  					<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Opacité<br>Opacity
+							  		Opacité<br/>Opacity
 			  					</td>
 			  					<td  class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
@@ -352,7 +343,7 @@
 			  				</tr>
 			  				
 			  		</table>
-			  		<br>
+			  		<br/>
 			  		<table>
 			  				<tr>
 			  					<td class="text-center font-weight-bold" 
@@ -361,12 +352,12 @@
 			  					<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Feu Crois. Gauche<br>Left Headlamp
+							  		Feu Crois. Gauche<br/>Left Headlamp
 			  					</td>
 			  					<td  class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;">
-			  						Feu Crois. Droit<br>Right Headlamp
+			  						Feu Crois. Droit<br/>Right Headlamp
 			  					</td>
 			  					
 			  				</tr>
@@ -384,7 +375,7 @@
 				            	</td>
 			  				</tr>
 			  		</table>
-			  		<br>
+			  		<br/>
 			  		<table>
 			  				<tr>
 			  					<td class="text-center font-weight-bold" 
@@ -393,7 +384,7 @@
 			  					<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Eff Freins de service<br>Service Brake Eff
+							  		Eff Freins de service<br/>Service br/ake Eff
 			  					</td>
 			  					
 			  					<td class="text-center" 
@@ -409,7 +400,7 @@
 				            	<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
-							  		Eff Freins de station.<br> Parking Brake Eff.
+							  		Eff Freins de station.<br/> Parking br/ake Eff.
 			  					</td>
 			  					<td class="text-center" 
 				            		style="color: gray; border: 1px solid black; width:195px;">
@@ -448,8 +439,6 @@
 			  				<tr>
 			  					<td style="border-left: 0px solid ;
 			            			 border-bottom: 0px solid ;"></td>
-			  					
-				            	
 				            	<td   class="text-center font-weight-bold"
 			  					style="height:5px; width:195px;
 			  					border: 1px solid black; font-size: 10px;" >
@@ -471,82 +460,10 @@
 				            				</tr>
 				            			</table>
 				            	</td>
-
 			  				</tr>
 			  		</table>
 			  	</div>
-				<!--  div  th:each="categorieTest : ${categorieTests}">
-					<table>
-			            <tr th:if="${categorieTest.libelle != 'POLLUTION' AND categorieTest.libelle != 'FREINS / BRAKES' }">
-			            	<table style="height:75%; width:95%; margin: 0 auto;">
-			            		<tr>	
-			            			<td class="text-center font-weight-bold"
-			            			style="height:10px; width:85px; border: 2px solid black; font-size: 12px;"
-			            			th:text="${categorieTest.libelle}"></td>
-			            			<td class="text-center font-weight-bold"
-			            			 th:each="testList : ${categorieTest.testlist}"
-			            			 style="height:10px; width:10px; border: 2px solid black; font-size: 10px;">            		
-				            			<span th:text="${testList.libelle}"></span>
-				            		</td>
-			            		</tr>
-			            		<tr>
-			            			<td style="border-left: 0px solid ;
-			            			 border-bottom: 0px solid ;"></td>
-				            		<td class="text-center" th:each="testList : ${categorieTest.testlist}" 
-				            		style="color: gray; border: 2px solid black">
-				            			<span th:text="${testList.valeur}"></span>
-				            		</td>
-			            		</tr>
-			            	</table>
-			            </tr>
-			            <tr th:unless="${categorieTest.libelle != 'POLLUTION' AND categorieTest.libelle != 'FREINS / BRAKES' }">
-			            	
-			            	<table style="height:100%;width:100%; margin: 0 auto;">
-				            	<tr>
-				            		<td class="text-center font-weight-bold" th:text="${categorieTest.libelle}" style="width:138px;  border: 2px solid black;
-				            																							border-right: 0px; font-size: 15px">
-				            		</td>
-									<td>
-										<table>
-									         <div>	
-								            	<tr>
-									            	<td class="text-center font-weight-bold" style="border: 2px solid black; width:200px; border-bottom: 0px; ">	
-										            	<span class="text-center font-weight-bold" th:text="${categorieTest.testlist[0].libelle}"></span>             		
-										            </td>
-										            <td class="text-center" style="color: gray; border: 2px solid black; width:200px; border-bottom: 0px">	
-										            	<span th:text="${categorieTest.testlist[0].valeur}"></span>             		
-										            </td>
-									            </tr>
-						            		</div>
-					            		</table>
-					            	</td>
-				            	</tr>
-				            	
-					            <tr>
-					            	<td class="text-center font-weight-bold"  style="vertical-align: top; border: 0px solid black;">
-					            	</td>			            
-							        <td>
-							            <table style="height:100%;width:100%; margin: 0 auto;">
-									         <div th:each="testList,index : ${categorieTest.testlist}">	
-								            	<tr th:if="${index.index > 0}">
-									            	<td class="text-center font-weight-bold" style="width:200px;  border: 2px solid black;">	
-										            	<span class="text-center font-weight-bold" th:text="${testList.libelle}"></span>             		
-										            </td>
-										            <td class="text-center" style=" width:200px; color: gray; border: 2px solid black;">	
-										            	<span th:text="${testList.valeur}"></span>             		
-										            </td>
-									            </tr>
-						            		</div>
-					            		</table>
-					            	</td>  				            		
-					            </tr>
-			            	</table>
-			            </tr>
-			           <br>
-		         </table>
-		         
-	         </div-->
-	         
+				
 		  	</div>
 		  </div>
 		  
@@ -562,17 +479,17 @@
 			    		<div class="row ">
 					    		<div class="d-flex justify-content-center">
 							      <p class="text-center font-weight-bold" > 
-							      	N° PV / SHEET N°:<span th:utext="${id}"></span> <br>
+							      	N° PV / SHEET N°:<span th:utext="${id}"></span> <br/>
 							      </p>
 							      
 							    </div>
-							</div>
-							<div class="row">
+						</div>
+						<div class="row">
 							      <p class="text-left font-weight-bold"> 
 							      	CAT:
 							      </p>
-							      <span th:utext="${cat}"></span> <br>
-							</div>
+							      <span th:utext="${cat}"></span> <br/>
+						</div>
 					    	<div class="row">
 					    		  <div class="col-3">
 								      <div  style="width: 120%; border: 2px solid black">
@@ -605,12 +522,13 @@
 			     
 			    </div>
 		  </div>
-    </div>
+     </div>
   </div>
-                </div>
+ </div>
+  
 
 
-<footer class="page-footer font-small blue pt-4">
+<footer class="align-content-end page-footer font-small blue pt-4">
 	<center>
 	 <p>SATELLITE NGONO - DOUALA BONABERI- Tel: (+237) 655962263</p>
 	</center>

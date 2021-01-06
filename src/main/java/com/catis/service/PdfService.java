@@ -51,7 +51,7 @@ public class PdfService {
 	    }
 
 	    private  String  loadAndFillTemplate (Context  context ) {
-	        return templateEngine.process("pdf_visites", context);
+	        return templateEngine.process("visites", context);
 	    }
 
 
