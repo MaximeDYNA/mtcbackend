@@ -26,7 +26,7 @@ import com.catis.service.SessionCaisseService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @CrossOrigin
@@ -115,8 +115,7 @@ public class HoldController {
 		
 	}
 	@RequestMapping(method=RequestMethod.POST, value="/api/v1/hold/refresh")
-	@ApiOperation(value="rafraichit l'onglet",
-	notes = "efface tous les produits du panier")
+
 	public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
 			
 			 

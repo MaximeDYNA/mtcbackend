@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.catis.Controller.configuration.CryptoUtil;
 import com.catis.Controller.configuration.QRCodeGenerator;
 import com.catis.model.Inspection;
 import com.catis.model.Taxe;
@@ -151,7 +152,7 @@ public class pdfController {
 	    	System.out.println("qrcode en cours de fabrication...");
 	    	
 
-	        byte[] bytes = QRCodeGenerator.getQRCodeImage(v.getIdVisite().toString(), 60, 60);
+	        byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 60, 60);
 
 	        final HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.IMAGE_PNG);
