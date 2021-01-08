@@ -4,6 +4,8 @@ public class TestList {
 
 	private String libelle;
 	private String valeur;
+
+	
 	public String getLibelle() {
 		return libelle;
 	}
@@ -25,5 +27,4 @@ public class TestList {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 }

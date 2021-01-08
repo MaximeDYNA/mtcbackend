@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,6 +35,7 @@ import com.catis.objectTemporaire.CategorieTests;
 import com.catis.objectTemporaire.Listview;
 import com.catis.objectTemporaire.TestList;
 import com.catis.repository.RapportDeVisiteRepo;
+import com.catis.repository.VisiteRepository;
 import com.catis.service.InspectionService;
 import com.catis.service.PdfService;
 import com.catis.service.TaxeService;
@@ -45,7 +47,10 @@ import com.lowagie.text.DocumentException;
 @RestController
 public class pdfController {
 	
-		
+	
+		@Autowired
+		private VisiteRepository visiteRepo;
+
 	 	private VisiteService visiteService;
 	 	
 	 	@Autowired
@@ -66,9 +71,31 @@ public class pdfController {
 			this.venteService = venteService;
 			this.taxeService = taxProduitService;
 		}
+	    
 		@GetMapping("/visites/{id}")
-	    public ModelAndView studentsView(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+	    public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
 	    	
+	    	Optional<Visite> visite = this.visiteRepo.findById(id);
+	    	Taxe tp = taxeService.findByNom("TVA");
+	    	if (visite.isPresent()) {
+	    		List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(visite.get());
+		        HashMap<String, String> results = new HashMap<>();
+		        rapports.forEach(rapport -> {
+		        	results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
+		        });
+	    		modelAndView.addObject("v", visite.get());
+	    		modelAndView.addObject("tp", tp);
+	    		modelAndView.addObject("result", results);
+	    		modelAndView.setViewName("visites");
+				return modelAndView;
+	    	}
+	    	
+			return modelAndView;
+		}
+		
+		@GetMapping("/visitess/{id}")
+	    public ModelAndView studentsView(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+
 	    		Visite v = visiteService.findById(id);
 	    		Inspection i = inspectionService.findInspectionByVisite(v.getIdVisite());
 	    		Taxe tp = taxeService.findByNom("TVA");
@@ -86,6 +113,7 @@ public class pdfController {
 				
 		    	Listview dateparser = new Listview();
 		    	dateparser.setDate(v.getDateDebut());
+		    	modelAndView.addObject("v", v);
 		        modelAndView.addObject("id", v.getIdVisite());
 		        modelAndView.addObject("date", v.getDateDebut().format(formatter) );
 		        modelAndView.addObject("type", type );
@@ -102,9 +130,9 @@ public class pdfController {
 		        modelAndView.addObject("adresse", v.getCarteGrise().getCommune()); 
 		        modelAndView.addObject("tel", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getTelephone()); 
 		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()); 		
-		        modelAndView.addObject("taxe", tp.getValeur());	        
+		        modelAndView.addObject("taxe", tp.getValeur());
 		        LocalDateTime now = LocalDateTime.now(); 
-		        
+
 		        modelAndView.addObject("day", now.format(monthFomatter));
 		        modelAndView.addObject("year", now.format(formatter2));
 		        
@@ -115,18 +143,28 @@ public class pdfController {
 		        });
 		        
 		        List<TestList> testlist =  new ArrayList() {{
-		            add(new TestList("eff ag",results.get("1000")+"%"));
+		            /*add(new TestList("eff ag",results.get("1000")+"%"));
 		            add(new TestList("eff ad",results.get("1001")+"%"));
 		            add(new TestList("eff rg",results.get("1002")+"%"));
 		            add(new TestList("Diss. AV", results.get("1125")+"%"));
-		            add(new TestList("Diss. AR",results.get("1225")+"%"));
+		            add(new TestList("Diss. AR",results.get("1225")+"%"));*/
+		            add(new TestList("Eff AG \n LF Eff","10%"));
+		            add(new TestList("Eff AD","20%"));
+		            add(new TestList("Eff RG","20%"));
+		            add(new TestList("Diss. AV","20%"));
+		            add(new TestList("Diss. AR","20%"));
+		            add(new TestList("Diss. AR","20%"));
 		        }};
-		        List<TestList> testlistRipage =  new ArrayList() {{
+
+		        /*List<TestList> testlistRipage =  new ArrayList() {{
 		            add(new TestList("ripage av", results.get("0401")+" mm/m"));
-		            add(new TestList("ripage arr",results.get("0402")+" mm/m"));
+		            add(new TestList("ripage arr",results.get("0402")+" mm/m"));*/
+		        List<TestList> testlist2 =  new ArrayList() {{
+		            add(new TestList("eff AG","20%"));
+		            add(new TestList("eff AG","20%"));
 		           
 		        }};
-		        List<TestList> testlistPollution = new ArrayList<>();
+/*		        List<TestList> testlistPollution = new ArrayList<>();
 		        testlistPollution.add(new TestList("Opacité/Opacity", results.get("0538")+" m-1"));
 		        
 		        List<TestList> testlistReglophare = new ArrayList<>();
@@ -135,17 +173,35 @@ public class pdfController {
 		        CategorieTests cr = new CategorieTests( "RIPAGE", testlistRipage);
 		        CategorieTests c = new CategorieTests( "FREINS", testlist);
 		        CategorieTests cp = new CategorieTests("POLLUTION", testlistPollution);
-		        CategorieTests cre = new CategorieTests("PHARES /LAMPS", testlistReglophare);
+		        CategorieTests cre = new CategorieTests("PHARES /LAMPS", testlistReglophare);*/
+
+		        List<TestList> testlistRipage =  new ArrayList() {{
+		            add(new TestList("ripage av", "20%"));
+		            add(new TestList("ripage arr","20%"));
+		           
+		        }};
+		        CategorieTests ct = new CategorieTests( "SUSPENSION", testlist);
+		        CategorieTests cr = new CategorieTests( "RIPAGE / SHIFT.", testlistRipage);
+		        CategorieTests c = new CategorieTests( "FREINS / BRAKES", testlist2);
+		        CategorieTests pol = new CategorieTests( "POLLUTION", testlist2);
+		        CategorieTests phares = new CategorieTests( "PHARES / LAMPS", testlist2);
 		        List<CategorieTests> cts = new ArrayList<>();
-		        cts.add(c);
+
+		    //    cts.add(c);
+		        cts.add(ct);
 		        cts.add(cr);
-		        cts.add(cp);
-		        cts.add(cre);
-		        modelAndView.addObject("categorieTests", cts );		        
-		        modelAndView.setViewName("visites");		        
+//		        cts.add(cp);
+//		        cts.add(cre);
+		        cts.add(pol);
+		        cts.add(phares);
+		        cts.add(c);
+
+		        modelAndView.addObject("categorieTests", cts );	        
+		        modelAndView.setViewName("visites2");		        
 		        return modelAndView;
 	
 	    }
+
 	    @GetMapping ("/visites/qrcode/{id}")
 	    public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
 	    	Visite v = visiteService.findById(id);

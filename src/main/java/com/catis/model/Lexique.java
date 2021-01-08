@@ -2,6 +2,7 @@ package com.catis.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,8 @@ public class Lexique extends JournalData {
 	private Long id;
 
 	private String libelle;
-
+	
+	@Column(unique=true)
 	private String code;
 
 	private Boolean Visuel;
@@ -45,7 +47,7 @@ public class Lexique extends JournalData {
 	@ManyToOne
 	private Lexique parent;
 
-	private boolean haschild;
+	private Boolean haschild;
 	
 	public Lexique() {
 
@@ -140,8 +142,16 @@ public class Lexique extends JournalData {
 	}
 
 
-	public boolean isHaschild() {
+	
+
+
+	public Boolean getHaschild() {
 		return haschild;
+	}
+
+
+	public void setHaschild(Boolean haschild) {
+		this.haschild = haschild;
 	}
 
 

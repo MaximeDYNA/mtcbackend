@@ -48,23 +48,33 @@ public class LexiqueController {
 	@Transactional
 	public ResponseEntity<Object> ajouterLexique(@RequestBody LexiqueReceived lexique){
 		/**Version lexique***/
+			
 			VersionLexique vl = new VersionLexique();
-			vl.setLibelle(lexique.getNom());
-			vl.setVersion(lexique.getVersion());
+			vl.setId(lexique.getId()==null? null : lexique.getId());
+			
+			vl.setLibelle(lexique.getNom());			
+			vl.setVersion(lexique.getVersion());			
 			vl = versionLexiqueService.add(vl);
+			
 		/********------******/
 		List<Lexique> lexiques = new ArrayList<>();
 		Lexique lexiq;
 		
 		for(LexiquePOJO l : lexique.getRows()) {
 			lexiq = new Lexique();
+			lexiq.setId(l.getId()==null? null : l.getId());
 			lexiq.setCode(l.getCode());
 			lexiq.setLibelle(l.getLibelle());
 			lexiq.setParent(lexiqueService.findByCode(l.getParent()));
+			if( l.getHaschild().equals("TRUE") || l.getHaschild().equals("true")) {
+				lexiq.setHaschild(true);
+			}
+			else
+				lexiq.setHaschild(false);
 			lexiq.setVersionLexique(vl);
 			lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
 			lexiq.setClient(clientService.findCustomerById((l.getClientId() == 0 )? 1 : l.getClientId()));
-			System.out.println("Id catégorie"+ l.getCategoryId());
+			//System.out.println("Nom :"+ lexique.getId());
 			lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId()) ));
 			lexiqueService.add(lexiq);
 		}
@@ -78,9 +88,26 @@ public class LexiqueController {
 	@GetMapping(value="/api/v1/lexiques/{id}")
 	public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id){
 		
-		Object c = lexiqueService.findByVersionLexique(id);
-		System.out.println(c);
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", c );
+		LexiqueReceived lr = new LexiqueReceived();
+		
+		List<LexiquePOJO> list = new ArrayList<>();
+		LexiquePOJO pojo;
+		for(Lexique l: lexiqueService.findByVersionLexique(id)) {
+			pojo = new LexiquePOJO();
+			pojo.setId(l.getId());
+			pojo.setCode(l.getCode());
+			pojo.setLibelle(l.getLibelle());
+			pojo.setParent(l.getParent()==null? null : l.getParent().getCode());
+			pojo.setVisual(l.getVisuel().toString());
+			pojo.setHaschild(l.getHaschild().toString());
+			pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
+			pojo.setClientId( l.getClient().getClientId().intValue());
+			pojo.setVersion(l.getVersionLexique().getId());
+			list.add(pojo);
+			
+		}
+		
+		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
 	}
 	@GetMapping(value="/api/v1/lexiques/read/{id}")
 	public ResponseEntity<Object> readLexiques(@PathVariable Long id){
