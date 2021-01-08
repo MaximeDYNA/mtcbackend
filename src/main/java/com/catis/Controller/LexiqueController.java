@@ -63,9 +63,10 @@ public class LexiqueController {
 		for(LexiquePOJO l : lexique.getRows()) {
 			lexiq = new Lexique();
 			lexiq.setId(l.getId()==null? null : l.getId());
-			lexiq.setCode(l.getCode());
+			lexiq.setCode(l.getCode().replace("\"", ""));
 			lexiq.setLibelle(l.getLibelle());
-			lexiq.setParent(lexiqueService.findByCode(l.getParent()));
+			
+			lexiq.setParent(lexiqueService.findByCode(l.getParent()==null?l.getParent():l.getParent().replace("\"", "")));
 			if( l.getHaschild().equals("TRUE") || l.getHaschild().equals("true")) {
 				lexiq.setHaschild(true);
 			}

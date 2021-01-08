@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
@@ -47,6 +48,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	
 	 private final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
+	 	
 	    public KeycloakSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
 	        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
 
@@ -108,6 +110,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .csrf().disable()
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and().authorizeRequests()
+	                
 	                .antMatchers("/visites**").permitAll()
 	                .antMatchers("/pdf-resources**").permitAll()
 	                .antMatchers("/download-pdf**").permitAll()
@@ -117,7 +120,10 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .anyRequest().permitAll();
 	       
 	    }
-
+	    @Override
+	    public void configure(WebSecurity web) throws Exception {
+	        web.ignoring().antMatchers("/api/v1/controleurs");
+	    }
 	    @SuppressWarnings({ "rawtypes", "unchecked" })
 	    @Bean
 	    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {
