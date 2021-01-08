@@ -39,12 +39,13 @@ import com.catis.service.VisiteService;
 import com.google.zxing.WriterException;
 import com.lowagie.text.DocumentException;
 
+
 @RestController
 public class pdfController {
-	
+		
 		
 	 	private VisiteService visiteService;
-	 	
+	 		
 	    private PdfService pdfService;
 	    private InspectionService inspectionService;
 	    private VenteService venteService;
@@ -60,6 +61,8 @@ public class pdfController {
 			this.venteService = venteService;
 			this.taxeService = taxProduitService;
 		}
+	    
+	    
 		@GetMapping("/visites/{id}/verso")
 	    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
 	    	
@@ -68,6 +71,8 @@ public class pdfController {
 		        return modelAndView;
 	
 	    }
+		
+		
 		@GetMapping("/visites/{id}")
 	    public ModelAndView studentsView(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
 	    	

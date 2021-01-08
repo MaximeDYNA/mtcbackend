@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.catis.Controller.message.Message;
 import com.catis.model.CarteGrise;
 import com.catis.model.Inspection;
@@ -26,7 +27,7 @@ import com.catis.service.VisiteService;
 @RestController
 @CrossOrigin
 public class InspectionController {
-
+	
 	@Autowired
 	private InspectionService inspectionService;
 	@Autowired

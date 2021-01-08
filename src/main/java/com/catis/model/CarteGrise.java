@@ -61,9 +61,9 @@ public class CarteGrise extends JournalData {
 	
 	@OneToMany(mappedBy = "carteGrise")
 	private Set<Control> controls;
-
+	
 	public CarteGrise(CarteGriseReceived c) {
-
+		
 		this.numImmatriculation = c.getNumImmatriculation();
 		this.preImmatriculation = c.getPreImmatriculation();
 		this.dateDebutValid = c.getDateDebutValid();
@@ -78,9 +78,9 @@ public class CarteGrise extends JournalData {
 		this.dateDelivrance = c.getDateDelivrance();
 		this.lieuDedelivrance = c.getLieuDedelivrance();
 		this.centre_ssdt = c.getCentre_ssdt();
-
+		
 	}
-
+	
 	public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
 			Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,
 			String genreVehicule, String enregistrement, Date dateDelivrance, String lieuDedelivrance,

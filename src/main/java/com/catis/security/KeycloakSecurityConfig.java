@@ -1,4 +1,4 @@
-/*package com.catis.security;
+package com.catis.security;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -40,8 +40,8 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import com.catis.Controller.configuration.JsonReader;
 import com.google.gson.JsonObject;
 
-//@KeycloakConfiguration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@KeycloakConfiguration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	
@@ -57,8 +57,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    /**
 	     * If you don't want to use the keycloak.json file, then uncomment this bean.
 	     
-	    /**
-	     * Use properties in application.properties instead of keycloak.json
+	    
+	     * Use properties in application.properties instead of keycloak.json**/
 	    
 	    @Bean
 	    @Primary
@@ -88,7 +88,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    /**
 	     * Use NullAuthenticatedSessionStrategy for bearer-only tokens. Otherwise, use
 	     * RegisterSessionAuthenticationStrategy.
-	     
+	     */
 	    @Bean
 	    @Override
 	    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
@@ -97,7 +97,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
 	    /**
 	     * Secure appropriate endpoints
-	     
+	     **/
 	    @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 
@@ -167,4 +167,4 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    }
 	    
 	
-}*/
+}

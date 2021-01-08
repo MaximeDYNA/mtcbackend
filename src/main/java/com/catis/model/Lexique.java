@@ -2,12 +2,14 @@ package com.catis.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -39,6 +41,10 @@ public class Lexique extends JournalData {
 
 	@ManyToOne
 	private VersionLexique versionLexique;
+	
+	/*
+	 * @ManyToMany(cascade = CascadeType.ALL) private Set<Inspection> inspections;
+	 */
 
 	@OneToMany(mappedBy = "parent")
 	@JsonIgnore
