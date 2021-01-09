@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -36,7 +37,7 @@ public class Control extends JournalData {
 	@ManyToOne
 	private CarteGrise carteGrise;
 
-	@OneToMany(mappedBy = "control")
+	@OneToMany(mappedBy = "control", cascade = CascadeType.ALL)
 	private List<Visite> visites = new ArrayList<>();
 	
 	public enum StatusType {

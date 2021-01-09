@@ -32,6 +32,7 @@ public class CategorieVehicule extends JournalData {
 	private Set<Lexique> lexique;
 
 	@OneToMany(mappedBy = "categorieVehicule")
+	@JsonIgnore
 	private Set<Produit> produits;
 
 	public CategorieVehicule() {

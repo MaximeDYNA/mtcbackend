@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_visite")
@@ -50,7 +51,7 @@ public class Visite extends JournalData {
 	@ManyToOne
 	private CarteGrise carteGrise;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Control control;
 
 	public List<RapportDeVisite> getRapportDeVisites() {
@@ -62,6 +63,7 @@ public class Visite extends JournalData {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+	@JsonIgnore
 	private List<RapportDeVisite> rapportDeVisites;
 
 	public Visite() {

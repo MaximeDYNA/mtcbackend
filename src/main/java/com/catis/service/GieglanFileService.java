@@ -59,14 +59,18 @@ public class GieglanFileService {
 		codeCgrises.put("0215", "");
 		codeCgrises.put("0216", this.carteGrise.getCarteGriseId().toString());
 		codeCgrises.forEach((key, value) -> {
-			ValeurTest valeurTest = new ValeurTest();
-			valeurTest.setActiveStatus(true);
-			valeurTest.setCode(key);
-			valeurTest.setGieglanFile(file);
-			valeurTest.setValeur(value);
-			valeurTest.setCrc(this.generateCrc(value));
-			valeurTest.setStatus(StatusType.VALIDATED);
-			this.codeGieglans.add(valeurTest);
+			Integer crc = this.generateCrc(value);
+			if (crc!=null) {
+				ValeurTest valeurTest = new ValeurTest();
+				valeurTest.setActiveStatus(true);
+				valeurTest.setCode(key);
+				valeurTest.setGieglanFile(file);
+				valeurTest.setValeur(value);
+				valeurTest.setCrc(crc);
+				valeurTest.setStatus(StatusType.VALIDATED);
+				this.codeGieglans.add(valeurTest);
+			}
+			
 		});
 	}
 
@@ -77,7 +81,7 @@ public class GieglanFileService {
 	 * @return crc
 	 */
 	private Integer generateCrc(String v) {
-
+		if(v== null ) return null;
 		if (v.isEmpty()) return (int)'\0';
 		int code = 0;
 		for (int i = 0, j = 1; i < v.length(); i++, j++) {

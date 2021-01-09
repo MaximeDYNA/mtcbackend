@@ -135,7 +135,7 @@ public class EncaissementController {
 				carteGrise.setNumImmatriculation(posale.getReference());
 				carteGrise.setProduit(produit);
 				/*-----------------Visite-----------------*/
-				System.out.println("Montant encaissé "+ encaissement.getMontantEncaisse());
+				
 					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(), 
 													encaissement.getMontantEncaisse());
 				/*----------------------------------------*/

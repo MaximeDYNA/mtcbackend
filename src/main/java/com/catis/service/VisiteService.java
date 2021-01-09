@@ -14,8 +14,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.CarteGrise;
+import com.catis.model.Control;
+import com.catis.model.Control.StatusType;
 import com.catis.model.Visite;
-
+import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
 
 @Service
@@ -23,6 +25,9 @@ import com.catis.repository.VisiteRepository;
 public class VisiteService {
 	@Autowired
 	private VisiteRepository visiteRepository;
+	
+	@Autowired
+	private ControlRepository controlRepository;
 	
 	public List<Visite> findAll(){
 		List<Visite> visites = new ArrayList<Visite>();
@@ -65,19 +70,26 @@ public class VisiteService {
 			visite.setEncours(true);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
-			
 	
-		}
-		else {
+		} else {
 			visite.setContreVisite(false);
 			visite.setEncours(true);
 			visite.setCarteGrise(cg);
-			visite.setDateDebut(LocalDateTime.now());
-			
+			visite.setDateDebut(LocalDateTime.now());	
 		}
-			if(cg.getProduit().getProduitId()==1) {
-				return visite;
-			}
+		
+		if(cg.getProduit().getProduitId()==1) {
+			return visite;
+		}
+		
+		Control control = new Control();
+		List<Visite> visites = new ArrayList<>();
+		visites.add(visite);
+		control.setCarteGrise(cg);
+		control.setStatus(StatusType.INITIALIZED);
+		control.setVisites(visites);
+		visite.setControl(control);
+		//control = this.controlRepository.save(control);
 		return visiteRepository.save(visite);
 	}
 	public Visite modifierVisite(Visite visite) {

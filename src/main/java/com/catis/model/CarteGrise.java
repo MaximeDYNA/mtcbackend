@@ -60,6 +60,7 @@ public class CarteGrise extends JournalData {
 	Set<Visite> visites;
 	
 	@OneToMany(mappedBy = "carteGrise")
+	@JsonIgnore
 	private Set<Control> controls;
 	
 	public CarteGrise(CarteGriseReceived c) {

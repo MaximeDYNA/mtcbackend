@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.catis.objectTemporaire.InpectionReceived;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -51,6 +52,7 @@ public class Inspection extends JournalData {
 	private Visite visite;
 	
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Set<GieglanFile> gieglanFiles;
 
 	/*

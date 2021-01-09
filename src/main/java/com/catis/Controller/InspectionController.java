@@ -46,7 +46,7 @@ public class InspectionController {
 	@PostMapping(value="/api/v1/inspections")
 	public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) {
 		
-		try {
+		
 				LOGGER.info("Nouvelle inpection...");
 				Inspection inspection = new Inspection(inspectionReceived);
 				inspection.setControleur(controleurService.findControleurById(inspectionReceived.getControleurId()));
@@ -60,10 +60,10 @@ public class InspectionController {
 			     for (int x=0; x<result.length; x++)
 			         System.out.println(result[x]);*/
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspectionService.addInspection(inspection));
-			}
+			/*try {}
 			catch (Exception e) {
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Inspection", null);
-			}
+			}*/
 		
 	}
 	@GetMapping(value="/api/v1/inspections")
