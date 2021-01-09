@@ -1,4 +1,4 @@
-/*package com.catis.security;
+package com.catis.security;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
@@ -40,13 +41,14 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import com.catis.Controller.configuration.JsonReader;
 import com.google.gson.JsonObject;
 
-//@KeycloakConfiguration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@KeycloakConfiguration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	
 	 private final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
+	 	
 	    public KeycloakSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
 	        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
 
@@ -57,8 +59,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    /**
 	     * If you don't want to use the keycloak.json file, then uncomment this bean.
 	     
-	    /**
-	     * Use properties in application.properties instead of keycloak.json
+	    
+	     * Use properties in application.properties instead of keycloak.json**/
 	    
 	    @Bean
 	    @Primary
@@ -88,7 +90,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    /**
 	     * Use NullAuthenticatedSessionStrategy for bearer-only tokens. Otherwise, use
 	     * RegisterSessionAuthenticationStrategy.
-	     
+	     */
 	    @Bean
 	    @Override
 	    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
@@ -97,7 +99,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
 	    /**
 	     * Secure appropriate endpoints
-	     
+	     **/
 	    @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 
@@ -108,6 +110,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .csrf().disable()
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and().authorizeRequests()
+	                
 	                .antMatchers("/visites**").permitAll()
 	                .antMatchers("/pdf-resources**").permitAll()
 	                .antMatchers("/download-pdf**").permitAll()
@@ -117,7 +120,10 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .anyRequest().permitAll();
 	       
 	    }
-
+	    @Override
+	    public void configure(WebSecurity web) throws Exception {
+	        web.ignoring().antMatchers("/api/v1/controleurs");
+	    }
 	    @SuppressWarnings({ "rawtypes", "unchecked" })
 	    @Bean
 	    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {
@@ -167,4 +173,4 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	    }
 	    
 	
-}*/
+}

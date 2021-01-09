@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.catis.Controller.configuration.CryptoUtil;
 import com.catis.Controller.configuration.QRCodeGenerator;
 import com.catis.model.Inspection;
 import com.catis.model.RapportDeVisite;
@@ -44,9 +45,9 @@ import com.catis.service.VisiteService;
 import com.google.zxing.WriterException;
 import com.lowagie.text.DocumentException;
 
+
 @RestController
-public class pdfController {
-	
+public class pdfController {	
 	
 		@Autowired
 		private VisiteRepository visiteRepo;
@@ -56,6 +57,7 @@ public class pdfController {
 	 	@Autowired
 	 	private RapportDeVisiteRepo rapportDeVisiteRepo;
 	 	
+
 	    private PdfService pdfService;
 	    private InspectionService inspectionService;
 	    private VenteService venteService;
@@ -71,7 +73,16 @@ public class pdfController {
 			this.venteService = venteService;
 			this.taxeService = taxProduitService;
 		}
+
 	    
+		@GetMapping("/visites/{id}/verso")
+	    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+	    		        
+		        modelAndView.setViewName("pvVerso");		        
+		        return modelAndView;
+	
+	    }
+		
 		@GetMapping("/visites/{id}")
 	    public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
 	    	
@@ -129,8 +140,10 @@ public class pdfController {
 		        								v.getCarteGrise().getProprietaireVehicule().getPartenaire().getPrenom());
 		        modelAndView.addObject("adresse", v.getCarteGrise().getCommune()); 
 		        modelAndView.addObject("tel", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getTelephone()); 
-		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()); 		
-		        modelAndView.addObject("taxe", tp.getValeur());
+
+		        modelAndView.addObject("prixHt", v.getCarteGrise().getProduit().getPrix()==0?0:v.getCarteGrise().getProduit().getPrix()); 		
+		        modelAndView.addObject("taxe", tp.getValeur()==0?0:tp.getValeur());	        
+
 		        LocalDateTime now = LocalDateTime.now(); 
 
 		        modelAndView.addObject("day", now.format(monthFomatter));
@@ -208,7 +221,7 @@ public class pdfController {
 	    	System.out.println("qrcode en cours de fabrication...");
 	    	
 
-	        byte[] bytes = QRCodeGenerator.getQRCodeImage(v.getIdVisite().toString(), 60, 60);
+	        byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 60, 60);
 
 	        final HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.IMAGE_PNG);

@@ -70,6 +70,7 @@ public class ProduitService {
 	}
 	public Produit addProduit(Produit produit) {
 		return produitRepository.save(produit);
+		
 	}
 	
 }

@@ -50,7 +50,7 @@ public class ClientController {
 	public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 		try {
 			LOGGER.info("Ajout d'un client...");
-	
+				
 			Client client = new Client();
 			Partenaire partenaire = new Partenaire();
 			partenaire.setCni(clientPartenaire.getCni());

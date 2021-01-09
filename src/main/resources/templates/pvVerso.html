@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Verso</title>
+<!-- Bootstrap -->
+    <script data-th-href="@{http://localhost:8080/bootstrap-4.3.1-dist/js/bootstrap.min.js}">
+    	Array.from(document.querySelectorAll('.watermarked')).forEach(function(el) {
+    		  el.dataset.watermark = (el.dataset.watermark + ' ').repeat(300);
+    		});
+    </script>
+
+    <style type="text/css">
+    #watermark {
+	  height: 100%;
+	  width: 100%;
+	  position: relative;
+	  overflow: hidden;
+	}
+	#watermark img {
+	  max-width: 100%;
+	}
+	#watermark p {
+	  position: absolute;
+	  line-height: 5em;
+	  top: 0;
+	  left: 0;
+	  height: 1700px;
+	  width: 1700px;
+	  color: yellow;
+	  font-size: 18px;
+	  pointer-events: none;
+	  -webkit-transform: rotate(-15deg);
+	  -moz-transform: rotate(-15deg);
+	}
+    </style>
+    
+    <link rel="stylesheet" type="text/css" data-th-href="@{http://localhost:8080/bootstrap-4.3.1-dist/css/bootstrap.min.css}"></link>
+</head>
+<body>
+	<div id="background" class="d-flex font-weight-bold justify-content-center align-content-center flex-wrap" >	
+		<span id="bg-text" style="border:10px solid gray; width: 1300px;
+	 padding:10px 10px;"><center>MINT COPY</center>	</span>		
+	</div>
+	<!-- <div class="watermarked" data-watermark="howbloggerz"> -->
+	<!--   <img src="http://www.w3schools.com/css/img_fjords.jpg"> -->
+	<!-- </div> -->
+	<div id="watermark">
+		<div  class="container " data-watermark="howbloggerz">
+			<div class="row d-flex align-items-end justify-content-center" style="height: 700px"> <h1> <span>Véhicule immatriculé / Registered Vehicle : OU 7*4 AY</span> </h1> </div>
+			<div class="row d-flex align-items-end justify-content-center" style="height: 50px">  </div>
+			<div id="watermark" class="row">
+				<div class="col-6 watermarkeds d-flex justify-content-center">				
+					<div>
+						<img th:src="@{/images/refused.jfif}" style="height: 250px; width: 400px;">
+					</div> 
+				</div>
+				<div class="col-6 d-flex justify-content-center">
+					<div>
+						 <img th:src="@{/images/refused.jfif}" style="height: 250px; width: 400px;">
+					</div>	 
+				</div>
+			</div>
+			<div class="row" style="height: 50px"></div>
+			<div class="row justify-content-center" style="height: 400px"> <h2> <span> GPS: 0.154865/5.145856	</span> </h2> </div>
+	 	</div>	 
+	  <p>PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. </p>
+	</div>
+	<footer class="align-content-end page-footer font-small blue pt-4">
+		<center>
+		 	<p>SATELLITE NGONO - DOUALA BONABERI- Tel: (+237) 655962263</p>
+		</center>
+	</footer>
+</body>
+</html>

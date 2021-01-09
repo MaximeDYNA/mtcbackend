@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,7 +30,7 @@ public class Inspection extends JournalData {
 	private Date dateDebut;
 	private Date dateFin;
 	private String signature; // chemin image signature du controleur
-
+	
 	@ManyToOne
 	private Produit produit;
 	private double kilometrage;
@@ -52,11 +53,14 @@ public class Inspection extends JournalData {
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
 	private Set<GieglanFile> gieglanFiles;
 
+	/*
+	 * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
+	 */
 	public Inspection() {
 
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Inspection(InpectionReceived i) {
 
 		this.idInspection = i.getIdInspection();

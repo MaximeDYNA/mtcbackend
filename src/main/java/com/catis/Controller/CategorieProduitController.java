@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +28,6 @@ import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.CategorieProduitService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 
 @RestController
 @CrossOrigin
@@ -50,11 +47,7 @@ public class CategorieProduitController {
 	private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 	
 	@RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
-	@ApiOperation(value="produits par catégorie",
-	notes = "renvoi la liste des produits et les taxes associées au produit",
-	response = ProduitEtTaxe.class)
-	public ResponseEntity<Object> listerLesProduits(@ApiParam(value="id de la catégorie", required= true)
-													@PathVariable String categorieId) throws IllegalArgumentException{
+		public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException{
 		try {
 			List<ProduitEtTaxe> pets = new ArrayList<>();
 			List<Taxe> taxes;
@@ -93,6 +86,7 @@ public class CategorieProduitController {
 		}
 		
 	}
+	 
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/catproducts") 
 	public ResponseEntity<Object> categorieProduits(){
 		try {

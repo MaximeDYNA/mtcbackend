@@ -1,6 +1,5 @@
 package com.catis.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietest")
 public class CategorieTest extends JournalData {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategorieTest;

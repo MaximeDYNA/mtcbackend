@@ -30,3 +30,29 @@
     transform:rotate(350deg);
     -webkit-transform:rotate(325deg);
 }
+.watermarked {
+  position: relative;
+  overflow: hidden;
+}
+
+.watermarked img {
+  width: 100%;
+}
+
+.watermarked::before {
+  position: absolute;
+  top: -75%;
+  left: -75%;
+  
+  display: block;
+  width: 150%;
+  height: 150%;
+  
+  transform: rotate(-45deg);
+  content: attr(data-watermark);
+  
+  opacity: 0.7;
+  line-height: 3em;
+  letter-spacing: 2px;
+  color: #fff;
+}
