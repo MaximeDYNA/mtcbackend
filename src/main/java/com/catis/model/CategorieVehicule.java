@@ -25,6 +25,7 @@ public class CategorieVehicule extends JournalData {
 	private String type;
 
 	@OneToMany(mappedBy = "categorieVehicule")
+	@JsonIgnore
 	private Set<CategorieTestVehicule> categorieTestVehicules;
 	
 	@OneToMany(mappedBy = "categorieVehicule")

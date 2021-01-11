@@ -50,7 +50,7 @@ public class Inspection extends JournalData {
 
 	@OneToOne
 	private Visite visite;
-	
+
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<GieglanFile> gieglanFiles;

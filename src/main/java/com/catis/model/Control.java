@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -38,6 +39,7 @@ public class Control extends JournalData {
 	private CarteGrise carteGrise;
 
 	@OneToMany(mappedBy = "control", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Visite> visites = new ArrayList<>();
 	
 	public enum StatusType {

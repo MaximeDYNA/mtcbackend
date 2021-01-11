@@ -1,5 +1,12 @@
 package com.catis.Controller;
 
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
+import org.apache.commons.codec.binary.Base64;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +16,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.catis.Controller.message.Message;
-import com.catis.model.CarteGrise;
 import com.catis.model.Inspection;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
+import com.catis.objectTemporaire.SignatureDTO;
 import com.catis.service.ControleurService;
 import com.catis.service.GieglanFileService;
 import com.catis.service.InspectionService;
@@ -55,17 +64,45 @@ public class InspectionController {
 				Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
 				inspection.setVisite(visite);
 				visiteService.commencerInspection(inspectionReceived.getVisiteId());
+				inspection = inspectionService.addInspection(inspection);
 				this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
 				/*String[] result = "this is a test".split("\\s");
 			     for (int x=0; x<result.length; x++)
 			         System.out.println(result[x]);*/
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspectionService.addInspection(inspection));
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection",inspection );
 			/*try {}
 			catch (Exception e) {
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Inspection", null);
 			}*/
 		
 	}
+	@RequestMapping(value="/api/v1/uploadImage2",method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO)
+    {
+			
+        try
+        {
+            //This will decode the String which is encoded by using Base64 class
+        	System.out.println("signature *********************"+signatureDTO.getImageValue());
+        	
+            //byte[] imageByte=Base64.decodeBase64(signatureDTO.getImageValue().getBytes("UTF-8"));
+            byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
+            //String directory=servletContext.getRealPath("/")+"images/sample.jpg";
+                      String folder = "uploaded/";
+    		Path path = Paths.get(folder + "sample.png");
+            
+            new FileOutputStream(path.toString()).write(decoded);
+            System.out.println("file uploaded");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	null);
+            
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Failed", null);
+        }
+
+    }
 	@GetMapping(value="/api/v1/inspections")
 	public ResponseEntity<Object> inspectionList() {
 		

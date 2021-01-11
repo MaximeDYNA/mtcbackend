@@ -7,5 +7,5 @@ import com.catis.model.MesureVisuel;
 
 public interface MesureVisuelRepository extends CrudRepository<MesureVisuel, Long>  {
 
-	
+	MesureVisuel findByInspection_VisiteIdVisite(Long id);
 }

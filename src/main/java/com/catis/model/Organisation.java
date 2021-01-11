@@ -98,6 +98,7 @@ public class Organisation extends JournalData {
 	private Organisation parentOrganisation;
 
 	@OneToMany(mappedBy = "organisation")
+	@JsonIgnore
 	private Set<Caisse> caisses;
 
 	private String patente;

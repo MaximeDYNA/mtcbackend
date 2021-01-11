@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,10 +43,11 @@ public class Visite extends JournalData {
 	@ManyToOne
 	private Caissier caissier;
 
-	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
-	private Inspection inspection;
+//	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+//	private Inspection inspection;
 
-	@OneToOne(mappedBy = "visite")
+	@OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
+	@JsonIgnore
 	private VerbalProcess process;
 
 	@ManyToOne
@@ -90,7 +92,7 @@ public class Visite extends JournalData {
 		this.organisation = organisation;
 		this.encours = encours;
 		this.caissier = caissier;
-		this.inspection = inspection;
+		//this.inspection = inspection;
 		this.process = process;
 		this.carteGrise = carteGrise;
 		this.control = control;
@@ -145,13 +147,13 @@ public class Visite extends JournalData {
 		this.organisation = organisation;
 	}
 
-	public Inspection getInspection() {
-		return inspection;
-	}
-
-	public void setInspection(Inspection inspection) {
-		this.inspection = inspection;
-	}
+//	public Inspection getInspection() {
+//		return inspection;
+//	}
+//
+//	public void setInspection(Inspection inspection) {
+//		this.inspection = inspection;
+//	}
 
 	public VerbalProcess getProcess() {
 		return process;

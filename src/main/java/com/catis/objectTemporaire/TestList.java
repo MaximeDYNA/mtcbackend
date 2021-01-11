@@ -4,16 +4,8 @@ public class TestList {
 
 	private String libelle;
 	private String valeur;
+
 	
-	public TestList(String libelle, String valeur) {
-		super();
-		this.libelle = libelle;
-		this.valeur = valeur;
-	}
-	public TestList() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	public String getLibelle() {
 		return libelle;
 	}
@@ -26,8 +18,13 @@ public class TestList {
 	public void setValeur(String valeur) {
 		this.valeur = valeur;
 	}
-	
-	
-	
-	
+	public TestList(String libelle, String valeur) {
+		super();
+		this.libelle = libelle;
+		this.valeur = valeur;
+	}
+	public TestList() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 }

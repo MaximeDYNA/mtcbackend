@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import javax.persistence.OneToOne;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -29,9 +33,11 @@ public class VerbalProcess extends JournalData {
 	private boolean status;
 
 	@OneToOne
+	
 	private Visite visite;
 	
 	@OneToMany(mappedBy = "verbalProcess")
+	@JsonIgnore
 	private Set<RapportDeVisite> rapportDeVisites;
 
 	public VerbalProcess() {

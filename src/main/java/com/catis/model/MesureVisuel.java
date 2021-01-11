@@ -31,6 +31,7 @@ public class MesureVisuel {
 	private String plateNumber;
 	private String image1;
 	private String image2;
+	private String gps;
 	
 	@OneToOne
 	private Inspection inspection;
@@ -105,6 +106,22 @@ public class MesureVisuel {
 
 	public void setInspection(Inspection inspection) {
 		this.inspection = inspection;
+	}
+
+	public String getPlateNumber() {
+		return plateNumber;
+	}
+
+	public void setPlateNumber(String plateNumber) {
+		this.plateNumber = plateNumber;
+	}
+
+	public String getGps() {
+		return gps;
+	}
+
+	public void setGps(String gps) {
+		this.gps = gps;
 	}
 	
 }

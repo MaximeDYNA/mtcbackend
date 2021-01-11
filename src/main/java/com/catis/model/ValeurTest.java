@@ -43,6 +43,9 @@ public class ValeurTest extends JournalData {
 
 	@ManyToOne
 	private GieglanFile gieglanFile;
+	
+	@ManyToOne
+	private Mesure mesure;
 
 	public ValeurTest() {
 

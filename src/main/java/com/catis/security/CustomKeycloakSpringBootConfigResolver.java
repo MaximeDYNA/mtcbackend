@@ -1,11 +1,12 @@
 package com.catis.security;
 
 	import org.keycloak.adapters.KeycloakDeployment;
-	import org.keycloak.adapters.KeycloakDeploymentBuilder;
-	import org.keycloak.adapters.spi.HttpFacade;
-	import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
-	import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
-	import org.springframework.context.annotation.Configuration;
+import org.keycloak.adapters.KeycloakDeploymentBuilder;
+import org.keycloak.adapters.spi.HttpFacade;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 	/**
 	 * @author Edward P. Legaspi | czetsuya@gmail.com
@@ -14,6 +15,7 @@ package com.catis.security;
 	 * @version 0.0.1
 	 */
 	@Configuration
+	@EnableJpaAuditing
 	public class CustomKeycloakSpringBootConfigResolver extends KeycloakSpringBootConfigResolver {
 
 	    private final KeycloakDeployment keycloakDeployment;

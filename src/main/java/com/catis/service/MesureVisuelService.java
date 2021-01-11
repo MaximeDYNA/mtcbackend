@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,11 @@ public class MesureVisuelService {
 	private LexiqueInspectionRepository lexiqueinspectionrepository;
 	
 	
-	public Iterable<lexique_inspection> addMesureVisuel(List<lexique_inspection>  lexiques) {
+	public List<lexique_inspection> addMesureVisuel(List<lexique_inspection>  lexiques) {
 		
-		return lexiqueinspectionrepository.saveAll(lexiques);
+		List<lexique_inspection> savedLexique = new ArrayList<>();
+		 lexiqueinspectionrepository.saveAll(lexiques).forEach(savedLexique::add);
+		return savedLexique;
 		
 	
 	}
@@ -32,6 +35,15 @@ public class MesureVisuelService {
 		return mesurevisuel.save(mesurevisuels);
 		
 	
+	}
+	public List<String> ImagePathList(Long visiteId){
+		
+		MesureVisuel m =mesurevisuel.findByInspection_VisiteIdVisite(visiteId);
+		List<String> paths = new ArrayList<>();
+		paths.add(m.getImage1());
+		paths.add(m.getImage2());
+		
+		return paths;
 	}
 
 	

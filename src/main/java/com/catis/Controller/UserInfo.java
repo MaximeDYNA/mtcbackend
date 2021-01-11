@@ -32,7 +32,7 @@ public class UserInfo {
 	public List<ControleurDTO> userInfoController() {
     
 		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	     String serverUrl = "http://192.168.8.109:8180/auth";
+	     String serverUrl = "http://192.168.8.106:8180/auth";
 		    String realm = "mtckeycloak";
 		    String clientId = "realm-management";
 		    String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
@@ -56,8 +56,8 @@ public class UserInfo {
 	        	cDTO.setNom(u.getFirstName());
 	        	cDTO.setPrenom(u.getLastName());
 	        	cDTO.setEmail(u.getEmail());
-	        	//cDTO.setOrganisationId(u.getAttributes().get("organisationId").get(0)==null?
-	        	//									null:u.getAttributes().get("organisationId").get(0));
+	        	cDTO.setOrganisationId(u.getAttributes().get("organisationId").get(0)==null?
+	        									null:u.getAttributes().get("organisationId").get(0));
 	        	controleurs.add(cDTO);
 	        }
 

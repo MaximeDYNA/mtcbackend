@@ -70,7 +70,6 @@ public class GieglanFileService {
 				valeurTest.setStatus(StatusType.VALIDATED);
 				this.codeGieglans.add(valeurTest);
 			}
-			
 		});
 	}
 

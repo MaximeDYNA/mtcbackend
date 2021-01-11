@@ -110,7 +110,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .csrf().disable()
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and().authorizeRequests()
-	                
+	                .antMatchers("/api/v1/**").permitAll()
 	                .antMatchers("/visites**").permitAll()
 	                .antMatchers("/pdf-resources**").permitAll()
 	                .antMatchers("/download-pdf**").permitAll()
