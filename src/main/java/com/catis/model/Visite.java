@@ -40,11 +40,14 @@ public class Visite extends JournalData {
 	@Column(columnDefinition = "bit default 1")
 	private boolean encours;
 
+
+	
 	@ManyToOne
 	private Caissier caissier;
 
-//	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
-//	private Inspection inspection;
+	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Inspection inspection;
 
 	@OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -220,4 +223,14 @@ public class Visite extends JournalData {
 		} else
 			return "VTP";
 	}
+
+	public Inspection getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(Inspection inspection) {
+		this.inspection = inspection;
+	}
+	
+	
 }

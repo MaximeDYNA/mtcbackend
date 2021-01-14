@@ -6,7 +6,7 @@ import com.chilkatsoft.CkCompression;
 public class ImageSizeHandler {
 
 	
-	public String compress(String strBase64) {
+	public static String compress(String strBase64) {
 		
 	    CkCompression compress = new CkCompression();
 	    compress.put_Algorithm("deflate");
@@ -24,7 +24,7 @@ public class ImageSizeHandler {
 	    return compressedBase64 ;
 	}
 	
-	public String decompress(String compressedString) {	
+	public static String decompress(String compressedString) {	
 		CkBinData binDat = new CkBinData();
 		CkCompression compress = new CkCompression();
 		 binDat.AppendEncoded(compressedString,"base64");

@@ -111,7 +111,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	                .and().authorizeRequests()
 	                .antMatchers("/api/v1/**").permitAll()
-	                .antMatchers("/visites**").permitAll()
+	                //.antMatchers("/visites**").permitAll()
 	                .antMatchers("/pdf-resources**").permitAll()
 	                .antMatchers("/download-pdf**").permitAll()
 	                .antMatchers("/images/**").permitAll()
@@ -120,10 +120,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .anyRequest().permitAll();
 	       
 	    }
-	    @Override
-	    public void configure(WebSecurity web) throws Exception {
-	        web.ignoring().antMatchers("/api/v1/controleurs");
-	    }
+	    
 	    @SuppressWarnings({ "rawtypes", "unchecked" })
 	    @Bean
 	    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {

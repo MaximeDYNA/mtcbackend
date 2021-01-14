@@ -5,15 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
-import org.keycloak.representations.AccessToken;*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,14 +43,37 @@ public class VisiteController {
 	private static Logger log  = LoggerFactory.getLogger(VisiteController.class);
 	
 	private VariableView v;
-	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visitesencours")
+	
+	@GetMapping(value="/api/v1/visites_encours")
 	public ResponseEntity<Object> listDesVisitesEncours(){
 		try {
 			log.info("Liste des visites en cours");
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", vs.enCoursVisitList());
+			List<Listview> listVisit = new ArrayList<>();
+			for(Visite visite: vs.enCoursVisitList()) {
+				Listview lv = new Listview();
+				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+						.getNumImmatriculation()));
+				
+				if (venteService.findByVisite(visite.getIdVisite())
+						 == null)
+					lv.setClient(null);
+				else
+				lv.setClient(venteService.findByVisite(visite.getIdVisite())
+						.getClient()
+						.getPartenaire()
+						.getNom());
+				lv.setDate(visite.getDateDebut());
+				lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+				lv.setStatut(visite.statutRender(visite.getStatut()));
+				lv.setType(visite.typeRender());
+				listVisit.add(lv);
+				lv.setId(visite.getIdVisite());
+				
+			}
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
 					+ " de la liste des visite en cours", null);
 		}
 		
