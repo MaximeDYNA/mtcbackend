@@ -1,6 +1,7 @@
 package com.catis.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -55,6 +56,9 @@ public class Inspection extends JournalData {
 	@JsonIgnore
 	private Set<GieglanFile> gieglanFiles;
 
+	@ManyToMany
+	private List<Lexique> lexiques;
+
 	/*
 	 * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
 	 */
@@ -75,27 +79,39 @@ public class Inspection extends JournalData {
 		this.position = i.getPosition();
 	}
 
-	public Inspection(Long idInspection, Date dateDebut, Date dateFin, String signature, Produit produit,
-			double kilometrage, String chassis, int essieux, String position, Controleur controleur,
-			Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles) {
-		super();
-		this.idInspection = idInspection;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.signature = signature;
-		this.produit = produit;
-		this.kilometrage = kilometrage;
-		this.chassis = chassis;
-		this.essieux = essieux;
-		this.position = position;
-		this.controleur = controleur;
-		this.organisation = organisation;
-		this.ligne = ligne;
-		this.visite = visite;
-		this.gieglanFiles = gieglanFiles;
-	}
+    public List<Lexique> getLexiques() {
+        return lexiques;
+    }
 
-	public Long getIdInspection() {
+    public void setLexiques(List<Lexique> lexiques) {
+        this.lexiques = lexiques;
+    }
+
+    public void addLexique(Lexique lexique) {
+	    this.lexiques.add(lexique);
+    }
+
+    public Inspection(Date dateDebut, Date dateFin, String signature, Produit produit,
+          double kilometrage, String chassis, int essieux, String position, Controleur controleur,
+          Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
+    ) {
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.signature = signature;
+        this.produit = produit;
+        this.kilometrage = kilometrage;
+        this.chassis = chassis;
+        this.essieux = essieux;
+        this.position = position;
+        this.controleur = controleur;
+        this.organisation = organisation;
+        this.ligne = ligne;
+        this.visite = visite;
+        this.gieglanFiles = gieglanFiles;
+        this.lexiques = lexiques;
+    }
+
+    public Long getIdInspection() {
 		return idInspection;
 	}
 
@@ -206,5 +222,7 @@ public class Inspection extends JournalData {
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
+
+
 
 }

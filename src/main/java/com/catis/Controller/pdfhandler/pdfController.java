@@ -77,10 +77,11 @@ public class pdfController {
 	    
 		@GetMapping("/visites/{id}/verso")
 	    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
-	    		        
-		        modelAndView.setViewName("pvVerso");		        
-		        return modelAndView;
-	
+			Optional<Visite> visite = this.visiteRepo.findById(id);
+			modelAndView.addObject("visite", visite.get());
+	        modelAndView.setViewName("pvVerso");
+
+	        return modelAndView;
 	    }
 		
 		@GetMapping("/visites/{id}")

@@ -2,15 +2,15 @@ package com.catis.model;
 
 public class DefectsModel {
 	
-	public int id;
+	public Long id;
     public String subcategory;
     public String defect;
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     

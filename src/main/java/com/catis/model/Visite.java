@@ -43,8 +43,8 @@ public class Visite extends JournalData {
 	@ManyToOne
 	private Caissier caissier;
 
-//	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
-//	private Inspection inspection;
+	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+	private Inspection inspection;
 
 	@OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -92,7 +92,7 @@ public class Visite extends JournalData {
 		this.organisation = organisation;
 		this.encours = encours;
 		this.caissier = caissier;
-		//this.inspection = inspection;
+		this.inspection = inspection;
 		this.process = process;
 		this.carteGrise = carteGrise;
 		this.control = control;
@@ -147,13 +147,13 @@ public class Visite extends JournalData {
 		this.organisation = organisation;
 	}
 
-//	public Inspection getInspection() {
-//		return inspection;
-//	}
-//
-//	public void setInspection(Inspection inspection) {
-//		this.inspection = inspection;
-//	}
+	public Inspection getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(Inspection inspection) {
+		this.inspection = inspection;
+	}
 
 	public VerbalProcess getProcess() {
 		return process;
