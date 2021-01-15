@@ -1,5 +1,6 @@
 package com.catis.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,10 +42,6 @@ public class Lexique extends JournalData {
 
 	@ManyToOne
 	private VersionLexique versionLexique;
-	
-	/*
-	 * @ManyToMany(cascade = CascadeType.ALL) private Set<Inspection> inspections;
-	 */
 
 	@OneToMany(mappedBy = "parent")
 	@JsonIgnore
@@ -53,15 +50,19 @@ public class Lexique extends JournalData {
 	@ManyToOne
 	private Lexique parent;
 
-	private Boolean haschild;
-	
-	public Lexique() {
+	@ManyToMany(mappedBy = "lexiques")
+	private List<Inspection> inspections;
 
+	private Boolean haschild;
+
+	public Lexique() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-
 	public Lexique(Long id, String libelle, String code, Boolean visuel, Client client,
-			CategorieVehicule categorieVehicule, VersionLexique versionLexique, Set<Lexique> childs, Lexique parent) {
+			CategorieVehicule categorieVehicule, VersionLexique versionLexique, Set<Lexique> childs, Lexique parent,
+			List<Inspection> inspections, Boolean haschild) {
 		super();
 		this.id = id;
 		this.libelle = libelle;
@@ -72,8 +73,9 @@ public class Lexique extends JournalData {
 		this.versionLexique = versionLexique;
 		this.childs = childs;
 		this.parent = parent;
+		this.inspections = inspections;
+		this.haschild = haschild;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -163,6 +165,16 @@ public class Lexique extends JournalData {
 
 	public void setHaschild(boolean haschild) {
 		this.haschild = haschild;
+	}
+
+
+	public List<Inspection> getInspections() {
+		return inspections;
+	}
+
+
+	public void setInspections(List<Inspection> inspections) {
+		this.inspections = inspections;
 	}
 	
 

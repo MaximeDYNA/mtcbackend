@@ -103,7 +103,7 @@
 		  <span class="text-left font-weight-bold">
 				Kilométrage / Milaege :
 		  </span>
-		  <span style="color: gray;" th:utext="${v.inspection.kilometrage}"></span> <br>
+		  <span style="color: gray;" th:utext="${#numbers.formatDecimal(v.inspection.kilometrage, '0', 'WHITESPACE', 0, 'POINT')+' Km.'}"></span> <br>
 		  <span class="text-left font-weight-bold">
 			  Affectation / Usage :
 		  </span>
@@ -133,13 +133,13 @@
 		<span class="text-left font-weight-bold">
 			Montant payé HT / Amount ex.VAT : 
 		</span>
-		<span style="color: gray;" th:utext="${v.carteGrise.produit.prix}"></span><br>
+		<span style="color: gray;" th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, '0', 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br>
 		<span class="text-left font-weight-bold">
 			TVA / VAT : 
-		</span> <span th:utext="${tp.valeur}"></span><br>
+		</span> <span th:utext="${tp.valeur!=null ? tp.valeur+' %': ''}" style="color: gray;"></span><br>
 		<span class="text-left font-weight-bold">
 			Montant payé TTC / Amount inc. VAT: 
-		</span><span style="color: gray;" th:utext="${v.carteGrise.produit.prix} + ${v.carteGrise.produit.prix} * ${tp.valeur}/100">9540.00 F CFA</span><br>
+		</span><span style="color: gray;" th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' FCFA' }"></span><br>
 		
 	  </div>
   </div>
@@ -250,22 +250,22 @@
 			  					<td style="border-left: 0px solid ;
 			            			 border-bottom: 0px solid ;"></td>
 			  					<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0410') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0410')!=null) ? #numbers.formatInteger(result.get('0410'), 1)+' %' :'' }">
 				            	</td>
 				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0411') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0411')!=null) ? #numbers.formatInteger(result.get('0411'), 1)+' %' :'' }">
 				            	</td>
 				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0413') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL'  and result.get('0413')!=null) ? #numbers.formatInteger(result.get('0413'), 1)+' %' :'' }">
 				            	</td>
 				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0414') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL'  and result.get('0414')!=null) ? #numbers.formatInteger(result.get('0414'), 1)+' %' :'' }">
 				            	</td>
 				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0412') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0412')!=null) ? #numbers.formatInteger(result.get('0412'), 1)+' %' :'' }">
 				            	</td>
 				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ typeVehicule=='VL' ? result.get('0415') :'' }">
+				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0415')!=null) ? #numbers.formatInteger(result.get('0415'), 1)+' %' :'' }">
 				            	</td>
 			  				</tr>
 			  		</table>
@@ -292,12 +292,11 @@
 		            			 border-bottom: 0px solid ;"></td>
 		  					
 			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0401')}">
-		
+			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0401') != null ? #strings.replace(result.get('0401'), '.0', '')+' mm/m': ''}">
 			            	</td>
 			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0402')}">
-			            	</td>
+			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0402') != null ? result.get('0402')+' mm/m' : ''}">
+			            	</td >
 		  				</tr>
 			  		</table>
 			  		<br>
@@ -314,7 +313,7 @@
 		  					</td>
 		  					<td  class="text-center font-weight-bold"
 		  					style="height:5px; width:195px;
-		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? result.get('0509'): result.get('0538')}">
+		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? result.get('0509')+' m-1': '' ): (result.get('0538')!=null ? result.get('0538')+' m-1': '' )}">
 		  					</td>
 		  				</tr>
 			  		</table>
@@ -363,8 +362,7 @@
 						  		Eff. Frein de service<br>Service Brake Eff
 		  					</td>
 		  					<td class="text-center" 
-			            		style="color: gray; border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? result.get('0446'): result.get('1000')}">
-			      
+			            		style="color: gray; border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? (result.get('0446')!=null ? #numbers.formatInteger(result.get('0446'), 1)+' %': '' ): (result.get('1000')!=null ? result.get('1000')+' %': '' )}">
 			            	</td>
 		  				</tr>
 		  				<tr>
@@ -377,7 +375,7 @@
 						  		Eff. Frein de station.<br> Parking Brake Eff.
 		  					</td>
 		  					<td class="text-center" style="color: gray;
-		  					border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? result.get('0465'): result.get('1001')}">
+		  					border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? (result.get('0465')!=null ? #numbers.formatInteger(result.get('0465'), 1)+' %': '' ): (result.get('1001')!=null ? #numbers.formatInteger(result.get('1001'), 1)+' %': '' )}">
 			            	</td>
 		  				</tr>
 		  				<tr>
@@ -394,12 +392,15 @@
 									style="color: gray; border: 1px solid black; height:50px; width:195px;">
 		            				<table style="height:100%; width:100%">
 			            				<tr>
-			            					<td th:if="${ typeVehicule=='VL'}" th:utext="${typeVehicule=='VL' ? result.get('0430') : ''}">
+			            					<td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
+			            						<span th:utext="${typeVehicule=='VL' ? (result.get('0430')!=null ? #numbers.formatInteger(result.get('0430'),1)+' daN': '' ) : ''}"></span><br>
+			            						<span th:utext="${typeVehicule=='VL' ? (result.get('0421')!=null ? #numbers.formatInteger(result.get('0421'),1)+' kg': '' ) : ''}"></span>
 		            						</td>
-			            					<td style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? result.get('0434') : result.get('1002')}">
+			            					<td style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? (result.get('0434')!=null ? #numbers.formatInteger(result.get('0434'), 1)+' %': '' ) : (result.get('1002')!=null ? #numbers.formatInteger(result.get('1002'),1)+' %': '' )}">
 			            					</td>
-			            					<td th:if="${ typeVehicule=='VL'}" th:utext="${  typeVehicule=='VL' ? result.get('0431') : ''}">
-				        
+			            					<td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
+			            						<span th:utext="${  typeVehicule=='VL' ? (result.get('0431')!=null ? #numbers.formatInteger(result.get('0431'),1)+' daN': '' ) : ''}"></span><br>
+			            						<span th:utext="${  typeVehicule=='VL' ? (result.get('0420')!=null ? #numbers.formatInteger(result.get('0420'),1)+' kg': '' ) : ''}"></span>
 			            					</td>
 			            				</tr>
 			            			</table>
@@ -417,14 +418,18 @@
 			  					<td class="text-center" 
 				            		style="color: gray; border: 1px solid black; height:50px; width:195px;">
 			            			<table style="height:100%; width:100%">
-			            				<tr> 
-			            					<td th:if="${ typeVehicule == 'VL'}" th:utext="${ typeVehicule=='VL' ? result.get('0438') : ''}">
+			            				<tr>
+			            					<td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
+			            						<span  th:utext="${ typeVehicule=='VL' ? (result.get('0438')!=null ? #numbers.formatInteger(result.get('0438'),1)+' daN': '' ) : ''}"></span><br>
+			            						<span  th:utext="${ typeVehicule=='VL' ? (result.get('0424')!=null ? #numbers.formatInteger(result.get('0424'), 1)+' kg': '' ) : ''}"></span>
 			            					</td>
 			            					
-			            					<td class="text-top" style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? result.get('0442') : result.get('1125')}">
+			            					<td class="text-top" style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? (result.get('0442')!=null ? #numbers.formatInteger(result.get('0442'), 1)+' %': '' ) : (result.get('1125')!=null ? #numbers.formatInteger(result.get('1125'), 1)+' %': '' )}">
 			            					</td>
 			            					
-			            					<td th:if="${ typeVehicule == 'VL'}" th:utext="${ typeVehicule == 'VL' ? result.get('0439') : ''}">
+			            					<td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
+			            						<span th:utext="${ typeVehicule == 'VL' ? (result.get('0439')!=null ? #numbers.formatInteger(result.get('0439'),1)+' daN': '' ): ''}"></span><br>
+			            						<span th:utext="${ typeVehicule == 'VL' ? (result.get('0423')!=null ? #numbers.formatInteger(result.get('0423'),1)+' kg': '' ): ''}"></span>
 			            					</td>
 			            				</tr>
 			            			</table>

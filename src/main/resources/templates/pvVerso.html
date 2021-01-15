@@ -5,7 +5,11 @@
 <meta charset="UTF-8"/>
 <title>Verso</title>
 <!-- Bootstrap -->
+<<<<<<< HEAD
     <script data-th-href="@{/bootstrap-4.3.1-dist/js/bootstrap.min.js}">
+=======
+    <script data-th-href="@{http://localhost:8081/bootstrap-4.3.1-dist/js/bootstrap.min.js}">
+>>>>>>> branch 'feature/version_bd_franck' of https://github.com/CATIS-DEVELOPER/mtc.git
     	Array.from(document.querySelectorAll('.watermarked')).forEach(function(el) {
     		  el.dataset.watermark = (el.dataset.watermark + ' ').repeat(300);
     		});
@@ -36,7 +40,7 @@
 	}
     </style>
     
-    <link rel="stylesheet" type="text/css" data-th-href="@{http://localhost:8080/bootstrap-4.3.1-dist/css/bootstrap.min.css}"></link>
+    <link rel="stylesheet" type="text/css" data-th-href="@{http://localhost:8081/bootstrap-4.3.1-dist/css/bootstrap.min.css}"></link>
 </head>
 <body>
 	<div id="background" class="d-flex font-weight-bold justify-content-center align-content-center flex-wrap" >	
@@ -48,7 +52,7 @@
 	<!-- </div> -->
 	<div id="watermark">
 		<div  class="container " data-watermark="howbloggerz">
-			<div class="row d-flex align-items-end justify-content-center" style="height: 700px"> <h1> <span>Véhicule immatriculé / Registered Vehicle : OU 7*4 AY</span> </h1> </div>
+			<div class="row d-flex align-items-end justify-content-center" style="height: 700px"> <h1> <span th:utext="${visite.carteGrise.numImmatriculation}">Véhicule immatriculé / Registered Vehicle : OU 7*4 AY</span> </h1> </div>
 			<div class="row d-flex align-items-end justify-content-center" style="height: 50px">  </div>
 			<div id="watermark" class="row">
 				<div class="col-6 watermarkeds d-flex justify-content-center">				
@@ -63,7 +67,7 @@
 				</div>
 			</div>
 			<div class="row" style="height: 50px"></div>
-			<div class="row justify-content-center" style="height: 400px"> <h2> <span> GPS: 0.154865/5.145856	</span> </h2> </div>
+			<div class="row justify-content-center" style="height: 400px"> <h2> <span th:utext="${visite.inspection.numImmatriculation}"></span> </h2> </div>
 	 	</div>	 
 	  <p>PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. PvNumber. </p>
 	</div>

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.MesureVisuel;
-import com.catis.model.lexique_inspection;
-import com.catis.repository.LexiqueInspectionRepository;
 import com.catis.repository.MesureVisuelRepository;
 
 @Service
@@ -17,24 +15,10 @@ public class MesureVisuelService {
 	@Autowired
 	private MesureVisuelRepository mesurevisuel;
 	
-	@Autowired
-	private LexiqueInspectionRepository lexiqueinspectionrepository;
-	
-	
-	public List<lexique_inspection> addMesureVisuel(List<lexique_inspection>  lexiques) {
-		
-		List<lexique_inspection> savedLexique = new ArrayList<>();
-		 lexiqueinspectionrepository.saveAll(lexiques).forEach(savedLexique::add);
-		return savedLexique;
-		
-	
-	}
 	
 	public MesureVisuel addDataInspection(MesureVisuel mesurevisuels) {
 		
 		return mesurevisuel.save(mesurevisuels);
-		
-	
 	}
 	public List<String> ImagePathList(Long visiteId){
 		
@@ -45,6 +29,4 @@ public class MesureVisuelService {
 		
 		return paths;
 	}
-
-	
 }
