@@ -115,6 +115,7 @@ public class VisiteService {
 	public List<Visite> listParStatus(int status){
 		return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
 	}
+	
 	public void commencerInspection(Long visiteId) {
 		Visite visite = new Visite();
 		visite = visiteRepository.findById(visiteId).get();

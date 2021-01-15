@@ -29,4 +29,8 @@ public class ControleurService {
 	
 		return controleurR.findById(id).get();
 	}
+	public Controleur findControleurBykeycloakId(String keycloakId) {
+		
+		return controleurR.findByKeycloakId(keycloakId);
+	}
 }

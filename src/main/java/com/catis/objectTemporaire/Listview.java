@@ -72,8 +72,38 @@ public class Listview {
 		return statut;
 	}
 	public void setStatut(String statut) {
+		switch(statut) {
+		  case "maj":
+			  this.statut = "<span class=\"badge badge-primary\">"+statut+"</span>";
+		    break;
+		  case "A inspecter":
+			  this.statut = "<span class=\"badge badge-warning\">"+statut+"</span>";
+		    break;
+		  case "En cours test":
+			  this.statut = "<span class=\"badge badge-light\">"+statut+"</span>";
+			  break;
+		  case "A signer":
+			  this.statut = "<span class=\"badge badge-info\">"+statut+"</span>";
+			  break;
+		  case "A imprimer":
+			  this.statut = "<span class=\"badge badge-success\">"+statut+"</span>";
+			  break;
+		  case "A enregister":
+			  this.statut = "<span class=\"badge badge-dark\">"+statut+"</span>";
+			  break;
+		  case "A certifier":
+			  this.statut = "<span class=\"badge badge-primary\">"+statut+"</span>";
+			  break;
+		  case "Accepté":
+			  this.statut = "<span class=\"badge badge-success\">"+statut+"</span>";
+			  break;
+		  case "Refusé":
+			  this.statut = "<span class=\"badge badge-danger\">"+statut+"</span>";
+			  break;
+		  default:
+			  this.statut = "<span class=\"badge badge-warning\">"+statut+"</span>";
+		}
 		
-		this.statut = "<span class=\"badge badge-primary\">"+statut+"</span>";
 	}
     
 }
