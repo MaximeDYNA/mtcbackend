@@ -1,16 +1,15 @@
 package com.catis.Controller.pdfhandler;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,11 @@ import com.catis.service.PdfService;
 import com.catis.service.TaxeService;
 import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.lowagie.text.DocumentException;
 
 
@@ -246,4 +249,22 @@ public class pdfController {
 	            ex.printStackTrace();
 	        }
 	    }
+	    @GetMapping("/qrcode")
+	    public static byte[] getQRCodeImage(String text, Long width, Long height) throws WriterException, IOException {
+	    	width =70L;
+	    	height=70L;
+		    QRCodeWriter qrCodeWriter = new QRCodeWriter();
+		    BitMatrix bitMatrix = qrCodeWriter.encode("1- \r\n"
+		    		+ "Noms & Prénoms : TCHAKOUNTE épse NJIEMELI Kelly D.\r\n"
+		    		+ "Fonction : Responsable Administratif & Ressources Humaines \r\n"
+		    		+ "CNI No :CE38155I5ISTXJVW3XV3\r\n"
+		    		+ "Matricule : P-C001\r\n"
+		    		+ "Contacts : +237 697 469 657 / 680 945 016\r\n"
+		    		+ "email: k.njiemeli@prooftagcatis.com", BarcodeFormat.QR_CODE, width.intValue(), height.intValue());
+		    
+		    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+		    MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+		    byte[] pngData = pngOutputStream.toByteArray(); 
+		    return pngData;
+		}
 }

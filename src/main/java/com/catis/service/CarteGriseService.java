@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.CarteGrise;
@@ -43,7 +44,14 @@ public class CarteGriseService {
 		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
 	}
 	public List<CarteGrise> findBychassis(String chassis){
+		
 		return cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis);
+	}
+	public List<CarteGrise> findLastCgBychassis(String chassis){
+		List<CarteGrise> reponse = new ArrayList<>();
+		reponse.add(cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis, Sort.by(Sort.Direction.DESC, "createdDate")).get(0))
+		 ;
+			return	reponse;
 	}
 	
 	public List<CarteGrise> findByLigne(Long idLigne){

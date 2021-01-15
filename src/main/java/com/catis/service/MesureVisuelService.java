@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.MesureVisuel;
-import com.catis.model.lexique_inspection;
-import com.catis.repository.LexiqueInspectionRepository;
 import com.catis.repository.MesureVisuelRepository;
 
 @Service

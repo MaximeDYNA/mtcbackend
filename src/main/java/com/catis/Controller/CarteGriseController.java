@@ -62,6 +62,18 @@ public class CarteGriseController {
 				  
 		}
 	}
+	@GetMapping("/api/v1/search/last/{imCha}")
+	public  ResponseEntity<Object> searchLast(@PathVariable String imCha){
+		LOGGER.info("Recherche carte grise...");
+		
+				//cgs.findByImmatriculationOuCarteGrise(imCha)
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findLastCgBychassis(imCha));
+		/*try {	} 
+		catch(Exception e){ 
+				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );*/
+				  
+		
+	}
 	@GetMapping("/api/v1/cartegrises")
 	public  ResponseEntity<Object> findAll(){
 		LOGGER.info("Recherche carte grise...");
