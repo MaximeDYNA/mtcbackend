@@ -76,24 +76,25 @@ public class InspectionController {
 			}*/
 		
 	}
-	@RequestMapping(value="/api/v1/uploadImage2",method = RequestMethod.POST)
+	@RequestMapping(value="/api/v1/upload/signature",method = RequestMethod.POST)
     public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO)
     {
 			
         try
-        {
-            //This will decode the String which is encoded by using Base64 class
-        	System.out.println("signature *********************"+signatureDTO.getImageValue());
-        	
-            //byte[] imageByte=Base64.decodeBase64(signatureDTO.getImageValue().getBytes("UTF-8"));
+        { 
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
-            //String directory=servletContext.getRealPath("/")+"images/sample.jpg";
-                      String folder = "uploaded/";
-    		Path path = Paths.get(folder + "sample.png");
             
-            new FileOutputStream(path.toString()).write(decoded);
-            System.out.println("file uploaded");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	null);
+            
+            String filePath = "uploaded/signatures/" + signatureDTO.getVisiteId() +".png";
+    		Path path = Paths.get(filePath);
+    		
+    		FileOutputStream fos = new FileOutputStream(path.toString());
+    		fos.write(decoded);
+    		fos.close();
+    		
+            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), filePath);
+            
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	inspection);
             
         }
         catch(Exception e)

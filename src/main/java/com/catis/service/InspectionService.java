@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.Inspection;
+import com.catis.model.Visite;
 import com.catis.repository.InspectionRepository;
 
 @Service	
@@ -14,6 +15,9 @@ public class InspectionService {
 
 	@Autowired
 	private InspectionRepository inspectionR;
+	
+	@Autowired
+	private VisiteService visiteService;
 	
 	public Inspection addInspection(Inspection inspection) {
 		return inspectionR.save(inspection);
@@ -30,5 +34,13 @@ public class InspectionService {
 	}
 	public Inspection findInspectionByVisite(Long idvisite) {
 		return inspectionR.findByVisite_IdVisite(idvisite);
+	}
+	public Inspection setSignature(Long id, String signature) {
+			Inspection inspection = findInspectionByVisite(id);
+			Visite visite = visiteService.findById(id);
+			visite.setStatut(4);
+			inspection.setVisite(visite);
+		return	inspectionR.save(inspection);
+		 
 	}
 }

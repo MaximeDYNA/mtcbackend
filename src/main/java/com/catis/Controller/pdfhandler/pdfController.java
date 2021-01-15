@@ -250,22 +250,23 @@ public class pdfController {
 	            ex.printStackTrace();
 	        }
 	    }
-	    @GetMapping("/qrcode")
-	    public static byte[] getQRCodeImage(String text, Long width, Long height) throws WriterException, IOException {
-	    	width =70L;
-	    	height=70L;
-		    QRCodeWriter qrCodeWriter = new QRCodeWriter();
-		    BitMatrix bitMatrix = qrCodeWriter.encode("1- \r\n"
-		    		+ "Noms & Prénoms : TCHAKOUNTE épse NJIEMELI Kelly D.\r\n"
-		    		+ "Fonction : Responsable Administratif & Ressources Humaines \r\n"
-		    		+ "CNI No :CE38155I5ISTXJVW3XV3\r\n"
-		    		+ "Matricule : P-C001\r\n"
-		    		+ "Contacts : +237 697 469 657 / 680 945 016\r\n"
-		    		+ "email: k.njiemeli@prooftagcatis.com", BarcodeFormat.QR_CODE, width.intValue(), height.intValue());
-		    
-		    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-		    MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-		    byte[] pngData = pngOutputStream.toByteArray(); 
-		    return pngData;
-		}
+	   
+	   
+			  
+    @GetMapping(value = "/qrcode")
+   	public ResponseEntity<byte[]> generateQRCode(
+   			)
+   
+   		    throws Exception {
+   				byte[] bytes  = QRCodeGenerator.getQRCodeImage("Noms & Prénoms : DYNA NGOTHY Maxime Jacques\r\n"
+   						+ "Fonction :  Ingénieur - Service Recherche et Developpement\r\n"
+   						+ "CNI No : 000771075\r\n"
+   						+ "Matricule : P-C010\r\n"
+   						+ "Contacts : +237 690 981 943 / 675 807 434\r\n"
+   						+ "email: m.dyna@prooftagcatis.com", 200, 200);
+   				final HttpHeaders headers = new HttpHeaders();
+   		        headers.setContentType(MediaType.IMAGE_PNG);
+   		        
+   		         return new ResponseEntity<byte[]> (bytes, headers, HttpStatus.CREATED);
+   		    }
 }

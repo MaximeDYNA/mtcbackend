@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -46,10 +47,10 @@ public class Inspection extends JournalData {
 	@ManyToOne
 	private Organisation organisation;
 
-	@ManyToOne
+	@ManyToOne 
 	private Ligne ligne;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Visite visite;
 
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)

@@ -39,13 +39,16 @@ public class Controleur extends JournalData {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
 	@JsonIgnore
 	private Set<Inspection> inspections;
-
+	private String keycloakId;
 	public Controleur() {
 
 	}
 
+	
+
 	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
-			Organisation organisation, Set<Inspection> inspections) {
+			Organisation organisation, Set<Inspection> inspections, String keycloakId) {
+		super();
 		this.idControleur = idControleur;
 		this.agremment = agremment;
 		this.score = score;
@@ -53,7 +56,10 @@ public class Controleur extends JournalData {
 		this.partenaire = partenaire;
 		this.organisation = organisation;
 		this.inspections = inspections;
+		this.keycloakId = keycloakId;
 	}
+
+
 
 	public Long getIdControleur() {
 		return idControleur;
@@ -110,5 +116,18 @@ public class Controleur extends JournalData {
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
+
+
+
+	public String getKeycloakId() {
+		return keycloakId;
+	}
+
+
+
+	public void setKeycloakId(String keycloakId) {
+		this.keycloakId = keycloakId;
+	}
+
 
 }

@@ -13,6 +13,8 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.AccessToken.Access;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -29,17 +31,16 @@ import com.catis.objectTemporaire.UserDTO;
 @CrossOrigin
 public class UserInfo {
 	@Autowired
-	 private HttpServletRequest request;
-
+	private HttpServletRequest request;
+	private static String serverUrl = "http://192.168.8.113:8180/auth";
+	private static String realm = "mtckeycloak";
+	private String clientId = "realm-management";
+	private String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
+	
 	@GetMapping("/api/v1/controleurs")
 	public List<ControleurDTO> userInfoController() {
     
 		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	     String serverUrl = "http://192.168.0.101:8180/auth";
-		    String realm = "mtckeycloak";
-		    String clientId = "realm-management";
-		    String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
-		
 	    Keycloak keycloak = KeycloakBuilder.builder() //
 	      .serverUrl(serverUrl)
 	      .realm(realm)
@@ -70,8 +71,8 @@ public class UserInfo {
 
 	        return controleurs;
 	}
-	@GetMapping("/api/v1/userinfos")
-	public UserDTO userInfo() {
+	@GetMapping("/api/v1/userconnected")
+	public UserDTO userconnectedInfo() {
 		 KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();        
 	        KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
 	        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
@@ -85,5 +86,27 @@ public class UserInfo {
 	        user.setRoles(realmAccess.getRoles());
 	        return user;
 	}
+	public  UserDTO userInfo(String KeycloakId) {
+		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+	    Keycloak keycloak = KeycloakBuilder
+	        .builder()
+	        .serverUrl(serverUrl)
+	        .realm(realm)
+	        .authorization(context.getTokenString())
+	        .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+	        .build();
+	    UserResource userResource = keycloak.realm(realm).users().get(KeycloakId);
+	    
+
+	    UserDTO user = new UserDTO();
+        user.setNom(userResource.toRepresentation().getLastName());
+        user.setPrenom(userResource.toRepresentation().getFirstName());
+        user.setLogin(userResource.toRepresentation().getUsername());
+        user.setEmail(userResource.toRepresentation().getEmail());       
+        
+        user.setRoles(userResource.toRepresentation().getClientRoles().keySet());
+        return user;
+	
+	  }
 }
 
