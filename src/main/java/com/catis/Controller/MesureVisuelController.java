@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.catis.Controller.configuration.ImageSizeHandler;
+//import com.catis.Controller.configuration.ImageSizeHandler;
 
 import com.catis.service.MesureVisuelService;
 
@@ -71,8 +71,8 @@ public class MesureVisuelController {
 		  LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
 		  +mesurevisuel.getImage1()); 
 		  System.out.println("Decommpressed : "+ mesurevisuel.getImage1());
-		  System.out.println("commpressed : "+ ImageSizeHandler.compress(mesurevisuel.getImage1()));
-		  System.out.println("Decommpressed : "+ ImageSizeHandler.decompress(ImageSizeHandler.compress(mesurevisuel.getImage1())));
+		  //System.out.println("commpressed : "+ ImageSizeHandler.compress(mesurevisuel.getImage1()));
+		  //System.out.println("Decommpressed : "+ ImageSizeHandler.decompress(ImageSizeHandler.compress(mesurevisuel.getImage1())));
 			
 		 
 		try {

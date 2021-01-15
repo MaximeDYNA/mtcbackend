@@ -98,6 +98,7 @@ public class pdfController {
 		        rapports.forEach(rapport -> {
 		        	results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
 		        });
+		        visite.get().getInspection().getLexiques().forEach(lexique-> System.out.println(lexique.getLibelle()+"\n"));
 	    		modelAndView.addObject("v", visite.get());
 	    		modelAndView.addObject("tp", tp);
 	    		modelAndView.addObject("result", results);

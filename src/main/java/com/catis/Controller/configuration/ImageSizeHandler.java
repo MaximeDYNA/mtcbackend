@@ -1,5 +1,5 @@
 package com.catis.Controller.configuration;
-
+/**
 import com.chilkatsoft.CkBinData;
 import com.chilkatsoft.CkCompression;
 
@@ -34,7 +34,4 @@ public class ImageSizeHandler {
 		    
 		    return decompressedBase64;
 	}
-    
-
-    
-}
+}*/
