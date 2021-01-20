@@ -36,7 +36,7 @@ import org.keycloak.representations.idm.authorization.Permission;
  * @see org.keycloak.quickstart.springboot.web.ApplicationController
  */
 public class Identity {
-
+	
     private final KeycloakSecurityContext securityContext;
 
     public  Identity(KeycloakSecurityContext securityContext) {

@@ -1,5 +1,7 @@
 package com.catis.Controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.OperationCaisse;
+import com.catis.objectTemporaire.OpCaisseDTO;
+import com.catis.objectTemporaire.RecapDTO;
 import com.catis.service.OperationCaisseService;
+import com.catis.service.VenteService;
 
 @RestController
 public class OperationCaisseController {
 
-	@Autowired
-	private OperationCaisseService ocs;
 	
+	private OperationCaisseService ocs;
+	private VenteService venteService;
+	
+	@Autowired
+	public OperationCaisseController(OperationCaisseService ocs, VenteService venteService) {
+		super();
+		this.ocs = ocs;
+		this.venteService = venteService;
+	}
 	private static Logger LOGGER = LoggerFactory.getLogger(OperationCaisseController.class);
 	
 	@GetMapping("/api/v1/operationcaisse/{code}/listview")
@@ -49,10 +61,22 @@ public class OperationCaisseController {
 		} catch (Exception e) {
 			LOGGER.error("Erreur");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "règlement",  null);
-		}
+		}	
+	}
+	@PostMapping("/api/v1/operationcaisse/recap")
+	public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
+		try {
+			LOGGER.info("Recapitulatif demandé");
 		
-			
-			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			LocalDateTime start = LocalDateTime.parse(recapDTO.getDateDebut(), formatter);
+			LocalDateTime end = LocalDateTime.parse(recapDTO.getDateFin(), formatter);
+			List <OpCaisseDTO> ops = venteService.recapOp(recapDTO.getCaissierId(), start, end);
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  ops);
+		} catch (Exception e) {
+			LOGGER.error("Erreur");
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "recap",  null);
+		}	
 	}
 	
 }

@@ -23,8 +23,8 @@ public class SessionCaisseService {
 	public SessionCaisse findSessionCaisseById(long idSessionCaisse) {
 		return sessionCaisseRepository.findBySessionCaisseId(idSessionCaisse);
 	}
-	public List<SessionCaisse> findActiveSessionCaisseByUser(long userId) {
-		return sessionCaisseRepository.findByActiveTrueAndUser_UtilisateurId(userId);
+	public SessionCaisse findActiveSessionCaissierById(long caissierId) {
+		return sessionCaisseRepository.findByActiveTrueAndCaissierCaissierId(caissierId);
 	}
 	
 	@Transactional
@@ -39,13 +39,6 @@ public class SessionCaisseService {
 		
 		return sessionCaisse;
 	}
-	public void inactiveSession(Long userId) {
-		for(SessionCaisse sessionCaisse : sessionCaisseRepository.findByUser_UtilisateurId(userId)) {
-			Date date = new Date();
-			sessionCaisse.setActive(false);
-			sessionCaisse.setDateHeureFermeture(date);
-			sessionCaisseRepository.save(sessionCaisse);
-		}
-	}
+	
 	
 }

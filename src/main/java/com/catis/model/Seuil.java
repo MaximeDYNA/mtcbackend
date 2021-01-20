@@ -37,8 +37,7 @@ public class Seuil extends JournalData {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Classification classification;
+	
 
 	@ManyToOne
 	private Formule formule;
@@ -110,7 +109,7 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 		this.decision = decision;
 		this.rapportDeVisites = rapportDeVisites;
-		this.classification = classification;
+		
 		this.formule = formule;
 	}
 
@@ -124,13 +123,6 @@ public class Seuil extends JournalData {
 		this.rapportDeVisites = rapportDeVisites;
 	}
 
-	public Classification getClassification() {
-		return classification;
-	}
-
-	public void setClassification(Classification classification) {
-		this.classification = classification;
-	}
 
 	public Formule getFormule() {
 		return formule;

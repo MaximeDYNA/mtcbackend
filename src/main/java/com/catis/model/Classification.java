@@ -27,17 +27,16 @@ public class Classification extends JournalData {
 
 	private String code;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "classification")
-	private Set<Seuil> seuils;
+	
 
 	public Classification() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Classification(Long id, String code, Set<Seuil> seuils) {
+	public Classification(Long id, String code) {
 		this.id = id;
 		this.code = code;
-		this.seuils = seuils;
+		
 	}
 
 	public Long getId() {
@@ -56,11 +55,4 @@ public class Classification extends JournalData {
 		this.code = code;
 	}
 
-	public Set<Seuil> getSeuils() {
-		return seuils;
-	}
-
-	public void setSeuils(Set<Seuil> seuils) {
-		this.seuils = seuils;
-	}
 }

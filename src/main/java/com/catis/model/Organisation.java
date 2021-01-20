@@ -33,9 +33,7 @@ public class Organisation extends JournalData {
 	@JsonIgnore
 	private Set<Caissier> caissier;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
-	@JsonIgnore
-	private Set<CaissierCaisse> caissierCaisse;
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
 	@JsonIgnore
@@ -112,7 +110,7 @@ public class Organisation extends JournalData {
 	
 
 	public Organisation(Long organisationId, Set<ModeleVehicule> modelVehicule, Set<Caissier> caissier,
-			Set<CaissierCaisse> caissierCaisse, Set<Controleur> controleur,
+			 Set<Controleur> controleur,
 			Set<CategorieTestMachine> categorieTestMachine, Set<Ligne> ligne, Set<Inspection> inspection,
 			Set<Machine> machine, Set<Adresse> adresse, Set<Mesure> mesure, Set<Visite> visite,
 			Set<ValeurTest> valeurTests, Set<Partenaire> partenaires, Set<LigneMachine> ligneMachine,
@@ -123,7 +121,7 @@ public class Organisation extends JournalData {
 		this.organisationId = organisationId;
 		this.modelVehicule = modelVehicule;
 		this.caissier = caissier;
-		this.caissierCaisse = caissierCaisse;
+		
 		this.controleur = controleur;
 		this.categorieTestMachine = categorieTestMachine;
 		this.ligne = ligne;
@@ -289,14 +287,6 @@ public class Organisation extends JournalData {
 
 	public void setCaissier(Set<Caissier> caissier) {
 		this.caissier = caissier;
-	}
-
-	public Set<CaissierCaisse> getCaissierCaisse() {
-		return caissierCaisse;
-	}
-
-	public void setCaissierCaisse(Set<CaissierCaisse> caissierCaisse) {
-		this.caissierCaisse = caissierCaisse;
 	}
 
 	public Set<Controleur> getControleur() {

@@ -3,6 +3,7 @@ package com.catis.objectTemporaire;
 import java.util.Set;
 
 public class UserDTO {
+	private String id;
 	private String nom;
 	private String prenom;
 	private String login;
@@ -109,6 +110,16 @@ public class UserDTO {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

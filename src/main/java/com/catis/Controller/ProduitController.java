@@ -146,9 +146,9 @@ public class ProduitController {
 				}
 	
 				
-				if(!visiteService.viensPourContreVisite(imCha)) {
+				if(visiteService.isVisiteInitial(imCha)) {
 					
-					if(cgs.findByImmatriculationOuCarteGrise(imCha).isEmpty()) {
+					if(cgs.isCarteGriseExist(imCha)) {
 						List<ProduitEtTaxe> pets = new ArrayList<>();
 						List<Taxe> taxes;
 						ProduitEtTaxe pet; 
@@ -173,7 +173,7 @@ public class ProduitController {
 						
 						pet.setTaxe(taxeService.taxListByLibelle(produitService.findByLibelle("cv").getLibelle()));
 						pets.add(pet);
-						//Visite v =  visiteService.findByReference(imCha).get(0);
+						
 						return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
 					}
 						

@@ -42,9 +42,9 @@ public class SessionCaisseController {
 	
 	@RequestMapping( value="/api/v1/sessioncaisseexist/{userId}")
 	public ResponseEntity<Object> isSessionCaisseActive(@PathVariable Long userId) {
-		if(!sessionCaisseService.findActiveSessionCaisseByUser(userId).isEmpty()) {
+		if(sessionCaisseService.findActiveSessionCaissierById(userId)!=null) {
 			LOGGER.info("Session de Caisse déjà ouverte");
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.findActiveSessionCaisseByUser(userId));
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.findActiveSessionCaissierById(userId));
 		}
 		else {
 			LOGGER.info("Aucune session caisse trouvée");
@@ -63,7 +63,7 @@ public class SessionCaisseController {
 			sessionCaisse.setDateHeureOuverture(now);
 			sessionCaisse.setActive(true);
 			sessionCaisse.setMontantOuverture(openData.getMontantOuverture());
-			sessionCaisse.setUser(us.findUtilisateurById(openData.getUserId()));
+			//sessionCaisse.setUser(us.findUtilisateurById(openData.getUserId()));
 			sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
 			Hold hold = new Hold();
 			
@@ -71,7 +71,6 @@ public class SessionCaisseController {
 			hold.setSessionCaisse(sessionCaisse);
 			hold.setTime(sessionCaisse.getDateHeureOuverture());
 			hs.addHold(hold);
-			LOGGER.info("Bonjour "+sessionCaisse.getUser().getPartenaire().getPrenom()+", votre caisse est ouverte");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
 		/*try {}
 		catch(Exception e){

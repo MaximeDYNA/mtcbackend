@@ -22,67 +22,60 @@ public class Utilisateur extends JournalData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long utilisateurId;
-	private String login;
-	private String motDePasse;
+	private String keycloakId;
 	@ManyToOne
 	@JsonIgnore
 	private Organisation organisation;
 
-	@ManyToOne
-	private Partenaire partenaire;
+	
 
 	public Utilisateur() {
 	}
 
-	public Utilisateur(Long utilisateurId, String login, String motDePasse, Organisation organisation,
-			Partenaire partenaire) {
 
+
+	public Utilisateur(Long utilisateurId, String keycloakId, Organisation organisation) {
+		super();
 		this.utilisateurId = utilisateurId;
-		this.login = login;
-		this.motDePasse = motDePasse;
+		this.keycloakId = keycloakId;
 		this.organisation = organisation;
-		this.partenaire = partenaire;
 	}
+
+
 
 	public Long getUtilisateurId() {
 		return utilisateurId;
 	}
 
+
+
 	public void setUtilisateurId(Long utilisateurId) {
-		utilisateurId = utilisateurId;
+		this.utilisateurId = utilisateurId;
 	}
 
-	public String getLogin() {
-		return login;
+
+
+	public String getKeycloakId() {
+		return keycloakId;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+
+
+	public void setKeycloakId(String keycloakId) {
+		this.keycloakId = keycloakId;
 	}
 
-	@JsonIgnore
-	public String getMotDePasse() {
-		return motDePasse;
-	}
 
-	public void setMotDePasse(String motDePasse) {
-		this.motDePasse = motDePasse;
-	}
-
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
-
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
 
 	public Organisation getOrganisation() {
 		return organisation;
 	}
 
+
+
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
 	}
 
+	
 }
