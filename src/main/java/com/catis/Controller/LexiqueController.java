@@ -75,7 +75,7 @@ public class LexiqueController {
 				lexiq.setHaschild(false);
 			lexiq.setVersionLexique(vl);
 			lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-			lexiq.setClients(lexiqueService.findByVersionLexique(versionLexiqueId).);
+			
 			//System.out.println("Nom :"+ lexique.getId());
 			lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId()) ));
 			lexiqueService.add(lexiq);
@@ -107,7 +107,7 @@ public class LexiqueController {
 			for(Client i :l.getClients()) {
 				ids.add(i.getClientId());
 			}
-			pojo.setClientId(ids);
+			
 			pojo.setVersion(l.getVersionLexique().getId());
 			list.add(pojo);
 			

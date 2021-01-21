@@ -11,17 +11,15 @@ public class LexiquePOJO {
 	private String haschild;
 	private String visual;	
 	private Long version;	
-	private List<Long> clientId;
 	private int categoryId;
-	
-	
+
 	public LexiquePOJO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public LexiquePOJO(Long id, String code, String libelle, String parent, String haschild, String visual,
-			Long version, List<Long> clientId, int categoryId) {
+			Long version, int categoryId) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -30,7 +28,7 @@ public class LexiquePOJO {
 		this.haschild = haschild;
 		this.visual = visual;
 		this.version = version;
-		this.clientId = clientId;
+		
 		this.categoryId = categoryId;
 	}
 
@@ -69,14 +67,6 @@ public class LexiquePOJO {
 		this.visual = visual;
 	}
 
-	public List<Long> getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(List<Long> clientId) {
-		this.clientId = clientId;
-	}
-
 	public int getCategoryId() {
 		return categoryId;
 	}
@@ -96,6 +86,4 @@ public class LexiquePOJO {
 		this.version = version;
 	}
 	
-	
-
 }

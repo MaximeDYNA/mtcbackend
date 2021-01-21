@@ -41,8 +41,8 @@ public class Seuil extends JournalData {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
 
-	@ManyToMany
-	private Set<Lexique> lexiques;
+	@ManyToOne
+	private Lexique lexique;
 	
 
 	@ManyToOne
@@ -139,15 +139,14 @@ public class Seuil extends JournalData {
 	}
 
 
-
-	public Set<Lexique> getLexiques() {
-		return lexiques;
+	public Lexique getLexique() {
+		return lexique;
 	}
 
 
 
-	public void setLexiques(Set<Lexique> lexiques) {
-		this.lexiques = lexiques;
+	public void setLexique(Lexique lexique) {
+		this.lexique = lexique;
 	}
 
 
