@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -33,9 +34,16 @@ public class Seuil extends JournalData {
 	private String codeMessage;
 
 	private boolean decision;
-
+	
+	@ManyToOne
+	private Classification classification;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
+
+	@ManyToMany
+	private Set<Lexique> lexiques;
+	
 
 	@ManyToOne
 	private Formule formule;
@@ -44,6 +52,8 @@ public class Seuil extends JournalData {
 
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	public Long getId() {
 		return id;
@@ -61,6 +71,8 @@ public class Seuil extends JournalData {
 		this.value = value;
 	}
 
+	
+
 	public String getCodeMessage() {
 		return codeMessage;
 	}
@@ -69,24 +81,33 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 	}
 
+
 	public String getOperande() {
 		return operande;
 	}
+
+
 
 	public void setOperande(String operande) {
 		this.operande = operande;
 	}
 
+
+
 	public boolean isDecision() {
 		return decision;
 	}
+
+
 
 	public void setDecision(boolean decision) {
 		this.decision = decision;
 	}
 
+
+
 	public Seuil(Long id, double value, String operande, String codeMessage, boolean decision,
-			Set<RapportDeVisite> rapportDeVisites, Formule formule) {
+			Set<RapportDeVisite> rapportDeVisites, Classification classification, Formule formule) {
 		super();
 		this.id = id;
 		this.value = value;
@@ -94,8 +115,11 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 		this.decision = decision;
 		this.rapportDeVisites = rapportDeVisites;
+		
 		this.formule = formule;
 	}
+
+
 
 	public Set<RapportDeVisite> getRapportDeVisites() {
 		return rapportDeVisites;
@@ -104,7 +128,8 @@ public class Seuil extends JournalData {
 	public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
 		this.rapportDeVisites = rapportDeVisites;
 	}
-	
+
+
 	public Formule getFormule() {
 		return formule;
 	}
@@ -112,4 +137,31 @@ public class Seuil extends JournalData {
 	public void setFormule(Formule formule) {
 		this.formule = formule;
 	}
+
+
+
+	public Set<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+
+
+	public void setLexiques(Set<Lexique> lexiques) {
+		this.lexiques = lexiques;
+	}
+
+
+
+	public Classification getClassification() {
+		return classification;
+	}
+
+
+
+	public void setClassification(Classification classification) {
+		this.classification = classification;
+	}
+	
+	
+	
 }

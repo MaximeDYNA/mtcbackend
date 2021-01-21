@@ -1,11 +1,13 @@
 package com.catis.model;
 
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,6 +26,9 @@ public class Client extends JournalData {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long clientId;
 	private String description;
+	
+	@ManyToMany
+	private Set<Lexique> lexiques;
 
 	@ManyToOne
 	private Partenaire partenaire;
@@ -32,9 +37,7 @@ public class Client extends JournalData {
 	@JsonIgnore
 	Set<Vente> ventes;
 	
-	@OneToMany(mappedBy = "client")
-	@JsonIgnore
-	Set<Lexique> lexiques;
+	
 
 	@OneToMany(mappedBy = "client")
 	@JsonIgnore

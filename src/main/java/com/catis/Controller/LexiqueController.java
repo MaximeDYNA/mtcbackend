@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
+import com.catis.model.Client;
 import com.catis.model.Lexique;
 import com.catis.model.VersionLexique;
 import com.catis.objectTemporaire.LexiqueChildDTO;
@@ -74,7 +75,7 @@ public class LexiqueController {
 				lexiq.setHaschild(false);
 			lexiq.setVersionLexique(vl);
 			lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-			lexiq.setClient(clientService.findCustomerById((l.getClientId() == 0 )? 1 : l.getClientId()));
+			lexiq.setClients(lexiqueService.findByVersionLexique(versionLexiqueId).);
 			//System.out.println("Nom :"+ lexique.getId());
 			lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId()) ));
 			lexiqueService.add(lexiq);
@@ -90,7 +91,7 @@ public class LexiqueController {
 	public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id){
 		
 		LexiqueReceived lr = new LexiqueReceived();
-		
+		List<Long> ids;
 		List<LexiquePOJO> list = new ArrayList<>();
 		LexiquePOJO pojo;
 		for(Lexique l: lexiqueService.findByVersionLexique(id)) {
@@ -102,7 +103,11 @@ public class LexiqueController {
 			pojo.setVisual(l.getVisuel().toString());
 			pojo.setHaschild(l.getHaschild().toString());
 			pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
-			pojo.setClientId( l.getClient().getClientId().intValue());
+			ids = new ArrayList<>();
+			for(Client i :l.getClients()) {
+				ids.add(i.getClientId());
+			}
+			pojo.setClientId(ids);
 			pojo.setVersion(l.getVersionLexique().getId());
 			list.add(pojo);
 			

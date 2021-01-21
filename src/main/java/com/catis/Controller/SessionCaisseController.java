@@ -1,5 +1,6 @@
 package com.catis.Controller;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.catis.Controller.configuration.ImageSizeHandler;
 import com.catis.model.Hold;
 import com.catis.model.SessionCaisse;
 import com.catis.objectTemporaire.CloseSessionData;
@@ -85,10 +87,12 @@ public class SessionCaisseController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/fermerSessionCaisse")
-	public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData){
+	public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData) throws IOException{
 		
 			LOGGER.info("Fermeture session caisse...");
 			hs.deleteHoldBySessionCaisse(closeSessionData.getSessionCaisseId());
+			System.out.println("******6262626262"+		ImageSizeHandler.compress("bonjour"));	
+			System.out.println("*....................**decompressed***"+	 ImageSizeHandler.decompress(ImageSizeHandler.compress("bonjour")));
 			sessionCaisseService.fermerSessionCaisse(closeSessionData.getSessionCaisseId(), closeSessionData.getMontantFermeture());
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", operationCaisse.findBySession(closeSessionData.getSessionCaisseId()));
 		/*try {} catch (Exception e) {
