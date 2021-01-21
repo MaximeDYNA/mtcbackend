@@ -104,7 +104,7 @@ public class Seuil extends JournalData {
 	public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
 		this.rapportDeVisites = rapportDeVisites;
 	}
-
+	
 	public Formule getFormule() {
 		return formule;
 	}
