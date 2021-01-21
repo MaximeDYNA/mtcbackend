@@ -35,6 +35,8 @@ public class GieglanFile extends JournalData {
 
 	private Date fileCreatedAt;
 
+	private Boolean isAccept;
+
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(255) default 'MEASURE'")
 	private FileType type;

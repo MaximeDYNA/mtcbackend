@@ -1,5 +1,6 @@
 package com.catis.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -27,17 +28,25 @@ public class Classification extends JournalData {
 
 	private String code;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "classification")
-	private Set<Seuil> seuils;
+	@OneToMany(mappedBy = "classification")
+	private List<Lexique> lexiques;
 
 	public Classification() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Classification(Long id, String code, Set<Seuil> seuils) {
+	public Classification(Long id, String code, List<Lexique> lexiques) {
 		this.id = id;
 		this.code = code;
-		this.seuils = seuils;
+		this.lexiques = lexiques;
+	}
+
+	public List<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+	public void setLexiques(List<Lexique> lexiques) {
+		this.lexiques = lexiques;
 	}
 
 	public Long getId() {
@@ -56,11 +65,4 @@ public class Classification extends JournalData {
 		this.code = code;
 	}
 
-	public Set<Seuil> getSeuils() {
-		return seuils;
-	}
-
-	public void setSeuils(Set<Seuil> seuils) {
-		this.seuils = seuils;
-	}
 }

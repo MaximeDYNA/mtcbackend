@@ -188,10 +188,10 @@
 				<span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
 				<span style="font-size: 25px;" th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'dd/MM/yyyy') : #temporals.format(v.control.contreVDelayAt, 'dd/MM/yyyy')}"></span><br>
 				NOM et visa du contrôleur /<br> 
-				Operator name and signature: <span style="color: gray;"> TCHOKOTCHEU Franck</span>
+				Operator name and signature: <span style="color: gray;" th:text="${controlleurName}" ></span>
 			</p>
 			<div class="float-right">
-				<img th:src="@{${v.inspection.signature} ?: ''}"/>
+				<img height="240" width="400" th:src="@{${v.inspection.signature !=null ? '/'+v.inspection.signature : null} ?: ''}"/>
 			</div>
 	  	</div>
 	  </div>

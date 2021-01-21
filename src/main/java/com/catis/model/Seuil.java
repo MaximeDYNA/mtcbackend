@@ -37,9 +37,6 @@ public class Seuil extends JournalData {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Classification classification;
-
 	@ManyToOne
 	private Formule formule;
 
@@ -47,8 +44,6 @@ public class Seuil extends JournalData {
 
 		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	public Long getId() {
 		return id;
@@ -66,8 +61,6 @@ public class Seuil extends JournalData {
 		this.value = value;
 	}
 
-	
-
 	public String getCodeMessage() {
 		return codeMessage;
 	}
@@ -76,33 +69,24 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 	}
 
-
 	public String getOperande() {
 		return operande;
 	}
-
-
 
 	public void setOperande(String operande) {
 		this.operande = operande;
 	}
 
-
-
 	public boolean isDecision() {
 		return decision;
 	}
-
-
 
 	public void setDecision(boolean decision) {
 		this.decision = decision;
 	}
 
-
-
 	public Seuil(Long id, double value, String operande, String codeMessage, boolean decision,
-			Set<RapportDeVisite> rapportDeVisites, Classification classification, Formule formule) {
+			Set<RapportDeVisite> rapportDeVisites, Formule formule) {
 		super();
 		this.id = id;
 		this.value = value;
@@ -110,11 +94,8 @@ public class Seuil extends JournalData {
 		this.codeMessage = codeMessage;
 		this.decision = decision;
 		this.rapportDeVisites = rapportDeVisites;
-		this.classification = classification;
 		this.formule = formule;
 	}
-
-
 
 	public Set<RapportDeVisite> getRapportDeVisites() {
 		return rapportDeVisites;
@@ -122,14 +103,6 @@ public class Seuil extends JournalData {
 
 	public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
 		this.rapportDeVisites = rapportDeVisites;
-	}
-
-	public Classification getClassification() {
-		return classification;
-	}
-
-	public void setClassification(Classification classification) {
-		this.classification = classification;
 	}
 
 	public Formule getFormule() {

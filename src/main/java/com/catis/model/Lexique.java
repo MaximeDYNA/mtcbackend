@@ -53,6 +53,9 @@ public class Lexique extends JournalData {
 	@ManyToMany(mappedBy = "lexiques")
 	private List<Inspection> inspections;
 
+	@ManyToOne
+	private Classification classification;
+
 	private Boolean haschild;
 
 	public Lexique() {
@@ -60,10 +63,7 @@ public class Lexique extends JournalData {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Lexique(Long id, String libelle, String code, Boolean visuel, Client client,
-			CategorieVehicule categorieVehicule, VersionLexique versionLexique, Set<Lexique> childs, Lexique parent,
-			List<Inspection> inspections, Boolean haschild) {
-		super();
+	public Lexique(Long id, String libelle, String code, Boolean visuel, Client client, CategorieVehicule categorieVehicule, VersionLexique versionLexique, Set<Lexique> childs, Lexique parent, List<Inspection> inspections, Classification classification, Boolean haschild) {
 		this.id = id;
 		this.libelle = libelle;
 		this.code = code;
@@ -74,7 +74,16 @@ public class Lexique extends JournalData {
 		this.childs = childs;
 		this.parent = parent;
 		this.inspections = inspections;
+		this.classification = classification;
 		this.haschild = haschild;
+	}
+
+	public Classification getClassification() {
+		return classification;
+	}
+
+	public void setClassification(Classification classification) {
+		this.classification = classification;
 	}
 
 	public Long getId() {
@@ -176,6 +185,4 @@ public class Lexique extends JournalData {
 	public void setInspections(List<Inspection> inspections) {
 		this.inspections = inspections;
 	}
-	
-
 }
