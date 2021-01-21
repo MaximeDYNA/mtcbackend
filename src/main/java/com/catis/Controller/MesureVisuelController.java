@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.catis.Controller.configuration.ImageSizeHandler;
 
 import com.catis.service.MesureVisuelService;
 
@@ -74,12 +73,8 @@ public class MesureVisuelController {
 		  MesureVisuel m = mesurevisuelservice.addDataInspection(mesurevisuel);
 		try {
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null );
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
+		} catch(Exception e){
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
 		}
 	}
-	
-	
 }

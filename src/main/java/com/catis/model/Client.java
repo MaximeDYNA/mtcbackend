@@ -36,8 +36,6 @@ public class Client extends JournalData {
 	@OneToMany(mappedBy = "client")
 	@JsonIgnore
 	Set<Vente> ventes;
-	
-	
 
 	@OneToMany(mappedBy = "client")
 	@JsonIgnore
