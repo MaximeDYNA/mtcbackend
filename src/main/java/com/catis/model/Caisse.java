@@ -33,7 +33,7 @@ public class Caisse extends JournalData {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
 	@JsonIgnore
-	private Set<CaissierCaisse> caissiercaisses;
+	private Set<Caissier> caissiers;
 
 	public Long getCaisse_id() {
 		return caisse_id;
@@ -51,9 +51,7 @@ public class Caisse extends JournalData {
 		this.description = description;
 	}
 
-	public Set<CaissierCaisse> getCaissiercaisses() {
-		return caissiercaisses;
-	}
+	
 
 	public Caisse() {
 
@@ -61,6 +59,14 @@ public class Caisse extends JournalData {
 	}
 
 	
+
+	public Caisse(Long caisse_id, String description, Organisation organisation, Set<Caissier> caissiers) {
+		super();
+		this.caisse_id = caisse_id;
+		this.description = description;
+		this.organisation = organisation;
+		this.caissiers = caissiers;
+	}
 
 	public Organisation getOrganisation() {
 		return organisation;
@@ -70,16 +76,13 @@ public class Caisse extends JournalData {
 		this.organisation = organisation;
 	}
 
-	public Caisse(Long caisse_id, String description, Organisation organisation, Set<CaissierCaisse> caissiercaisses) {
-		super();
-		this.caisse_id = caisse_id;
-		this.description = description;
-		this.organisation = organisation;
-		this.caissiercaisses = caissiercaisses;
+	public Set<Caissier> getCaissiers() {
+		return caissiers;
 	}
 
-	public void setCaissiercaisses(Set<CaissierCaisse> caissiercaisses) {
-		this.caissiercaisses = caissiercaisses;
+	public void setCaissiers(Set<Caissier> caissiers) {
+		this.caissiers = caissiers;
 	}
 
+	
 }

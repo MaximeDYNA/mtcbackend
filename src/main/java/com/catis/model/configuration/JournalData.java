@@ -1,13 +1,17 @@
 package com.catis.model.configuration;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import com.catis.model.Utilisateur;
 
 @MappedSuperclass 
 public class JournalData {
@@ -22,18 +26,22 @@ public class JournalData {
 
     @Column(columnDefinition = "bit default 1")
     private boolean activeStatus;
+   
+    @Column(name = "created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    private String modifiedBy;
     
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-
 	public LocalDateTime getModifiedDate() {
 		return modifiedDate;
 	}
-
-
-	
 
 	public boolean isActiveStatus() {
 		return activeStatus;
@@ -51,10 +59,35 @@ public class JournalData {
 		this.activeStatus = activeStatus;
 	}
 
+	
+
+
+	
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
 	public void setModifiedDate(LocalDateTime modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+	
 	
     
     

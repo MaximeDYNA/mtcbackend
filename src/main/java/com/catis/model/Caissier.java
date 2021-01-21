@@ -24,7 +24,7 @@ public class Caissier extends JournalData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long caissier_id;
+	private Long caissierId;
 
 	private String codeCaissier;
 
@@ -33,35 +33,59 @@ public class Caissier extends JournalData {
 
 	@ManyToOne
 	private Partenaire partenaire;
+	
+	@ManyToOne
+	private Caisse caisse;
 
 	@ManyToOne(optional = true) // id utilisateur optionel
 	private Utilisateur user;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")
 	@JsonIgnore
-	private Set<CaissierCaisse> caissierCaisses;
+	private Set<SessionCaisse> sessionCaisses;
 
 	public Caissier() {
 	}
 
-	public Caissier(Long caissier_id, String codeCaissier, Organisation organisation, Partenaire partenaire,
-			Utilisateur user, Set<CaissierCaisse> caissierCaisses) {
+	
+	
 
-		this.caissier_id = caissier_id;
+	
+
+	public Caissier(Long caissierId, String codeCaissier, Organisation organisation, Partenaire partenaire,
+			Caisse caisse, Utilisateur user, Set<SessionCaisse> sessionCaisses) {
+		super();
+		this.caissierId = caissierId;
 		this.codeCaissier = codeCaissier;
 		this.organisation = organisation;
 		this.partenaire = partenaire;
+		this.caisse = caisse;
 		this.user = user;
-		this.caissierCaisses = caissierCaisses;
+		this.sessionCaisses = sessionCaisses;
 	}
 
-	public Long getCaissier_id() {
-		return caissier_id;
+
+
+
+
+
+	public Long getCaissierId() {
+		return caissierId;
 	}
 
-	public void setCaissier_id(Long idCaissier) {
-		this.caissier_id = idCaissier;
+
+
+
+
+
+	public void setCaissierId(Long caissierId) {
+		this.caissierId = caissierId;
 	}
+
+
+
+
+
 
 	public String getCodeCaissier() {
 		return codeCaissier;
@@ -95,12 +119,25 @@ public class Caissier extends JournalData {
 		this.user = user;
 	}
 
-	public Set<CaissierCaisse> getCaissierCaisses() {
-		return caissierCaisses;
+
+	public Caisse getCaisse() {
+		return caisse;
 	}
 
-	public void setCaissierCaisses(Set<CaissierCaisse> caissierCaisses) {
-		this.caissierCaisses = caissierCaisses;
+
+	public void setCaisse(Caisse caisse) {
+		this.caisse = caisse;
 	}
 
+
+	public Set<SessionCaisse> getSessionCaisses() {
+		return sessionCaisses;
+	}
+
+
+	public void setSessionCaisses(Set<SessionCaisse> sessionCaisses) {
+		this.sessionCaisses = sessionCaisses;
+	}
+
+	
 }

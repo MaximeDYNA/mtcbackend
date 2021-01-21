@@ -32,7 +32,7 @@ public class SessionCaisse extends JournalData {
 	@ManyToOne
 	private Organisation organisationId;
 	@ManyToOne
-	private Utilisateur user;
+	private Caissier caissier;
 	private double montantOuverture;
 	private double montantfermeture;
 	private boolean active;
@@ -65,7 +65,7 @@ public class SessionCaisse extends JournalData {
 		this.dateHeureOuverture = dateHeureOuverture;
 		this.dateHeureFermeture = dateHeureFermeture;
 		this.organisationId = organisationId;
-		this.user = user;
+		
 		this.montantOuverture = montantOuverture;
 		this.active = active;
 		this.operationCaisse = operationCaisse;
@@ -74,12 +74,12 @@ public class SessionCaisse extends JournalData {
 		this.posales = posales;
 	}
 
-	public Utilisateur getUser() {
-		return user;
+	public Caissier getCaissier() {
+		return caissier;
 	}
 
-	public void setUser(Utilisateur user) {
-		this.user = user;
+	public void setCaissier(Caissier caissier) {
+		this.caissier = caissier;
 	}
 
 	public Date getDateHeureOuverture() {

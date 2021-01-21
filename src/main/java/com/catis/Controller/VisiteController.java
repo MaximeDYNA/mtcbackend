@@ -223,13 +223,11 @@ public class VisiteController {
 				
 			}
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-			
-			
+		
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
-		}*/
-		
+		}*/		
 	}
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visites/approuver/{visiteId}")
 	public ResponseEntity<Object> approuver(@PathVariable Long visiteId){

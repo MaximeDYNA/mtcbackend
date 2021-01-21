@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.exception.ContactVideException;
+import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.CarteGrise;
 import com.catis.model.DetailVente;
 import com.catis.model.OperationCaisse;
@@ -74,11 +75,11 @@ public class EncaissementController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/api/v1/encaissements")
 	@Transactional
-	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException{
+	public ResponseEntity<Object>  enregistrerEncaissement(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException{
 		
 			OperationCaisse op = new OperationCaisse();
 			Vente vente = new Vente();
-			Visite visite= new Visite();
+			 new Visite();
 			
 			DetailVente detailVente;
 			Produit produit;
@@ -113,7 +114,7 @@ public class EncaissementController {
 			/* --------------------------*/
 			
 			
-			 vente = venteService.addVente(vente);
+			 
 			 	
 			for(Posales posale 	:  posaleService.findActivePosale()) {
 				detailVente = new DetailVente();
@@ -121,24 +122,39 @@ public class EncaissementController {
 				vehicule = new Vehicule();
 				produit = produitService.findById(posale.getProduit().getProduitId());
 				carteGrise = new CarteGrise();
-				
-				produit.setProduit_id(posale.getProduit().getProduitId());
-				if(encaissement.getClientId()!=0)
-					carteGrise.setProprietaireVehicule(
-							pvs.addClientToProprietaire(clientService
-									.findCustomerById(encaissement.getClientId()))
-							);
-				else
-					carteGrise.setProprietaireVehicule(
-							pvs.addContactToProprietaire(contactService
-									.findById(encaissement.getContactId())));
-				carteGrise.setNumImmatriculation(posale.getReference());
-				carteGrise.setProduit(produit);
+				Visite visite ;
+				if(produit.getLibelle().equalsIgnoreCase("cv")) {
+					carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
+					
+					visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(), 
+								encaissement.getMontantEncaisse());
+				}
+				else {
+					produit.setProduit_id(posale.getProduit().getProduitId());
+					if(encaissement.getClientId()!=0)
+						carteGrise.setProprietaireVehicule(
+								pvs.addClientToProprietaire(clientService
+										.findCustomerById(encaissement.getClientId()))
+								);
+					else
+						carteGrise.setProprietaireVehicule(
+								pvs.addContactToProprietaire(contactService
+										.findById(encaissement.getContactId())));
+					carteGrise.setNumImmatriculation(posale.getReference());
+					carteGrise.setProduit(produit);
+					
+					visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(), 
+							encaissement.getMontantEncaisse());
+				}
 				/*-----------------Visite-----------------*/
-				
-					visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(), 
-													encaissement.getMontantEncaisse());
+			
+
 				/*----------------------------------------*/
+				
+				/*------------------------------------------*/
+						vente.setVisite(visite);
+						vente = venteService.addVente(vente);
+				/*------------------------------------------*/	
 				detailVente.setProduit(produit);
 				detailVente.setVente(vente);
 				detailVente.setReference(posale.getReference());

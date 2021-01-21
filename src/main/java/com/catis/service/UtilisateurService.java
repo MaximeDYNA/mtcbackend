@@ -27,14 +27,11 @@ public class UtilisateurService {
 	public Utilisateur findUtilisateurById(Long idUtilisateur) {
 		return utilisateurRepository.findById(idUtilisateur).get();
 	}
-	public Utilisateur findUtilisateurByLogin(String login) {
-		return utilisateurRepository.findByLogin(login);
+	public Utilisateur findUtilisateurByKeycloakId(String keycloakId) {
+		return utilisateurRepository.findByKeycloakId(keycloakId);
 	}
 	public void deleteUtilisateurById(Long idCaissierCaisse) {
 		utilisateurRepository.deleteById(idCaissierCaisse);
-	}
-	public Utilisateur authentification(Utilisateur user) {
-		return utilisateurRepository.findByLogin(user.getLogin());
 	}
 	
 	

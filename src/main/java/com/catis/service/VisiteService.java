@@ -3,16 +3,15 @@ package com.catis.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityListeners;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
+import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.CarteGrise;
 import com.catis.model.Control;
 import com.catis.model.Control.StatusType;
@@ -57,7 +56,7 @@ public class VisiteService {
 		}
 	}
 	
-	public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse) {
+	public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse) throws VisiteEnCoursException {
 		Visite visite = new Visite();
 		if(montantEncaisse < montantTotal) {
 			visite.setStatut(9);
@@ -65,13 +64,20 @@ public class VisiteService {
 		else
 			visite.setStatut(0);
 		
-		if(viensPourContreVisite(cg.getNumImmatriculation())) {
-			visite.setContreVisite(true);
+		if(isVisiteInitial(cg.getNumImmatriculation())){
+			visite.setContreVisite(false);
 			visite.setEncours(true);
 			visite.setCarteGrise(cg);
 			visite.setDateDebut(LocalDateTime.now());
+			Control control = new Control();
+			List<Visite> visites = new ArrayList<>();
+			visites.add(visite);
+			control.setCarteGrise(cg);
+			control.setStatus(StatusType.INITIALIZED);
+			control.setVisites(visites);
+			visite.setControl(control);
 	
-		} else {
+		}else {
 			visite.setContreVisite(false);
 			visite.setEncours(true);
 			visite.setCarteGrise(cg);
@@ -82,14 +88,7 @@ public class VisiteService {
 			return visite;
 		}
 		
-		Control control = new Control();
-		List<Visite> visites = new ArrayList<>();
-		visites.add(visite);
-		control.setCarteGrise(cg);
-		control.setStatus(StatusType.INITIALIZED);
-		control.setVisites(visites);
-		visite.setControl(control);
-		//control = this.controlRepository.save(control);
+		
 		return visiteRepository.save(visite);
 	}
 	public Visite modifierVisite(Visite visite) {
@@ -123,5 +122,32 @@ public class VisiteService {
 		visite.setStatut(2);
 		visiteRepository.save(visite);
 	}
-	
+	public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
+		List<Visite> visites = findByReference(ref);
+		Visite visite = visites.stream().max(Comparator.comparing(Visite::getCreatedDate))
+										.orElse(null);
+		if(visite != null) {
+			if(visite.getControl().getActiveStatus().equals("INITIALIZED")) {
+				throw new VisiteEnCoursException();
+			}
+			if(visite.getControl().getActiveStatus().equals("VALIDATED")) {
+				return true;
+			}
+			if(visite.getControl().getActiveStatus().equals("REJECTED")) {
+				LocalDateTime now = LocalDateTime.now();
+				if(visite.getControl().getContreVDelayAt().isAfter(now)) {
+					return false;
+				}
+				if(visite.getControl().getContreVDelayAt().isBefore(now) || visite.getControl().getContreVDelayAt().equals(now)) {
+					return true;
+				}
+			}
+		}
+		return true;
+	}
+	public boolean isVehiculeExist(String ref) {
+		if(findByReference(ref).isEmpty())
+			return false;
+		return true;
+	}
 }

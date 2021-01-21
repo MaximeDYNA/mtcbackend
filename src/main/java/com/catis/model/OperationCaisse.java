@@ -20,12 +20,9 @@ public class OperationCaisse extends JournalData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long operationDeCaisseId;
-
 	private int type;
 	private double montant;
-	@ManyToOne(fetch = FetchType.LAZY)
-	private CaissierCaisse caissierCaisse;
-
+	
 	@ManyToOne
 	private Vente vente;
 
@@ -41,18 +38,22 @@ public class OperationCaisse extends JournalData {
 
 	}
 
-	public OperationCaisse(long operationDeCaisseId, int type, double montant, CaissierCaisse caissierCaisse,
-			Vente vente, Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
+	
 
+	public OperationCaisse(long operationDeCaisseId, int type, double montant, Caissier caissier, Vente vente,
+			Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
+		super();
 		this.operationDeCaisseId = operationDeCaisseId;
 		this.type = type;
 		this.montant = montant;
-		this.caissierCaisse = caissierCaisse;
+		
 		this.vente = vente;
 		this.taxe = taxe;
 		this.sessionCaisse = sessionCaisse;
 		this.numeroTicket = numeroTicket;
 	}
+
+
 
 	public long getOperationDeCaisseId() {
 		return operationDeCaisseId;
@@ -78,13 +79,11 @@ public class OperationCaisse extends JournalData {
 		this.montant = montant;
 	}
 
-	public CaissierCaisse getCaissierCaisse() {
-		return caissierCaisse;
+	public int getType() {
+		return type;
 	}
 
-	public void setCaissierCaisse(CaissierCaisse caissierCaisse) {
-		this.caissierCaisse = caissierCaisse;
-	}
+
 
 	public Vente getVente() {
 		return vente;

@@ -62,9 +62,7 @@ public class Partenaire extends JournalData {
 	@JsonIgnore
 	Set<Contact> contact;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
-	@JsonIgnore
-	Set<Utilisateur> utilisateurs;
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
 	@JsonIgnore
@@ -95,7 +93,7 @@ public class Partenaire extends JournalData {
 
 	public Partenaire(long id, String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
 			String permiDeConduire, String cni, Organisation organisation,
-			Set<ProprietaireVehicule> proprietaireVehicule, Set<Utilisateur> utilisateurs, Set<Controleur> controleurs,
+			Set<ProprietaireVehicule> proprietaireVehicule, Set<Controleur> controleurs,
 			Set<Caissier> caissiers) {
 
 		this.partenaireId = id;
@@ -108,7 +106,7 @@ public class Partenaire extends JournalData {
 		this.cni = cni;
 		this.organisation = organisation;
 		this.proprietaireVehicule = proprietaireVehicule;
-		this.utilisateurs = utilisateurs;
+
 		this.controleurs = controleurs;
 		this.caissiers = caissiers;
 	}
@@ -185,14 +183,6 @@ public class Partenaire extends JournalData {
 		this.cni = cni;
 	}
 
-	public Set<Utilisateur> getUtilisateurs() {
-		return utilisateurs;
-	}
-
-	public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
-		this.utilisateurs = utilisateurs;
-	}
-
 	public Set<Controleur> getControleurs() {
 		return controleurs;
 	}
@@ -255,6 +245,11 @@ public class Partenaire extends JournalData {
 
 	public void setContact(Set<Contact> contact) {
 		this.contact = contact;
+	}
+
+	@Override
+	public String toString() {
+		return  nom +" "+ prenom;
 	}
 
 }

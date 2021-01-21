@@ -1,6 +1,7 @@
 package com.catis.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class CarteGriseService {
 	public List<CarteGrise> findByImmatriculationOuCarteGrise(String imOrCha){
 		return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
 	}
+	public CarteGrise findLastByImmatriculationOuCarteGrise(String imOrCha){
+		 
+		 return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha)
+		 .stream().max(Comparator.comparing(CarteGrise::getCreatedDate)).orElse(null);
+	}
 	public List<CarteGrise> findBychassis(String chassis){
 		
 		return cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis);
@@ -61,6 +67,13 @@ public class CarteGriseService {
 			cgs.add(inspection.getVisite().getCarteGrise());
 		}    
 		return cgs;
+	}
+	
+	public boolean isCarteGriseExist(String ref){
+		if(findByImmatriculationOuCarteGrise(ref).isEmpty())
+			return false;
+		
+		return true;
 	}
 	
 	

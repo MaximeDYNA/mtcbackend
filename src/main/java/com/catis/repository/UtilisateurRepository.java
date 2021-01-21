@@ -6,5 +6,6 @@ import com.catis.model.Utilisateur;
 
 
 public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>{
-	Utilisateur findByLogin(String login);
+	Utilisateur findByKeycloakId(String keycloakId);
+	
 }
