@@ -1,39 +1,39 @@
 package com.catis.Controller.configuration;
 
-import com.chilkatsoft.CkBinData;
-import com.chilkatsoft.CkCompression;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 public class ImageSizeHandler {
 
 	
-	public static String compress(String strBase64) {
-		
-	    CkCompression compress = new CkCompression();
-	    compress.put_Algorithm("deflate");
-	    
-	    CkBinData binDat = new CkBinData();
-	    // Load the base64 data into a BinData object.
-	    // This decodes the base64. The decoded bytes will be contained in the BinData.
-	    binDat.AppendEncoded(strBase64,"base64");
-	 // Compress the BinData.
-	    compress.CompressBd(binDat);
-	
-	    // Get the compressed data in base64 format:
-	    String compressedBase64 = binDat.getEncoded("base64");
-	    
-	    return compressedBase64 ;
+	public static byte[] compress(String string) throws IOException {
+	    ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
+	    GZIPOutputStream gos = new GZIPOutputStream(os);
+	    gos.write(string.getBytes());
+	    gos.close();
+	    byte[] compressed = os.toByteArray();
+	    os.close();
+	    return compressed;
 	}
 	
-	public static String decompress(String compressedString) {	
-		CkBinData binDat = new CkBinData();
-		CkCompression compress = new CkCompression();
-		 binDat.AppendEncoded(compressedString,"base64");
-		    compress.DecompressBd(binDat);
+	public static String decompress(byte[] compressed) throws IOException {
+	    final int BUFFER_SIZE = 32;
+	    ByteArrayInputStream is = new ByteArrayInputStream(compressed);
+	    GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
+	    StringBuilder string = new StringBuilder();
+	    byte[] data = new byte[BUFFER_SIZE];
+	    int bytesRead;
+	    while ((bytesRead = gis.read(data)) != -1) {
+	        string.append(new String(data, 0, bytesRead));
+	    }
+	    gis.close();
+	    is.close();
+	    
+	    return string.toString();
+	}
 
-		    String decompressedBase64 = binDat.getEncoded("base64");
-		    
-		    return decompressedBase64;
-	}
     
 
     

@@ -17,8 +17,9 @@ public class MesureVisuelService {
 	
 	
 	public MesureVisuel addDataInspection(MesureVisuel mesurevisuels) {
+		MesureVisuel m = mesurevisuel.save(mesurevisuels);
+		return m;
 		
-		return mesurevisuel.save(mesurevisuels);
 	}
 	public List<String> ImagePathList(Long visiteId){
 		

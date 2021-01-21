@@ -70,13 +70,10 @@ public class MesureVisuelController {
 		System.out.println("hello "+mesurevisuel.toString());
 		  LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
 		  +mesurevisuel.getImage1()); 
-		  System.out.println("Decommpressed : "+ mesurevisuel.getImage1());
-		  System.out.println("commpressed : "+ ImageSizeHandler.compress(mesurevisuel.getImage1()));
-		  System.out.println("Decommpressed : "+ ImageSizeHandler.decompress(ImageSizeHandler.compress(mesurevisuel.getImage1())));
-			
-		 
+		  
+		  MesureVisuel m = mesurevisuelservice.addDataInspection(mesurevisuel);
 		try {
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addDataInspection(mesurevisuel));
+				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null );
 			} 
 		catch(Exception e){ 
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );

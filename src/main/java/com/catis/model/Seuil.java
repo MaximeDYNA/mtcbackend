@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -33,10 +34,15 @@ public class Seuil extends JournalData {
 	private String codeMessage;
 
 	private boolean decision;
-
+	
+	@ManyToOne
+	private Classification classification;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
 
+	@ManyToMany
+	private Set<Lexique> lexiques;
 	
 
 	@ManyToOne
@@ -131,4 +137,31 @@ public class Seuil extends JournalData {
 	public void setFormule(Formule formule) {
 		this.formule = formule;
 	}
+
+
+
+	public Set<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+
+
+	public void setLexiques(Set<Lexique> lexiques) {
+		this.lexiques = lexiques;
+	}
+
+
+
+	public Classification getClassification() {
+		return classification;
+	}
+
+
+
+	public void setClassification(Classification classification) {
+		this.classification = classification;
+	}
+	
+	
+	
 }

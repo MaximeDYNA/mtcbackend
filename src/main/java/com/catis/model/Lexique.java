@@ -34,8 +34,13 @@ public class Lexique extends JournalData {
 
 	private Boolean Visuel;
 	
-	@ManyToOne
-	private Client client;
+	@ManyToMany(mappedBy = "lexiques")
+	@JsonIgnore
+	private Set<Client> clients;
+	
+	@ManyToMany(mappedBy = "lexiques")
+	@JsonIgnore
+	private Set<Seuil> seuils;
 	
 	@ManyToOne
 	private CategorieVehicule categorieVehicule;
@@ -68,7 +73,7 @@ public class Lexique extends JournalData {
 		this.libelle = libelle;
 		this.code = code;
 		Visuel = visuel;
-		this.client = client;
+		
 		this.categorieVehicule = categorieVehicule;
 		this.versionLexique = versionLexique;
 		this.childs = childs;
@@ -133,12 +138,13 @@ public class Lexique extends JournalData {
 		this.parent = parent;
 	}
 
-	public Client getClient() {
-		return client;
+	
+	public Set<Client> getClients() {
+		return clients;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
 	}
 
 	public CategorieVehicule getCategorieVehicule() {
@@ -175,6 +181,14 @@ public class Lexique extends JournalData {
 
 	public void setInspections(List<Inspection> inspections) {
 		this.inspections = inspections;
+	}
+
+	public Set<Seuil> getSeuils() {
+		return seuils;
+	}
+
+	public void setSeuils(Set<Seuil> seuils) {
+		this.seuils = seuils;
 	}
 	
 

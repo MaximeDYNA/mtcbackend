@@ -50,7 +50,7 @@ public class Inspection extends JournalData {
 	@ManyToOne 
 	private Ligne ligne;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.ALL)
 	private Visite visite;
 
 	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)

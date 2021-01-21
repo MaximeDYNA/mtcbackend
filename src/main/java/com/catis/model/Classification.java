@@ -27,7 +27,8 @@ public class Classification extends JournalData {
 
 	private String code;
 
-	
+	@OneToMany(mappedBy = "classification")
+	private Set<Seuil> seuils;
 
 	public Classification() {
 		// TODO Auto-generated constructor stub
@@ -55,4 +56,15 @@ public class Classification extends JournalData {
 		this.code = code;
 	}
 
+	public Set<Seuil> getSeuils() {
+		return seuils;
+	}
+
+	public void setSeuils(Set<Seuil> seuils) {
+		this.seuils = seuils;
+	}
+
+	
+
+	
 }

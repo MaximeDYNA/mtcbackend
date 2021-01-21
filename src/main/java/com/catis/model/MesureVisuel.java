@@ -33,7 +33,7 @@ public class MesureVisuel {
 	private String image2;
 	private String gps;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Inspection inspection;
 	
 	public MesureVisuel(Long idMesureVisuel,String heureDebut,String heureFin,String dateControl

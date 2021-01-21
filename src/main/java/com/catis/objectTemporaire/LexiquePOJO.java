@@ -1,5 +1,7 @@
 package com.catis.objectTemporaire;
 
+import java.util.List;
+
 public class LexiquePOJO {
 
 	private Long id;
@@ -9,7 +11,7 @@ public class LexiquePOJO {
 	private String haschild;
 	private String visual;	
 	private Long version;	
-	private int clientId;
+	private List<Long> clientId;
 	private int categoryId;
 	
 	
@@ -17,11 +19,9 @@ public class LexiquePOJO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 	public LexiquePOJO(Long id, String code, String libelle, String parent, String haschild, String visual,
-			Long version, int clientId, int categoryId) {
+			Long version, List<Long> clientId, int categoryId) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -33,8 +33,6 @@ public class LexiquePOJO {
 		this.clientId = clientId;
 		this.categoryId = categoryId;
 	}
-
-
 
 	public String getCode() {
 		return code;
@@ -54,39 +52,31 @@ public class LexiquePOJO {
 	public void setParent(String parent) {
 		this.parent = parent;
 	}
-	
-	
 
 	public String getHaschild() {
 		return haschild;
 	}
 
-
-
 	public void setHaschild(String haschild) {
 		this.haschild = haschild;
 	}
-
-
 
 	public String getVisual() {
 		return visual;
 	}
 
-
-
 	public void setVisual(String visual) {
 		this.visual = visual;
 	}
 
-
-
-	public int getClientId() {
+	public List<Long> getClientId() {
 		return clientId;
 	}
-	public void setClientId(int clientId) {
+
+	public void setClientId(List<Long> clientId) {
 		this.clientId = clientId;
 	}
+
 	public int getCategoryId() {
 		return categoryId;
 	}
