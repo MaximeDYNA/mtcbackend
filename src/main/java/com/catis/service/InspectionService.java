@@ -1,6 +1,7 @@
 package com.catis.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class InspectionService {
 	}
 	public Inspection findInspectionByVisite(Long idvisite) {
 		return inspectionR.findByVisite_IdVisite(idvisite);
+	}
+	public Inspection findLastByRef(String ref) {
+		List<Inspection> inspections = inspectionR.findByVisite_CarteGrise_numImmatriculationOrVisite_CarteGrise_Vehicule_Chassis(ref, ref);
+		Inspection inspection = inspections.stream().max(Comparator.comparing(Inspection::getCreatedDate))
+				.orElse(null);
+		return inspection;
 	}
 	public Inspection setSignature(Long id, String signature) {
 			Inspection inspection = findInspectionByVisite(id);

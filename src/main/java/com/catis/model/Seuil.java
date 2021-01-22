@@ -35,8 +35,7 @@ public class Seuil extends JournalData {
 
 	private boolean decision;
 	
-	@ManyToOne
-	private Classification classification;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
 	private Set<RapportDeVisite> rapportDeVisites;
@@ -151,15 +150,6 @@ public class Seuil extends JournalData {
 
 
 
-	public Classification getClassification() {
-		return classification;
-	}
-
-
-
-	public void setClassification(Classification classification) {
-		this.classification = classification;
-	}
 	
 	
 	

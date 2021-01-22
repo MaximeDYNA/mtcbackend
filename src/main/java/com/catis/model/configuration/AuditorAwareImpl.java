@@ -30,8 +30,9 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 	     KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
 	     AccessToken accessToken = session.getToken();
 	     String keycloakId = UserInfoIn.getKeycloakId(accessToken.getPreferredUsername(), request);
-	    
+	   
         return Optional.ofNullable(keycloakId);
+	     //return Optional.ofNullable("tchoko");
     }
 
 }
