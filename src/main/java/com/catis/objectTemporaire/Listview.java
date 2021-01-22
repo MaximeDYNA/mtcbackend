@@ -2,6 +2,7 @@ package com.catis.objectTemporaire;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.catis.model.Produit;
 
@@ -14,7 +15,17 @@ public class Listview {
     private String client; 
     private String date;
     private String statut;
+    private List<ExpectedMeasure> measures;
 
+    public Listview() {
+		measures.add(new ExpectedMeasure("Freinage", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add(new ExpectedMeasure("Ripage", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add(new ExpectedMeasure("Pollution", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add(new ExpectedMeasure("Règlophare", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add(new ExpectedMeasure("Suspension", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add(new ExpectedMeasure("Visuels", "<span class=\"badge badge-primary\">icon</span>" , false));
+	}
+    
 	public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
 			String statut) {
 		super();
@@ -26,9 +37,7 @@ public class Listview {
 		this.date = date;
 		this.statut = statut;
 	}
-	public Listview() {
-		super();
-	}
+	
 	public Long getId() {
 		return id;
 	}

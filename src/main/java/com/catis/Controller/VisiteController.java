@@ -1,5 +1,7 @@
 package com.catis.Controller;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +30,9 @@ import com.catis.service.ProduitService;
 import com.catis.service.VariableView;
 import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
+
+import reactor.core.publisher.Flux;
+
 
 @RestController
 @CrossOrigin
@@ -44,9 +51,10 @@ public class VisiteController {
 	
 	private VariableView v;
 	
-	@GetMapping(value="/api/v1/visites_encours")
+	
+	@GetMapping(value="/api/v1/visitesencours")
 	public ResponseEntity<Object> listDesVisitesEncours(){
-		try {
+		
 			log.info("Liste des visites en cours");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.enCoursVisitList()) {
@@ -71,11 +79,70 @@ public class VisiteController {
 				
 			}
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-		} catch (Exception e) {
+			
+		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
-					+ " de la liste des visite en cours", null);
-		}
+			
+			//return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
+			//		+ " de la liste des visite en cours", null);
+			ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
+			
+		    return Flux.interval(Duration.ofSeconds(1))
+		      .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
+		        .id(String.valueOf(sequence))
+		          .event("periodic-event")
+		          .data( o)
+		          .build());
+		}*/
+		
+	}
+	@GetMapping(value="/api/v1/visites_encours")
+	public Flux<ServerSentEvent<ResponseEntity<Object>>> listDesVisitesEncours_(){
+		
+			log.info("Liste des visites en cours");
+			List<Listview> listVisit = new ArrayList<>();
+			for(Visite visite: vs.enCoursVisitList()) {
+				Listview lv = new Listview();
+				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+						.getNumImmatriculation()));
+				
+				if (venteService.findByVisite(visite.getIdVisite())
+						 == null)
+					lv.setClient(null);
+				else
+				lv.setClient(venteService.findByVisite(visite.getIdVisite())
+						.getClient()
+						.getPartenaire()
+						.getNom());
+				lv.setDate(visite.getDateDebut());
+				lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+				lv.setStatut(visite.statutRender(visite.getStatut()));
+				lv.setType(visite.typeRender());
+				listVisit.add(lv);
+				lv.setId(visite.getIdVisite());
+				
+			}
+			//return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+			ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+			return Flux.interval(Duration.ofSeconds(5))
+		      .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
+		          .event("new_visit")
+		          .data( o)
+		          .build());
+		/*try {} catch (Exception e) {
+			log.error("Erreur lors de l'affichage de la liste des visite en cours");
+			
+			//return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
+			//		+ " de la liste des visite en cours", null);
+			ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
+			
+		    return Flux.interval(Duration.ofSeconds(1))
+		      .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
+		        .id(String.valueOf(sequence))
+		          .event("periodic-event")
+		          .data( o)
+		          .build());
+		}*/
 		
 	}
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visite/codestatut/{status}")

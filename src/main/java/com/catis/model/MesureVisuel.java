@@ -33,6 +33,10 @@ public class MesureVisuel {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Inspection inspection;
 	
+	public MesureVisuel() {
+		
+	}
+
 	public MesureVisuel(Long idMesureVisuel,String heureDebut,String heureFin,String dateControl
 			,String image1,String image2,String plateNumber,Inspection inspection) {
 		

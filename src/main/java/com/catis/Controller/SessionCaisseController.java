@@ -56,8 +56,7 @@ public class SessionCaisseController {
 	@RequestMapping("/api/v1/ouverturecaisse")
 	public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
 		LOGGER.info("ouverture de caisse en cours...");
-		
-		
+				
 			Date now = new Date();
 			SessionCaisse sessionCaisse = new SessionCaisse();
 			sessionCaisse.setOrganisationId(os.findByOrganisationId(1L));

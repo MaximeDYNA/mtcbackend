@@ -7,23 +7,94 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
 
+import com.catis.Controller.ApiResponseHandler;
+import com.catis.Controller.VisiteController;
 import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.CarteGrise;
 import com.catis.model.Control;
 import com.catis.model.Control.StatusType;
 import com.catis.model.Visite;
+import com.catis.objectTemporaire.Listview;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
+
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.FluxSink;
 
 @Service
 
 public class VisiteService {
 	@Autowired
 	private VisiteRepository visiteRepository;
+	@Autowired
+	private ProduitService ps;
+	@Autowired
+	private VenteService venteService;
+	
+	private final FluxSink<Visite> sink;
+	private final FluxProcessor<Visite, Visite> processor;
+	
+	private static Logger log  = LoggerFactory.getLogger(VisiteController.class);
+	
+	
+	public VisiteService() {
+		processor = DirectProcessor.<Visite>create().serialize();
+		sink = processor.sink();
+		
+	}
+	public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd(){
+
+		log.info("Liste des visites en cours");
+		List<Listview> listVisit = new ArrayList<>();
+		for(Visite visite: enCoursVisitList()) {
+			Listview lv = new Listview();
+			lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+					.getNumImmatriculation()));
+			
+			if (venteService.findByVisite(visite.getIdVisite())
+					 == null)
+				lv.setClient(null);
+			else
+			lv.setClient(venteService.findByVisite(visite.getIdVisite())
+					.getClient()
+					.getPartenaire()
+					.getNom());
+			lv.setDate(visite.getDateDebut());
+			lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+			lv.setStatut(visite.statutRender(visite.getStatut()));
+			lv.setType(visite.typeRender());
+			listVisit.add(lv);
+			lv.setId(visite.getIdVisite());
+			
+		}
+		//return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+		ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+		return processor
+				.map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
+				          .event("new_visit")
+				          .data( o)
+				          .build());
+				
+	}
+	public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterEdit(Visite visite){
+		ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", visite);
+		return processor
+				.map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
+				          .event("edit_visit")
+				          .data( o)
+				          .build());		
+	}
 	
 	@Autowired
 	private ControlRepository controlRepository;
@@ -35,8 +106,9 @@ public class VisiteService {
 	}
 	public Visite approuver(Visite visite){
 		visite.setStatut(0);
-		visiteRepository.save(visite);
-		return visiteRepository.save(visite);
+		Visite v =visiteRepository.save(visite);
+		refreshVisiteAfterEdit(v);
+		return v;
 	}
 	
 	public List<Visite> findByReference(String ref){
@@ -87,12 +159,14 @@ public class VisiteService {
 		if(cg.getProduit().getProduitId()==1) {
 			return visite;
 		}
-		
-		
-		return visiteRepository.save(visite);
+		Visite v =visiteRepository.save(visite);
+		refreshVisiteAfterAdd();
+		return v;
 	}
 	public Visite modifierVisite(Visite visite) {
-		return visiteRepository.save(visite);
+		Visite v = visiteRepository.save(visite);
+		refreshVisiteAfterEdit(v);
+		return v;
 	}
 	public boolean visiteEncours(String imCha) {
 		return !visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
@@ -101,7 +175,7 @@ public class VisiteService {
 	}
 	public List<Visite> enCoursVisitList(){
 		List<Visite> visiteEnCours = new ArrayList<>();
-		visiteRepository.findByEncoursTrue().forEach(visiteEnCours::add);
+		visiteRepository.findByEncoursTrueOrderByCreatedDateDesc().forEach(visiteEnCours::add);
 		return visiteEnCours;
 	}
 	public void terminerInspection(Long visiteId) {
@@ -110,6 +184,9 @@ public class VisiteService {
 		visite.setEncours(false);
 		visite.setDateFin(LocalDateTime.now());	
 		visite.setStatut(4);
+		visite = visiteRepository.save(visite);
+		refreshVisiteAfterEdit(visite);
+		
 	}
 	public List<Visite> listParStatus(int status){
 		return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
@@ -120,7 +197,8 @@ public class VisiteService {
 		visite = visiteRepository.findById(visiteId).get();
 		visite.setDateFin(LocalDateTime.now());	
 		visite.setStatut(2);
-		visiteRepository.save(visite);
+		visite = visiteRepository.save(visite);
+		refreshVisiteAfterEdit(visite);
 	}
 	public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
 		List<Visite> visites = findByReference(ref);

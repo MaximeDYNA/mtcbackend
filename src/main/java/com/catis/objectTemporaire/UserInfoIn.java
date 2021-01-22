@@ -9,14 +9,16 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.catis.model.Controleur;
 import com.catis.service.ControleurService;
 
+@ConfigurationProperties(prefix = "keycloak") 
 public class UserInfoIn {
 	@Autowired
 	 static HttpServletRequest request;
-		static String serverUrl = "http://192.168.8.113:8180/auth";
+		static String serverUrl = "http://51.210.48.154:8086/auth";
 	 static String realm = "mtckeycloak";
 	@Autowired
 	public static ControleurService controleurService;
