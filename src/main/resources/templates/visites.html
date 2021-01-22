@@ -14,46 +14,46 @@
  padding:10px 100px;">MINT COPY</span>			
 </div>
 <div class="container" th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type}">
+<div th:if="${!v.process.status}">
+	<div class="row">
+		<div class="col-sm">
+			<p class="text-justify text-left">
+				REPUBLIQUE DU CAMEROUN <br>
+				PAIX - TRAVAIL - PATRIE <br>
+				MINISTERE DES TRANSPORTS <br>
+				SECRETARIAT GENERAL <br>
+				DIRECTION DES TRANSPORTS ROUTIERS <br>
+			</p>
+		</div>
 
-  <div class="row">
-    <div class="col-sm">
-      <p class="text-justify text-left">
-	      REPUBLIQUE DU CAMEROUN <br>
-	      PAIX - TRAVAIL - PATRIE <br>
-	      MINISTERE DES TRANSPORTS <br>
-	      SECRETARIAT GENERAL <br>
-	      DIRECTION DES TRANSPORTS ROUTIERS <br>
-	  </p>
-    </div>
-    
-    <div class="col-2">
-	    <div class="d-flex justify-content-center">
-	    	<img src="/images/armoirie.PNG" class="img-fluid" alt="Armoirie du Cameroun">
-	    </div>
-    </div>
-    
-    <div class="col-sm">
-      <p class="text-justify text-right">
-	      REPUBLIC OF CAMEROON <br>
-		  PEACE - WORK - FATHERLAND <br>
-		  MINISTRY OF TRANSPORT <br>
-		  GENERAL SECRETARIAT <br>
-	      DEPARTMENT OF ROAD TRANSPORT<br>
-	  </p> 
-    </div>
-  </div>
-  <div class="row">
-	  <div class="col"></div>
-	  <div class="col-10">
-	  	<h3 class="text-center font-weight-bold">  	
-			      PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br>
-				  ROADWORTHINESS REPORT <br>	
-		</h3>
-	  </div>
-	  <div class="col"></div>
-    
-  </div>
-  <div class="row">
+		<div class="col-2">
+			<div class="d-flex justify-content-center">
+				<img src="/images/armoirie.PNG" class="img-fluid" alt="Armoirie du Cameroun">
+			</div>
+		</div>
+
+		<div class="col-sm">
+			<p class="text-justify text-right">
+				REPUBLIC OF CAMEROON <br>
+				PEACE - WORK - FATHERLAND <br>
+				MINISTRY OF TRANSPORT <br>
+				GENERAL SECRETARIAT <br>
+				DEPARTMENT OF ROAD TRANSPORT<br>
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-10">
+			<h3 class="text-center font-weight-bold">
+				PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br>
+				ROADWORTHINESS REPORT <br>
+			</h3>
+		</div>
+		<div class="col"></div>
+	</div>
+</div>
+  <div class="row" th:style="${v.process.status} ? 'margin-top: 240px;': ''">
   	<div class="col-5">
 	  	<span class="text-left font-weight-bold">
 	  		N° PV/ SHEET N° : 
@@ -139,7 +139,7 @@
 		</span> <span th:utext="${tp.valeur!=null ? tp.valeur+' %': ''}" style="color: gray;"></span><br>
 		<span class="text-left font-weight-bold">
 			Montant payé TTC / Amount inc. VAT: 
-		</span><span style="color: gray;" th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' FCFA' }"></span><br>
+		</span><span style="color: gray;" th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br>
 		
 	  </div>
   </div>
@@ -150,34 +150,25 @@
   </div>
   <div class="row">
   	<div class="col-5" style=" height:925px; border: 2px solid black">
-	  	<div>
+	  	<div th:if="${#lists.size(defaultsTest)} != 0">
 	  		<h6 class="font-weight-bold">
 	  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
 	  			DEFECTS SUBJECT TO COUNTER INSPECTION</p> 
 	  		</h6>
 	  		<ol class="text-left font-weight-bold">
-		 	   <li>
-   		         	<span style="color: gray;"> Commande de freins de stationnement: Absence de verrouillage</span>
+		 	   <li th:each="lexique : ${defaultsTest}">
+   		         	<span style="color: gray;" th:text="${lexique.libelle}"> Commande de freins de stationnement: Absence de verrouillage</span>
 			   </li>
-			   <li>
-	   		      <span style="color: gray;"> Feu croisement AVG: Absence</span>
-			   </li>
-			    <li>
-			         <span style="color: gray;"> Feu croisement AVD: Absence</span>
-			    </li>
-			    <li>
-			         <span style="color: gray;"> Feu de route AVD: Absence</span>
-			    </li>
 		 	</ol>
 	  	</div>  	
-	  	<div>
+	  	<div th:if="${#lists.size(v.inspection.lexiques)} != 0">
 	  		<h6 class="font-weight-bold">
 	  			<p>DEFAUTS A REPARER DES QUE POSSIBLE /<br>
 	  			DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p> 
 	  		</h6>	
 	  		<ol class="text-left font-weight-bold">
-			    <li>
-			         <span style="color: gray;"> Pare-brise: Mauvais état</span>
+			    <li th:each="lexique : ${v.inspection.lexiques}">
+			         <span style="color: gray;" th:text="${lexique.libelle}"> </span>
 			    </li>
 		 	</ol>
 	  	</div>
@@ -188,10 +179,10 @@
 				<span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
 				<span style="font-size: 25px;" th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'dd/MM/yyyy') : #temporals.format(v.control.contreVDelayAt, 'dd/MM/yyyy')}"></span><br>
 				NOM et visa du contrôleur /<br> 
-				Operator name and signature: <span style="color: gray;"> TCHOKOTCHEU Franck</span>
+				Operator name and signature: <span style="color: gray;" th:text="${controlleurName}" ></span>
 			</p>
 			<div class="float-right">
-				<img th:src="@{/uploaded/sample.png}"/>
+				<img height="240" width="400" th:src="@{${v.inspection.signature !=null ? '/'+v.inspection.signature : null} ?: ''}"/>
 			</div>
 	  	</div>
 	  </div>
@@ -235,16 +226,16 @@
 			  					border: 1px solid black; font-size: 10px;">
 			  						Eff RD<br>RR Eff
 		  					</td>
-			  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;">
-			  						Diss. AV<br>F Diss.
-			  					</td>
-			  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;">
-			  						Diss. AR<br>R Diss.
-			  					</td>
+							<td class="text-center font-weight-bold"
+							style="height:5px; width:65px;
+							border: 1px solid black; font-size: 10px;">
+								Diss. AV<br>F Diss.
+							</td>
+							<td class="text-center font-weight-bold"
+							style="height:5px; width:65px;
+							border: 1px solid black; font-size: 10px;">
+								Diss. AR<br>R Diss.
+							</td>
 			  			</tr>
 			  				<tr>
 			  					<td style="border-left: 0px solid ;
@@ -313,7 +304,7 @@
 		  					</td>
 		  					<td  class="text-center font-weight-bold"
 		  					style="height:5px; width:195px;
-		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? result.get('0509')+' m-1': '' ): (result.get('0538')!=null ? result.get('0538')+' m-1': '' )}">
+		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? #strings.replace(result.get('0509'), '.0', '')+' m-1': '' ): (result.get('0538')!=null ? #strings.replace(result.get('0538'), '.0', '')+' m-1': '' )}">
 		  					</td>
 		  				</tr>
 			  		</table>

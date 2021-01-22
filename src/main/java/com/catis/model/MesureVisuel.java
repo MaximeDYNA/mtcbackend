@@ -3,14 +3,7 @@ package com.catis.model;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -29,7 +22,11 @@ public class MesureVisuel {
 	private String dateControl;
 	
 	private String plateNumber;
+
+	@Column(columnDefinition = "LONGTEXT")
 	private String image1;
+
+	@Column(columnDefinition = "LONGTEXT")
 	private String image2;
 	private String gps;
 	
@@ -129,5 +126,5 @@ public class MesureVisuel {
 		return "MesureVisuel [idMesureVisuel=" + idMesureVisuel + ", heureDebut=" + heureDebut + ", heureFin="
 				+ heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + inspection + "]";
 	}
-	
+
 }

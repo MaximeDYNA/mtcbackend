@@ -42,7 +42,6 @@ public class Seuil extends JournalData {
 
 	@ManyToOne
 	private Lexique lexique;
-	
 
 	@ManyToOne
 	private Formule formule;

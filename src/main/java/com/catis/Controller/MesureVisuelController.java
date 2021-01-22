@@ -77,6 +77,7 @@ public class MesureVisuelController {
 		  mesurevisuel.setInspection(i);
 		  MesureVisuel m = mesurevisuelservice.addDataInspection(mesurevisuel);
 		try {
+
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m );
 			} 
 		catch(Exception e){ 
@@ -84,6 +85,4 @@ public class MesureVisuelController {
 				  
 		}
 	}
-	
-	
 }

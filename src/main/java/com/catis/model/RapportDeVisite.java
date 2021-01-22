@@ -122,6 +122,5 @@ public class RapportDeVisite extends JournalData {
 	public void setVerbalProcess(VerbalProcess verbalProcess) {
 		this.verbalProcess = verbalProcess;
 	}
-	
-	
+
 }

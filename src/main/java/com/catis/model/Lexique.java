@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -51,14 +50,16 @@ public class Lexique extends JournalData {
 	@JsonIgnore
 	private Set<Lexique> childs;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	private Classification classification;
+	
 	
 	@ManyToOne
 	private Lexique parent;
 
 	@ManyToMany(mappedBy = "lexiques")
 	private List<Inspection> inspections;
+
+	@ManyToOne
+	private Classification classification;
 
 	private Boolean haschild;
 
