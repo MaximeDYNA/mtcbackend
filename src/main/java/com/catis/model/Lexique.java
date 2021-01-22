@@ -37,7 +37,7 @@ public class Lexique extends JournalData {
 	@JsonIgnore
 	private Set<Client> clients;
 	
-	@ManyToMany(mappedBy = "lexiques")
+	@OneToMany(mappedBy = "lexique")
 	@JsonIgnore
 	private Set<Seuil> seuils;
 	
@@ -56,6 +56,9 @@ public class Lexique extends JournalData {
 
 	@ManyToMany(mappedBy = "lexiques")
 	private List<Inspection> inspections;
+
+	@ManyToOne
+	private Classification classification;
 
 	private Boolean haschild;
 

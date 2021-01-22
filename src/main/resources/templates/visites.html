@@ -150,24 +150,15 @@
   </div>
   <div class="row">
   	<div class="col-5" style=" height:925px; border: 2px solid black">
-	  	<div>
+	  	<div th:if="${#lists.size(defaultsTest)} != 0">
 	  		<h6 class="font-weight-bold">
 	  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
 	  			DEFECTS SUBJECT TO COUNTER INSPECTION</p> 
 	  		</h6>
 	  		<ol class="text-left font-weight-bold">
-		 	   <li>
-   		         	<span style="color: gray;"> Commande de freins de stationnement: Absence de verrouillage</span>
+		 	   <li th:each="lexique : ${defaultsTest}">
+   		         	<span style="color: gray;" th:text="${lexique.libelle}"> Commande de freins de stationnement: Absence de verrouillage</span>
 			   </li>
-			   <li>
-	   		      <span style="color: gray;"> Feu croisement AVG: Absence</span>
-			   </li>
-			    <li>
-			         <span style="color: gray;"> Feu croisement AVD: Absence</span>
-			    </li>
-			    <li>
-			         <span style="color: gray;"> Feu de route AVD: Absence</span>
-			    </li>
 		 	</ol>
 	  	</div>  	
 	  	<div th:if="${#lists.size(v.inspection.lexiques)} != 0">
@@ -313,7 +304,7 @@
 		  					</td>
 		  					<td  class="text-center font-weight-bold"
 		  					style="height:5px; width:195px;
-		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? result.get('0509')+' m-1': '' ): (result.get('0538')!=null ? result.get('0538')+' m-1': '' )}">
+		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? #strings.replace(result.get('0509'), '.0', '')+' m-1': '' ): (result.get('0538')!=null ? #strings.replace(result.get('0538'), '.0', '')+' m-1': '' )}">
 		  					</td>
 		  				</tr>
 			  		</table>

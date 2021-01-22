@@ -27,19 +27,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_inspection")
 public class Inspection extends JournalData {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idInspection;
+
 	private Date dateDebut;
+
 	private Date dateFin;
+
 	private String signature; // chemin image signature du controleur
 	
 	@ManyToOne
 	private Produit produit;
+
 	private double kilometrage;
+
 	private String chassis;
+
 	private int essieux;
+
 	private String position;
+
+	@OneToOne(mappedBy = "inspection")
+	private MesureVisuel mesureVisuel;
 
 	@ManyToOne
 	private Controleur controleur;
@@ -224,6 +235,11 @@ public class Inspection extends JournalData {
 		this.organisation = organisation;
 	}
 
+	public MesureVisuel getMesureVisuel() {
+		return mesureVisuel;
+	}
 
-
+	public void setMesureVisuel(MesureVisuel mesureVisuel) {
+		this.mesureVisuel = mesureVisuel;
+	}
 }
