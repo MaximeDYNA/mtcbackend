@@ -9,7 +9,8 @@ public class LexiquePOJO {
 	private String libelle;
 	private String parent;
 	private String haschild;
-	private String visual;	
+	private String visual;
+	private Long classificationId;
 	private Long version;	
 	private int categoryId;
 
@@ -84,6 +85,14 @@ public class LexiquePOJO {
 	}
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	public Long getClassificationId() {
+		return classificationId;
+	}
+
+	public void setClassificationId(Long classificationId) {
+		this.classificationId = classificationId;
 	}
 	
 }

@@ -3,7 +3,7 @@ package com.catis.model;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -28,7 +28,6 @@ public class Lexique extends JournalData {
 
 	private String libelle;
 	
-	@Column(unique=true)
 	private String code;
 
 	private Boolean Visuel;
@@ -51,6 +50,8 @@ public class Lexique extends JournalData {
 	@JsonIgnore
 	private Set<Lexique> childs;
 
+	
+	
 	@ManyToOne
 	private Lexique parent;
 
@@ -191,6 +192,14 @@ public class Lexique extends JournalData {
 
 	public void setSeuils(Set<Seuil> seuils) {
 		this.seuils = seuils;
+	}
+
+	public Classification getClassification() {
+		return classification;
+	}
+
+	public void setClassification(Classification classification) {
+		this.classification = classification;
 	}
 	
 

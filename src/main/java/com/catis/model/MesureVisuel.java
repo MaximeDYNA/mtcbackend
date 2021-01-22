@@ -121,6 +121,10 @@ public class MesureVisuel {
 		this.gps = gps;
 	}
 
-	public MesureVisuel() {
+	@Override
+	public String toString() {
+		return "MesureVisuel [idMesureVisuel=" + idMesureVisuel + ", heureDebut=" + heureDebut + ", heureFin="
+				+ heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + inspection + "]";
 	}
+
 }

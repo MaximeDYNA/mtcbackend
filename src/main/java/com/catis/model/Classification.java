@@ -1,9 +1,8 @@
 package com.catis.model;
 
-import java.util.List;
+
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -29,25 +28,20 @@ public class Classification extends JournalData {
 	private String code;
 
 	@OneToMany(mappedBy = "classification")
-	private List<Lexique> lexiques;
+
+	private Set<Lexique> lexiques;
+
 
 	public Classification() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Classification(Long id, String code, List<Lexique> lexiques) {
+	public Classification(Long id, String code, Set<Lexique> lexiques) {
 		this.id = id;
 		this.code = code;
 		this.lexiques = lexiques;
 	}
 
-	public List<Lexique> getLexiques() {
-		return lexiques;
-	}
-
-	public void setLexiques(List<Lexique> lexiques) {
-		this.lexiques = lexiques;
-	}
 
 	public Long getId() {
 		return id;
@@ -63,6 +57,15 @@ public class Classification extends JournalData {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+
+	public Set<Lexique> getLexiques() {
+		return lexiques;
+	}
+
+	public void setLexiques(Set<Lexique> lexiques) {
+		this.lexiques = lexiques;
 	}
 
 }

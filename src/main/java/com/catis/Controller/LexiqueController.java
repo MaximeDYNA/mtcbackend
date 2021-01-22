@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
+import com.catis.model.Classification;
 import com.catis.model.Client;
 import com.catis.model.Lexique;
 import com.catis.model.VersionLexique;
@@ -23,6 +24,7 @@ import com.catis.objectTemporaire.LexiqueDTO;
 import com.catis.objectTemporaire.LexiquePOJO;
 import com.catis.objectTemporaire.LexiqueReceived;
 import com.catis.service.CategorieVehiculeService;
+import com.catis.service.ClassificationService;
 import com.catis.service.ClientService;
 import com.catis.service.LexiqueService;
 import com.catis.service.VersionLexiqueService;
@@ -35,14 +37,19 @@ public class LexiqueController {
 	private LexiqueService lexiqueService;
 	private ClientService clientService;
 	private CategorieVehiculeService categorieVehiculeService;
+	private ClassificationService cS;
 	
 	@Autowired
-	public LexiqueController(LexiqueService lexiqueService, VersionLexiqueService versionLexiqueService, ClientService clientService, CategorieVehiculeService categorieVehiculeService) {
-		this.lexiqueService = lexiqueService;
+	public LexiqueController(VersionLexiqueService versionLexiqueService, LexiqueService lexiqueService,
+			ClientService clientService, CategorieVehiculeService categorieVehiculeService, ClassificationService cS) {
+		super();
 		this.versionLexiqueService = versionLexiqueService;
+		this.lexiqueService = lexiqueService;
 		this.clientService = clientService;
 		this.categorieVehiculeService = categorieVehiculeService;
+		this.cS = cS;
 	}
+
 	
 	
 	@PostMapping(value="/api/v1/lexique")
@@ -63,7 +70,11 @@ public class LexiqueController {
 		
 		for(LexiquePOJO l : lexique.getRows()) {
 			lexiq = new Lexique();
+			System.out.println(l.getCode());
 			lexiq.setId(l.getId()==null? null : l.getId());
+			
+			lexiq.setClassification(cS.findById(l.getClassificationId())==null?null:
+				cS.findById(l.getClassificationId()));
 			lexiq.setCode(l.getCode().replace("\"", ""));
 			lexiq.setLibelle(l.getLibelle());
 			
@@ -87,6 +98,11 @@ public class LexiqueController {
 		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", vl );
 	}
 	
+	
+
+	
+
+
 	@GetMapping(value="/api/v1/lexiques/{id}")
 	public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id){
 		
