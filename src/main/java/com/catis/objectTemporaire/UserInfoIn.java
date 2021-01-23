@@ -17,8 +17,9 @@ import com.catis.service.ControleurService;
 public class UserInfoIn {
 	@Autowired
 	static HttpServletRequest request;
-	static String serverUrl = "http://192.168.8.107:8180/auth";
+	static String serverUrl = "http://51.210.48.154:8090/auth";
 	static String realm = "mtckeycloak";
+
 	@Autowired
 	public static ControleurService controleurService;
 	
