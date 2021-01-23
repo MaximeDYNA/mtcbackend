@@ -14,12 +14,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import com.catis.model.Controleur;
 import com.catis.service.ControleurService;
 
-@ConfigurationProperties(prefix = "keycloak") 
 public class UserInfoIn {
 	@Autowired
-	 static HttpServletRequest request;
-		static String serverUrl = "http://51.210.48.154:8086/auth";
-	 static String realm = "mtckeycloak";
+	static HttpServletRequest request;
+	static String serverUrl = "http://192.168.8.107:8180/auth";
+	static String realm = "mtckeycloak";
 	@Autowired
 	public static ControleurService controleurService;
 	

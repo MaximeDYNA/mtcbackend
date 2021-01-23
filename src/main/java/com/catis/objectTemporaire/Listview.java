@@ -2,6 +2,7 @@ package com.catis.objectTemporaire;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.catis.model.Produit;
@@ -18,6 +19,7 @@ public class Listview {
     private List<ExpectedMeasure> measures;
 
     public Listview() {
+    	measures = new ArrayList<>();
 		measures.add(new ExpectedMeasure("Freinage", "<span class=\"badge badge-primary\">icon</span>" , false));
 		measures.add(new ExpectedMeasure("Ripage", "<span class=\"badge badge-primary\">icon</span>" , false));
 		measures.add(new ExpectedMeasure("Pollution", "<span class=\"badge badge-primary\">icon</span>" , false));
@@ -113,6 +115,18 @@ public class Listview {
 			  this.statut = "<span class=\"badge badge-warning\">"+statut+"</span>";
 		}
 		
+	}
+
+	public List<ExpectedMeasure> getMeasures() {
+		return measures;
+	}
+
+	public void setMeasures(List<ExpectedMeasure> measures) {
+		this.measures = measures;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
     
 }
