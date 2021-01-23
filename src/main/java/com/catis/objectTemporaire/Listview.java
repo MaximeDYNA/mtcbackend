@@ -16,16 +16,16 @@ public class Listview {
     private String client; 
     private String date;
     private String statut;
-    private List<ExpectedMeasure> measures;
+    private List<String> measures;
 
     public Listview() {
     	measures = new ArrayList<>();
-		measures.add(new ExpectedMeasure("Freinage", "<span class=\"badge badge-primary\">icon</span>" , false));
-		measures.add(new ExpectedMeasure("Ripage", "<span class=\"badge badge-primary\">icon</span>" , false));
-		measures.add(new ExpectedMeasure("Pollution", "<span class=\"badge badge-primary\">icon</span>" , false));
-		measures.add(new ExpectedMeasure("Règlophare", "<span class=\"badge badge-primary\">icon</span>" , false));
-		measures.add(new ExpectedMeasure("Suspension", "<span class=\"badge badge-primary\">icon</span>" , false));
-		measures.add(new ExpectedMeasure("Visuels", "<span class=\"badge badge-primary\">icon</span>" , false));
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep\"></i></span>&nbsp");
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Car-2\"></i></span>&nbsp");
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp" );
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+		measures.add("<span class=\"badge badge-light\"><i class=\"i-Pause\"></i></span>&nbsp");
 	}
     
 	public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
@@ -91,7 +91,15 @@ public class Listview {
 			  this.statut = "<span class=\"badge badge-warning\">"+statut+"</span>";
 		    break;
 		  case "En cours test":
-			  this.statut = "<span class=\"badge badge-light\">"+statut+"</span>";
+			  this.statut = "";
+			  int b=0;
+			  for(String i : measures) {
+				  b++;
+				  this.statut += i;
+//				  if(b%3==0) {
+//					  this.statut+="<br/>";
+//				  }
+			  }			  
 			  break;
 		  case "A signer":
 			  this.statut = "<span class=\"badge badge-info\">"+statut+"</span>";
@@ -117,13 +125,7 @@ public class Listview {
 		
 	}
 
-	public List<ExpectedMeasure> getMeasures() {
-		return measures;
-	}
-
-	public void setMeasures(List<ExpectedMeasure> measures) {
-		this.measures = measures;
-	}
+	
 
 	public void setDate(String date) {
 		this.date = date;

@@ -1,6 +1,7 @@
 package com.catis.Controller;
 
 import java.time.Duration;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +32,11 @@ import com.catis.service.VariableView;
 import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
 
-import reactor.core.publisher.Flux;
 
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.FluxSink;
 
 @RestController
 @CrossOrigin
@@ -50,6 +54,8 @@ public class VisiteController {
 	private static Logger log  = LoggerFactory.getLogger(VisiteController.class);
 	
 	private VariableView v;
+	private final FluxProcessor<Visite, Visite> processor= DirectProcessor.<Visite>create().serialize();
+	
 	
 	
 	@GetMapping(value="/api/v1/visitesencours")
@@ -96,10 +102,12 @@ public class VisiteController {
 		}*/
 		
 	}
+	
+	
 	@GetMapping(value="/api/v1/visites_encours")
 	public Flux<ServerSentEvent<ResponseEntity<Object>>> listDesVisitesEncours_(){
 		
-			log.info("Liste des visites en cours");
+			log.info("Liste des visites en coursoo");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.enCoursVisitList()) {
 				Listview lv = new Listview();
@@ -124,11 +132,12 @@ public class VisiteController {
 			}
 			//return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 			ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-			return Flux.interval(Duration.ofSeconds(5))
+			return processor
 		      .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
 		          .event("new_visit")
 		          .data( o)
 		          .build());
+			
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			

@@ -83,7 +83,7 @@ public class pdfController {
 		return modelAndView;
 	}
 
-	@GetMapping("/visites/{id}")
+	@GetMapping("/api/v1/visites/imprimer/{id}")
 	public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
 
 		Optional<Visite> visite = this.visiteRepo.findById(id);

@@ -21,6 +21,7 @@ import com.catis.Controller.VisiteController;
 import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.model.CarteGrise;
 import com.catis.model.Control;
+import com.catis.model.Organisation;
 import com.catis.model.Control.StatusType;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.Listview;
@@ -37,6 +38,8 @@ import reactor.core.publisher.FluxSink;
 public class VisiteService {
 	@Autowired
 	private VisiteRepository visiteRepository;
+	@Autowired
+	private OrganisationService os;
 	@Autowired
 	private ProduitService ps;
 	@Autowired
@@ -128,8 +131,10 @@ public class VisiteService {
 		}
 	}
 	
-	public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse) throws VisiteEnCoursException {
+	public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId) throws VisiteEnCoursException {
 		Visite visite = new Visite();
+		
+		Organisation organisation = os.findByOrganisationId(organisationId);
 		if(montantEncaisse < montantTotal) {
 			visite.setStatut(9);
 		}
@@ -159,9 +164,10 @@ public class VisiteService {
 		if(cg.getProduit().getProduitId()==1) {
 			return visite;
 		}
-		Visite v =visiteRepository.save(visite);
+		visite.setOrganisation(organisation);
+		visite =visiteRepository.save(visite);
 		refreshVisiteAfterAdd();
-		return v;
+		return visite;
 	}
 	public Visite modifierVisite(Visite visite) {
 		Visite v = visiteRepository.save(visite);
