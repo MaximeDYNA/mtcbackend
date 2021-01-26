@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.catis.model.*;
 import com.catis.objectTemporaire.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,9 @@ public class pdfController {
 	
 	@Autowired
 	private VisiteRepository visiteRepo;
-
+	@Autowired
+	private static Environment environment;
+	
 	private VisiteService visiteService;
 
 	@Autowired
@@ -101,7 +104,8 @@ public class pdfController {
 				}
 			});
 
-			UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur().getIdControleur());
+			UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur().getIdControleur(), 
+		    		 environment.getProperty("keycloak.auth-server-url"), environment.getProperty("realm"));
 			modelAndView.addObject("v", visite.get());
 			modelAndView.addObject("tp", tp);
 			modelAndView.addObject("result", results);

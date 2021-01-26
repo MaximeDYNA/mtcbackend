@@ -5,7 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.catis.model.Produit;
+import com.catis.model.Visite;
+import com.catis.service.VisiteService;
 
 public class Listview {
 
@@ -17,8 +21,12 @@ public class Listview {
     private String date;
     private String statut;
     private List<String> measures;
+    
+    @Autowired
+    private VisiteService visiteService;
 
-    public Listview() {
+    public Listview(Long id) {
+    	this.id = id;
     	measures = new ArrayList<>();
 		measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
 		measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep\"></i></span>&nbsp");
@@ -39,7 +47,14 @@ public class Listview {
 		this.date = date;
 		this.statut = statut;
 	}
+	public void manageColor() {
+		Visite visite = visiteService.findById(this.id);
+		if(!visite.isContreVisite()) {
+			
+		}
+	}
 	
+	 
 	public Long getId() {
 		return id;
 	}
@@ -82,6 +97,7 @@ public class Listview {
 	public String getStatut() {
 		return statut;
 	}
+	
 	public void setStatut(String statut) {
 		switch(statut) {
 		  case "maj":
@@ -130,5 +146,7 @@ public class Listview {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	
     
 }

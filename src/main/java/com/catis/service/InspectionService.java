@@ -43,10 +43,12 @@ public class InspectionService {
 		return inspection;
 	}
 	public Inspection setSignature(Long id, String signature) {
+		
+		System.out.println("id visite "+id+" signature "+signature);
 			Inspection inspection = findInspectionByVisite(id);
 			Visite visite = visiteService.findById(id);
 			visite.setStatut(4);
-			inspection.setVisite(visite);
+			inspection.setVisite(visiteService.add(visite));
 		return	inspectionR.save(inspection);
 		 
 	}

@@ -86,7 +86,7 @@ public class InspectionController {
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
             
             
-            String filePath = "uploaded/signatures/" + signatureDTO.getVisiteId() +".png";
+            String filePath = "uploaded/signatures" + signatureDTO.getVisiteId() +".png";
     		Path path = Paths.get(filePath);
     		
     		FileOutputStream fos = new FileOutputStream(path.toString());

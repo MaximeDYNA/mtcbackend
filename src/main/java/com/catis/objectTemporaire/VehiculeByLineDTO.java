@@ -51,6 +51,13 @@ public class VehiculeByLineDTO {
 	public void setIdCategorie(Long idCategorie) {
 		this.idCategorie = idCategorie;
 	}
+
+
+	@Override
+	public String toString() {
+		return "VehiculeByLineDTO [carteGriseId=" + carteGriseId + ", ref=" + ref + ", idInspection=" + idInspection
+				+ ", idCategorie=" + idCategorie + "]";
+	}
 	
 	
 }

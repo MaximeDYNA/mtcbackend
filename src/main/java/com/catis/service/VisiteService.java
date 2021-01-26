@@ -61,7 +61,7 @@ public class VisiteService {
 		log.info("Liste des visites en cours");
 		List<Listview> listVisit = new ArrayList<>();
 		for(Visite visite: enCoursVisitList()) {
-			Listview lv = new Listview();
+			Listview lv = new Listview(visite.getIdVisite());
 			lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 					.getNumImmatriculation()));
 			
@@ -90,6 +90,9 @@ public class VisiteService {
 				          .build());
 				
 	}
+	public Visite add(Visite visite) {
+		return visiteRepository.save(visite);
+	}
 	public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterEdit(Visite visite){
 		ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", visite);
 		return processor
@@ -110,7 +113,7 @@ public class VisiteService {
 	public Visite approuver(Visite visite){
 		visite.setStatut(0);
 		Visite v =visiteRepository.save(visite);
-		refreshVisiteAfterEdit(v);
+		//refreshVisiteAfterEdit(v);
 		return v;
 	}
 	
@@ -166,12 +169,12 @@ public class VisiteService {
 		}
 		visite.setOrganisation(organisation);
 		visite =visiteRepository.save(visite);
-		refreshVisiteAfterAdd();
+		//refreshVisiteAfterAdd();
 		return visite;
 	}
 	public Visite modifierVisite(Visite visite) {
 		Visite v = visiteRepository.save(visite);
-		refreshVisiteAfterEdit(v);
+		//refreshVisiteAfterEdit(v);
 		return v;
 	}
 	public boolean visiteEncours(String imCha) {
@@ -191,7 +194,7 @@ public class VisiteService {
 		visite.setDateFin(LocalDateTime.now());	
 		visite.setStatut(4);
 		visite = visiteRepository.save(visite);
-		refreshVisiteAfterEdit(visite);
+		//refreshVisiteAfterEdit(visite);
 		
 	}
 	public List<Visite> listParStatus(int status){
@@ -204,7 +207,7 @@ public class VisiteService {
 		visite.setDateFin(LocalDateTime.now());	
 		visite.setStatut(2);
 		visite = visiteRepository.save(visite);
-		refreshVisiteAfterEdit(visite);
+		//refreshVisiteAfterEdit(visite);
 	}
 	public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
 		List<Visite> visites = findByReference(ref);

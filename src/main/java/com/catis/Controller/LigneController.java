@@ -84,6 +84,7 @@ private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
 							:cg.getNumImmatriculation());
 					v.setIdCategorie(cg.getProduit().getProduitId());
 					vehicules.add(v);
+					v.toString();
 				}
 				
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Véhicule par ligne", vehicules);

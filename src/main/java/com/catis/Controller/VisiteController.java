@@ -58,13 +58,13 @@ public class VisiteController {
 	
 	
 	
-	@GetMapping(value="/api/v1/visitesencours")
+	/*@GetMapping(value="/api/v1/visitesencours")
 	public ResponseEntity<Object> listDesVisitesEncours(){
 		
 			log.info("Liste des visites en cours");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.enCoursVisitList()) {
-				Listview lv = new Listview();
+				Listview lv = new Listview(visite.getIdVisite());
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
 				
@@ -86,7 +86,7 @@ public class VisiteController {
 			}
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 			
-		/*try {} catch (Exception e) {
+		try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			
 			//return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
@@ -99,9 +99,9 @@ public class VisiteController {
 		          .event("periodic-event")
 		          .data( o)
 		          .build());
-		}*/
+		}
 		
-	}
+	}*/
 	
 	
 	@GetMapping(value="/api/v1/visites_encours")
@@ -110,7 +110,7 @@ public class VisiteController {
 			log.info("Liste des visites en coursoo");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.enCoursVisitList()) {
-				Listview lv = new Listview();
+				Listview lv = new Listview(visite.getIdVisite());
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
 				
@@ -242,7 +242,7 @@ public class VisiteController {
 			log.info("list view visit");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.listParStatus(0)) {
-				Listview lv = new Listview();
+				Listview lv = new Listview(visite.getIdVisite());
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
 				
@@ -277,7 +277,7 @@ public class VisiteController {
 			log.info("list view visit");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.listParStatus(statutCode)) {
-				Listview lv = new Listview();
+				Listview lv = new Listview(visite.getIdVisite());
 				lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
 						.getNumImmatriculation()));
 				
