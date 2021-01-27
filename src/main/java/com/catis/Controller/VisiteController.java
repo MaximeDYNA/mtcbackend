@@ -58,9 +58,9 @@ public class VisiteController {
 	
 	
 	
-	/*@GetMapping(value="/api/v1/visitesencours")
+	@GetMapping(value="/api/v1/visitesencours")
 	public ResponseEntity<Object> listDesVisitesEncours(){
-		
+		try {
 			log.info("Liste des visites en cours");
 			List<Listview> listVisit = new ArrayList<>();
 			for(Visite visite: vs.enCoursVisitList()) {
@@ -86,25 +86,20 @@ public class VisiteController {
 			}
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 			
-		try {} catch (Exception e) {
+		} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			
-			//return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
-			//		+ " de la liste des visite en cours", null);
-			ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
+					+ " de la liste des visite en cours", null);
+			//ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
 			
-		    return Flux.interval(Duration.ofSeconds(1))
-		      .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
-		        .id(String.valueOf(sequence))
-		          .event("periodic-event")
-		          .data( o)
-		          .build());
+		    
 		}
 		
-	}*/
+	}
 	
 	
-	@GetMapping(value="/api/v1/visites_encours")
+	/*@GetMapping(value="/api/v1/visites_encours")
 	public Flux<ServerSentEvent<ResponseEntity<Object>>> listDesVisitesEncours_(){
 		
 			log.info("Liste des visites en coursoo");
@@ -151,9 +146,9 @@ public class VisiteController {
 		          .event("periodic-event")
 		          .data( o)
 		          .build());
-		}*/
+		}
 		
-	}
+	}*/
 	@RequestMapping(method=RequestMethod.GET, value="/api/v1/visite/codestatut/{status}")
 	public ResponseEntity<Object> visiteByStatut(@PathVariable int status){
 		try {

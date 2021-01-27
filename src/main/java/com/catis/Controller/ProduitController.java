@@ -135,7 +135,7 @@ public class ProduitController {
 	
 	@RequestMapping(value="/api/v1/produits/reference/{imCha}")
 	public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) throws VisiteEnCoursException {
-		try {
+		
 				if(visiteService.visiteEncours(imCha))
 					throw new VisiteEnCoursException("Une visite est déjà en cours");
 				LOGGER.info("liste des catégories...");
@@ -144,8 +144,8 @@ public class ProduitController {
 					System.out.println("produit de carte grise");
 					produits.add(cg.getProduit());
 				}
-	
-				
+
+
 				if(visiteService.isVisiteInitial(imCha)) {
 					
 					if(cgs.isCarteGriseExist(imCha)) {
@@ -189,14 +189,14 @@ public class ProduitController {
 					return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets );
 				}
 			
-			}
+				/*try {}
 			catch (VisiteEnCoursException vece) {
 				LOGGER.error("Veuillez signaler cette erreur à Franck");
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une visite est actuellement en cours pour ce véhicule", null);
 			}catch (Exception e) {
 				LOGGER.error("Veuillez signaler cette erreur à Franck");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
-			}
+			}*/
 		
 	}
 

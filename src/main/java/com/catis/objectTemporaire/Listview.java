@@ -107,6 +107,7 @@ public class Listview {
 			  this.statut = "<span class=\"badge badge-warning\">"+statut+"</span>";
 		    break;
 		  case "En cours test":
+			  
 			  this.statut = "";
 			  int b=0;
 			  for(String i : measures) {

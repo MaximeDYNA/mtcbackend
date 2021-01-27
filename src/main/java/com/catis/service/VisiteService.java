@@ -211,17 +211,22 @@ public class VisiteService {
 	}
 	public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
 		List<Visite> visites = findByReference(ref);
+		
 		Visite visite = visites.stream().max(Comparator.comparing(Visite::getCreatedDate))
 										.orElse(null);
+		
 		if(visite != null) {
-			if(visite.getControl().getActiveStatus().equals("INITIALIZED")) {
+			
+			if(visite.getControl().getStatus().equals(StatusType.INITIALIZED)) {
+				
 				throw new VisiteEnCoursException();
 			}
-			if(visite.getControl().getActiveStatus().equals("VALIDATED")) {
+			if(visite.getControl().getStatus().equals(StatusType.VALIDATED)) {				
 				return true;
 			}
-			if(visite.getControl().getActiveStatus().equals("REJECTED")) {
+			if(visite.getControl().getStatus().equals(StatusType.REJECTED)) {
 				LocalDateTime now = LocalDateTime.now();
+				
 				if(visite.getControl().getContreVDelayAt().isAfter(now)) {
 					return false;
 				}
