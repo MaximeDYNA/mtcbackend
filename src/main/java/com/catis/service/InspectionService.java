@@ -46,6 +46,7 @@ public class InspectionService {
 		
 		System.out.println("id visite "+id+" signature "+signature);
 			Inspection inspection = findInspectionByVisite(id);
+			inspection.setSignature(signature);
 			Visite visite = visiteService.findById(id);
 			visite.setStatut(4);
 			inspection.setVisite(visiteService.add(visite));

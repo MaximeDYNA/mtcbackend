@@ -17,22 +17,24 @@ import com.catis.service.ControleurService;
 
 public class UserInfoIn {
 	@Autowired
-	static HttpServletRequest request;
+	HttpServletRequest request;
 	
-	@Autowired
-	public static ControleurService controleurService;
+	
 		
 	
-	public static UserDTO getInfosControleur(Long id, String serverUrl, String realm ) {
+	public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, String serverUrl, String realm ) {
 	
-		Controleur controleur = controleurService.findControleurById(id);
+		
 		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
 	    Keycloak keycloak = KeycloakBuilder
 	        .builder()
+	        .clientId("admin-cli")
 	        .serverUrl(serverUrl)
 	        .realm(realm)
-	        .authorization(context.getTokenString())
-	        .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+	        .username("tchoko")
+	        .password("tchoko")
+	        
+	        
 	        .build();
 	    UserResource userResource = keycloak.realm(realm).users().get(controleur.getKeycloakId());
 	    

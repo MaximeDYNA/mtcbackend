@@ -115,7 +115,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 	                .antMatchers("/pdf-resources**").permitAll()
 	                .antMatchers("/download-pdf**").permitAll()
 	                .antMatchers("/images/**").permitAll()
-	                .antMatchers("/uploaded/**").permitAll()
+	                
+	                .antMatchers("/uploaded/signatures/**").permitAll()
 	                //.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
 	                .anyRequest().permitAll();
 	       

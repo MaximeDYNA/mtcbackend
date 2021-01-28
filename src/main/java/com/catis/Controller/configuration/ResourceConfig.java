@@ -1,5 +1,6 @@
 package com.catis.Controller.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,8 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ResourceConfig implements WebMvcConfigurer {
 
 @Override
+
 public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-     registry.addResourceHandler("uploaded/**").addResourceLocations("file:/static/images/uploaded/");
+     //registry.addResourceHandler("/uploaded/signatures/*").addResourceLocations("classpath:/uploaded/signatures/");
 }
 }
 

@@ -86,14 +86,14 @@ public class InspectionController {
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
             
             
-            String filePath = "uploaded/signatures/" + signatureDTO.getVisiteId() +".png";
+            String filePath = "src/main/resources/static/uploaded/signatures/" + signatureDTO.getVisiteId() +".png";
     		Path path = Paths.get(filePath);
-    		
+    		System.out.println("*******************"+filePath);
     		FileOutputStream fos = new FileOutputStream(path.toString());
     		fos.write(decoded);
     		fos.close();
     		
-            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), filePath);
+            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId() +".png");
             
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", 	inspection);
             

@@ -182,7 +182,7 @@
 				Operator name and signature: <span style="color: gray;" th:text="${controlleurName}" ></span>
 			</p>
 			<div class="float-right">
-				<img height="240" width="400" th:src="@{${v.inspection.signature !=null ? '/'+v.inspection.signature : null} ?: ''}"/>
+				<img height="240" width="400" th:src="@{${v.inspection.signature !=null ? '/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
 			</div>
 	  	</div>
 	  </div>

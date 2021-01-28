@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.catis.model.*;
@@ -49,9 +50,11 @@ import com.lowagie.text.DocumentException;
 public class pdfController {	
 	
 	@Autowired
+	HttpServletRequest request;
+	@Autowired
 	private VisiteRepository visiteRepo;
 	@Autowired
-	private static Environment environment;
+	private Environment environment;
 	
 	private VisiteService visiteService;
 
@@ -104,8 +107,8 @@ public class pdfController {
 				}
 			});
 
-			UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur().getIdControleur(), 
-		    		 environment.getProperty("keycloak.auth-server-url"), environment.getProperty("realm"));
+			UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request,
+		    		 environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
 			modelAndView.addObject("v", visite.get());
 			modelAndView.addObject("tp", tp);
 			modelAndView.addObject("result", results);
