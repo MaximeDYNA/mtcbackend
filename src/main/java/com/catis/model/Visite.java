@@ -26,201 +26,200 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Visite extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idVisite;
-	private boolean contreVisite;
-	private LocalDateTime dateDebut;
-	private LocalDateTime dateFin;
-	private int statut;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idVisite;
+    private boolean contreVisite;
+    private LocalDateTime dateDebut;
+    private LocalDateTime dateFin;
+    private int statut;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@Column(columnDefinition = "bit default 1")
-	private boolean encours;
+    @Column(columnDefinition = "bit default 1")
+    private boolean encours;
 
 
-	
-	@ManyToOne
-	private Caissier caissier;
+    @ManyToOne
+    private Caissier caissier;
 
-	@OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Inspection inspection;
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Inspection inspection;
 
-	@OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
-	@JsonIgnore
-	private VerbalProcess process;
+    @OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private VerbalProcess process;
 
-	@ManyToOne
-	private CarteGrise carteGrise;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Control control;
+    @ManyToOne
+    private CarteGrise carteGrise;
 
-	public List<RapportDeVisite> getRapportDeVisites() {
-		return rapportDeVisites;
-	}
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Control control;
 
-	public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
-		this.rapportDeVisites = rapportDeVisites;
-	}
+    public List<RapportDeVisite> getRapportDeVisites() {
+        return rapportDeVisites;
+    }
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
-	@JsonIgnore
-	private List<RapportDeVisite> rapportDeVisites;
+    public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
+        this.rapportDeVisites = rapportDeVisites;
+    }
 
-	public Visite() {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+    @JsonIgnore
+    private List<RapportDeVisite> rapportDeVisites;
 
-	}
+    public Visite() {
 
-	public Control getControl() {
-		return control;
-	}
+    }
 
-	public void setControl(Control control) {
-		this.control = control;
-	}
+    public Control getControl() {
+        return control;
+    }
 
-	public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
-			Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
-			CarteGrise carteGrise, Control control, List<RapportDeVisite> rapportDeVisites) {
-		super();
-		this.idVisite = idVisite;
-		this.contreVisite = contreVisite;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.statut = statut;
-		this.organisation = organisation;
-		this.encours = encours;
-		this.caissier = caissier;
-		this.inspection = inspection;
-		this.process = process;
-		this.carteGrise = carteGrise;
-		this.control = control;
-		this.rapportDeVisites = rapportDeVisites;
-	}
+    public void setControl(Control control) {
+        this.control = control;
+    }
 
-	public boolean isContreVisite() {
-		return contreVisite;
-	}
+    public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
+                  Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
+                  CarteGrise carteGrise, Control control, List<RapportDeVisite> rapportDeVisites) {
+        super();
+        this.idVisite = idVisite;
+        this.contreVisite = contreVisite;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.statut = statut;
+        this.organisation = organisation;
+        this.encours = encours;
+        this.caissier = caissier;
+        this.inspection = inspection;
+        this.process = process;
+        this.carteGrise = carteGrise;
+        this.control = control;
+        this.rapportDeVisites = rapportDeVisites;
+    }
 
-	public void setContreVisite(boolean contreVisite) {
-		this.contreVisite = contreVisite;
-	}
+    public boolean isContreVisite() {
+        return contreVisite;
+    }
 
-	public Long getIdVisite() {
-		return idVisite;
-	}
+    public void setContreVisite(boolean contreVisite) {
+        this.contreVisite = contreVisite;
+    }
 
-	public void setIdVisite(Long idVisite) {
-		this.idVisite = idVisite;
-	}
+    public Long getIdVisite() {
+        return idVisite;
+    }
 
-	public LocalDateTime getDateDebut() {
-		return dateDebut;
-	}
+    public void setIdVisite(Long idVisite) {
+        this.idVisite = idVisite;
+    }
 
-	public void setDateDebut(LocalDateTime dateDebut) {
-		this.dateDebut = dateDebut;
-	}
+    public LocalDateTime getDateDebut() {
+        return dateDebut;
+    }
 
-	public LocalDateTime getDateFin() {
-		return dateFin;
-	}
+    public void setDateDebut(LocalDateTime dateDebut) {
+        this.dateDebut = dateDebut;
+    }
 
-	public void setDateFin(LocalDateTime dateFin) {
-		this.dateFin = dateFin;
-	}
+    public LocalDateTime getDateFin() {
+        return dateFin;
+    }
 
-	public int getStatut() {
-		return statut;
-	}
+    public void setDateFin(LocalDateTime dateFin) {
+        this.dateFin = dateFin;
+    }
 
-	public void setStatut(int statut) {
-		this.statut = statut;
-	}
+    public int getStatut() {
+        return statut;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public void setStatut(int statut) {
+        this.statut = statut;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public Inspection getInspection() {
-		return inspection;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public void setInspection(Inspection inspection) {
-		this.inspection = inspection;
-	}
+    public Inspection getInspection() {
+        return inspection;
+    }
 
-	public VerbalProcess getProcess() {
-		return process;
-	}
+    public void setInspection(Inspection inspection) {
+        this.inspection = inspection;
+    }
 
-	public void setProcess(VerbalProcess process) {
-		this.process = process;
-	}
+    public VerbalProcess getProcess() {
+        return process;
+    }
 
-	public Caissier getCaissier() {
-		return caissier;
-	}
+    public void setProcess(VerbalProcess process) {
+        this.process = process;
+    }
 
-	public void setCaissier(Caissier caissier) {
-		this.caissier = caissier;
-	}
+    public Caissier getCaissier() {
+        return caissier;
+    }
 
-	public CarteGrise getCarteGrise() {
-		return carteGrise;
-	}
+    public void setCaissier(Caissier caissier) {
+        this.caissier = caissier;
+    }
 
-	public void setCarteGrise(CarteGrise carteGrise) {
-		this.carteGrise = carteGrise;
-	}
+    public CarteGrise getCarteGrise() {
+        return carteGrise;
+    }
 
-	public boolean isEncours() {
-		return encours;
-	}
+    public void setCarteGrise(CarteGrise carteGrise) {
+        this.carteGrise = carteGrise;
+    }
 
-	public void setEncours(boolean encours) {
-		this.encours = encours;
-	}
+    public boolean isEncours() {
+        return encours;
+    }
 
-	public String statutRender(int code) {
-		if (code == 0) {
-			return "maj";
-		} else if (code == 1) {
-			return "A inspecter";
-		} else if (code == 2) {
-			return "En cours test";
-		} else if (code == 3) {
-			return "A signer";
-		} else if (code == 4) {
-			return "A imprimer";
-		} else if (code == 5) {
-			return "A enregister";
-		} else if (code == 6) {
-			return "A certifier";
-		} else if (code == 7) {
-			return "Accepté";
-		} else if (code == 8) {
-			return "Refusé";
-		} else if (code == 9) {
-			return "A approuver";
-		} else {
-			return "erreur";
-		}
+    public void setEncours(boolean encours) {
+        this.encours = encours;
+    }
 
-	}
+    public String statutRender(int code) {
+        if (code == 0) {
+            return "maj";
+        } else if (code == 1) {
+            return "A inspecter";
+        } else if (code == 2) {
+            return "En cours test";
+        } else if (code == 3) {
+            return "A signer";
+        } else if (code == 4) {
+            return "A imprimer";
+        } else if (code == 5) {
+            return "A enregister";
+        } else if (code == 6) {
+            return "A certifier";
+        } else if (code == 7) {
+            return "Accepté";
+        } else if (code == 8) {
+            return "Refusé";
+        } else if (code == 9) {
+            return "A approuver";
+        } else {
+            return "erreur";
+        }
 
-	public String typeRender() {
-		if (this.contreVisite) {
-			return "CV";
-		} else
-			return "VTP";
-	}
+    }
+
+    public String typeRender() {
+        if (this.contreVisite) {
+            return "CV";
+        } else
+            return "VTP";
+    }
 }

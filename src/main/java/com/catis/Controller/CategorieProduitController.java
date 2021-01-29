@@ -34,91 +34,91 @@ import com.catis.service.TaxeProduitService;
 @Validated
 public class CategorieProduitController {
 
-	/*
-	 * @Autowired private CategorieProduitService categorieProduitService;
-	 */
-	@Autowired
-	private ProduitService produitService;
-	@Autowired
-	private CategorieProduitService cateProduitService;
-	@Autowired
-	private TaxeProduitService tps;
-	
-	private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
-	
-	@RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
-		public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException{
-		try {
-			List<ProduitEtTaxe> pets = new ArrayList<>();
-			List<Taxe> taxes;
-			ProduitEtTaxe pet; 
-			Long id = Long.valueOf(categorieId);
-			for(Produit produit : produitService.findByCategorieProduit(id).stream()
-												.filter(prod -> !prod.getLibelle().equalsIgnoreCase("cv"))
-												.collect(Collectors.toList())) {
-				pet = new ProduitEtTaxe();
-				pet.setProduit(produit);
-				taxes = new ArrayList<>();
-				for(TaxeProduit tp: tps.findByProduitId(produit.getProduitId())) {
-					taxes.add(tp.getTaxe());
-				}
-				pet.setTaxe(taxes);
-				pets.add(pet);
-			}
-			
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
-		}
-		catch(java.lang.IllegalArgumentException il) {
-			LOGGER.error("Identifiant catégorie produit incorrect");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Identifiant catégorie produit incorrect", null);
-		}
-		
-	}
+    /*
+     * @Autowired private CategorieProduitService categorieProduitService;
+     */
+    @Autowired
+    private ProduitService produitService;
+    @Autowired
+    private CategorieProduitService cateProduitService;
+    @Autowired
+    private TaxeProduitService tps;
 
-	@RequestMapping(method=RequestMethod.POST, value="/api/v1/categorieproduits") 
-	public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieProduit categorieProduit){
-		try {
-			LOGGER.info("Ajout d'une catégorie"); 
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  cateProduitService.addCategorieProduit(categorieProduit));
-		} catch (Exception e) {
-			LOGGER.error("Erreur lors de l'ajout d'une catégorie."); 
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
-		}
-		
-	}
-	 
-	@RequestMapping(method=RequestMethod.GET, value="/api/v1/catproducts") 
-	public ResponseEntity<Object> categorieProduits(){
-		try {
-			LOGGER.info("Liste des catégories"); 
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  cateProduitService.listeCategorieProduit());
-		} catch (Exception e) {
-			LOGGER.error("Erreur lors de l'ajout d'une catégorie."); 
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
-		}
-		
-	}
-	@RequestMapping(method=RequestMethod.GET, value="/api/v1/catproducts/listview") 
-	public ResponseEntity<Object> catProduits(){
-		
-			
-			LOGGER.info("Liste des catégories");
-			List<ListViewCatProduit> l = new ArrayList<>();
-			for(CategorieProduit cp : cateProduitService.listeCategorieProduit() ) {
-				ListViewCatProduit lvct = new ListViewCatProduit();
-				
-				lvct.setLibelle(cp.getLibelle());				
-				lvct.setCreatedDate(cp.getCreatedDate());
-				lvct.setModifiedDate(cp.getModifiedDate());
-				lvct.setActiveStatus(cp.getActiveStatus());
-				l.add(lvct);
-			}
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  l);
+    private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
+
+    @RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
+    public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException {
+        try {
+            List<ProduitEtTaxe> pets = new ArrayList<>();
+            List<Taxe> taxes;
+            ProduitEtTaxe pet;
+            Long id = Long.valueOf(categorieId);
+            for (Produit produit : produitService.findByCategorieProduit(id).stream()
+                    .filter(prod -> !prod.getLibelle().equalsIgnoreCase("cv"))
+                    .collect(Collectors.toList())) {
+                pet = new ProduitEtTaxe();
+                pet.setProduit(produit);
+                taxes = new ArrayList<>();
+                for (TaxeProduit tp : tps.findByProduitId(produit.getProduitId())) {
+                    taxes.add(tp.getTaxe());
+                }
+                pet.setTaxe(taxes);
+                pets.add(pet);
+            }
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
+        } catch (java.lang.IllegalArgumentException il) {
+            LOGGER.error("Identifiant catégorie produit incorrect");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Identifiant catégorie produit incorrect", null);
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/categorieproduits")
+    public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieProduit categorieProduit) {
+        try {
+            LOGGER.info("Ajout d'une catégorie");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.addCategorieProduit(categorieProduit));
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/catproducts")
+    public ResponseEntity<Object> categorieProduits() {
+        try {
+            LOGGER.info("Liste des catégories");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.listeCategorieProduit());
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/catproducts/listview")
+    public ResponseEntity<Object> catProduits() {
+
+
+        LOGGER.info("Liste des catégories");
+        List<ListViewCatProduit> l = new ArrayList<>();
+        for (CategorieProduit cp : cateProduitService.listeCategorieProduit()) {
+            ListViewCatProduit lvct = new ListViewCatProduit();
+
+            lvct.setLibelle(cp.getLibelle());
+            lvct.setCreatedDate(cp.getCreatedDate());
+            lvct.setModifiedDate(cp.getModifiedDate());
+            lvct.setActiveStatus(cp.getActiveStatus());
+            l.add(lvct);
+        }
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", l);
 		/*try{} catch (Exception e) {
 			LOGGER.error("Erreur lors de l'affichage des catégories de produit."); 
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false",  null);
 		}*/
-		
-	}
+
+    }
 
 }

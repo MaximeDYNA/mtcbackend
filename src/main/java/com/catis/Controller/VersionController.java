@@ -21,42 +21,41 @@ import com.catis.service.VersionLexiqueService;
 @CrossOrigin
 public class VersionController {
 
-	@Autowired
-	private VersionLexiqueService vls;
-	
-	@GetMapping("/api/v1/versionlists")
-	public ResponseEntity<Object> versionList(){
-		
-		List<VersionLexiqueDTO> versionLexiqueDTOs = new ArrayList<>();
-		VersionLexiqueDTO vlDTO;
-		for(VersionLexique vl : vls.findAll()) {
-			vlDTO = new VersionLexiqueDTO();
-			vlDTO.setCreatedDate(vl.getCreatedDate());
-			vlDTO.setModifiedDate(vl.getModifiedDate());
-			vlDTO.setLibelle(vl.getLibelle());
-			vlDTO.setId(vl.getId());
-			vlDTO.setVersion(vl.getVersion());
-			versionLexiqueDTOs.add(vlDTO);
-		}
-		
-		
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTOs );
-		
-	}
-	
-	@GetMapping("/api/v1/versionlists/{id}")
-	public ResponseEntity<Object> getVersion(@PathVariable Long id){
-		
-		VersionLexiqueDTO versionLexiqueDTO = new VersionLexiqueDTO();
-		VersionLexique dto = vls.findById(id) ;
-		versionLexiqueDTO.setId(dto.getId());
-		versionLexiqueDTO.setLibelle(dto.getLibelle());
-		versionLexiqueDTO.setCreatedDate(dto.getCreatedDate());
-		versionLexiqueDTO.setModifiedDate(dto.getModifiedDate());
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTO );
-		
-	}
-	
-	
-	
+    @Autowired
+    private VersionLexiqueService vls;
+
+    @GetMapping("/api/v1/versionlists")
+    public ResponseEntity<Object> versionList() {
+
+        List<VersionLexiqueDTO> versionLexiqueDTOs = new ArrayList<>();
+        VersionLexiqueDTO vlDTO;
+        for (VersionLexique vl : vls.findAll()) {
+            vlDTO = new VersionLexiqueDTO();
+            vlDTO.setCreatedDate(vl.getCreatedDate());
+            vlDTO.setModifiedDate(vl.getModifiedDate());
+            vlDTO.setLibelle(vl.getLibelle());
+            vlDTO.setId(vl.getId());
+            vlDTO.setVersion(vl.getVersion());
+            versionLexiqueDTOs.add(vlDTO);
+        }
+
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTOs);
+
+    }
+
+    @GetMapping("/api/v1/versionlists/{id}")
+    public ResponseEntity<Object> getVersion(@PathVariable Long id) {
+
+        VersionLexiqueDTO versionLexiqueDTO = new VersionLexiqueDTO();
+        VersionLexique dto = vls.findById(id);
+        versionLexiqueDTO.setId(dto.getId());
+        versionLexiqueDTO.setLibelle(dto.getLibelle());
+        versionLexiqueDTO.setCreatedDate(dto.getCreatedDate());
+        versionLexiqueDTO.setModifiedDate(dto.getModifiedDate());
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "version lexique", versionLexiqueDTO);
+
+    }
+
+
 }

@@ -33,129 +33,123 @@ import com.catis.service.VersionLexiqueService;
 @CrossOrigin
 public class LexiqueController {
 
-	private VersionLexiqueService versionLexiqueService;
-	private LexiqueService lexiqueService;
-	private ClientService clientService;
-	private CategorieVehiculeService categorieVehiculeService;
-	private ClassificationService cS;
-	
-	@Autowired
-	public LexiqueController(VersionLexiqueService versionLexiqueService, LexiqueService lexiqueService,
-			ClientService clientService, CategorieVehiculeService categorieVehiculeService, ClassificationService cS) {
-		super();
-		this.versionLexiqueService = versionLexiqueService;
-		this.lexiqueService = lexiqueService;
-		this.clientService = clientService;
-		this.categorieVehiculeService = categorieVehiculeService;
-		this.cS = cS;
-	}
+    private VersionLexiqueService versionLexiqueService;
+    private LexiqueService lexiqueService;
+    private ClientService clientService;
+    private CategorieVehiculeService categorieVehiculeService;
+    private ClassificationService cS;
 
-	
-	
-	@PostMapping(value="/api/v1/lexique")
-	@Transactional
-	public ResponseEntity<Object> ajouterLexique(@RequestBody LexiqueReceived lexique){
-		/**Version lexique***/
-			
-			VersionLexique vl = new VersionLexique();
-			vl.setId(lexique.getId()==null? null : lexique.getId());
-			
-			vl.setLibelle(lexique.getNom());			
-			vl.setVersion(lexique.getVersion());			
-			vl = versionLexiqueService.add(vl);
-			
-		/********------******/
-		List<Lexique> lexiques = new ArrayList<>();
-		Lexique lexiq;
-		
-		for(LexiquePOJO l : lexique.getRows()) {
-			lexiq = new Lexique();
-			System.out.println(l.getCode());
-			lexiq.setId(l.getId()==null? null : l.getId());
-			
-			lexiq.setClassification(cS.findById(l.getClassificationId())==null?null:
-				cS.findById(l.getClassificationId()));
-			lexiq.setCode(l.getCode().replace("\"", ""));
-			lexiq.setLibelle(l.getLibelle());
-			
-			lexiq.setParent(lexiqueService.findByCode(l.getParent()==null?l.getParent():l.getParent().replace("\"", "")));
-			if( l.getHaschild().equals("TRUE") || l.getHaschild().equals("true")) {
-				lexiq.setHaschild(true);
-			}
-			else
-				lexiq.setHaschild(false);
-			lexiq.setVersionLexique(vl);
-			lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-			
-			//System.out.println("Nom :"+ lexique.getId());
-			lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId()) ));
-			lexiqueService.add(lexiq);
-		}
-		vl = versionLexiqueService.findById(vl.getId());
-		
-		
-		
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", vl );
-	}
-	
-	
-
-	
+    @Autowired
+    public LexiqueController(VersionLexiqueService versionLexiqueService, LexiqueService lexiqueService,
+                             ClientService clientService, CategorieVehiculeService categorieVehiculeService, ClassificationService cS) {
+        super();
+        this.versionLexiqueService = versionLexiqueService;
+        this.lexiqueService = lexiqueService;
+        this.clientService = clientService;
+        this.categorieVehiculeService = categorieVehiculeService;
+        this.cS = cS;
+    }
 
 
-	@GetMapping(value="/api/v1/lexiques/{id}")
-	public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id){
-		
-		LexiqueReceived lr = new LexiqueReceived();
-		List<Long> ids;
-		List<LexiquePOJO> list = new ArrayList<>();
-		LexiquePOJO pojo;
-		for(Lexique l: lexiqueService.findByVersionLexique(id)) {
-			pojo = new LexiquePOJO();
-			pojo.setId(l.getId());
-			pojo.setCode(l.getCode());
-			pojo.setLibelle(l.getLibelle());
-			pojo.setParent(l.getParent()==null? null : l.getParent().getCode());
-			pojo.setVisual(l.getVisuel().toString());
-			pojo.setHaschild(l.getHaschild().toString());
-			pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
-			ids = new ArrayList<>();
-			for(Client i :l.getClients()) {
-				ids.add(i.getClientId());
-			}
-			
-			pojo.setVersion(l.getVersionLexique().getId());
-			list.add(pojo);
-			
-		}
-		
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
-	}
-	@GetMapping(value="/api/v1/lexiques/read/{id}")
-	public ResponseEntity<Object> readLexiques(@PathVariable Long id){
-		
-		LexiqueDTO lexiqueDTO;
-		LexiqueChildDTO lexiqueChildDTO;
-		List<LexiqueDTO> parents = new ArrayList<>();
-		List<LexiqueChildDTO> children;
-		
-		for(Lexique l : lexiqueService.findByVersionLexique(id)) {
-			//le code recupère uniquement les parents et leurs enfants
-			if(l.getParent()==null) {
-				lexiqueDTO = new LexiqueDTO();
-				lexiqueDTO.setId(l.getId());
-				lexiqueDTO.setName(l.getCode() +" :"+ l.getLibelle());
-				children = new ArrayList<>();
-				for(Lexique child : l.getChilds()) {
-					lexiqueChildDTO = new LexiqueChildDTO();
-					lexiqueChildDTO.setId(child.getId());
-					lexiqueChildDTO.setName(child.getCode() +" :"+ child.getLibelle());
-					children.add(lexiqueChildDTO);
-				}
-				lexiqueDTO.setChildren(children);
-				parents.add(lexiqueDTO);
-			}			
-		}
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", parents );
-	}
+    @PostMapping(value = "/api/v1/lexique")
+    @Transactional
+    public ResponseEntity<Object> ajouterLexique(@RequestBody LexiqueReceived lexique) {
+        /**Version lexique***/
+
+        VersionLexique vl = new VersionLexique();
+        vl.setId(lexique.getId() == null ? null : lexique.getId());
+
+        vl.setLibelle(lexique.getNom());
+        vl.setVersion(lexique.getVersion());
+        vl = versionLexiqueService.add(vl);
+
+        /********------******/
+        List<Lexique> lexiques = new ArrayList<>();
+        Lexique lexiq;
+
+        for (LexiquePOJO l : lexique.getRows()) {
+            lexiq = new Lexique();
+            System.out.println(l.getCode());
+            lexiq.setId(l.getId() == null ? null : l.getId());
+
+            lexiq.setClassification(cS.findById(l.getClassificationId()) == null ? null :
+                    cS.findById(l.getClassificationId()));
+            lexiq.setCode(l.getCode().replace("\"", ""));
+            lexiq.setLibelle(l.getLibelle());
+
+            lexiq.setParent(lexiqueService.findByCode(l.getParent() == null ? l.getParent() : l.getParent().replace("\"", "")));
+            if (l.getHaschild().equals("TRUE") || l.getHaschild().equals("true")) {
+                lexiq.setHaschild(true);
+            } else
+                lexiq.setHaschild(false);
+            lexiq.setVersionLexique(vl);
+            lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
+
+            //System.out.println("Nom :"+ lexique.getId());
+            lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId())));
+            lexiqueService.add(lexiq);
+        }
+        vl = versionLexiqueService.findById(vl.getId());
+
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", vl);
+    }
+
+
+    @GetMapping(value = "/api/v1/lexiques/{id}")
+    public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id) {
+
+        LexiqueReceived lr = new LexiqueReceived();
+        List<Long> ids;
+        List<LexiquePOJO> list = new ArrayList<>();
+        LexiquePOJO pojo;
+        for (Lexique l : lexiqueService.findByVersionLexique(id)) {
+            pojo = new LexiquePOJO();
+            pojo.setId(l.getId());
+            pojo.setCode(l.getCode());
+            pojo.setLibelle(l.getLibelle());
+            pojo.setParent(l.getParent() == null ? null : l.getParent().getCode());
+            pojo.setVisual(l.getVisuel().toString());
+            pojo.setHaschild(l.getHaschild().toString());
+            pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
+            ids = new ArrayList<>();
+            for (Client i : l.getClients()) {
+                ids.add(i.getClientId());
+            }
+
+            pojo.setVersion(l.getVersionLexique().getId());
+            list.add(pojo);
+
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
+    }
+
+    @GetMapping(value = "/api/v1/lexiques/read/{id}")
+    public ResponseEntity<Object> readLexiques(@PathVariable Long id) {
+
+        LexiqueDTO lexiqueDTO;
+        LexiqueChildDTO lexiqueChildDTO;
+        List<LexiqueDTO> parents = new ArrayList<>();
+        List<LexiqueChildDTO> children;
+
+        for (Lexique l : lexiqueService.findByVersionLexique(id)) {
+            //le code recupère uniquement les parents et leurs enfants
+            if (l.getParent() == null) {
+                lexiqueDTO = new LexiqueDTO();
+                lexiqueDTO.setId(l.getId());
+                lexiqueDTO.setName(l.getCode() + " :" + l.getLibelle());
+                children = new ArrayList<>();
+                for (Lexique child : l.getChilds()) {
+                    lexiqueChildDTO = new LexiqueChildDTO();
+                    lexiqueChildDTO.setId(child.getId());
+                    lexiqueChildDTO.setName(child.getCode() + " :" + child.getLibelle());
+                    children.add(lexiqueChildDTO);
+                }
+                lexiqueDTO.setChildren(children);
+                parents.add(lexiqueDTO);
+            }
+        }
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", parents);
+    }
 }

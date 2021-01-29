@@ -22,75 +22,75 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_ligne")
 public class Ligne extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idLigne;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idLigne;
+    private String description;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne")
-	@JsonIgnore
-	private Set<LigneMachine> ligneMachines;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne")
+    @JsonIgnore
+    private Set<LigneMachine> ligneMachines;
 
-	@OneToMany(mappedBy = "ligne")
-	@JsonIgnore
-	private Set<Inspection> inspections;
+    @OneToMany(mappedBy = "ligne")
+    @JsonIgnore
+    private Set<Inspection> inspections;
 
-	public Ligne() {
+    public Ligne() {
 
-		// TODO Auto-generated constructor stub
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public Ligne(Long idLigne, String description, Organisation organisation, Set<LigneMachine> ligneMachines,
-			Set<Inspection> inspections) {
+    public Ligne(Long idLigne, String description, Organisation organisation, Set<LigneMachine> ligneMachines,
+                 Set<Inspection> inspections) {
 
-		this.idLigne = idLigne;
-		this.description = description;
-		this.organisation = organisation;
-		this.ligneMachines = ligneMachines;
-		this.inspections = inspections;
-	}
+        this.idLigne = idLigne;
+        this.description = description;
+        this.organisation = organisation;
+        this.ligneMachines = ligneMachines;
+        this.inspections = inspections;
+    }
 
-	public Long getIdLigne() {
-		return idLigne;
-	}
+    public Long getIdLigne() {
+        return idLigne;
+    }
 
-	public void setIdLigne(Long idLigne) {
-		this.idLigne = idLigne;
-	}
+    public void setIdLigne(Long idLigne) {
+        this.idLigne = idLigne;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public Set<LigneMachine> getLigneMachines() {
-		return ligneMachines;
-	}
+    public Set<LigneMachine> getLigneMachines() {
+        return ligneMachines;
+    }
 
-	public void setLigneMachines(Set<LigneMachine> ligneMachines) {
-		this.ligneMachines = ligneMachines;
-	}
+    public void setLigneMachines(Set<LigneMachine> ligneMachines) {
+        this.ligneMachines = ligneMachines;
+    }
 
-	public Set<Inspection> getInspections() {
-		return inspections;
-	}
+    public Set<Inspection> getInspections() {
+        return inspections;
+    }
 
-	public void setInspections(Set<Inspection> inspections) {
-		this.inspections = inspections;
-	}
+    public void setInspections(Set<Inspection> inspections) {
+        this.inspections = inspections;
+    }
 
 }

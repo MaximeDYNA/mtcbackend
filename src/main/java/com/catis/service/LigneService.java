@@ -13,22 +13,23 @@ import com.catis.repository.LigneRepository;
 @Service
 public class LigneService {
 
-	@Autowired
-	private LigneRepository ligneR;
-	
-	
-	 public Ligne addLigne(Ligne ligne) {
-		return ligneR.save(ligne);
-	}
+    @Autowired
+    private LigneRepository ligneR;
 
-	public List<Ligne> findAllLigne(){
-		List<Ligne> lignes = new ArrayList<>();
-		ligneR.findAll().forEach(lignes::add);
-		return lignes;
-	}
-	public Ligne findLigneById(Long id) {
-	
-		return ligneR.findById(id).get();
-	}
-	
+
+    public Ligne addLigne(Ligne ligne) {
+        return ligneR.save(ligne);
+    }
+
+    public List<Ligne> findAllLigne() {
+        List<Ligne> lignes = new ArrayList<>();
+        ligneR.findAll().forEach(lignes::add);
+        return lignes;
+    }
+
+    public Ligne findLigneById(Long id) {
+
+        return ligneR.findById(id).get();
+    }
+
 }

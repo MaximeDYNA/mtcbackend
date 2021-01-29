@@ -30,83 +30,85 @@ import com.catis.objectTemporaire.UserDTO;
 @RestController
 @CrossOrigin
 public class UserInfo {
-	@Autowired
-	private HttpServletRequest request;
-	private static String serverUrl = "http://192.168.8.113:8180/auth";
-	private static String realm = "mtckeycloak";
-	private String clientId = "realm-management";
-	private String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
-	
-	@GetMapping("/api/v1/controleurs")
-	public List<ControleurDTO> userInfoController() {
-    
-		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	    Keycloak keycloak = KeycloakBuilder.builder() //
-	      .serverUrl(serverUrl)
-	      .realm(realm)
-	      .authorization(context.getTokenString())
-	      .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-	      .build();
+    @Autowired
+    private HttpServletRequest request;
+    private static String serverUrl = "http://192.168.8.113:8180/auth";
+    private static String realm = "mtckeycloak";
+    private String clientId = "realm-management";
+    private String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
 
-	    RealmResource realmResource = keycloak.realm(realm);
+    @GetMapping("/api/v1/controleurs")
+    public List<ControleurDTO> userInfoController() {
 
-	    String role = "controleur";
-	    Set<UserRepresentation> usersOfRole = realmResource.roles().get(role).getRoleUserMembers();
-	    List<ControleurDTO> controleurs = new ArrayList<>();  
-	    ControleurDTO cDTO;
-	        for(UserRepresentation u : usersOfRole) {
-	        	cDTO = new ControleurDTO();
-	        	cDTO.setId(u.getId());
-	        	cDTO.setNom(u.getFirstName());
-	        	cDTO.setPrenom(u.getLastName());
-	        	cDTO.setEmail(u.getEmail());
-	        	System.out.println("Attributes-----"+ u.getAttributes());
+        KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+        Keycloak keycloak = KeycloakBuilder.builder() //
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .authorization(context.getTokenString())
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                .build();
+
+        RealmResource realmResource = keycloak.realm(realm);
+
+        String role = "controleur";
+        Set<UserRepresentation> usersOfRole = realmResource.roles().get(role).getRoleUserMembers();
+        List<ControleurDTO> controleurs = new ArrayList<>();
+        ControleurDTO cDTO;
+        for (UserRepresentation u : usersOfRole) {
+            cDTO = new ControleurDTO();
+            cDTO.setId(u.getId());
+            cDTO.setNom(u.getFirstName());
+            cDTO.setPrenom(u.getLastName());
+            cDTO.setEmail(u.getEmail());
+            System.out.println("Attributes-----" + u.getAttributes());
 //	        	cDTO.setOrganisationId(
 //	        			u.getAttributes()
 //	        			.get("organisationId")
 //	        			.get(0)==null?
 //	        									null:u.getAttributes().get("organisationId").get(0));
-	        	controleurs.add(cDTO);
-	        }
+            controleurs.add(cDTO);
+        }
 
-	        return controleurs;
-	}
-	@GetMapping("/api/v1/userconnected")
-	public UserDTO userconnectedInfo() {
-		 KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();        
-	        KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
-	        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
-	        AccessToken accessToken = session.getToken();
-	        UserDTO user = new UserDTO();
-	        user.setNom(accessToken.getName());
-	        user.setPrenom(accessToken.getNickName());
-	        user.setLogin(accessToken.getPreferredUsername());
-	        user.setEmail(accessToken.getEmail());       
-	        Access realmAccess = accessToken.getRealmAccess();
-	        user.setRoles(realmAccess.getRoles());
-	        return user;
-	}
-	public  UserDTO userInfo(String KeycloakId) {
-		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	    Keycloak keycloak = KeycloakBuilder
-	        .builder()
-	        .serverUrl(serverUrl)
-	        .realm(realm)
-	        .authorization(context.getTokenString())
-	        .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-	        .build();
-	    UserResource userResource = keycloak.realm(realm).users().get(KeycloakId);
-	    
+        return controleurs;
+    }
 
-	    UserDTO user = new UserDTO();
+    @GetMapping("/api/v1/userconnected")
+    public UserDTO userconnectedInfo() {
+        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
+        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
+        AccessToken accessToken = session.getToken();
+        UserDTO user = new UserDTO();
+        user.setNom(accessToken.getName());
+        user.setPrenom(accessToken.getNickName());
+        user.setLogin(accessToken.getPreferredUsername());
+        user.setEmail(accessToken.getEmail());
+        Access realmAccess = accessToken.getRealmAccess();
+        user.setRoles(realmAccess.getRoles());
+        return user;
+    }
+
+    public UserDTO userInfo(String KeycloakId) {
+        KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+        Keycloak keycloak = KeycloakBuilder
+                .builder()
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .authorization(context.getTokenString())
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                .build();
+        UserResource userResource = keycloak.realm(realm).users().get(KeycloakId);
+
+
+        UserDTO user = new UserDTO();
         user.setNom(userResource.toRepresentation().getLastName());
         user.setPrenom(userResource.toRepresentation().getFirstName());
         user.setLogin(userResource.toRepresentation().getUsername());
-        user.setEmail(userResource.toRepresentation().getEmail());       
-        
+        user.setEmail(userResource.toRepresentation().getEmail());
+
         user.setRoles(userResource.toRepresentation().getClientRoles().keySet());
         return user;
-	
-	  }
+
+    }
 }
 

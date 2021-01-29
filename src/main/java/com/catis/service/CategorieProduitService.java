@@ -12,25 +12,28 @@ import com.catis.repository.CategorieProduitRepository;
 @Service
 public class CategorieProduitService {
 
-	@Autowired
-	private CategorieProduitRepository categoProduitRepository;
-	
-	public List<CategorieProduit> listeCategorieProduit(){
-		List<CategorieProduit> categorieProduites = new ArrayList<>();
-		categoProduitRepository.findAll().forEach(categorieProduites::add);
-		return categorieProduites;
-	}
-	public CategorieProduit addCategorieProduit(CategorieProduit cp) {
-		cp.setActiveStatus(true);
-		return categoProduitRepository.save(cp);
-	}
-	public List<CategorieProduit> findByLibelle(String libelle){
-		return categoProduitRepository.findByLibelle(libelle);
-				
-	}
-	public CategorieProduit findById(Long id){
-		return categoProduitRepository.findById(id).get();
-				
-	}
-	
+    @Autowired
+    private CategorieProduitRepository categoProduitRepository;
+
+    public List<CategorieProduit> listeCategorieProduit() {
+        List<CategorieProduit> categorieProduites = new ArrayList<>();
+        categoProduitRepository.findAll().forEach(categorieProduites::add);
+        return categorieProduites;
+    }
+
+    public CategorieProduit addCategorieProduit(CategorieProduit cp) {
+        cp.setActiveStatus(true);
+        return categoProduitRepository.save(cp);
+    }
+
+    public List<CategorieProduit> findByLibelle(String libelle) {
+        return categoProduitRepository.findByLibelle(libelle);
+
+    }
+
+    public CategorieProduit findById(Long id) {
+        return categoProduitRepository.findById(id).get();
+
+    }
+
 }

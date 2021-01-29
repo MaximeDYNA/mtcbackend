@@ -43,147 +43,147 @@ import com.catis.service.VisiteService;
 @CrossOrigin
 public class EncaissementController {
 
-	@Autowired
-	private OperationCaisseService ocs;
-	@Autowired
-	private OrganisationService os;
-	@Autowired
-	private SessionCaisseService scs;
-	@Autowired
-	private VenteService venteService;
-	@Autowired
-	private DetailVenteService dvs;
-	@Autowired
-	private CarteGriseService cgs;
-	@Autowired
-	private ClientService clientService;
-	@Autowired
-	private VendeurService vendeurService;
-	@Autowired
-	private ContactService contactService;
-	@Autowired
-	private ProduitService produitService;
-	@Autowired
-	private DetailVenteService detailVenteService;
-	@Autowired
-	private PosaleService posaleService;
-	@Autowired
-	private VisiteService visiteService;
-	@Autowired
-	private ProprietaireVehiculeService pvs;
+    @Autowired
+    private OperationCaisseService ocs;
+    @Autowired
+    private OrganisationService os;
+    @Autowired
+    private SessionCaisseService scs;
+    @Autowired
+    private VenteService venteService;
+    @Autowired
+    private DetailVenteService dvs;
+    @Autowired
+    private CarteGriseService cgs;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private VendeurService vendeurService;
+    @Autowired
+    private ContactService contactService;
+    @Autowired
+    private ProduitService produitService;
+    @Autowired
+    private DetailVenteService detailVenteService;
+    @Autowired
+    private PosaleService posaleService;
+    @Autowired
+    private VisiteService visiteService;
+    @Autowired
+    private ProprietaireVehiculeService pvs;
 
-	private static Logger LOGGER = LoggerFactory.getLogger(EncaissementController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(EncaissementController.class);
 
-	@RequestMapping(method = RequestMethod.POST, value = "/api/v1/encaissements")
-	@Transactional
-	public ResponseEntity<Object> enregistrerEncaissement(@RequestBody Encaissement encaissement)
-			throws ContactVideException, VisiteEnCoursException {
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/encaissements")
+    @Transactional
+    public ResponseEntity<Object> enregistrerEncaissement(@RequestBody Encaissement encaissement)
+            throws ContactVideException, VisiteEnCoursException {
 
-		OperationCaisse op = new OperationCaisse();
-		Vente vente = new Vente();
+        OperationCaisse op = new OperationCaisse();
+        Vente vente = new Vente();
 
-		DetailVente detailVente;
-		Produit produit;
-		CarteGrise carteGrise;
-		Vehicule vehicule;
-		/* ---------client------------ */
-		vente.setClient(
-				clientService.findCustomerById(encaissement.getClientId() == 0 ? 1 : encaissement.getClientId()));
-		/*------------------------------*/
+        DetailVente detailVente;
+        Produit produit;
+        CarteGrise carteGrise;
+        Vehicule vehicule;
+        /* ---------client------------ */
+        vente.setClient(
+                clientService.findCustomerById(encaissement.getClientId() == 0 ? 1 : encaissement.getClientId()));
+        /*------------------------------*/
 
-		/* ---------Vendeur------------ */
+        /* ---------Vendeur------------ */
 
-		vente.setVendeur(
-				vendeurService.findVendeurById(encaissement.getVendeurId() == 0 ? 1 : encaissement.getVendeurId()));
-		/*------------------------------*/
+        vente.setVendeur(
+                vendeurService.findVendeurById(encaissement.getVendeurId() == 0 ? 1 : encaissement.getVendeurId()));
+        /*------------------------------*/
 
-		/* ---------Contact------------ */
-		vente.setContact(contactService.findById(encaissement.getContactId()));
-		/*------------------------------*/
+        /* ---------Contact------------ */
+        vente.setContact(contactService.findById(encaissement.getContactId()));
+        /*------------------------------*/
 
-		/* ---------Session Caisse------------ */
-		vente.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
-		/*------------------------------*/
+        /* ---------Session Caisse------------ */
+        vente.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
+        /*------------------------------*/
 
-		/* ---------vente------------ */
-		vente.setMontantTotal(encaissement.getMontantTotal());
-		vente.setMontantHT(encaissement.getMontantHT());
-		/* -------------------------- */
+        /* ---------vente------------ */
+        vente.setMontantTotal(encaissement.getMontantTotal());
+        vente.setMontantHT(encaissement.getMontantHT());
+        /* -------------------------- */
 
-		/* ---------vente------------ */
-		vente.setNumFacture(venteService.genererNumFacture());
-		/* -------------------------- */
-		Visite visite;
-		for (Posales posale : posaleService.findActivePosale()) {
-			detailVente = new DetailVente();
-			produit = new Produit();
-			vehicule = new Vehicule();
-			produit = produitService.findById(posale.getProduit().getProduitId());
-			carteGrise = new CarteGrise();
-			
-			if (produit.getLibelle().equalsIgnoreCase("cv")) {
-				carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
-				carteGrise.setProduit(produit);
-				visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
-						encaissement.getMontantEncaisse(), 1L);
-			} else {
-				produit.setProduit_id(posale.getProduit().getProduitId());
-				if (encaissement.getClientId() != 0)
-					carteGrise.setProprietaireVehicule(
-							pvs.addClientToProprietaire(clientService.findCustomerById(encaissement.getClientId())));
-				else
-					carteGrise.setProprietaireVehicule(
-							pvs.addContactToProprietaire(contactService.findById(encaissement.getContactId())));
-				carteGrise.setNumImmatriculation(posale.getReference());
-				carteGrise.setProduit(produit);
-				visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-						encaissement.getMontantEncaisse(), 1L);
-			}
-			/*-----------------Visite-----------------*/
+        /* ---------vente------------ */
+        vente.setNumFacture(venteService.genererNumFacture());
+        /* -------------------------- */
+        Visite visite;
+        for (Posales posale : posaleService.findActivePosale()) {
+            detailVente = new DetailVente();
+            produit = new Produit();
+            vehicule = new Vehicule();
+            produit = produitService.findById(posale.getProduit().getProduitId());
+            carteGrise = new CarteGrise();
 
-			/*----------------------------------------*/
+            if (produit.getLibelle().equalsIgnoreCase("cv")) {
+                carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
+                carteGrise.setProduit(produit);
+                visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
+                        encaissement.getMontantEncaisse(), 1L);
+            } else {
+                produit.setProduit_id(posale.getProduit().getProduitId());
+                if (encaissement.getClientId() != 0)
+                    carteGrise.setProprietaireVehicule(
+                            pvs.addClientToProprietaire(clientService.findCustomerById(encaissement.getClientId())));
+                else
+                    carteGrise.setProprietaireVehicule(
+                            pvs.addContactToProprietaire(contactService.findById(encaissement.getContactId())));
+                carteGrise.setNumImmatriculation(posale.getReference());
+                carteGrise.setProduit(produit);
+                visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
+                        encaissement.getMontantEncaisse(), 1L);
+            }
+            /*-----------------Visite-----------------*/
 
-			/*------------------------------------------*/
-			vente.setVisite(visite);
-			vente = venteService.addVente(vente);
-			/*------------------------------------------*/
-			detailVente.setProduit(produit);
-			detailVente.setVente(vente);
-			detailVente.setReference(posale.getReference());
-			dvs.addVente(detailVente);
+            /*----------------------------------------*/
 
-		}
-		/* ---------Opération de caisse------------ */
-		op.setMontant(encaissement.getMontantEncaisse());
+            /*------------------------------------------*/
+            vente.setVisite(visite);
+            vente = venteService.addVente(vente);
+            /*------------------------------------------*/
+            detailVente.setProduit(produit);
+            detailVente.setVente(vente);
+            detailVente.setReference(posale.getReference());
+            dvs.addVente(detailVente);
 
-		op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
-		op.setNumeroTicket(ocs.genererTicket());
-		op.setVente(vente);
-		/* -------------------------- */
-		if (op.getMontant() > 0) {
-			if (encaissement.getContactId() != 0)
-				ocs.addOperationCaisse(op);
-			else
-				throw new ContactVideException("Erreur : Veuillez renseigner le contact");
-		}
+        }
+        /* ---------Opération de caisse------------ */
+        op.setMontant(encaissement.getMontantEncaisse());
 
-		EncaissementResponse e = new EncaissementResponse(op,
-				detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e);
-	}
-	/*
-	 * try {catch(java.util.NoSuchElementException nosuch) {
-	 * LOGGER.error("Une valeur referencée n'existe pas"); return
-	 * ApiResponseHandler.generateResponse(HttpStatus.OK, false,
-	 * "Une valeur referencée n'existe pas", null); } catch(ContactVideException c)
-	 * { LOGGER.error("Veuillez renseigner le contact"); return
-	 * ApiResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false,
-	 * "Veuillez renseigner le contact, si l'erreur persiste contactez CATIS",
-	 * null); } catch(Exception e) { LOGGER.error("Une erreur est survenue"); return
-	 * ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
-	 * "Veuillez signaler cette erreur au web master CATIS", null); }
-	 * 
-	 * 
-	 * }
-	 */
+        op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
+        op.setNumeroTicket(ocs.genererTicket());
+        op.setVente(vente);
+        /* -------------------------- */
+        if (op.getMontant() > 0) {
+            if (encaissement.getContactId() != 0)
+                ocs.addOperationCaisse(op);
+            else
+                throw new ContactVideException("Erreur : Veuillez renseigner le contact");
+        }
+
+        EncaissementResponse e = new EncaissementResponse(op,
+                detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", e);
+    }
+    /*
+     * try {catch(java.util.NoSuchElementException nosuch) {
+     * LOGGER.error("Une valeur referencée n'existe pas"); return
+     * ApiResponseHandler.generateResponse(HttpStatus.OK, false,
+     * "Une valeur referencée n'existe pas", null); } catch(ContactVideException c)
+     * { LOGGER.error("Veuillez renseigner le contact"); return
+     * ApiResponseHandler.generateResponse(HttpStatus.FORBIDDEN, false,
+     * "Veuillez renseigner le contact, si l'erreur persiste contactez CATIS",
+     * null); } catch(Exception e) { LOGGER.error("Une erreur est survenue"); return
+     * ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
+     * "Veuillez signaler cette erreur au web master CATIS", null); }
+     *
+     *
+     * }
+     */
 }

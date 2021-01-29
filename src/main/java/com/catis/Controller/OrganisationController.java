@@ -12,11 +12,11 @@ import com.catis.service.OrganisationService;
 @RestController
 public class OrganisationController {
 
-	@Autowired
-	private OrganisationService organisationService;
-	
-	@RequestMapping(method = RequestMethod.POST, value="/api/v1/organisations")
-	public void creerOrganisation(@RequestBody Organisation organisation) {
-		organisationService.addOrgansiation(organisation);
-	}
+    @Autowired
+    private OrganisationService organisationService;
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/organisations")
+    public void creerOrganisation(@RequestBody Organisation organisation) {
+        organisationService.addOrgansiation(organisation);
+    }
 }

@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ResourceConfig implements WebMvcConfigurer {
 
-@Override
+    @Override
 
-public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-     //registry.addResourceHandler("/uploaded/signatures/*").addResourceLocations("classpath:/uploaded/signatures/");
-}
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        //registry.addResourceHandler("/uploaded/signatures/*").addResourceLocations("classpath:/uploaded/signatures/");
+    }
 }
 

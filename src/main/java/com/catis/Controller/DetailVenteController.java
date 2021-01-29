@@ -3,6 +3,7 @@ package com.catis.Controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +18,18 @@ import com.catis.service.VenteService;
 @RestController
 public class DetailVenteController {
 
-	@Autowired
-	private DetailVenteService detailVenteService;
-	@Autowired
-	private VenteService venteService;
-	@Autowired
-	private OperationCaisseService ocs;
-	private static Logger LOGGER = LoggerFactory.getLogger(DetailVenteController.class);
-	
-	@RequestMapping(method = RequestMethod.POST, value="/api/v1/detailsventes")
-	public void addVente(List<DetailVente> detailVentes) {
-		detailVenteService.addVentes(detailVentes);
-	}
-	
+    @Autowired
+    private DetailVenteService detailVenteService;
+    @Autowired
+    private VenteService venteService;
+    @Autowired
+    private OperationCaisseService ocs;
+    private static Logger LOGGER = LoggerFactory.getLogger(DetailVenteController.class);
 
-	
-	
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/detailsventes")
+    public void addVente(List<DetailVente> detailVentes) {
+        detailVenteService.addVentes(detailVentes);
+    }
+
+
 }

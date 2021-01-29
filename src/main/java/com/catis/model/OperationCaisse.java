@@ -17,117 +17,114 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_operationdecaisse")
 @EntityListeners(AuditingEntityListener.class)
 public class OperationCaisse extends JournalData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long operationDeCaisseId;
-	private int type;
-	private double montant;
-	
-	@ManyToOne
-	private Vente vente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long operationDeCaisseId;
+    private int type;
+    private double montant;
 
-	@ManyToOne
-	private Taxe taxe;
+    @ManyToOne
+    private Vente vente;
 
-	@ManyToOne
-	private SessionCaisse sessionCaisse;
+    @ManyToOne
+    private Taxe taxe;
 
-	private String numeroTicket;
+    @ManyToOne
+    private SessionCaisse sessionCaisse;
 
-	public OperationCaisse() {
+    private String numeroTicket;
 
-	}
+    public OperationCaisse() {
 
-	
-
-	public OperationCaisse(long operationDeCaisseId, int type, double montant, Caissier caissier, Vente vente,
-			Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
-		super();
-		this.operationDeCaisseId = operationDeCaisseId;
-		this.type = type;
-		this.montant = montant;
-		
-		this.vente = vente;
-		this.taxe = taxe;
-		this.sessionCaisse = sessionCaisse;
-		this.numeroTicket = numeroTicket;
-	}
+    }
 
 
+    public OperationCaisse(long operationDeCaisseId, int type, double montant, Caissier caissier, Vente vente,
+                           Taxe taxe, SessionCaisse sessionCaisse, String numeroTicket) {
+        super();
+        this.operationDeCaisseId = operationDeCaisseId;
+        this.type = type;
+        this.montant = montant;
 
-	public long getOperationDeCaisseId() {
-		return operationDeCaisseId;
-	}
-
-	public void setOperationDeCaisseId(long operationDeCaisseId) {
-		this.operationDeCaisseId = operationDeCaisseId;
-	}
-
-	public int isType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public double getMontant() {
-		return montant;
-	}
-
-	public void setMontant(double montant) {
-		this.montant = montant;
-	}
-
-	public int getType() {
-		return type;
-	}
+        this.vente = vente;
+        this.taxe = taxe;
+        this.sessionCaisse = sessionCaisse;
+        this.numeroTicket = numeroTicket;
+    }
 
 
+    public long getOperationDeCaisseId() {
+        return operationDeCaisseId;
+    }
 
-	public Vente getVente() {
-		return vente;
-	}
+    public void setOperationDeCaisseId(long operationDeCaisseId) {
+        this.operationDeCaisseId = operationDeCaisseId;
+    }
 
-	public void setVente(Vente vente) {
-		this.vente = vente;
-	}
+    public int isType() {
+        return type;
+    }
 
-	public Taxe getTaxe() {
-		return taxe;
-	}
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	public void setTaxe(Taxe taxe) {
-		this.taxe = taxe;
-	}
+    public double getMontant() {
+        return montant;
+    }
 
-	public String getNumeroTicket() {
-		return numeroTicket;
-	}
+    public void setMontant(double montant) {
+        this.montant = montant;
+    }
 
-	public void setNumeroTicket(String numeroTicket) {
-		this.numeroTicket = numeroTicket;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public SessionCaisse getSessionCaisse() {
-		return sessionCaisse;
-	}
 
-	public void setSessionCaisse(SessionCaisse sessionCaisse) {
-		this.sessionCaisse = sessionCaisse;
-	}
+    public Vente getVente() {
+        return vente;
+    }
 
-	public String getLibelle() {
-		if (this.type == 0) {
-			return "Mise en compte";
-		}
-		if (this.type == 1) {
-			return "Encaissement";
-		}
-		if (this.type == 2) {
-			return "Décaissement";
-		}
-		return "Erreur";
-	}
+    public void setVente(Vente vente) {
+        this.vente = vente;
+    }
+
+    public Taxe getTaxe() {
+        return taxe;
+    }
+
+    public void setTaxe(Taxe taxe) {
+        this.taxe = taxe;
+    }
+
+    public String getNumeroTicket() {
+        return numeroTicket;
+    }
+
+    public void setNumeroTicket(String numeroTicket) {
+        this.numeroTicket = numeroTicket;
+    }
+
+    public SessionCaisse getSessionCaisse() {
+        return sessionCaisse;
+    }
+
+    public void setSessionCaisse(SessionCaisse sessionCaisse) {
+        this.sessionCaisse = sessionCaisse;
+    }
+
+    public String getLibelle() {
+        if (this.type == 0) {
+            return "Mise en compte";
+        }
+        if (this.type == 1) {
+            return "Encaissement";
+        }
+        if (this.type == 2) {
+            return "Décaissement";
+        }
+        return "Erreur";
+    }
 
 }

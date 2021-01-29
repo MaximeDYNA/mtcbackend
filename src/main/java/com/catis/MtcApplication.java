@@ -9,16 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 
-
 @SpringBootApplication
 public class MtcApplication {
 
-	
-	
-	public static void main(String[] args) {
-		SpringApplication.run(MtcApplication.class, args);
-	}
 
-	
-	
+    public static void main(String[] args) {
+        SpringApplication.run(MtcApplication.class, args);
+    }
+
+
 }

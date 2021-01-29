@@ -23,66 +23,65 @@ import com.catis.service.MesureVisuelService;
 @RestController
 @CrossOrigin
 public class MesureVisuelController {
-	@Autowired
-	private InspectionRepository inspectionRepo;
-	@Autowired
+    @Autowired
+    private InspectionRepository inspectionRepo;
+    @Autowired
     private LexiqueRepository lexiqueRepository;
     @Autowired
-	private MesureVisuelService mesurevisuelservice;
+    private MesureVisuelService mesurevisuelservice;
 
-	public MesureVisuelController(InspectionRepository inspectionRepo,
-		LexiqueRepository lexiqueRepository, MesureVisuelService mesurevisuelservice) {
+    public MesureVisuelController(InspectionRepository inspectionRepo,
+                                  LexiqueRepository lexiqueRepository, MesureVisuelService mesurevisuelservice) {
 
-		this.inspectionRepo = inspectionRepo;
-		this.lexiqueRepository = lexiqueRepository;
-		this.mesurevisuelservice = mesurevisuelservice;
-	}
+        this.inspectionRepo = inspectionRepo;
+        this.lexiqueRepository = lexiqueRepository;
+        this.mesurevisuelservice = mesurevisuelservice;
+    }
 
-	private static Logger LOGGER = LoggerFactory.getLogger(MesureVisuelController.class);
-	
-	@PostMapping("/api/v1/mesurevisuel")
-	public  ResponseEntity<Object> addMesureVisuel(@RequestBody defectresponse defectrespons){
+    private static Logger LOGGER = LoggerFactory.getLogger(MesureVisuelController.class);
 
-		try {
-			Optional<Inspection> inspection = this.inspectionRepo.findById(defectrespons.getInspectionid());
-			inspection.ifPresent( inspection1  -> {
-				defectrespons.getDefectslist().forEach( defectsmodel -> {
-					Optional<Lexique> lexique = this.lexiqueRepository.findById(defectsmodel.getId());
-					lexique.ifPresent(inspection1::addLexique);
-				});
-				this.inspectionRepo.save(inspection1);
-				LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
-						+ defectrespons.getDefectslist());
-				/*
-				 * for(DefectsModel h : defectrespons.getDefectslist()) {
-				 * LOGGER.info("List des mesures"+h.getDefect()); }
-				 */
-			});
+    @PostMapping("/api/v1/mesurevisuel")
+    public ResponseEntity<Object> addMesureVisuel(@RequestBody defectresponse defectrespons) {
 
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null);
+        try {
+            Optional<Inspection> inspection = this.inspectionRepo.findById(defectrespons.getInspectionid());
+            inspection.ifPresent(inspection1 -> {
+                defectrespons.getDefectslist().forEach(defectsmodel -> {
+                    Optional<Lexique> lexique = this.lexiqueRepository.findById(defectsmodel.getId());
+                    lexique.ifPresent(inspection1::addLexique);
+                });
+                this.inspectionRepo.save(inspection1);
+                LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
+                        + defectrespons.getDefectslist());
+                /*
+                 * for(DefectsModel h : defectrespons.getDefectslist()) {
+                 * LOGGER.info("List des mesures"+h.getDefect()); }
+                 */
+            });
 
-		} catch(Exception e){
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-		}
-	}
-	
-	
-	@PostMapping("/api/v1/datainspection")
-	public  ResponseEntity<Object> addDataInspection(@RequestBody MesureVisuel mesurevisuel){
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null);
 
-		System.out.println("hello "+mesurevisuel.toString());
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+        }
+    }
+
+
+    @PostMapping("/api/v1/datainspection")
+    public ResponseEntity<Object> addDataInspection(@RequestBody MesureVisuel mesurevisuel) {
+
+        System.out.println("hello " + mesurevisuel.toString());
 //		  LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
 //		  +mesurevisuel.getImage1()); 
-		  Inspection i = inspectionRepo.findById(mesurevisuel.getInspection().getIdInspection()).get();
-		  mesurevisuel.setInspection(i);
-		  MesureVisuel m = mesurevisuelservice.addDataInspection(mesurevisuel);
-		try {
+        Inspection i = inspectionRepo.findById(mesurevisuel.getInspection().getIdInspection()).get();
+        mesurevisuel.setInspection(i);
+        MesureVisuel m = mesurevisuelservice.addDataInspection(mesurevisuel);
+        try {
 
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m );
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
-		}
-	}
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m);
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
 }

@@ -15,46 +15,46 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_statut_code")
 @EntityListeners(AuditingEntityListener.class)
 public class StatutCode extends JournalData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String libelle;
-	private String type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String libelle;
+    private String type;
 
-	public StatutCode() {
+    public StatutCode() {
 
-		// TODO Auto-generated constructor stub
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public StatutCode(Long id, String libelle, String type) {
+    public StatutCode(Long id, String libelle, String type) {
 
-		this.id = id;
-		this.libelle = libelle;
-		this.type = type;
-	}
+        this.id = id;
+        this.libelle = libelle;
+        this.type = type;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getLibelle() {
-		return libelle;
-	}
+    public String getLibelle() {
+        return libelle;
+    }
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
 }

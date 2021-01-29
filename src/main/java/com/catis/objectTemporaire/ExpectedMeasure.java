@@ -2,41 +2,40 @@ package com.catis.objectTemporaire;
 
 public class ExpectedMeasure {
 
-	private String name;
-	private String icon;
-	private boolean isFinished;
-	
-	public ExpectedMeasure(String name, String icon, boolean isFinished) {
-		super();
-		this.name = name;
-		this.icon = icon;
-		this.isFinished = isFinished;
-	}
+    private String name;
+    private String icon;
+    private boolean isFinished;
 
-	public String getName() {
-		return name;
-	}
+    public ExpectedMeasure(String name, String icon, boolean isFinished) {
+        super();
+        this.name = name;
+        this.icon = icon;
+        this.isFinished = isFinished;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public boolean isFinished() {
-		return isFinished;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public void setFinished(boolean isFinished) {
-		this.isFinished = isFinished;
-	}
-	
-	
-	
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+    }
+
+
 }

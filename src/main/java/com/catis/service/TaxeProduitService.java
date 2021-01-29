@@ -12,13 +12,14 @@ import com.catis.repository.TaxeProduitRepository;
 @Service
 public class TaxeProduitService {
 
-	@Autowired
-	private TaxeProduitRepository taxeProduitRepository;
-	
-	public List<TaxeProduit> findByProduitId(Long produitId){
-		return taxeProduitRepository.findByProduit_ProduitId(produitId);
-	}
-	public List<TaxeProduit> findByLibelle(String reference){
-		return taxeProduitRepository.findByProduit_LibelleIgnoreCase(reference);
-	}
+    @Autowired
+    private TaxeProduitRepository taxeProduitRepository;
+
+    public List<TaxeProduit> findByProduitId(Long produitId) {
+        return taxeProduitRepository.findByProduit_ProduitId(produitId);
+    }
+
+    public List<TaxeProduit> findByLibelle(String reference) {
+        return taxeProduitRepository.findByProduit_LibelleIgnoreCase(reference);
+    }
 }

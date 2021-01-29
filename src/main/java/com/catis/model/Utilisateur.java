@@ -19,63 +19,55 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_utilisateur")
 @EntityListeners(AuditingEntityListener.class)
 public class Utilisateur extends JournalData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long utilisateurId;
-	private String keycloakId;
-	@ManyToOne
-	@JsonIgnore
-	private Organisation organisation;
-
-	
-
-	public Utilisateur() {
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long utilisateurId;
+    private String keycloakId;
+    @ManyToOne
+    @JsonIgnore
+    private Organisation organisation;
 
 
-
-	public Utilisateur(Long utilisateurId, String keycloakId, Organisation organisation) {
-		super();
-		this.utilisateurId = utilisateurId;
-		this.keycloakId = keycloakId;
-		this.organisation = organisation;
-	}
+    public Utilisateur() {
+    }
 
 
-
-	public Long getUtilisateurId() {
-		return utilisateurId;
-	}
-
-
-
-	public void setUtilisateurId(Long utilisateurId) {
-		this.utilisateurId = utilisateurId;
-	}
+    public Utilisateur(Long utilisateurId, String keycloakId, Organisation organisation) {
+        super();
+        this.utilisateurId = utilisateurId;
+        this.keycloakId = keycloakId;
+        this.organisation = organisation;
+    }
 
 
-
-	public String getKeycloakId() {
-		return keycloakId;
-	}
-
+    public Long getUtilisateurId() {
+        return utilisateurId;
+    }
 
 
-	public void setKeycloakId(String keycloakId) {
-		this.keycloakId = keycloakId;
-	}
+    public void setUtilisateurId(Long utilisateurId) {
+        this.utilisateurId = utilisateurId;
+    }
 
 
-
-	public Organisation getOrganisation() {
-		return organisation;
-	}
-
+    public String getKeycloakId() {
+        return keycloakId;
+    }
 
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
+    }
 
-	
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+
+
 }

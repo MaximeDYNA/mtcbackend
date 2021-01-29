@@ -25,94 +25,94 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Mesure extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idMesure;
-	private String code;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idMesure;
+    private String code;
+    private String description;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@ManyToOne
-	private Formule formule;
+    @ManyToOne
+    private Formule formule;
 
-	@ManyToMany(mappedBy = "mesures")
-	private Set<CategorieTestVehicule> categorieTestVehicules;
-	
-	@OneToMany(mappedBy = "mesure")
-	private List<ValeurTest> valeurTests = new ArrayList<>();
+    @ManyToMany(mappedBy = "mesures")
+    private Set<CategorieTestVehicule> categorieTestVehicules;
 
-	public Mesure() {
+    @OneToMany(mappedBy = "mesure")
+    private List<ValeurTest> valeurTests = new ArrayList<>();
 
-		// TODO Auto-generated constructor stub
-	}
+    public Mesure() {
 
-	public Long getIdMesure() {
-		return idMesure;
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public void setIdMesure(Long idMesure) {
-		this.idMesure = idMesure;
-	}
+    public Long getIdMesure() {
+        return idMesure;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setIdMesure(Long idMesure) {
+        this.idMesure = idMesure;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Organisation getOganisation() {
-		return organisation;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setOganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Organisation getOganisation() {
+        return organisation;
+    }
 
-	public Formule getFormule() {
-		return formule;
-	}
+    public void setOganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public void setFormule(Formule formule) {
-		this.formule = formule;
-	}
+    public Formule getFormule() {
+        return formule;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public void setFormule(Formule formule) {
+        this.formule = formule;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public Set<CategorieTestVehicule> getCategorieTestVehicules() {
-		return categorieTestVehicules;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
-		this.categorieTestVehicules = categorieTestVehicules;
-	}
+    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+        return categorieTestVehicules;
+    }
 
-	public Mesure(Long idMesure, String code, String description, Organisation organisation,
-			Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
-		super();
-		this.idMesure = idMesure;
-		this.code = code;
-		this.description = description;
-		this.organisation = organisation;
-		this.formule = formule;
-		this.categorieTestVehicules = categorieTestVehicules;
-	}
+    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+        this.categorieTestVehicules = categorieTestVehicules;
+    }
+
+    public Mesure(Long idMesure, String code, String description, Organisation organisation,
+                  Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
+        super();
+        this.idMesure = idMesure;
+        this.code = code;
+        this.description = description;
+        this.organisation = organisation;
+        this.formule = formule;
+        this.categorieTestVehicules = categorieTestVehicules;
+    }
 
 }

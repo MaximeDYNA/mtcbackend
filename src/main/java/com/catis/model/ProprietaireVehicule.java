@@ -21,74 +21,74 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_proprietairevehicule")
 public class ProprietaireVehicule extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long proprietaireVehiculeId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long proprietaireVehiculeId;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@OneToMany(mappedBy = "proprietaireVehicule")
-	@JsonIgnore
-	private Set<CarteGrise> cartegrises;
+    @OneToMany(mappedBy = "proprietaireVehicule")
+    @JsonIgnore
+    private Set<CarteGrise> cartegrises;
 
-	private String description;
+    private String description;
 
-	public ProprietaireVehicule() {
+    public ProprietaireVehicule() {
 
-	}
+    }
 
-	public ProprietaireVehicule(Long proprietaireVehiculeId, Organisation organisation, Partenaire partenaire,
-			Set<CarteGrise> cartegrises, String description) {
+    public ProprietaireVehicule(Long proprietaireVehiculeId, Organisation organisation, Partenaire partenaire,
+                                Set<CarteGrise> cartegrises, String description) {
 
-		this.proprietaireVehiculeId = proprietaireVehiculeId;
-		this.organisation = organisation;
-		this.partenaire = partenaire;
-		this.cartegrises = cartegrises;
-		this.description = description;
-	}
+        this.proprietaireVehiculeId = proprietaireVehiculeId;
+        this.organisation = organisation;
+        this.partenaire = partenaire;
+        this.cartegrises = cartegrises;
+        this.description = description;
+    }
 
-	public Long getProprietaireVehiculeId() {
-		return proprietaireVehiculeId;
-	}
+    public Long getProprietaireVehiculeId() {
+        return proprietaireVehiculeId;
+    }
 
-	public void setProprietaireVehiculeId(Long proprietaireVehiculeId) {
-		this.proprietaireVehiculeId = proprietaireVehiculeId;
-	}
+    public void setProprietaireVehiculeId(Long proprietaireVehiculeId) {
+        this.proprietaireVehiculeId = proprietaireVehiculeId;
+    }
 
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
 
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<CarteGrise> getCartegrises() {
-		return cartegrises;
-	}
+    public Set<CarteGrise> getCartegrises() {
+        return cartegrises;
+    }
 
-	public void setCartegrises(Set<CarteGrise> cartegrises) {
-		this.cartegrises = cartegrises;
-	}
+    public void setCartegrises(Set<CarteGrise> cartegrises) {
+        this.cartegrises = cartegrises;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
 }

@@ -16,47 +16,47 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_taxeproduit")
 @EntityListeners(AuditingEntityListener.class)
 public class TaxeProduit extends JournalData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long TaxeProduitId;
-	@ManyToOne
-	private Taxe taxe;
-	@ManyToOne
-	private Produit produit;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long TaxeProduitId;
+    @ManyToOne
+    private Taxe taxe;
+    @ManyToOne
+    private Produit produit;
 
-	public TaxeProduit(Taxe taxe, Produit produit) {
+    public TaxeProduit(Taxe taxe, Produit produit) {
 
-		this.taxe = taxe;
-		this.produit = produit;
-	}
+        this.taxe = taxe;
+        this.produit = produit;
+    }
 
-	public TaxeProduit() {
+    public TaxeProduit() {
 
-		// TODO Auto-generated constructor stub
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public Taxe getTaxe() {
-		return taxe;
-	}
+    public Taxe getTaxe() {
+        return taxe;
+    }
 
-	public void setTaxe(Taxe taxe) {
-		this.taxe = taxe;
-	}
+    public void setTaxe(Taxe taxe) {
+        this.taxe = taxe;
+    }
 
-	public Produit getProduit() {
-		return produit;
-	}
+    public Produit getProduit() {
+        return produit;
+    }
 
-	public void setProduit(Produit produit) {
-		this.produit = produit;
-	}
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
 
-	public Long getTaxeProduitId() {
-		return TaxeProduitId;
-	}
+    public Long getTaxeProduitId() {
+        return TaxeProduitId;
+    }
 
-	public void setTaxeProduitId(Long taxeProduitId) {
-		TaxeProduitId = taxeProduitId;
-	}
+    public void setTaxeProduitId(Long taxeProduitId) {
+        TaxeProduitId = taxeProduitId;
+    }
 
 }

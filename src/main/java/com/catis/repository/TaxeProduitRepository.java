@@ -7,8 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
 
-public interface TaxeProduitRepository extends CrudRepository<TaxeProduit, Long>{
+public interface TaxeProduitRepository extends CrudRepository<TaxeProduit, Long> {
 
-	List<TaxeProduit> findByProduit_ProduitId(Long produitId);
-	List<TaxeProduit> findByProduit_LibelleIgnoreCase(String libelle);
+    List<TaxeProduit> findByProduit_ProduitId(Long produitId);
+
+    List<TaxeProduit> findByProduit_LibelleIgnoreCase(String libelle);
 }

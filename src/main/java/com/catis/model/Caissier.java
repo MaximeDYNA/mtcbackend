@@ -22,122 +22,106 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_caissier")
 public class Caissier extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long caissierId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long caissierId;
 
-	private String codeCaissier;
+    private String codeCaissier;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@ManyToOne
-	private Partenaire partenaire;
-	
-	@ManyToOne
-	private Caisse caisse;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@ManyToOne(optional = true) // id utilisateur optionel
-	private Utilisateur user;
+    @ManyToOne
+    private Caisse caisse;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")
-	@JsonIgnore
-	private Set<SessionCaisse> sessionCaisses;
+    @ManyToOne(optional = true) // id utilisateur optionel
+    private Utilisateur user;
 
-	public Caissier() {
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")
+    @JsonIgnore
+    private Set<SessionCaisse> sessionCaisses;
 
-	
-	
-
-	
-
-	public Caissier(Long caissierId, String codeCaissier, Organisation organisation, Partenaire partenaire,
-			Caisse caisse, Utilisateur user, Set<SessionCaisse> sessionCaisses) {
-		super();
-		this.caissierId = caissierId;
-		this.codeCaissier = codeCaissier;
-		this.organisation = organisation;
-		this.partenaire = partenaire;
-		this.caisse = caisse;
-		this.user = user;
-		this.sessionCaisses = sessionCaisses;
-	}
+    public Caissier() {
+    }
 
 
+    public Caissier(Long caissierId, String codeCaissier, Organisation organisation, Partenaire partenaire,
+                    Caisse caisse, Utilisateur user, Set<SessionCaisse> sessionCaisses) {
+        super();
+        this.caissierId = caissierId;
+        this.codeCaissier = codeCaissier;
+        this.organisation = organisation;
+        this.partenaire = partenaire;
+        this.caisse = caisse;
+        this.user = user;
+        this.sessionCaisses = sessionCaisses;
+    }
 
 
+    public Long getCaissierId() {
+        return caissierId;
+    }
 
 
-	public Long getCaissierId() {
-		return caissierId;
-	}
+    public void setCaissierId(Long caissierId) {
+        this.caissierId = caissierId;
+    }
 
 
+    public String getCodeCaissier() {
+        return codeCaissier;
+    }
+
+    public void setCodeCaissier(String codeCaissier) {
+        this.codeCaissier = codeCaissier;
+    }
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
+
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
+
+    public Utilisateur getUser() {
+        return user;
+    }
+
+    public void setUser(Utilisateur user) {
+        this.user = user;
+    }
 
 
+    public Caisse getCaisse() {
+        return caisse;
+    }
 
 
-	public void setCaissierId(Long caissierId) {
-		this.caissierId = caissierId;
-	}
+    public void setCaisse(Caisse caisse) {
+        this.caisse = caisse;
+    }
 
 
+    public Set<SessionCaisse> getSessionCaisses() {
+        return sessionCaisses;
+    }
 
 
+    public void setSessionCaisses(Set<SessionCaisse> sessionCaisses) {
+        this.sessionCaisses = sessionCaisses;
+    }
 
 
-	public String getCodeCaissier() {
-		return codeCaissier;
-	}
-
-	public void setCodeCaissier(String codeCaissier) {
-		this.codeCaissier = codeCaissier;
-	}
-
-	public Organisation getOrganisation() {
-		return organisation;
-	}
-
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
-
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
-
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
-
-	public Utilisateur getUser() {
-		return user;
-	}
-
-	public void setUser(Utilisateur user) {
-		this.user = user;
-	}
-
-
-	public Caisse getCaisse() {
-		return caisse;
-	}
-
-
-	public void setCaisse(Caisse caisse) {
-		this.caisse = caisse;
-	}
-
-
-	public Set<SessionCaisse> getSessionCaisses() {
-		return sessionCaisses;
-	}
-
-
-	public void setSessionCaisses(Set<SessionCaisse> sessionCaisses) {
-		this.sessionCaisses = sessionCaisses;
-	}
-
-	
 }

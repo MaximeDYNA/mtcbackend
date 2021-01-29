@@ -6,5 +6,5 @@ import com.catis.model.Adresse;
 
 public interface AdresseRepository extends CrudRepository<Adresse, Long> {
 
-	
+
 }

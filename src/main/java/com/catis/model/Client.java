@@ -22,81 +22,81 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Client extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long clientId;
-	private String description;
-	
-	@ManyToMany
-	private Set<Lexique> lexiques;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long clientId;
+    private String description;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToMany
+    private Set<Lexique> lexiques;
 
-	@OneToMany(mappedBy = "client")
-	@JsonIgnore
-	Set<Vente> ventes;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@OneToMany(mappedBy = "client")
-	@JsonIgnore
-	Set<Contact> contact;
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    Set<Vente> ventes;
 
-	public Set<Contact> getContact() {
-		return contact;
-	}
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    Set<Contact> contact;
 
-	public void setContact(Set<Contact> contact) {
-		this.contact = contact;
-	}
+    public Set<Contact> getContact() {
+        return contact;
+    }
 
-	public Client() {
-	}
+    public void setContact(Set<Contact> contact) {
+        this.contact = contact;
+    }
 
-	public Client(long clientId, String description, Partenaire partenaire) {
+    public Client() {
+    }
 
-		this.clientId = clientId;
-		this.description = description;
-		this.partenaire = partenaire;
-	}
+    public Client(long clientId, String description, Partenaire partenaire) {
 
-	public String getDescription() {
-		return description;
-	}
+        this.clientId = clientId;
+        this.description = description;
+        this.partenaire = partenaire;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Long getClientId() {
-		return clientId;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
+    public Long getClientId() {
+        return clientId;
+    }
 
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
 
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
 
-	public Set<Vente> getVentes() {
-		return ventes;
-	}
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
 
-	public void setVentes(Set<Vente> ventes) {
-		this.ventes = ventes;
-	}
+    public Set<Vente> getVentes() {
+        return ventes;
+    }
 
-	public Set<Lexique> getLexiques() {
-		return lexiques;
-	}
+    public void setVentes(Set<Vente> ventes) {
+        this.ventes = ventes;
+    }
 
-	public void setLexiques(Set<Lexique> lexiques) {
-		this.lexiques = lexiques;
-	}
+    public Set<Lexique> getLexiques() {
+        return lexiques;
+    }
+
+    public void setLexiques(Set<Lexique> lexiques) {
+        this.lexiques = lexiques;
+    }
 
 }

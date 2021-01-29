@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.GieglanFile;
 
-public interface GieglanFileRepository extends CrudRepository<GieglanFile, Long>{
+public interface GieglanFileRepository extends CrudRepository<GieglanFile, Long> {
 
-	List<GieglanFile> findByInspection_IdInspection(Long idInpection);
+    List<GieglanFile> findByInspection_IdInspection(Long idInpection);
 }

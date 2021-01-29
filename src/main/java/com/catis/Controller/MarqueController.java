@@ -17,29 +17,29 @@ import com.catis.service.MarqueService;
 @CrossOrigin
 public class MarqueController {
 
-	@Autowired
-	private MarqueService marqueService;
-	private static Logger LOGGER = LoggerFactory.getLogger(MarqueController.class);
-	@GetMapping("/api/v1/marques")
-	public  ResponseEntity<Object> listMarque(){
-		LOGGER.info("List des marques...");
-		try {
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.marqueList());
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
-		}
-	}
-	@PostMapping("/api/v1/marques")
-	public  ResponseEntity<Object> addMarque(MarqueVehicule marque){
-		LOGGER.info("List des marques...");
-		try {
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.addMarque(marque));
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
-		}
-	}
+    @Autowired
+    private MarqueService marqueService;
+    private static Logger LOGGER = LoggerFactory.getLogger(MarqueController.class);
+
+    @GetMapping("/api/v1/marques")
+    public ResponseEntity<Object> listMarque() {
+        LOGGER.info("List des marques...");
+        try {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.marqueList());
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
+
+    @PostMapping("/api/v1/marques")
+    public ResponseEntity<Object> addMarque(MarqueVehicule marque) {
+        LOGGER.info("List des marques...");
+        try {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.addMarque(marque));
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
 }

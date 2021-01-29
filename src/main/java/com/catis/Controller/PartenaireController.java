@@ -12,11 +12,11 @@ import com.catis.service.PartenaireService;
 @RestController
 public class PartenaireController {
 
-	@Autowired
-	private PartenaireService partenaireService;
-	
-	@RequestMapping(method = RequestMethod.POST, value ="api/v1/partenaires")
-	public void creerPartenaire(@RequestBody Partenaire partenaire) {
-		partenaireService.addPartenaire(partenaire);
-	}
+    @Autowired
+    private PartenaireService partenaireService;
+
+    @RequestMapping(method = RequestMethod.POST, value = "api/v1/partenaires")
+    public void creerPartenaire(@RequestBody Partenaire partenaire) {
+        partenaireService.addPartenaire(partenaire);
+    }
 }

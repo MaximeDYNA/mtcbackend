@@ -12,24 +12,27 @@ import com.catis.repository.AdresseRepository;
 @Service
 public class AdresseService {
 
-	@Autowired
-	private AdresseRepository adresseRepository;
-	
-	public List<Adresse> findAll(){
-		List<Adresse> adresses = new ArrayList<>();
-		adresseRepository.findAll().forEach(adresses::add);
-		return adresses;
-				
-	}
-	public Adresse addAdresse(Adresse adresse) {
-		return adresseRepository.save(adresse);
-	}
-	public Adresse updateAdresse(Adresse adresse) {
-		return adresseRepository.save(adresse);
-	}
-	public void deleteAdresse(Long idAdresse) {
-		Adresse adresse = adresseRepository.findById(idAdresse).get();
-		adresseRepository.deleteById(idAdresse);
-		
-	}
+    @Autowired
+    private AdresseRepository adresseRepository;
+
+    public List<Adresse> findAll() {
+        List<Adresse> adresses = new ArrayList<>();
+        adresseRepository.findAll().forEach(adresses::add);
+        return adresses;
+
+    }
+
+    public Adresse addAdresse(Adresse adresse) {
+        return adresseRepository.save(adresse);
+    }
+
+    public Adresse updateAdresse(Adresse adresse) {
+        return adresseRepository.save(adresse);
+    }
+
+    public void deleteAdresse(Long idAdresse) {
+        Adresse adresse = adresseRepository.findById(idAdresse).get();
+        adresseRepository.deleteById(idAdresse);
+
+    }
 }

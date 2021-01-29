@@ -21,60 +21,60 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_vendeur")
 @EntityListeners(AuditingEntityListener.class)
 public class Vendeur extends JournalData {
-	// entité capable d'avoir des commisions sur une vente
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long vendeurId;
+    // entité capable d'avoir des commisions sur une vente
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long vendeurId;
 
-	private String description;
+    private String description;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vendeur")
-	@JsonIgnore
-	private Set<Vente> ventes;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vendeur")
+    @JsonIgnore
+    private Set<Vente> ventes;
 
-	public Vendeur() {
-	}
+    public Vendeur() {
+    }
 
-	public Vendeur(long vendeurId, String description, Partenaire partenaire) {
+    public Vendeur(long vendeurId, String description, Partenaire partenaire) {
 
-		this.vendeurId = vendeurId;
-		this.description = description;
-		this.partenaire = partenaire;
-	}
+        this.vendeurId = vendeurId;
+        this.description = description;
+        this.partenaire = partenaire;
+    }
 
-	public Long getVendeurId() {
-		return vendeurId;
-	}
+    public Long getVendeurId() {
+        return vendeurId;
+    }
 
-	public void setVendeurId(Long vendeurId) {
-		this.vendeurId = vendeurId;
-	}
+    public void setVendeurId(Long vendeurId) {
+        this.vendeurId = vendeurId;
+    }
 
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
 
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
 
-	public Set<Vente> getVentes() {
-		return ventes;
-	}
+    public Set<Vente> getVentes() {
+        return ventes;
+    }
 
-	public void setVentes(Set<Vente> ventes) {
-		this.ventes = ventes;
-	}
+    public void setVentes(Set<Vente> ventes) {
+        this.ventes = ventes;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

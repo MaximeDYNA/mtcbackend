@@ -22,114 +22,92 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @EntityListeners(AuditingEntityListener.class)
 public class VerbalProcess extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String reference;
+    private String reference;
 
-	private String signature; // qrc
-	
-	private boolean status;
+    private String signature; // qrc
 
-	@OneToOne
-	
-	private Visite visite;
-	
-	@OneToMany(mappedBy = "verbalProcess")
-	@JsonIgnore
-	private Set<RapportDeVisite> rapportDeVisites;
+    private boolean status;
 
-	public VerbalProcess() {
+    @OneToOne
 
-		// TODO Auto-generated constructor stub
-	}
+    private Visite visite;
 
+    @OneToMany(mappedBy = "verbalProcess")
+    @JsonIgnore
+    private Set<RapportDeVisite> rapportDeVisites;
 
+    public VerbalProcess() {
+
+        // TODO Auto-generated constructor stub
+    }
 
 
+    public boolean isStatus() {
+        return status;
+    }
 
 
-
-	public boolean isStatus() {
-		return status;
-	}
-
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
 
+    public VerbalProcess(Long id, String reference, String signature, boolean status, Visite visite,
+                         Set<RapportDeVisite> rapportDeVisites) {
+        super();
+        this.id = id;
+        this.reference = reference;
+        this.signature = signature;
+        this.status = status;
+        this.visite = visite;
+        this.rapportDeVisites = rapportDeVisites;
+    }
 
 
+    public Set<RapportDeVisite> getRapportDeVisites() {
+        return rapportDeVisites;
+    }
 
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+    public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
+        this.rapportDeVisites = rapportDeVisites;
+    }
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getReference() {
+        return reference;
+    }
 
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
+    public String getSignature() {
+        return signature;
+    }
 
-	public VerbalProcess(Long id, String reference, String signature, boolean status, Visite visite,
-			Set<RapportDeVisite> rapportDeVisites) {
-		super();
-		this.id = id;
-		this.reference = reference;
-		this.signature = signature;
-		this.status = status;
-		this.visite = visite;
-		this.rapportDeVisites = rapportDeVisites;
-	}
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
+    public Visite getVisite() {
+        return visite;
+    }
 
-
-
-
-
-
-	public Set<RapportDeVisite> getRapportDeVisites() {
-		return rapportDeVisites;
-	}
-
-
-
-	public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
-		this.rapportDeVisites = rapportDeVisites;
-	}
-
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public String getSignature() {
-		return signature;
-	}
-
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
-
-	public Visite getVisite() {
-		return visite;
-	}
-
-	public void setVisite(Visite visite) {
-		this.visite = visite;
-	}
+    public void setVisite(Visite visite) {
+        this.visite = visite;
+    }
 
 }

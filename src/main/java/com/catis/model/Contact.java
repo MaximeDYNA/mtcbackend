@@ -22,71 +22,71 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Contact extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long contactId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long contactId;
 
-	private String description;
+    private String description;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@ManyToOne
-	private Client client;
+    @ManyToOne
+    private Client client;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
-	@JsonIgnore
-	private Set<Vente> ventes;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+    @JsonIgnore
+    private Set<Vente> ventes;
 
-	public Contact() {
+    public Contact() {
 
-	}
+    }
 
-	public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
-		this.contactId = contactId;
-		this.description = description;
-		this.partenaire = partenaire;
-		this.ventes = ventes;
-	}
+    public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
+        this.contactId = contactId;
+        this.description = description;
+        this.partenaire = partenaire;
+        this.ventes = ventes;
+    }
 
-	public Long getContactId() {
-		return contactId;
-	}
+    public Long getContactId() {
+        return contactId;
+    }
 
-	public void setContactId(Long contactId) {
-		this.contactId = contactId;
-	}
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
 
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
 
-	public Set<Vente> getVentes() {
-		return ventes;
-	}
+    public Set<Vente> getVentes() {
+        return ventes;
+    }
 
-	public void setVentes(Set<Vente> ventes) {
-		this.ventes = ventes;
-	}
+    public void setVentes(Set<Vente> ventes) {
+        this.ventes = ventes;
+    }
 
-	public Client getClient() {
-		return client;
-	}
+    public Client getClient() {
+        return client;
+    }
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
 }

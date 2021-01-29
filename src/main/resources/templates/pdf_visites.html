@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -19,15 +18,15 @@
         <table class="table">
             <tr>
                 <th>Id</th>
-              
+
                 <th>Contre-visite</th>
             </tr>
             <tr th:each="visite : ${visites}">
                 <td th:text="${visite.idVisite}"></td>
-               
+
                 <td th:text="${visite.contreVisite}"></td>
             </tr>
-         </table>
+        </table>
     </div>
 </div>
 

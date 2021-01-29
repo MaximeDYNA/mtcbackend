@@ -15,19 +15,21 @@ import com.catis.repository.OrganisationRepository;
 @Service
 public class OrganisationService {
 
-	@Autowired
-	private OrganisationRepository organisationRepository;
-	
-	public List<Organisation> findAllOrganisation(){
-		List<Organisation> organisations = new ArrayList<>();
-		organisationRepository.findAll().forEach(organisations::add);
-		return organisations;
-	}
-	public void addOrgansiation(Organisation organisation) {
-		organisationRepository.save(organisation);
-	}
-	public Organisation findByOrganisationId(Long id) {
-		return organisationRepository.findById(id).get();
-	}
-	
+    @Autowired
+    private OrganisationRepository organisationRepository;
+
+    public List<Organisation> findAllOrganisation() {
+        List<Organisation> organisations = new ArrayList<>();
+        organisationRepository.findAll().forEach(organisations::add);
+        return organisations;
+    }
+
+    public void addOrgansiation(Organisation organisation) {
+        organisationRepository.save(organisation);
+    }
+
+    public Organisation findByOrganisationId(Long id) {
+        return organisationRepository.findById(id).get();
+    }
+
 }

@@ -3,125 +3,124 @@ package com.catis.objectTemporaire;
 import java.util.Set;
 
 public class UserDTO {
-	private String id;
-	private String nom;
-	private String prenom;
-	private String login;
-	private String email;
-	private String adresse;
-	private String tel;
-	private String organisanionId;
-	private Set<String> roles;
-	
-	
-	public UserDTO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    private String id;
+    private String nom;
+    private String prenom;
+    private String login;
+    private String email;
+    private String adresse;
+    private String tel;
+    private String organisanionId;
+    private Set<String> roles;
 
 
-	public UserDTO(String nom, String prenom, String email, String adresse, String tel, String organisanionId,
-			Set<String> roles) {
-		super();
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.adresse = adresse;
-		this.tel = tel;
-		this.organisanionId = organisanionId;
-		this.roles = roles;
-	}
+    public UserDTO() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 
-	public String getNom() {
-		return nom;
-	}
+    public UserDTO(String nom, String prenom, String email, String adresse, String tel, String organisanionId,
+                   Set<String> roles) {
+        super();
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.adresse = adresse;
+        this.tel = tel;
+        this.organisanionId = organisanionId;
+        this.roles = roles;
+    }
 
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public String getNom() {
+        return nom;
+    }
 
 
-	public String getPrenom() {
-		return prenom;
-	}
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
+    public String getPrenom() {
+        return prenom;
+    }
 
 
-	public String getEmail() {
-		return email;
-	}
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
 
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
 
-	public String getAdresse() {
-		return adresse;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
+    public String getAdresse() {
+        return adresse;
+    }
 
 
-	public String getTel() {
-		return tel;
-	}
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
+    public String getTel() {
+        return tel;
+    }
 
 
-	public String getOrganisanionId() {
-		return organisanionId;
-	}
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
 
 
-	public void setOrganisanionId(String organisanionId) {
-		this.organisanionId = organisanionId;
-	}
+    public String getOrganisanionId() {
+        return organisanionId;
+    }
 
 
-	public Set<String> getRoles() {
-		return roles;
-	}
+    public void setOrganisanionId(String organisanionId) {
+        this.organisanionId = organisanionId;
+    }
 
 
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
-	}
+    public Set<String> getRoles() {
+        return roles;
+    }
 
 
-	public String getLogin() {
-		return login;
-	}
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
 
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
 
-	public String getId() {
-		return id;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	
-	
+    public String getId() {
+        return id;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
 }

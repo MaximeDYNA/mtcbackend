@@ -24,47 +24,47 @@ import com.catis.service.ControleurService;
 @RestController
 @CrossOrigin
 public class ControleurController {
-	
-	@Autowired
-	public ControleurService controleurService;
-	@Autowired
-	private HttpServletRequest request;
-	private static String serverUrl = "http://192.168.8.113:8180/auth";
-	private static String realm = "mtckeycloak";
-	
-	private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
-	
-	@GetMapping(value="/api/v1/controleur/{keycloakId}")
-	public ResponseEntity<Object> getInfosControleur(@PathVariable String keycloakId) {
-		
-		Controleur controleur = controleurService.findControleurBykeycloakId(keycloakId);
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", controleur);
-		
-	}
-	
-	@GetMapping(value="/api/v1/controleurinfo/{id}")
-	public ResponseEntity<Object> getInfosControleur(@PathVariable Long id) {
-		
-		Controleur controleur = controleurService.findControleurById(id);
-		KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	    Keycloak keycloak = KeycloakBuilder
-	        .builder()
-	        .serverUrl(serverUrl)
-	        .realm(realm)
-	        .authorization(context.getTokenString())
-	        .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-	        .build();
-	    UserResource userResource = keycloak.realm(realm).users().get(controleur.getKeycloakId());
-	    
 
-	    UserDTO user = new UserDTO();
+    @Autowired
+    public ControleurService controleurService;
+    @Autowired
+    private HttpServletRequest request;
+    private static String serverUrl = "http://192.168.8.113:8180/auth";
+    private static String realm = "mtckeycloak";
+
+    private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
+
+    @GetMapping(value = "/api/v1/controleur/{keycloakId}")
+    public ResponseEntity<Object> getInfosControleur(@PathVariable String keycloakId) {
+
+        Controleur controleur = controleurService.findControleurBykeycloakId(keycloakId);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", controleur);
+
+    }
+
+    @GetMapping(value = "/api/v1/controleurinfo/{id}")
+    public ResponseEntity<Object> getInfosControleur(@PathVariable Long id) {
+
+        Controleur controleur = controleurService.findControleurById(id);
+        KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+        Keycloak keycloak = KeycloakBuilder
+                .builder()
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .authorization(context.getTokenString())
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                .build();
+        UserResource userResource = keycloak.realm(realm).users().get(controleur.getKeycloakId());
+
+
+        UserDTO user = new UserDTO();
         user.setNom(userResource.toRepresentation().getLastName());
         user.setPrenom(userResource.toRepresentation().getFirstName());
         user.setLogin(userResource.toRepresentation().getUsername());
-        user.setEmail(userResource.toRepresentation().getEmail());       
+        user.setEmail(userResource.toRepresentation().getEmail());
 
-		return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
-		
-	}
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
+
+    }
 
 }

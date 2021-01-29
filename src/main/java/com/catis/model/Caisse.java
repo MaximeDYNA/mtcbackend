@@ -22,67 +22,65 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_caisse")
 public class Caisse extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long caisse_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long caisse_id;
 
-	private String description;
-	
-	@ManyToOne
-	private Organisation organisation;
+    private String description;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
-	@JsonIgnore
-	private Set<Caissier> caissiers;
+    @ManyToOne
+    private Organisation organisation;
 
-	public Long getCaisse_id() {
-		return caisse_id;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
+    @JsonIgnore
+    private Set<Caissier> caissiers;
 
-	public void setCaisse_id(Long caisse_id) {
-		this.caisse_id = caisse_id;
-	}
+    public Long getCaisse_id() {
+        return caisse_id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setCaisse_id(Long caisse_id) {
+        this.caisse_id = caisse_id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Caisse() {
 
-		// TODO Auto-generated constructor stub
-	}
+    public Caisse() {
 
-	
+        // TODO Auto-generated constructor stub
+    }
 
-	public Caisse(Long caisse_id, String description, Organisation organisation, Set<Caissier> caissiers) {
-		super();
-		this.caisse_id = caisse_id;
-		this.description = description;
-		this.organisation = organisation;
-		this.caissiers = caissiers;
-	}
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Caisse(Long caisse_id, String description, Organisation organisation, Set<Caissier> caissiers) {
+        super();
+        this.caisse_id = caisse_id;
+        this.description = description;
+        this.organisation = organisation;
+        this.caissiers = caissiers;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public Set<Caissier> getCaissiers() {
-		return caissiers;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public void setCaissiers(Set<Caissier> caissiers) {
-		this.caissiers = caissiers;
-	}
+    public Set<Caissier> getCaissiers() {
+        return caissiers;
+    }
 
-	
+    public void setCaissiers(Set<Caissier> caissiers) {
+        this.caissiers = caissiers;
+    }
+
+
 }

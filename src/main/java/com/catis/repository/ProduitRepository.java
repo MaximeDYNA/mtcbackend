@@ -8,6 +8,7 @@ import com.catis.model.Produit;
 
 public interface ProduitRepository extends CrudRepository<Produit, Long> {
 
-	List<Produit> findByCategorieProduit_CategorieProduitId(Long id);
-	Produit findByLibelleIgnoreCase(String libelle);
+    List<Produit> findByCategorieProduit_CategorieProduitId(Long id);
+
+    Produit findByLibelleIgnoreCase(String libelle);
 }

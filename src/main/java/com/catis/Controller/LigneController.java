@@ -27,71 +27,71 @@ import com.catis.service.LigneService;
 @CrossOrigin
 public class LigneController {
 
-	@Autowired
-	private LigneService ligneService;
-	
-	@Autowired
-	private CarteGriseService cgService;
-	
-	@Autowired
-	private InspectionService inspectionService;
-	
-	
-private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
-	
-	@PostMapping(value="/api/v1/lignes")
-	public ResponseEntity<Object> ajouterInspection(@RequestBody Ligne ligne) {
-		
-		
-				LOGGER.info("Nouvelle inpection...");
+    @Autowired
+    private LigneService ligneService;
 
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Ligne", ligneService.addLigne(ligne));
+    @Autowired
+    private CarteGriseService cgService;
+
+    @Autowired
+    private InspectionService inspectionService;
+
+
+    private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
+
+    @PostMapping(value = "/api/v1/lignes")
+    public ResponseEntity<Object> ajouterInspection(@RequestBody Ligne ligne) {
+
+
+        LOGGER.info("Nouvelle inpection...");
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Ligne", ligneService.addLigne(ligne));
 			/*try {}
 			catch (Exception e) {
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Inspection", null);
 			}*/
-		
-	}
-	@GetMapping(value="/api/v1/lignes")
-	public ResponseEntity<Object> ligneList() {
-		
-		try {
-				LOGGER.info("liste des lignes");
-				
-				
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
-			}
-			catch (Exception e) {
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
-			}
-		
-	}
-	@GetMapping(value="/api/v1/vehicules/lignes/{id}")
-	public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
-		
-		try {
-				LOGGER.info("liste des vehicules par ligne");
-				List<VehiculeByLineDTO> vehicules = new ArrayList<>();
-				VehiculeByLineDTO v ;
-				for(CarteGrise cg : cgService.findByLigne(id)) {
-					v = new VehiculeByLineDTO();
-					v.setCarteGriseId(cg.getCarteGriseId());
-					
-					v.setIdInspection(inspectionService.findLastByRef(cg.getNumImmatriculation()==null?
-							cg.getVehicule().getChassis(): cg.getNumImmatriculation())
-							.getIdInspection());
-					v.setRef(cg.getNumImmatriculation()==null?cg.getVehicule().getChassis()
-							:cg.getNumImmatriculation());
-					v.setIdCategorie(cg.getProduit().getProduitId());
-					vehicules.add(v);
-					v.toString();
-				}
-				
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Véhicule par ligne", vehicules);
-			}
-			catch (Exception e) {
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
-			}
-		
-	}
+
+    }
+
+    @GetMapping(value = "/api/v1/lignes")
+    public ResponseEntity<Object> ligneList() {
+
+        try {
+            LOGGER.info("liste des lignes");
+
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
+        }
+
+    }
+
+    @GetMapping(value = "/api/v1/vehicules/lignes/{id}")
+    public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
+
+        try {
+            LOGGER.info("liste des vehicules par ligne");
+            List<VehiculeByLineDTO> vehicules = new ArrayList<>();
+            VehiculeByLineDTO v;
+            for (CarteGrise cg : cgService.findByLigne(id)) {
+                v = new VehiculeByLineDTO();
+                v.setCarteGriseId(cg.getCarteGriseId());
+
+                v.setIdInspection(inspectionService.findLastByRef(cg.getNumImmatriculation() == null ?
+                        cg.getVehicule().getChassis() : cg.getNumImmatriculation())
+                        .getIdInspection());
+                v.setRef(cg.getNumImmatriculation() == null ? cg.getVehicule().getChassis()
+                        : cg.getNumImmatriculation());
+                v.setIdCategorie(cg.getProduit().getProduitId());
+                vehicules.add(v);
+                v.toString();
+            }
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Véhicule par ligne", vehicules);
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
+        }
+
+    }
 }

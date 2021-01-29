@@ -6,65 +6,69 @@ import java.time.format.DateTimeFormatter;
 
 public class VersionLexiqueDTO {
 
-	private Long id;
-	private String libelle;
-	private String version;
-	private String createdDate;
-	private String modifiedDate;
-	
-	
-	public VersionLexiqueDTO(String libelle, String version, String createdDate, String modifiedDate) {
-		super();
-		this.libelle = libelle;
-		this.version = version;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
-	}
-	
-	public VersionLexiqueDTO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    private Long id;
+    private String libelle;
+    private String version;
+    private String createdDate;
+    private String modifiedDate;
 
-	public String getLibelle() {
-		return libelle;
-	}
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
-	public String getVersion() {
-		return version;
-	}
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	public String getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(LocalDateTime createdDate) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String formattedString = createdDate.format(formatter);
-		this.createdDate = formattedString;
-	}
-	
-	public String getModifiedDate() {
-		return modifiedDate;
-	}
-	
-	public void setModifiedDate(LocalDateTime modifiedDate) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String formattedString = modifiedDate.format(formatter);
-		this.modifiedDate = formattedString;
-	}
 
-	public Long getId() {
-		return id;
-	}
+    public VersionLexiqueDTO(String libelle, String version, String createdDate, String modifiedDate) {
+        super();
+        this.libelle = libelle;
+        this.version = version;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	
-	
+    public VersionLexiqueDTO() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedString = createdDate.format(formatter);
+        this.createdDate = formattedString;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedString = modifiedDate.format(formatter);
+        this.modifiedDate = formattedString;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
 }

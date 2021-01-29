@@ -23,153 +23,153 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Produit extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long produitId;
-	private String libelle;
-	private String description;
-	private double prix;
-	private int delaiValidite;
-	private String img;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long produitId;
+    private String libelle;
+    private String description;
+    private double prix;
+    private int delaiValidite;
+    private String img;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
-	@JsonIgnore
-	private Set<DetailVente> detailVente;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
+    @JsonIgnore
+    private Set<DetailVente> detailVente;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
-	@JsonIgnore
-	private Set<CarteGrise> carteGrise;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
+    @JsonIgnore
+    private Set<CarteGrise> carteGrise;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
-	@JsonIgnore
-	private Set<TaxeProduit> taxeProduit;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
+    @JsonIgnore
+    private Set<TaxeProduit> taxeProduit;
 
-	@OneToMany(mappedBy = "produit")
-	@JsonIgnore
-	private Set<Posales> posales;
+    @OneToMany(mappedBy = "produit")
+    @JsonIgnore
+    private Set<Posales> posales;
 
-	@ManyToOne
-	private CategorieProduit categorieProduit;
+    @ManyToOne
+    private CategorieProduit categorieProduit;
 
-	@ManyToOne
-	private CategorieVehicule categorieVehicule;
+    @ManyToOne
+    private CategorieVehicule categorieVehicule;
 
-	public CategorieVehicule getCategorieVehicule() {
-		return categorieVehicule;
-	}
+    public CategorieVehicule getCategorieVehicule() {
+        return categorieVehicule;
+    }
 
-	public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
-		this.categorieVehicule = categorieVehicule;
-	}
+    public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
+        this.categorieVehicule = categorieVehicule;
+    }
 
-	public Produit() {
+    public Produit() {
 
-		// TODO Auto-generated constructor stub
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
-			Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
-			Set<Posales> posales, CategorieProduit categorieProduit) {
+    public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
+                   Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
+                   Set<Posales> posales, CategorieProduit categorieProduit) {
 
-		this.produitId = produitId;
-		this.libelle = libelle;
-		this.description = description;
-		this.prix = prix;
-		this.delaiValidite = delaiValidite;
-		this.img = img;
-		this.detailVente = detailVente;
-		this.carteGrise = carteGrise;
-		this.taxeProduit = taxeProduit;
-		this.posales = posales;
-		this.categorieProduit = categorieProduit;
-	}
+        this.produitId = produitId;
+        this.libelle = libelle;
+        this.description = description;
+        this.prix = prix;
+        this.delaiValidite = delaiValidite;
+        this.img = img;
+        this.detailVente = detailVente;
+        this.carteGrise = carteGrise;
+        this.taxeProduit = taxeProduit;
+        this.posales = posales;
+        this.categorieProduit = categorieProduit;
+    }
 
-	public Long getProduitId() {
-		return produitId;
-	}
+    public Long getProduitId() {
+        return produitId;
+    }
 
-	public void setProduit_id(Long produitId) {
-		this.produitId = produitId;
-	}
+    public void setProduit_id(Long produitId) {
+        this.produitId = produitId;
+    }
 
-	public String getLibelle() {
-		return libelle;
-	}
+    public String getLibelle() {
+        return libelle;
+    }
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public double getPrix() {
-		return prix;
-	}
+    public double getPrix() {
+        return prix;
+    }
 
-	public void setPrix(double prix) {
-		this.prix = prix;
-	}
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 
-	public int getDelaiValidite() {
-		return delaiValidite;
-	}
+    public int getDelaiValidite() {
+        return delaiValidite;
+    }
 
-	public void setDelaiValidite(int delaiValidite) {
-		this.delaiValidite = delaiValidite;
-	}
+    public void setDelaiValidite(int delaiValidite) {
+        this.delaiValidite = delaiValidite;
+    }
 
-	public String getImg() {
-		return img;
-	}
+    public String getImg() {
+        return img;
+    }
 
-	public void setImg(String img) {
-		this.img = img;
-	}
+    public void setImg(String img) {
+        this.img = img;
+    }
 
-	public Set<DetailVente> getDetailVente() {
-		return detailVente;
-	}
+    public Set<DetailVente> getDetailVente() {
+        return detailVente;
+    }
 
-	public void setDetailVente(Set<DetailVente> detailVente) {
-		this.detailVente = detailVente;
-	}
+    public void setDetailVente(Set<DetailVente> detailVente) {
+        this.detailVente = detailVente;
+    }
 
-	public Set<CarteGrise> getCarteGrise() {
-		return carteGrise;
-	}
+    public Set<CarteGrise> getCarteGrise() {
+        return carteGrise;
+    }
 
-	public void setCarteGrise(Set<CarteGrise> carteGrise) {
-		this.carteGrise = carteGrise;
-	}
+    public void setCarteGrise(Set<CarteGrise> carteGrise) {
+        this.carteGrise = carteGrise;
+    }
 
-	public Set<TaxeProduit> getTaxeProduit() {
-		return taxeProduit;
-	}
+    public Set<TaxeProduit> getTaxeProduit() {
+        return taxeProduit;
+    }
 
-	public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
-		this.taxeProduit = taxeProduit;
-	}
+    public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
+        this.taxeProduit = taxeProduit;
+    }
 
-	public Set<Posales> getPosales() {
-		return posales;
-	}
+    public Set<Posales> getPosales() {
+        return posales;
+    }
 
-	public void setPosales(Set<Posales> posales) {
-		this.posales = posales;
-	}
+    public void setPosales(Set<Posales> posales) {
+        this.posales = posales;
+    }
 
-	public CategorieProduit getCategorieProduit() {
-		return categorieProduit;
-	}
+    public CategorieProduit getCategorieProduit() {
+        return categorieProduit;
+    }
 
-	public void setCategorieProduit(CategorieProduit categorieProduit) {
-		this.categorieProduit = categorieProduit;
-	}
+    public void setCategorieProduit(CategorieProduit categorieProduit) {
+        this.categorieProduit = categorieProduit;
+    }
 
 }

@@ -21,113 +21,110 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_controleur")
 @EntityListeners(AuditingEntityListener.class)
 public class Controleur extends JournalData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idControleur;
-	private String agremment;
-	private int score;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idControleur;
+    private String agremment;
+    private int score;
 
-	@ManyToOne(optional = true) // id utilisateur optionel
-	private Utilisateur utilisateur;
+    @ManyToOne(optional = true) // id utilisateur optionel
+    private Utilisateur utilisateur;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
-	@JsonIgnore
-	private Set<Inspection> inspections;
-	private String keycloakId;
-	public Controleur() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
+    @JsonIgnore
+    private Set<Inspection> inspections;
+    private String keycloakId;
 
-	}
+    public Controleur() {
 
-	
-
-	public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
-			Organisation organisation, Set<Inspection> inspections, String keycloakId) {
-		super();
-		this.idControleur = idControleur;
-		this.agremment = agremment;
-		this.score = score;
-		this.utilisateur = utilisateur;
-		this.partenaire = partenaire;
-		this.organisation = organisation;
-		this.inspections = inspections;
-		this.keycloakId = keycloakId;
-	}
+    }
 
 
-
-	public Long getIdControleur() {
-		return idControleur;
-	}
-
-	public void setIdControleur(Long idControleur) {
-		this.idControleur = idControleur;
-	}
-
-	public String getAgremment() {
-		return agremment;
-	}
-
-	public void setAgremment(String agremment) {
-		this.agremment = agremment;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-
-	public Set<Inspection> getInspections() {
-		return inspections;
-	}
-
-	public void setInspections(Set<Inspection> inspections) {
-		this.inspections = inspections;
-	}
-
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
-
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
-
-	public Organisation getOrganisation() {
-		return organisation;
-	}
-
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
+                      Organisation organisation, Set<Inspection> inspections, String keycloakId) {
+        super();
+        this.idControleur = idControleur;
+        this.agremment = agremment;
+        this.score = score;
+        this.utilisateur = utilisateur;
+        this.partenaire = partenaire;
+        this.organisation = organisation;
+        this.inspections = inspections;
+        this.keycloakId = keycloakId;
+    }
 
 
+    public Long getIdControleur() {
+        return idControleur;
+    }
 
-	public String getKeycloakId() {
-		return keycloakId;
-	}
+    public void setIdControleur(Long idControleur) {
+        this.idControleur = idControleur;
+    }
+
+    public String getAgremment() {
+        return agremment;
+    }
+
+    public void setAgremment(String agremment) {
+        this.agremment = agremment;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Set<Inspection> getInspections() {
+        return inspections;
+    }
+
+    public void setInspections(Set<Inspection> inspections) {
+        this.inspections = inspections;
+    }
+
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
+
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
 
+    public String getKeycloakId() {
+        return keycloakId;
+    }
 
-	public void setKeycloakId(String keycloakId) {
-		this.keycloakId = keycloakId;
-	}
+
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
+    }
 
 
 }

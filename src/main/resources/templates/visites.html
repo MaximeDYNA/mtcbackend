@@ -1,497 +1,526 @@
-
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Visites View</title>
-     <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css" data-th-href="@{/bootstrap-4.3.1-dist/css/bootstrap.min.css}">
+    <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css"
+          data-th-href="@{/bootstrap-4.3.1-dist/css/bootstrap.min.css}">
 </head>
 <body>
-<div id="background" class="d-flex font-weight-bold justify-content-center align-content-end flex-wrap" style="bottom: 0">	
+<div id="background" class="d-flex font-weight-bold justify-content-center align-content-end flex-wrap"
+     style="bottom: 0">
 	<span id="bg-text" style="border:10px solid gray; width: 1300px;
- padding:10px 100px;">MINT COPY</span>			
+ padding:10px 100px;">MINT COPY</span>
 </div>
 <div class="container" th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type}">
-<div th:if="${!v.process.status}">
-	<div class="row">
-		<div class="col-sm">
-			<p class="text-justify text-left">
-				REPUBLIQUE DU CAMEROUN <br>
-				PAIX - TRAVAIL - PATRIE <br>
-				MINISTERE DES TRANSPORTS <br>
-				SECRETARIAT GENERAL <br>
-				DIRECTION DES TRANSPORTS ROUTIERS <br>
-			</p>
-		</div>
+    <div th:if="${!v.process.status}">
+        <div class="row">
+            <div class="col-sm">
+                <p class="text-justify text-left">
+                    REPUBLIQUE DU CAMEROUN <br>
+                    PAIX - TRAVAIL - PATRIE <br>
+                    MINISTERE DES TRANSPORTS <br>
+                    SECRETARIAT GENERAL <br>
+                    DIRECTION DES TRANSPORTS ROUTIERS <br>
+                </p>
+            </div>
 
-		<div class="col-2">
-			<div class="d-flex justify-content-center">
-				<img src="/images/armoirie.PNG" class="img-fluid" alt="Armoirie du Cameroun">
-			</div>
-		</div>
+            <div class="col-2">
+                <div class="d-flex justify-content-center">
+                    <img src="/images/armoirie.PNG" class="img-fluid" alt="Armoirie du Cameroun">
+                </div>
+            </div>
 
-		<div class="col-sm">
-			<p class="text-justify text-right">
-				REPUBLIC OF CAMEROON <br>
-				PEACE - WORK - FATHERLAND <br>
-				MINISTRY OF TRANSPORT <br>
-				GENERAL SECRETARIAT <br>
-				DEPARTMENT OF ROAD TRANSPORT<br>
-			</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col"></div>
-		<div class="col-10">
-			<h3 class="text-center font-weight-bold">
-				PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br>
-				ROADWORTHINESS REPORT <br>
-			</h3>
-		</div>
-		<div class="col"></div>
-	</div>
-</div>
-  <div class="row" th:style="${v.process.status} ? 'margin-top: 240px;': ''">
-  	<div class="col-5">
+            <div class="col-sm">
+                <p class="text-justify text-right">
+                    REPUBLIC OF CAMEROON <br>
+                    PEACE - WORK - FATHERLAND <br>
+                    MINISTRY OF TRANSPORT <br>
+                    GENERAL SECRETARIAT <br>
+                    DEPARTMENT OF ROAD TRANSPORT<br>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-10">
+                <h3 class="text-center font-weight-bold">
+                    PROCES VERBAL DE CONTROLE TECHNIQUE DE VEHICULE <br>
+                    ROADWORTHINESS REPORT <br>
+                </h3>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <div class="row" th:style="${v.process.status} ? 'margin-top: 240px;': ''">
+        <div class="col-5">
 	  	<span class="text-left font-weight-bold">
 	  		N° PV/ SHEET N° : 
 	  	</span>
-  		<span style="color: gray;" th:utext="${v.process.reference}"></span> <br>
-	  	<span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.process.reference}"></span> <br>
+            <span class="text-left font-weight-bold">
 			Date du contrôle / Date of control :
 		</span>
-		<span style="color: gray;" th:utext="${#temporals.format(v.dateDebut, 'dd/MM/yyyy HH:mm')}"></span><br>
-  	</div>
-	<div class="col">
-  		<img alt="QRcode" th:src="@{'/visites/qrcode/' +${id}}"/>  	
-  	</div>
-    <div class="col-5">
+            <span style="color: gray;" th:utext="${#temporals.format(v.dateDebut, 'dd/MM/yyyy HH:mm')}"></span><br>
+        </div>
+        <div class="col">
+            <img alt="QRcode" th:src="@{'/visites/qrcode/' +${id}}"/>
+        </div>
+        <div class="col-5">
 	  	<span class="text-left font-weight-bold">
 		  	Type de contrôle / Control type :
 		</span>
-	  	<span style="color: gray;" th:utext="${v.contreVisite} ? 'Contre Visite': 'Contrôle initial'"></span> <br>
-		<span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.contreVisite} ? 'Contre Visite': 'Contrôle initial'"></span> <br>
+            <span class="text-left font-weight-bold">
 			Catégorie / Category:
 		</span>
-	  	<span style="color: gray;" th:utext="${v.carteGrise.produit.description}"></span> <br><br>
-  	</div>
-  </div>
-  <div class="row">
-	  <div class="col-5" style="border: 2px solid black">
+            <span style="color: gray;" th:utext="${v.carteGrise.produit.description}"></span> <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5" style="border: 2px solid black">
 			<span class="text-left font-weight-bold">
 				Immatriculation/ reg. Number:
 			</span>
-			<span style="color: gray;" th:utext="${v.carteGrise.numImmatriculation}"></span> <br>
-			<span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.carteGrise.numImmatriculation}"></span> <br>
+            <span class="text-left font-weight-bold">
 				Marque / Brand: 
 			</span>
-			<span style="color: gray;" th:utext="${v.carteGrise.vehicule.marqueVehicule.libelle}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.carteGrise.vehicule.marqueVehicule.libelle}"></span> <br>
+            <span class="text-left font-weight-bold">
 				N° chassis / Chassis N° :
 		  </span>
-		  <span style="color: gray;" th:utext="${v.carteGrise.vehicule.chassis}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.carteGrise.vehicule.chassis}"></span> <br>
+            <span class="text-left font-weight-bold">
 			Energie / Energy :
 		  </span>
-		  <span style="color: gray;" th:utext="${v.carteGrise.vehicule.energie.libelle}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.carteGrise.vehicule.energie.libelle}"></span> <br>
+            <span class="text-left font-weight-bold">
 			DMC / Date of first use :
 		  </span>
-		  <span style="color: gray;" th:utext="${#dates.format(v.carteGrise.vehicule.premiereMiseEnCirculation, 'dd/MM/yyyy')}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;"
+                  th:utext="${#dates.format(v.carteGrise.vehicule.premiereMiseEnCirculation, 'dd/MM/yyyy')}"></span>
+            <br>
+            <span class="text-left font-weight-bold">
 				Kilométrage / Milaege :
 		  </span>
-		  <span style="color: gray;" th:utext="${#numbers.formatDecimal(v.inspection.kilometrage, '0', 'WHITESPACE', 0, 'POINT')+' Km.'}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;"
+                  th:utext="${#numbers.formatDecimal(v.inspection.kilometrage, '0', 'WHITESPACE', 0, 'POINT')+' Km.'}"></span>
+            <br>
+            <span class="text-left font-weight-bold">
 			  Affectation / Usage :
 		  </span>
-		  <span style="color: gray;" th:utext="${v.carteGrise.centre_ssdt}"></span> <br>
-		  <span class="text-left font-weight-bold">
+            <span style="color: gray;" th:utext="${v.carteGrise.centre_ssdt}"></span> <br>
+            <span class="text-left font-weight-bold">
 			Propriétaire / Owner:
 		  </span>
-		  <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+ 
+            <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
 		        								v.carteGrise.proprietaireVehicule.partenaire.prenom}"></span><br>
-	  </div>
-	  <div class="col">
-	  	<h3 class="text-left font-weight-bold">  	      
-		</h3>
-	  </div>
-	  <div class="col-6" style="border: 2px solid black">
+        </div>
+        <div class="col">
+            <h3 class="text-left font-weight-bold">
+            </h3>
+        </div>
+        <div class="col-6" style="border: 2px solid black">
 	  	<span class="text-left font-weight-bold">
 		  	Client/ Customer:
 		</span>
-			<span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+ 
+            <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
 		        								v.carteGrise.proprietaireVehicule.partenaire.prenom}">
 			</span><br>
-		<span class="text-left font-weight-bold">
+            <span class="text-left font-weight-bold">
 			Adresse / Address:
-		</span> 
-		<span th:utext="${v.carteGrise.commune}"></span><br>
-		<span  style="margin-left: 150px; color: gray;" th:utext="${v.carteGrise.commune}"></span><br>
-		<span class="text-left font-weight-bold">
+		</span>
+            <span th:utext="${v.carteGrise.commune}"></span><br>
+            <span style="margin-left: 150px; color: gray;" th:utext="${v.carteGrise.commune}"></span><br>
+            <span class="text-left font-weight-bold">
 			Montant payé HT / Amount ex.VAT : 
 		</span>
-		<span style="color: gray;" th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, '0', 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br>
-		<span class="text-left font-weight-bold">
+            <span style="color: gray;"
+                  th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, '0', 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br>
+            <span class="text-left font-weight-bold">
 			TVA / VAT : 
 		</span> <span th:utext="${tp.valeur!=null ? tp.valeur+' %': ''}" style="color: gray;"></span><br>
-		<span class="text-left font-weight-bold">
+            <span class="text-left font-weight-bold">
 			Montant payé TTC / Amount inc. VAT: 
-		</span><span style="color: gray;" th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br>
-		
-	  </div>
-  </div>
-  <div class="row">
-	  	<h3 class="text-left font-weight-bold">  	
-			      
-		</h3>
-  </div>
-  <div class="row">
-  	<div class="col-5" style=" height:925px; border: 2px solid black">
-	  	<div th:if="${#lists.size(defaultsTest)} != 0">
-	  		<h6 class="font-weight-bold">
-	  			<p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
-	  			DEFECTS SUBJECT TO COUNTER INSPECTION</p> 
-	  		</h6>
-	  		<ol class="text-left font-weight-bold">
-		 	   <li th:each="lexique : ${defaultsTest}">
-   		         	<span style="color: gray;" th:text="${lexique.libelle}"> Commande de freins de stationnement: Absence de verrouillage</span>
-			   </li>
-		 	</ol>
-	  	</div>  	
-	  	<div th:if="${#lists.size(v.inspection.lexiques)} != 0">
-	  		<h6 class="font-weight-bold">
-	  			<p>DEFAUTS A REPARER DES QUE POSSIBLE /<br>
-	  			DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p> 
-	  		</h6>	
-	  		<ol class="text-left font-weight-bold">
-			    <li th:each="lexique : ${v.inspection.lexiques}">
-			         <span style="color: gray;" th:text="${lexique.libelle}"> </span>
-			    </li>
-		 	</ol>
-	  	</div>
-	  	<div>	  		
-		  <span class="text-left font-weight-bold">	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
-			<h2 class="text-left font-weight-bold" th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
-			<p class="text-left font-weight-bold">
-				<span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
-				<span style="font-size: 25px;" th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'dd/MM/yyyy') : #temporals.format(v.control.contreVDelayAt, 'dd/MM/yyyy')}"></span><br>
-				NOM et visa du contrôleur /<br> 
-				Operator name and signature: <span style="color: gray;" th:text="${controlleurName}" ></span>
-			</p>
-			<div class="float-right">
-				<img height="240" width="400" th:src="@{${v.inspection.signature !=null ? '/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
-			</div>
-	  	</div>
-	  </div>
-	  <div class="col-1">
-	  	<h3 class="text-left font-weight-bold">  	
+		</span><span style="color: gray;"
+                     th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br>
 
-		</h3>
-	  </div>
-	  <div class="col-6">
-		  <div class="row" style=" height:600px; border: 2px solid black">
-		  	<div class="col">
-			  	<div class="text-center font-weight-bold d-flex align-items-start" style=" height:50px; margin: 0 auto;">
-				  	<h4 class="">
-					  	RELEVE DES MESURES/ MEASUREMENT: <br>	
-					</h4>
-			  	</div>
-			  	<div>
-			  		<table th:if="${ v.carteGrise.produit.categorieVehicule.type == 'VL'}">
-		  				<tr>
-		  					<td class="text-center font-weight-bold" 
-			  					style="height:5px; width:120px; 
-			  					border: 1px solid black; font-size: 15px;">SUSPENSION
-		  					</td>
-		  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;" >
-						  			Eff AG<br>LF Eff
-		  					</td>
-		  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;">
-			  						Eff AD<br>Rf Eff
-		  					</td>
-		  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;">
-			  						Eff RG<br>LR Eff
-		  					</td>
-		  					<td class="text-center font-weight-bold"
-			  					style="height:5px; width:65px;
-			  					border: 1px solid black; font-size: 10px;">
-			  						Eff RD<br>RR Eff
-		  					</td>
-							<td class="text-center font-weight-bold"
-							style="height:5px; width:65px;
-							border: 1px solid black; font-size: 10px;">
-								Diss. AV<br>F Diss.
-							</td>
-							<td class="text-center font-weight-bold"
-							style="height:5px; width:65px;
-							border: 1px solid black; font-size: 10px;">
-								Diss. AR<br>R Diss.
-							</td>
-			  			</tr>
-			  				<tr>
-			  					<td style="border-left: 0px solid ;
-			            			 border-bottom: 0px solid ;"></td>
-			  					<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0410')!=null) ? #numbers.formatInteger(result.get('0410'), 1)+' %' :'' }">
-				            	</td>
-				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0411')!=null) ? #numbers.formatInteger(result.get('0411'), 1)+' %' :'' }">
-				            	</td>
-				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL'  and result.get('0413')!=null) ? #numbers.formatInteger(result.get('0413'), 1)+' %' :'' }">
-				            	</td>
-				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL'  and result.get('0414')!=null) ? #numbers.formatInteger(result.get('0414'), 1)+' %' :'' }">
-				            	</td>
-				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0412')!=null) ? #numbers.formatInteger(result.get('0412'), 1)+' %' :'' }">
-				            	</td>
-				            	<td class="text-center" 
-				            		style="color: gray; border: 1px solid black" th:utext="${ (typeVehicule=='VL' and result.get('0415')!=null) ? #numbers.formatInteger(result.get('0415'), 1)+' %' :'' }">
-				            	</td>
-			  				</tr>
-			  		</table>
-			  		<br>
-			  		<table>
-		  				<tr>
-		  					<td class="text-center font-weight-bold" 
-			  					style="height:5px; width:120px; 
-			  					border: 1px solid black; font-size: 15px;">RIPAGE / SHIFT.
-		  					</td>
-		  					<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		Ripage avant <br>Front Deviation
-		  					</td>
-		  					<td  class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;">
-		  						Ripage Arrière<br>Rear Deviation
-		  					</td>
-		  				</tr>
-		  				<tr>
-		  					<td style="border-left: 0px solid ;
-		            			 border-bottom: 0px solid ;"></td>
-		  					
-			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0401') != null ? #strings.replace(result.get('0401'), '.0', '')+' mm/m': ''}">
-			            	</td>
-			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0402') != null ? result.get('0402')+' mm/m' : ''}">
-			            	</td >
-		  				</tr>
-			  		</table>
-			  		<br>
-			  		<table>
-		  				<tr>
-		  					<td class="text-center font-weight-bold" 
-		  					style="height:5px; width:120px; 
-		  					border: 1px solid black; font-size: 14px;">POLLUTION
-		  					</td>
-		  					<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		Opacité<br>Opacity
-		  					</td>
-		  					<td  class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; color: gray; font-size: 13px;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? #strings.replace(result.get('0509'), '.0', '')+' m-1': '' ): (result.get('0538')!=null ? #strings.replace(result.get('0538'), '.0', '')+' m-1': '' )}">
-		  					</td>
-		  				</tr>
-			  		</table>
-			  		<br>
-			  		<table>
-		  				<tr>
-		  					<td class="text-center font-weight-bold" 
-		  					style="height:5px; width:120px; 
-		  					border: 1px solid black; font-size: 14px;">PHARES / LAMPS
-		  					</td>
-		  					<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		Feu Crois. gauche<br>Left Headlamp
-		  					</td>
-		  					<td  class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;">
-		  						Feu Crois. droite<br>Right Headlamp
-		  					</td>
-		  					
-		  				</tr>
-		  				<tr>
-		  					<td style="border-left: 0px solid ;
-		            			 border-bottom: 0px solid ;">
-	            			 </td>
-		  					
-			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0490')} =='1.0' ? 'Correct': 'Unknow'">
-			            	</td>
-			            	<td class="text-center" 
-			            		style="color: gray; border: 1px solid black" th:utext="${result.get('0492')} =='1.0' ? 'Correct': 'Unknow'">
-			            	</td>
-		  				</tr>
-			  		</table>
-			  		<br>
-			  		<table>
-		  				<tr>
-		  					<td class="text-center font-weight-bold" 
-		  					style="height:5px; width:120px; 
-		  					border: 1px solid black; font-size: 14px;">FREINS / BRAKES
-		  					</td>
-		  					<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		Eff. Frein de service<br>Service Brake Eff
-		  					</td>
-		  					<td class="text-center" 
-			            		style="color: gray; border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? (result.get('0446')!=null ? #numbers.formatInteger(result.get('0446'), 1)+' %': '' ): (result.get('1000')!=null ? result.get('1000')+' %': '' )}">
-			            	</td>
-		  				</tr>
-		  				<tr>
-		  					<td style="border-left: 0px solid ;
-		            			 border-bottom: 0px solid ;">
-	            			</td>
-		  					<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		Eff. Frein de station.<br> Parking Brake Eff.
-		  					</td>
-		  					<td class="text-center" style="color: gray;
-		  					border: 1px solid black; width:195px;" th:utext="${typeVehicule=='VL' ? (result.get('0465')!=null ? #numbers.formatInteger(result.get('0465'), 1)+' %': '' ): (result.get('1001')!=null ? #numbers.formatInteger(result.get('1001'), 1)+' %': '' )}">
-			            	</td>
-		  				</tr>
-		  				<tr>
-		  					<td style="border-left: 0px solid ;
-		            			 border-bottom: 0px solid ;"></td>
-		  					
-			            	
-			            	<td   class="text-center font-weight-bold"
-		  					style="height:5px; width:195px;
-		  					border: 1px solid black; font-size: 10px;" >
-						  		#1 Déséq./ Unbal.
-		  					</td>
-			  					<td class="text-center" 
-									style="color: gray; border: 1px solid black; height:50px; width:195px;">
-		            				<table style="height:100%; width:100%">
-			            				<tr>
-			            					<td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
-			            						<span th:utext="${typeVehicule=='VL' ? (result.get('0430')!=null ? #numbers.formatInteger(result.get('0430'),1)+' daN': '' ) : ''}"></span><br>
-			            						<span th:utext="${typeVehicule=='VL' ? (result.get('0421')!=null ? #numbers.formatInteger(result.get('0421'),1)+' kg': '' ) : ''}"></span>
-		            						</td>
-			            					<td style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? (result.get('0434')!=null ? #numbers.formatInteger(result.get('0434'), 1)+' %': '' ) : (result.get('1002')!=null ? #numbers.formatInteger(result.get('1002'),1)+' %': '' )}">
-			            					</td>
-			            					<td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
-			            						<span th:utext="${  typeVehicule=='VL' ? (result.get('0431')!=null ? #numbers.formatInteger(result.get('0431'),1)+' daN': '' ) : ''}"></span><br>
-			            						<span th:utext="${  typeVehicule=='VL' ? (result.get('0420')!=null ? #numbers.formatInteger(result.get('0420'),1)+' kg': '' ) : ''}"></span>
-			            					</td>
-			            				</tr>
-			            			</table>
-				            	</td>
-			  				</tr>
-			  				<tr>
-			  					<td style="border-left: 0px solid ;
-			            			 border-bottom: 0px solid ;">
-		            			</td>
-			  					<td   class="text-center font-weight-bold"
-			  					style="height:5px; width:195px;
-			  					border: 1px solid black; font-size: 10px;" >
-							  		#1 Déséq./ Unbal.
-			  					</td>
-			  					<td class="text-center" 
-				            		style="color: gray; border: 1px solid black; height:50px; width:195px;">
-			            			<table style="height:100%; width:100%">
-			            				<tr>
-			            					<td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
-			            						<span  th:utext="${ typeVehicule=='VL' ? (result.get('0438')!=null ? #numbers.formatInteger(result.get('0438'),1)+' daN': '' ) : ''}"></span><br>
-			            						<span  th:utext="${ typeVehicule=='VL' ? (result.get('0424')!=null ? #numbers.formatInteger(result.get('0424'), 1)+' kg': '' ) : ''}"></span>
-			            					</td>
-			            					
-			            					<td class="text-top" style="vertical-align: top;" th:utext="${ typeVehicule=='VL' ? (result.get('0442')!=null ? #numbers.formatInteger(result.get('0442'), 1)+' %': '' ) : (result.get('1125')!=null ? #numbers.formatInteger(result.get('1125'), 1)+' %': '' )}">
-			            					</td>
-			            					
-			            					<td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
-			            						<span th:utext="${ typeVehicule == 'VL' ? (result.get('0439')!=null ? #numbers.formatInteger(result.get('0439'),1)+' daN': '' ): ''}"></span><br>
-			            						<span th:utext="${ typeVehicule == 'VL' ? (result.get('0423')!=null ? #numbers.formatInteger(result.get('0423'),1)+' kg': '' ): ''}"></span>
-			            					</td>
-			            				</tr>
-			            			</table>
-				            	</td>
-			  				</tr>
-			  		</table>
-			  	</div> 
-		  	</div>
-		  </div>
-		  
-		  <div class="row">
-		  </div>
-		  <div class="row d-flex  align-content-end flex-wrap" style="height:375px;">
-		  		<div class="col">
-			      
-			    </div>
-			    <div class="col-7 font-weight-bold">
-		    		<div class="row ">
-			    		<div class="d-flex justify-content-center">
-					      <p class="text-center font-weight-bold" > 
-						      	N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span> <br>
-					      </p>
-				    	</div>
-					</div>
-					<div class="row">
-				      <p class="text-left font-weight-bold"> 
-					      	CAT. :
-				      </p>
-				      <span th:utext="${v.carteGrise.produit.description}"></span> <br>
-					</div>
-			    	<div class="row">
-		    		  	<div class="col-3">
-						      <div  style="width: 120%; border: 2px solid black">
-							      <h1><span th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'MM'): 'XX'}"></span></h1>
-							  </div>
-							  <div class="text-center font-weight-bold" >
-							      <p style="font-size: 6px;">Mois / Month</p>
-							  </div>
-						 </div>
-						  <div class="col-5 d-flex  align-content-end flex-wrap">
-							  <p class="text-left font-weight-bold"> 
-						      	 <span th:utext="${v.process.status ? v.carteGrise.numImmatriculation: 'XX xxx XX'}"></span>
-						      </p>
-						  </div>
-						  <div class="col-3" >
-						     <div  style=" width: 120%; border: 2px solid black">
-							      <h1><span th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'yy'): 'XX'}"></span></h1>
-							  </div>
-							  <div class="text-center font-weight-bold" >
-							      <p style="font-size: 6px;">Année / Year</p>
-							  </div>
-						  </div>
-								  
-					</div>
-			    	
-			    </div>
-			    <div class="col">
-			     
-			    </div>
-		  </div>
+        </div>
     </div>
-  </div>
+    <div class="row">
+        <h3 class="text-left font-weight-bold">
+
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-5" style=" height:925px; border: 2px solid black">
+            <div th:if="${#lists.size(defaultsTest)} != 0">
+                <h6 class="font-weight-bold">
+                    <p>DEFAUTS SOUSMIS A CONTRE VISITE /<br>
+                        DEFECTS SUBJECT TO COUNTER INSPECTION</p>
+                </h6>
+                <ol class="text-left font-weight-bold">
+                    <li th:each="lexique : ${defaultsTest}">
+                        <span style="color: gray;" th:text="${lexique.libelle}"> Commande de freins de stationnement: Absence de verrouillage</span>
+                    </li>
+                </ol>
+            </div>
+            <div th:if="${#lists.size(v.inspection.lexiques)} != 0">
+                <h6 class="font-weight-bold">
+                    <p>DEFAUTS A REPARER DES QUE POSSIBLE /<br>
+                        DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p>
+                </h6>
+                <ol class="text-left font-weight-bold">
+                    <li th:each="lexique : ${v.inspection.lexiques}">
+                        <span style="color: gray;" th:text="${lexique.libelle}"> </span>
+                    </li>
+                </ol>
+            </div>
+            <div>
+                <span class="text-left font-weight-bold">	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
+                <h2 class="text-left font-weight-bold"
+                    th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
+                <p class="text-left font-weight-bold">
+                    <span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
+                    <span style="font-size: 25px;"
+                          th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'dd/MM/yyyy') : #temporals.format(v.control.contreVDelayAt, 'dd/MM/yyyy')}"></span><br>
+                    NOM et visa du contrôleur /<br>
+                    Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
+                </p>
+                <div class="float-right">
+                    <img height="240" width="400"
+                         th:src="@{${v.inspection.signature !=null ? '/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
                 </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <h3 class="text-left font-weight-bold">
+
+            </h3>
+        </div>
+        <div class="col-6">
+            <div class="row" style=" height:600px; border: 2px solid black">
+                <div class="col">
+                    <div class="text-center font-weight-bold d-flex align-items-start"
+                         style=" height:50px; margin: 0 auto;">
+                        <h4 class="">
+                            RELEVE DES MESURES/ MEASUREMENT: <br>
+                        </h4>
+                    </div>
+                    <div>
+                        <table th:if="${ v.carteGrise.produit.categorieVehicule.type == 'VL'}">
+                            <tr>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:120px;
+			  					border: 1px solid black; font-size: 15px;">SUSPENSION
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+                                    Eff AG<br>LF Eff
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+                                    Eff AD<br>Rf Eff
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+                                    Eff RG<br>LR Eff
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+			  					border: 1px solid black; font-size: 10px;">
+                                    Eff RD<br>RR Eff
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+							border: 1px solid black; font-size: 10px;">
+                                    Diss. AV<br>F Diss.
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:65px;
+							border: 1px solid black; font-size: 10px;">
+                                    Diss. AR<br>R Diss.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;"></td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL' and result.get('0410')!=null) ? #numbers.formatInteger(result.get('0410'), 1)+' %' :'' }">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL' and result.get('0411')!=null) ? #numbers.formatInteger(result.get('0411'), 1)+' %' :'' }">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL'  and result.get('0413')!=null) ? #numbers.formatInteger(result.get('0413'), 1)+' %' :'' }">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL'  and result.get('0414')!=null) ? #numbers.formatInteger(result.get('0414'), 1)+' %' :'' }">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL' and result.get('0412')!=null) ? #numbers.formatInteger(result.get('0412'), 1)+' %' :'' }">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${ (typeVehicule=='VL' and result.get('0415')!=null) ? #numbers.formatInteger(result.get('0415'), 1)+' %' :'' }">
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table>
+                            <tr>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:120px;
+			  					border: 1px solid black; font-size: 15px;">RIPAGE / SHIFT.
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Ripage avant <br>Front Deviation
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Ripage Arrière<br>Rear Deviation
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+		            			 border-bottom: 0px solid ;"></td>
+
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${result.get('0401') != null ? #strings.replace(result.get('0401'), '.0', '')+' mm/m': ''}">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${result.get('0402') != null ? result.get('0402')+' mm/m' : ''}">
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table>
+                            <tr>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:120px;
+		  					border: 1px solid black; font-size: 14px;">POLLUTION
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Opacité<br>Opacity
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; color: gray; font-size: 13px;"
+                                    th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? #strings.replace(result.get('0509'), '.0', '')+' m-1': '' ): (result.get('0538')!=null ? #strings.replace(result.get('0538'), '.0', '')+' m-1': '' )}">
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table>
+                            <tr>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:120px;
+		  					border: 1px solid black; font-size: 14px;">PHARES / LAMPS
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Feu Crois. gauche<br>Left Headlamp
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Feu Crois. droite<br>Right Headlamp
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+		            			 border-bottom: 0px solid ;">
+                                </td>
+
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${result.get('0490')} =='1.0' ? 'Correct': 'Unknow'">
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black"
+                                    th:utext="${result.get('0492')} =='1.0' ? 'Correct': 'Unknow'">
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table>
+                            <tr>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:120px;
+		  					border: 1px solid black; font-size: 14px;">FREINS / BRAKES
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Eff. Frein de service<br>Service Brake Eff
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black; width:195px;"
+                                    th:utext="${typeVehicule=='VL' ? (result.get('0446')!=null ? #numbers.formatInteger(result.get('0446'), 1)+' %': '' ): (result.get('1000')!=null ? result.get('1000')+' %': '' )}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+		            			 border-bottom: 0px solid ;">
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    Eff. Frein de station.<br> Parking Brake Eff.
+                                </td>
+                                <td class="text-center" style="color: gray;
+		  					border: 1px solid black; width:195px;"
+                                    th:utext="${typeVehicule=='VL' ? (result.get('0465')!=null ? #numbers.formatInteger(result.get('0465'), 1)+' %': '' ): (result.get('1001')!=null ? #numbers.formatInteger(result.get('1001'), 1)+' %': '' )}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+		            			 border-bottom: 0px solid ;"></td>
+
+
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+		  					border: 1px solid black; font-size: 10px;">
+                                    #1 Déséq./ Unbal.
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black; height:50px; width:195px;">
+                                    <table style="height:100%; width:100%">
+                                        <tr>
+                                            <td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
+                                                <span th:utext="${typeVehicule=='VL' ? (result.get('0430')!=null ? #numbers.formatInteger(result.get('0430'),1)+' daN': '' ) : ''}"></span><br>
+                                                <span th:utext="${typeVehicule=='VL' ? (result.get('0421')!=null ? #numbers.formatInteger(result.get('0421'),1)+' kg': '' ) : ''}"></span>
+                                            </td>
+                                            <td style="vertical-align: top;"
+                                                th:utext="${ typeVehicule=='VL' ? (result.get('0434')!=null ? #numbers.formatInteger(result.get('0434'), 1)+' %': '' ) : (result.get('1002')!=null ? #numbers.formatInteger(result.get('1002'),1)+' %': '' )}">
+                                            </td>
+                                            <td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
+                                                <span th:utext="${  typeVehicule=='VL' ? (result.get('0431')!=null ? #numbers.formatInteger(result.get('0431'),1)+' daN': '' ) : ''}"></span><br>
+                                                <span th:utext="${  typeVehicule=='VL' ? (result.get('0420')!=null ? #numbers.formatInteger(result.get('0420'),1)+' kg': '' ) : ''}"></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-left: 0px solid ;
+			            			 border-bottom: 0px solid ;">
+                                </td>
+                                <td class="text-center font-weight-bold"
+                                    style="height:5px; width:195px;
+			  					border: 1px solid black; font-size: 10px;">
+                                    #1 Déséq./ Unbal.
+                                </td>
+                                <td class="text-center"
+                                    style="color: gray; border: 1px solid black; height:50px; width:195px;">
+                                    <table style="height:100%; width:100%">
+                                        <tr>
+                                            <td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
+                                                <span th:utext="${ typeVehicule=='VL' ? (result.get('0438')!=null ? #numbers.formatInteger(result.get('0438'),1)+' daN': '' ) : ''}"></span><br>
+                                                <span th:utext="${ typeVehicule=='VL' ? (result.get('0424')!=null ? #numbers.formatInteger(result.get('0424'), 1)+' kg': '' ) : ''}"></span>
+                                            </td>
+
+                                            <td class="text-top" style="vertical-align: top;"
+                                                th:utext="${ typeVehicule=='VL' ? (result.get('0442')!=null ? #numbers.formatInteger(result.get('0442'), 1)+' %': '' ) : (result.get('1125')!=null ? #numbers.formatInteger(result.get('1125'), 1)+' %': '' )}">
+                                            </td>
+
+                                            <td style="font-size: 10px;" th:if="${ typeVehicule == 'VL'}">
+                                                <span th:utext="${ typeVehicule == 'VL' ? (result.get('0439')!=null ? #numbers.formatInteger(result.get('0439'),1)+' daN': '' ): ''}"></span><br>
+                                                <span th:utext="${ typeVehicule == 'VL' ? (result.get('0423')!=null ? #numbers.formatInteger(result.get('0423'),1)+' kg': '' ): ''}"></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+            </div>
+            <div class="row d-flex  align-content-end flex-wrap" style="height:375px;">
+                <div class="col">
+
+                </div>
+                <div class="col-7 font-weight-bold">
+                    <div class="row ">
+                        <div class="d-flex justify-content-center">
+                            <p class="text-center font-weight-bold">
+                                N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span> <br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="text-left font-weight-bold">
+                            CAT. :
+                        </p>
+                        <span th:utext="${v.carteGrise.produit.description}"></span> <br>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div style="width: 120%; border: 2px solid black">
+                                <h1><span
+                                        th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'MM'): 'XX'}"></span>
+                                </h1>
+                            </div>
+                            <div class="text-center font-weight-bold">
+                                <p style="font-size: 6px;">Mois / Month</p>
+                            </div>
+                        </div>
+                        <div class="col-5 d-flex  align-content-end flex-wrap">
+                            <p class="text-left font-weight-bold">
+                                <span th:utext="${v.process.status ? v.carteGrise.numImmatriculation: 'XX xxx XX'}"></span>
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            <div style=" width: 120%; border: 2px solid black">
+                                <h1><span
+                                        th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'yy'): 'XX'}"></span>
+                                </h1>
+                            </div>
+                            <div class="text-center font-weight-bold">
+                                <p style="font-size: 6px;">Année / Year</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <footer class="page-footer font-small blue pt-4">
-	<center>
-	 <p>SATELLITE NGONO - DOUALA BONABERI- Tel: (+237) 655962263</p>
-	</center>
+    <center>
+        <p>SATELLITE NGONO - DOUALA BONABERI- Tel: (+237) 655962263</p>
+    </center>
 </footer>
-
 
 
 </body>

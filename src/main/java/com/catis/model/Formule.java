@@ -18,59 +18,59 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class Formule extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String description;
+    private String description;
 
-	@OneToMany(mappedBy = "formule")
-	private Set<Mesure> mesures;
+    @OneToMany(mappedBy = "formule")
+    private Set<Mesure> mesures;
 
-	@OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
-	private Set<Seuil> seuils;
+    @OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
+    private Set<Seuil> seuils;
 
-	public Formule() {
-		// TODO Auto-generated constructor stub
-	}
+    public Formule() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public Formule(Long id, String description, Set<Mesure> mesures, Set<Seuil> seuils) {
-		this.id = id;
-		this.description = description;
-		this.mesures = mesures;
-		this.seuils = seuils;
-	}
+    public Formule(Long id, String description, Set<Mesure> mesures, Set<Seuil> seuils) {
+        this.id = id;
+        this.description = description;
+        this.mesures = mesures;
+        this.seuils = seuils;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<Mesure> getMesures() {
-		return mesures;
-	}
+    public Set<Mesure> getMesures() {
+        return mesures;
+    }
 
-	public void setMesures(Set<Mesure> mesures) {
-		this.mesures = mesures;
-	}
+    public void setMesures(Set<Mesure> mesures) {
+        this.mesures = mesures;
+    }
 
-	public Set<Seuil> getSeuils() {
-		return seuils;
-	}
+    public Set<Seuil> getSeuils() {
+        return seuils;
+    }
 
-	public void setSeuils(Set<Seuil> seuils) {
-		this.seuils = seuils;
-	}
+    public void setSeuils(Set<Seuil> seuils) {
+        this.seuils = seuils;
+    }
 
 }

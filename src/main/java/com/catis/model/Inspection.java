@@ -28,68 +28,68 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_inspection")
 public class Inspection extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idInspection;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idInspection;
 
-	private Date dateDebut;
+    private Date dateDebut;
 
-	private Date dateFin;
+    private Date dateFin;
 
-	private String signature; // chemin image signature du controleur
-	
-	@ManyToOne
-	private Produit produit;
+    private String signature; // chemin image signature du controleur
 
-	private double kilometrage;
+    @ManyToOne
+    private Produit produit;
 
-	private String chassis;
+    private double kilometrage;
 
-	private int essieux;
+    private String chassis;
 
-	private String position;
+    private int essieux;
 
-	@OneToOne(mappedBy = "inspection")
-	private MesureVisuel mesureVisuel;
+    private String position;
 
-	@ManyToOne
-	private Controleur controleur;
+    @OneToOne(mappedBy = "inspection")
+    private MesureVisuel mesureVisuel;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Controleur controleur;
 
-	@ManyToOne 
-	private Ligne ligne;
+    @ManyToOne
+    private Organisation organisation;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Visite visite;
+    @ManyToOne
+    private Ligne ligne;
 
-	@OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
-	@JsonIgnore
-	private Set<GieglanFile> gieglanFiles;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Visite visite;
 
-	@ManyToMany
-	private List<Lexique> lexiques;
+    @OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<GieglanFile> gieglanFiles;
 
-	/*
-	 * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
-	 */
-	public Inspection() {
+    @ManyToMany
+    private List<Lexique> lexiques;
 
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Inspection(InpectionReceived i) {
+    /*
+     * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
+     */
+    public Inspection() {
 
-		this.idInspection = i.getIdInspection();
-		this.dateDebut = i.getDateDebut();
-		this.dateFin = i.getDateFin();
-		this.signature = i.getSignature();
-		this.kilometrage = i.getKilometrage();
-		this.chassis = i.getChassis();
-		this.essieux = i.getEssieux();
-		this.position = i.getPosition();
-	}
+        // TODO Auto-generated constructor stub
+    }
+
+    public Inspection(InpectionReceived i) {
+
+        this.idInspection = i.getIdInspection();
+        this.dateDebut = i.getDateDebut();
+        this.dateFin = i.getDateFin();
+        this.signature = i.getSignature();
+        this.kilometrage = i.getKilometrage();
+        this.chassis = i.getChassis();
+        this.essieux = i.getEssieux();
+        this.position = i.getPosition();
+    }
 
     public List<Lexique> getLexiques() {
         return lexiques;
@@ -100,12 +100,12 @@ public class Inspection extends JournalData {
     }
 
     public void addLexique(Lexique lexique) {
-	    this.lexiques.add(lexique);
+        this.lexiques.add(lexique);
     }
 
     public Inspection(Date dateDebut, Date dateFin, String signature, Produit produit,
-          double kilometrage, String chassis, int essieux, String position, Controleur controleur,
-          Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
+                      double kilometrage, String chassis, int essieux, String position, Controleur controleur,
+                      Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
     ) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -124,122 +124,122 @@ public class Inspection extends JournalData {
     }
 
     public Long getIdInspection() {
-		return idInspection;
-	}
+        return idInspection;
+    }
 
-	public void setIdInspection(Long idInspection) {
-		this.idInspection = idInspection;
-	}
+    public void setIdInspection(Long idInspection) {
+        this.idInspection = idInspection;
+    }
 
-	public Date getDateDebut() {
-		return dateDebut;
-	}
+    public Date getDateDebut() {
+        return dateDebut;
+    }
 
-	public void setDateDebut(Date dateDebut) {
-		this.dateDebut = dateDebut;
-	}
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
 
-	public Date getDateFin() {
-		return dateFin;
-	}
+    public Date getDateFin() {
+        return dateFin;
+    }
 
-	public void setDateFin(Date dateFin) {
-		this.dateFin = dateFin;
-	}
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
 
-	public String getSignature() {
-		return signature;
-	}
+    public String getSignature() {
+        return signature;
+    }
 
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
-	public Produit getProduit() {
-		return produit;
-	}
+    public Produit getProduit() {
+        return produit;
+    }
 
-	public void setProduit(Produit produit) {
-		this.produit = produit;
-	}
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
 
-	public double getKilometrage() {
-		return kilometrage;
-	}
+    public double getKilometrage() {
+        return kilometrage;
+    }
 
-	public void setKilometrage(double kilometrage) {
-		this.kilometrage = kilometrage;
-	}
+    public void setKilometrage(double kilometrage) {
+        this.kilometrage = kilometrage;
+    }
 
-	public String getChassis() {
-		return chassis;
-	}
+    public String getChassis() {
+        return chassis;
+    }
 
-	public void setChassis(String chassis) {
-		this.chassis = chassis;
-	}
+    public void setChassis(String chassis) {
+        this.chassis = chassis;
+    }
 
-	public int getEssieux() {
-		return essieux;
-	}
+    public int getEssieux() {
+        return essieux;
+    }
 
-	public void setEssieux(int essieux) {
-		this.essieux = essieux;
-	}
+    public void setEssieux(int essieux) {
+        this.essieux = essieux;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public Controleur getControleur() {
-		return controleur;
-	}
+    public Controleur getControleur() {
+        return controleur;
+    }
 
-	public void setControleur(Controleur controleur) {
-		this.controleur = controleur;
-	}
+    public void setControleur(Controleur controleur) {
+        this.controleur = controleur;
+    }
 
-	public Ligne getLigne() {
-		return ligne;
-	}
+    public Ligne getLigne() {
+        return ligne;
+    }
 
-	public void setLigne(Ligne ligne) {
-		this.ligne = ligne;
-	}
+    public void setLigne(Ligne ligne) {
+        this.ligne = ligne;
+    }
 
-	public Visite getVisite() {
-		return visite;
-	}
+    public Visite getVisite() {
+        return visite;
+    }
 
-	public void setVisite(Visite visite) {
-		this.visite = visite;
-	}
+    public void setVisite(Visite visite) {
+        this.visite = visite;
+    }
 
-	public Set<GieglanFile> getGieglanFiles() {
-		return gieglanFiles;
-	}
+    public Set<GieglanFile> getGieglanFiles() {
+        return gieglanFiles;
+    }
 
-	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
-		this.gieglanFiles = gieglanFiles;
-	}
+    public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
+        this.gieglanFiles = gieglanFiles;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public MesureVisuel getMesureVisuel() {
-		return mesureVisuel;
-	}
+    public MesureVisuel getMesureVisuel() {
+        return mesureVisuel;
+    }
 
-	public void setMesureVisuel(MesureVisuel mesureVisuel) {
-		this.mesureVisuel = mesureVisuel;
-	}
+    public void setMesureVisuel(MesureVisuel mesureVisuel) {
+        this.mesureVisuel = mesureVisuel;
+    }
 }

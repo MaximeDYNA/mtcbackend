@@ -12,16 +12,16 @@ import com.catis.repository.PaysRepository;
 @Service
 public class PaysService {
 
-	@Autowired
-	private PaysRepository paysRepository;
-	
-	public Pays addPays(Pays pays) {
-		return paysRepository.save(pays);
-	}
-	
-	public List<Pays> findAllPays(){
-		List<Pays> pays = new ArrayList<>();
-		paysRepository.findAll().forEach(pays::add);
-		return pays;
-	}
+    @Autowired
+    private PaysRepository paysRepository;
+
+    public Pays addPays(Pays pays) {
+        return paysRepository.save(pays);
+    }
+
+    public List<Pays> findAllPays() {
+        List<Pays> pays = new ArrayList<>();
+        paysRepository.findAll().forEach(pays::add);
+        return pays;
+    }
 }

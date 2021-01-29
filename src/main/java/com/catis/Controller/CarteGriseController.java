@@ -33,124 +33,126 @@ import com.catis.service.VisiteService;
 @RestController
 @CrossOrigin
 public class CarteGriseController {
-	@Autowired
-	private CarteGriseService cgs;
-	@Autowired
-	private ProprietaireVehiculeService pvs;
-	@Autowired
-	private MarqueService ms;
-	@Autowired
-	private ProduitService ps;
-	@Autowired
-	private VehiculeService vs;
-	@Autowired
-	private VisiteService visiteService;
-	@Autowired
-	private EnergieService energieService;
+    @Autowired
+    private CarteGriseService cgs;
+    @Autowired
+    private ProprietaireVehiculeService pvs;
+    @Autowired
+    private MarqueService ms;
+    @Autowired
+    private ProduitService ps;
+    @Autowired
+    private VehiculeService vs;
+    @Autowired
+    private VisiteService visiteService;
+    @Autowired
+    private EnergieService energieService;
 
-	private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
-	
-	@GetMapping("/api/v1/cartegrise/search/{imCha}")
-	public  ResponseEntity<Object> search(@PathVariable String imCha){
-		LOGGER.info("Recherche carte grise...");
-		try {
-				//cgs.findByImmatriculationOuCarteGrise(imCha)
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findBychassis(imCha));
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
-		}
-	}
-	@GetMapping("/api/v1/search/last/{imCha}")
-	public  ResponseEntity<Object> searchLast(@PathVariable String imCha){
-		LOGGER.info("Recherche carte grise...");
-		
-				//cgs.findByImmatriculationOuCarteGrise(imCha)
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findLastCgBychassis(imCha));
+    private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
+
+    @GetMapping("/api/v1/cartegrise/search/{imCha}")
+    public ResponseEntity<Object> search(@PathVariable String imCha) {
+        LOGGER.info("Recherche carte grise...");
+        try {
+            //cgs.findByImmatriculationOuCarteGrise(imCha)
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findBychassis(imCha));
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
+
+    @GetMapping("/api/v1/search/last/{imCha}")
+    public ResponseEntity<Object> searchLast(@PathVariable String imCha) {
+        LOGGER.info("Recherche carte grise...");
+
+        //cgs.findByImmatriculationOuCarteGrise(imCha)
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findLastCgBychassis(imCha));
 		/*try {	} 
 		catch(Exception e){ 
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );*/
-				  
-		
-	}
-	@GetMapping("/api/v1/cartegrises")
-	public  ResponseEntity<Object> findAll(){
-		LOGGER.info("Recherche carte grise...");
-		try {
-				//cgs.findByImmatriculationOuCarteGrise(imCha)
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findAll());
-			} 
-		catch(Exception e){ 
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null );
-				  
-		}
-	}
-	@PostMapping("/api/v1/cartegrise")
-	public  ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR){
-		LOGGER.info("mise à jour demandé...");
-		
-				System.out.println("......"+carteGriseR.getVisiteId());
-				CarteGrise carteGrise = new CarteGrise(carteGriseR);
-				
-				//initialise le vehicule avec les éléments reçus par la vue
-				
-				Vehicule vehicule = new Vehicule(carteGriseR);
-				
-				//set modifie l'energie du vehicule
-				
-				vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
-				
-				// retrouve l'objet visite en bd
-				
-				Visite visite = visiteService.findById(carteGriseR.getVisiteId());
-				
-				//recupère l'id de la cg
-				
-				carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
-				carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
-				vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
-				carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
-				carteGrise.setVehicule(vs.addVehicule(vehicule));
-				
-				visite.setStatut(1);
-				visiteService.modifierVisite(visite);
-				
-				return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.updateCarteGrise(carteGrise));
+
+
+    }
+
+    @GetMapping("/api/v1/cartegrises")
+    public ResponseEntity<Object> findAll() {
+        LOGGER.info("Recherche carte grise...");
+        try {
+            //cgs.findByImmatriculationOuCarteGrise(imCha)
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findAll());
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
+
+    @PostMapping("/api/v1/cartegrise")
+    public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) {
+        LOGGER.info("mise à jour demandé...");
+
+        System.out.println("......" + carteGriseR.getVisiteId());
+        CarteGrise carteGrise = new CarteGrise(carteGriseR);
+
+        //initialise le vehicule avec les éléments reçus par la vue
+
+        Vehicule vehicule = new Vehicule(carteGriseR);
+
+        //set modifie l'energie du vehicule
+
+        vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+
+        // retrouve l'objet visite en bd
+
+        Visite visite = visiteService.findById(carteGriseR.getVisiteId());
+
+        //recupère l'id de la cg
+
+        carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
+        carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
+        vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
+        carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
+        carteGrise.setVehicule(vs.addVehicule(vehicule));
+
+        visite.setStatut(1);
+        visiteService.modifierVisite(visite);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.updateCarteGrise(carteGrise));
 			/*try {} 
 		catch(Exception e){ 
 			
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD +"Carte grise", null );
 				  
 		}*/
-				
-	}
-	@GetMapping("/api/v1/cartegrise/listview")
-	public  ResponseEntity<Object> carteGriseListView(){
-		LOGGER.info("Recherche carte grise...");
-		try {
-			LOGGER.info("Liste des produits");
-			Map<String ,Object> listView; 
-			List<Map<String ,Object>> mapList = new ArrayList<>();
-			for(CarteGrise c : cgs.findAll()) {
-				listView = new HashMap<>();
-				listView.put("id", c.getCarteGriseId());
-				listView.put("immatriculation", c.getNumImmatriculation());
-				listView.put("proprietaire", c.getProprietaireVehicule().getPartenaire().getNom());
-				listView.put("montant", c.getMontantPaye());
-				
-				//listView.put("marque", c.getMarqueVehicule());				
-				
-				listView.put("createdDate", c.getCreatedDate());
-				listView.put("modifiedDate", c.getModifiedDate());
-				mapList.add(listView);
-			}
-			
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
-			
-		} catch (Exception e) {
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Client", null);
-		}
-				
-	}
+
+    }
+
+    @GetMapping("/api/v1/cartegrise/listview")
+    public ResponseEntity<Object> carteGriseListView() {
+        LOGGER.info("Recherche carte grise...");
+        try {
+            LOGGER.info("Liste des produits");
+            Map<String, Object> listView;
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            for (CarteGrise c : cgs.findAll()) {
+                listView = new HashMap<>();
+                listView.put("id", c.getCarteGriseId());
+                listView.put("immatriculation", c.getNumImmatriculation());
+                listView.put("proprietaire", c.getProprietaireVehicule().getPartenaire().getNom());
+                listView.put("montant", c.getMontantPaye());
+
+                //listView.put("marque", c.getMarqueVehicule());
+
+                listView.put("createdDate", c.getCreatedDate());
+                listView.put("modifiedDate", c.getModifiedDate());
+                mapList.add(listView);
+            }
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Client", null);
+        }
+
+    }
 }

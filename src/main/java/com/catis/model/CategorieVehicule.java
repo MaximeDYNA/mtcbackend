@@ -18,73 +18,73 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class CategorieVehicule extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String type;
+    private String type;
 
-	@OneToMany(mappedBy = "categorieVehicule")
-	@JsonIgnore
-	private Set<CategorieTestVehicule> categorieTestVehicules;
-	
-	@OneToMany(mappedBy = "categorieVehicule")
-	@JsonIgnore
-	private Set<Lexique> lexique;
+    @OneToMany(mappedBy = "categorieVehicule")
+    @JsonIgnore
+    private Set<CategorieTestVehicule> categorieTestVehicules;
 
-	@OneToMany(mappedBy = "categorieVehicule")
-	@JsonIgnore
-	private Set<Produit> produits;
+    @OneToMany(mappedBy = "categorieVehicule")
+    @JsonIgnore
+    private Set<Lexique> lexique;
 
-	public CategorieVehicule() {
-		// TODO Auto-generated constructor stub
-	}
+    @OneToMany(mappedBy = "categorieVehicule")
+    @JsonIgnore
+    private Set<Produit> produits;
 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
+    public CategorieVehicule() {
+        // TODO Auto-generated constructor stub
+    }
 
 
-	public Set<Produit> getProduits() {
-		return produits;
-	}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
 
-	public CategorieVehicule(Long id, String type, Set<CategorieTestVehicule> categorieTestVehicules,
-			Set<Lexique> lexique, Set<Produit> produits) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.categorieTestVehicules = categorieTestVehicules;
-		this.lexique = lexique;
-		this.produits = produits;
-	}
+    public Set<Produit> getProduits() {
+        return produits;
+    }
 
 
-	public void setProduits(Set<Produit> produits) {
-		this.produits = produits;
-	}
+    public CategorieVehicule(Long id, String type, Set<CategorieTestVehicule> categorieTestVehicules,
+                             Set<Lexique> lexique, Set<Produit> produits) {
+        super();
+        this.id = id;
+        this.type = type;
+        this.categorieTestVehicules = categorieTestVehicules;
+        this.lexique = lexique;
+        this.produits = produits;
+    }
 
 
-	public Set<Lexique> getLexique() {
-		return lexique;
-	}
+    public void setProduits(Set<Produit> produits) {
+        this.produits = produits;
+    }
 
-	public void setLexique(Set<Lexique> lexique) {
-		this.lexique = lexique;
-	}
+
+    public Set<Lexique> getLexique() {
+        return lexique;
+    }
+
+    public void setLexique(Set<Lexique> lexique) {
+        this.lexique = lexique;
+    }
 
 }

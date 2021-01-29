@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.catis.model.MesureVisuel;
 
 
-public interface MesureVisuelRepository extends CrudRepository<MesureVisuel, Long>  {
+public interface MesureVisuelRepository extends CrudRepository<MesureVisuel, Long> {
 
-	MesureVisuel findByInspection_VisiteIdVisite(Long id);
+    MesureVisuel findByInspection_VisiteIdVisite(Long id);
 }

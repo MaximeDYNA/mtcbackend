@@ -9,12 +9,12 @@ import com.catis.repository.ClassificationRepository;
 @Service
 public class ClassificationService {
 
-	@Autowired
-	private ClassificationRepository cR;
-	
-	public Classification findById(Long id) {
-		if(id==null)
-			return null;
-		return cR.findById(id).get();
-	}
+    @Autowired
+    private ClassificationRepository cR;
+
+    public Classification findById(Long id) {
+        if (id == null)
+            return null;
+        return cR.findById(id).get();
+    }
 }

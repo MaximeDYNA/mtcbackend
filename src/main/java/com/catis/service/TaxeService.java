@@ -13,21 +13,22 @@ import com.catis.repository.TaxeRepository;
 @Service
 public class TaxeService {
 
-	@Autowired
-	private TaxeProduitRepository taxeProduitRepository;
-	@Autowired
-	private TaxeRepository taxeRepository;
-	
-	public List<Taxe> taxListByLibelle(String libelle){
-		List<Taxe> taxes = new ArrayList<>();
-		
-		for(TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleIgnoreCase(libelle)) {
-			taxes.add(tp.getTaxe());
-		}
-		
-		return taxes;
-	}
-	public Taxe findByNom(String nom) {
-		return taxeRepository.findByNom(nom);
-	}
+    @Autowired
+    private TaxeProduitRepository taxeProduitRepository;
+    @Autowired
+    private TaxeRepository taxeRepository;
+
+    public List<Taxe> taxListByLibelle(String libelle) {
+        List<Taxe> taxes = new ArrayList<>();
+
+        for (TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleIgnoreCase(libelle)) {
+            taxes.add(tp.getTaxe());
+        }
+
+        return taxes;
+    }
+
+    public Taxe findByNom(String nom) {
+        return taxeRepository.findByNom(nom);
+    }
 }

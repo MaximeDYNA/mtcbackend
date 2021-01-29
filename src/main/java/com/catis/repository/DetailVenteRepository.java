@@ -8,5 +8,5 @@ import com.catis.model.DetailVente;
 
 public interface DetailVenteRepository extends CrudRepository<DetailVente, String> {
 
-	List<DetailVente> findByVente_IdVente(Long id);
+    List<DetailVente> findByVente_IdVente(Long id);
 }

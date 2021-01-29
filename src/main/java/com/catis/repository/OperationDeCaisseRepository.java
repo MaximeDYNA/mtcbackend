@@ -8,10 +8,14 @@ import com.catis.model.OperationCaisse;
 
 public interface OperationDeCaisseRepository extends CrudRepository<OperationCaisse, String> {
 
-	OperationCaisse findByNumeroTicket(String ticket);
-	List<OperationCaisse> findByType(int type);
-	List<OperationCaisse> findByVente_IdVente(Long idVente);
-	List<OperationCaisse> findByTypeTrueAndVente_IdVente(Long idVente);
-	List<OperationCaisse> findBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
-	
+    OperationCaisse findByNumeroTicket(String ticket);
+
+    List<OperationCaisse> findByType(int type);
+
+    List<OperationCaisse> findByVente_IdVente(Long idVente);
+
+    List<OperationCaisse> findByTypeTrueAndVente_IdVente(Long idVente);
+
+    List<OperationCaisse> findBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
+
 }

@@ -22,98 +22,99 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class ValeurTest extends JournalData {
 
-	@Id @Column(name = "uuid")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idValeurTest;
+    @Id
+    @Column(name = "uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idValeurTest;
 
-	private String code;
+    private String code;
 
-	private String valeur;
+    private String valeur;
 
-	private Integer crc;
+    private Integer crc;
 
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "varchar(255) default 'INITIALIZED'")
-	private StatusType status;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'INITIALIZED'")
+    private StatusType status;
 
-	private String description;
+    private String description;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@ManyToOne
-	private GieglanFile gieglanFile;
-	
-	@ManyToOne
-	private Mesure mesure;
+    @ManyToOne
+    private GieglanFile gieglanFile;
 
-	public ValeurTest() {
+    @ManyToOne
+    private Mesure mesure;
 
-		// TODO Auto-generated constructor stub
-	}
+    public ValeurTest() {
 
-	public Long getIdValeurTest() {
-		return idValeurTest;
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public void setIdValeurTest(Long idValeurTest) {
-		this.idValeurTest = idValeurTest;
-	}
+    public Long getIdValeurTest() {
+        return idValeurTest;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setIdValeurTest(Long idValeurTest) {
+        this.idValeurTest = idValeurTest;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public String getValeur() {
-		return valeur;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setValeur(String valeur) {
-		this.valeur = valeur;
-	}
+    public String getValeur() {
+        return valeur;
+    }
 
-	public Integer getCrc() {
-		return crc;
-	}
+    public void setValeur(String valeur) {
+        this.valeur = valeur;
+    }
 
-	public void setCrc(Integer crc) {
-		this.crc = crc;
-	}
+    public Integer getCrc() {
+        return crc;
+    }
 
-	public StatusType getStatus() {
-		return status;
-	}
+    public void setCrc(Integer crc) {
+        this.crc = crc;
+    }
 
-	public void setStatus(StatusType status) {
-		this.status = status;
-	}
+    public StatusType getStatus() {
+        return status;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setStatus(StatusType status) {
+        this.status = status;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public GieglanFile getGieglanFile() {
-		return gieglanFile;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public void setGieglanFile(GieglanFile gieglanFile) {
-		this.gieglanFile = gieglanFile;
-	}
+    public GieglanFile getGieglanFile() {
+        return gieglanFile;
+    }
+
+    public void setGieglanFile(GieglanFile gieglanFile) {
+        this.gieglanFile = gieglanFile;
+    }
 
 }

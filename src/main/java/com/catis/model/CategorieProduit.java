@@ -20,57 +20,57 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_categorieproduit")
 public class CategorieProduit extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long categorieProduitId;
-	private String libelle;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long categorieProduitId;
+    private String libelle;
+    private String description;
 
-	@OneToMany(mappedBy = "categorieProduit")
-	@JsonIgnore
-	Set<Produit> produits;
+    @OneToMany(mappedBy = "categorieProduit")
+    @JsonIgnore
+    Set<Produit> produits;
 
-	public CategorieProduit() {
-		// TODO Auto-generated constructor stub
-	}
+    public CategorieProduit() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public CategorieProduit(Long categorieProduitId, String libelle, String description, Set<Produit> produits) {
-		this.categorieProduitId = categorieProduitId;
-		this.libelle = libelle;
-		this.description = description;
-		this.produits = produits;
-	}
+    public CategorieProduit(Long categorieProduitId, String libelle, String description, Set<Produit> produits) {
+        this.categorieProduitId = categorieProduitId;
+        this.libelle = libelle;
+        this.description = description;
+        this.produits = produits;
+    }
 
-	public Long getCategorieProduitId() {
-		return categorieProduitId;
-	}
+    public Long getCategorieProduitId() {
+        return categorieProduitId;
+    }
 
-	public void setCategorieProduitId(Long categorieProduitId) {
-		this.categorieProduitId = categorieProduitId;
-	}
+    public void setCategorieProduitId(Long categorieProduitId) {
+        this.categorieProduitId = categorieProduitId;
+    }
 
-	public String getLibelle() {
-		return libelle;
-	}
+    public String getLibelle() {
+        return libelle;
+    }
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<Produit> getProduits() {
-		return produits;
-	}
+    public Set<Produit> getProduits() {
+        return produits;
+    }
 
-	public void setProduits(Set<Produit> produits) {
-		this.produits = produits;
-	}
+    public void setProduits(Set<Produit> produits) {
+        this.produits = produits;
+    }
 
 }

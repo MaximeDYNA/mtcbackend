@@ -24,73 +24,73 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class Hold extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long holdId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long holdId;
 
-	@Column(unique = true)
-	private Long number;
-	private Date time;
+    @Column(unique = true)
+    private Long number;
+    private Date time;
 
-	@ManyToOne
-	@JsonIgnore
-	private SessionCaisse sessionCaisse;
+    @ManyToOne
+    @JsonIgnore
+    private SessionCaisse sessionCaisse;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hold")
-	private Set<Posales> posales;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hold")
+    private Set<Posales> posales;
 
-	public Hold() {
+    public Hold() {
 
-	}
+    }
 
-	public Hold(Long holdId, Long number, Date time, SessionCaisse sessionCaisse) {
+    public Hold(Long holdId, Long number, Date time, SessionCaisse sessionCaisse) {
 
-		this.holdId = holdId;
-		this.number = number;
-		this.time = time;
-		this.sessionCaisse = sessionCaisse;
-	}
+        this.holdId = holdId;
+        this.number = number;
+        this.time = time;
+        this.sessionCaisse = sessionCaisse;
+    }
 
-	public Long getHoldId() {
-		return holdId;
-	}
+    public Long getHoldId() {
+        return holdId;
+    }
 
-	public void setHoldId(Long holdId) {
-		this.holdId = holdId;
-	}
+    public void setHoldId(Long holdId) {
+        this.holdId = holdId;
+    }
 
-	public Long getNumber() {
-		return number;
-	}
+    public Long getNumber() {
+        return number;
+    }
 
-	public void setNumber(Long number) {
-		this.number = number;
-	}
+    public void setNumber(Long number) {
+        this.number = number;
+    }
 
-	public Date getTime() {
-		return time;
-	}
+    public Date getTime() {
+        return time;
+    }
 
-	public void setTime(Date time) {
-		this.time = time;
-	}
+    public void setTime(Date time) {
+        this.time = time;
+    }
 
-	@JsonIgnore
-	public SessionCaisse getSessionCaisse() {
-		return sessionCaisse;
-	}
+    @JsonIgnore
+    public SessionCaisse getSessionCaisse() {
+        return sessionCaisse;
+    }
 
-	public void setSessionCaisse(SessionCaisse sessionCaisse) {
-		this.sessionCaisse = sessionCaisse;
-	}
+    public void setSessionCaisse(SessionCaisse sessionCaisse) {
+        this.sessionCaisse = sessionCaisse;
+    }
 
-	@JsonIgnore
-	public Set<Posales> getPosales() {
-		return posales;
-	}
+    @JsonIgnore
+    public Set<Posales> getPosales() {
+        return posales;
+    }
 
-	public void setPosales(Set<Posales> posales) {
-		this.posales = posales;
-	}
+    public void setPosales(Set<Posales> posales) {
+        this.posales = posales;
+    }
 
 }

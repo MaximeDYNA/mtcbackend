@@ -13,16 +13,16 @@ import com.catis.repository.DivisionPaysRepository;
 @Service
 public class DivisionPaysService {
 
-	@Autowired
-	private DivisionPaysRepository dpr;
-	
-	public DivisionPays addDivisionPays(DivisionPays dp) {
-		return dpr.save(dp);
-	}
-	
-	public List<DivisionPays> findAllDivisionPays(){
-		List<DivisionPays> villes = new ArrayList<>();
-		dpr.findAll().forEach(villes::add);
-		return villes;
-	}
+    @Autowired
+    private DivisionPaysRepository dpr;
+
+    public DivisionPays addDivisionPays(DivisionPays dp) {
+        return dpr.save(dp);
+    }
+
+    public List<DivisionPays> findAllDivisionPays() {
+        List<DivisionPays> villes = new ArrayList<>();
+        dpr.findAll().forEach(villes::add);
+        return villes;
+    }
 }

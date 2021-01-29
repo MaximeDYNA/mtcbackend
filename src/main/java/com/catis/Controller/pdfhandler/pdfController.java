@@ -47,122 +47,124 @@ import com.lowagie.text.DocumentException;
 
 
 @RestController
-public class pdfController {	
-	
-	@Autowired
-	HttpServletRequest request;
-	@Autowired
-	private VisiteRepository visiteRepo;
-	@Autowired
-	private Environment environment;
-	
-	private VisiteService visiteService;
+public class pdfController {
 
-	@Autowired
-	private RapportDeVisiteRepo rapportDeVisiteRepo;
+    @Autowired
+    HttpServletRequest request;
+    @Autowired
+    private VisiteRepository visiteRepo;
+    @Autowired
+    private Environment environment;
 
-	private PdfService pdfService;
+    private VisiteService visiteService;
 
-	private InspectionService inspectionService;
+    @Autowired
+    private RapportDeVisiteRepo rapportDeVisiteRepo;
 
-	private VenteService venteService;
+    private PdfService pdfService;
 
-	private TaxeService taxeService;
+    private InspectionService inspectionService;
 
-	@Autowired
-	public pdfController(VisiteService visiteService, PdfService pdfService,
-			InspectionService inspection, VenteService venteService, TaxeService taxProduitService) {
-		super();
-		this.visiteService = visiteService;
-		this.pdfService = pdfService;
-		this.inspectionService = inspection;
-		this.venteService = venteService;
-		this.taxeService = taxProduitService;
-	}
+    private VenteService venteService;
 
-	@GetMapping("/visites/{id}/verso")
-	public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
-		Optional<Visite> visite = this.visiteRepo.findById(id);
-		modelAndView.addObject("visite", visite.get());
-		modelAndView.setViewName("pvVerso");
+    private TaxeService taxeService;
 
-		return modelAndView;
-	}
+    @Autowired
+    public pdfController(VisiteService visiteService, PdfService pdfService,
+                         InspectionService inspection, VenteService venteService, TaxeService taxProduitService) {
+        super();
+        this.visiteService = visiteService;
+        this.pdfService = pdfService;
+        this.inspectionService = inspection;
+        this.venteService = venteService;
+        this.taxeService = taxProduitService;
+    }
 
-	@GetMapping("/api/v1/visites/imprimer/{id}")
-	public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
+    @GetMapping("/visites/{id}/verso")
+    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+        Optional<Visite> visite = this.visiteRepo.findById(id);
+        modelAndView.addObject("visite", visite.get());
+        modelAndView.setViewName("pvVerso");
 
-		Optional<Visite> visite = this.visiteRepo.findById(id);
-		Taxe tp = taxeService.findByNom("TVA");
-		if (visite.isPresent()) {
-			List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(visite.get());
-			List<Visite> lastVisiteWithTestIsOk = this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get());
-			lastVisiteWithTestIsOk.forEach(visite1 -> { rapports.addAll(visite1.getRapportDeVisites());});
-			HashMap<String, String> results = new HashMap<>();
-			List<Lexique> defaultsTest = new ArrayList<>();
-			rapports.forEach(rapport -> {
-				results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
-				if (rapport.getSeuil().getLexique() != null) {
-					defaultsTest.add(rapport.getSeuil().getLexique());
-				}
-			});
+        return modelAndView;
+    }
 
-			UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request,
-		    		 environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
-			modelAndView.addObject("v", visite.get());
-			modelAndView.addObject("tp", tp);
-			modelAndView.addObject("result", results);
-			modelAndView.addObject("defaultsTest", defaultsTest);
-			modelAndView.addObject("controlleurName", user.getNom()+" "+user.getPrenom());
-			modelAndView.setViewName("visites");
-			return modelAndView;
-		}
+    @GetMapping("/api/v1/visites/imprimer/{id}")
+    public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
 
-		return modelAndView;
-	}
+        Optional<Visite> visite = this.visiteRepo.findById(id);
+        Taxe tp = taxeService.findByNom("TVA");
+        if (visite.isPresent()) {
+            List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(visite.get());
+            List<Visite> lastVisiteWithTestIsOk = this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get());
+            lastVisiteWithTestIsOk.forEach(visite1 -> {
+                rapports.addAll(visite1.getRapportDeVisites());
+            });
+            HashMap<String, String> results = new HashMap<>();
+            List<Lexique> defaultsTest = new ArrayList<>();
+            rapports.forEach(rapport -> {
+                results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
+                if (rapport.getSeuil().getLexique() != null) {
+                    defaultsTest.add(rapport.getSeuil().getLexique());
+                }
+            });
 
-	@GetMapping ("/visites/qrcode/{id}")
-	public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
-		Visite v = visiteService.findById(id);
-		System.out.println("qrcode en cours de fabrication...");
+            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request,
+                    environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
+            modelAndView.addObject("v", visite.get());
+            modelAndView.addObject("tp", tp);
+            modelAndView.addObject("result", results);
+            modelAndView.addObject("defaultsTest", defaultsTest);
+            modelAndView.addObject("controlleurName", user.getNom() + " " + user.getPrenom());
+            modelAndView.setViewName("visites");
+            return modelAndView;
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/visites/qrcode/{id}")
+    public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
+        Visite v = visiteService.findById(id);
+        System.out.println("qrcode en cours de fabrication...");
 
 
-		byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 70, 70);
+        byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 70, 70);
 
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_PNG);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
 
-		return new ResponseEntity<byte[]> (bytes, headers, HttpStatus.CREATED);
+        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
 
-	}
+    }
 
-	@GetMapping("/download-pdf")
-	public void downloadPDFResource(HttpServletResponse response) {
-		try {
-			Path file = Paths.get(pdfService.generatePdf().getAbsolutePath());
-			if (Files.exists(file)) {
-				response.setContentType("application/pdf");
-				response.addHeader("Content-Disposition",
-						"attachment; filename=" + file.getFileName());
-				Files.copy(file, response.getOutputStream());
-				response.getOutputStream().flush();
-			}
-		} catch (DocumentException | IOException ex) {
-			ex.printStackTrace();
-		}
-	}
+    @GetMapping("/download-pdf")
+    public void downloadPDFResource(HttpServletResponse response) {
+        try {
+            Path file = Paths.get(pdfService.generatePdf().getAbsolutePath());
+            if (Files.exists(file)) {
+                response.setContentType("application/pdf");
+                response.addHeader("Content-Disposition",
+                        "attachment; filename=" + file.getFileName());
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            }
+        } catch (DocumentException | IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @GetMapping(value = "/qrcode")
-   	public ResponseEntity<byte[]> generateQRCode() throws Exception {
-		byte[] bytes  = QRCodeGenerator.getQRCodeImage("Noms & Prénoms : DYNA NGOTHY Maxime Jacques\r\n"
-				+ "Fonction :  Ingénieur - Service Recherche et Developpement\r\n"
-				+ "CNI No : 000771075\r\n"
-				+ "Matricule : P-C010\r\n"
-				+ "Contacts : +237 690 981 943 / 675 807 434\r\n"
-				+ "email: m.dyna@prooftagcatis.com", 200, 200);
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_PNG);
+    public ResponseEntity<byte[]> generateQRCode() throws Exception {
+        byte[] bytes = QRCodeGenerator.getQRCodeImage("Noms & Prénoms : DYNA NGOTHY Maxime Jacques\r\n"
+                + "Fonction :  Ingénieur - Service Recherche et Developpement\r\n"
+                + "CNI No : 000771075\r\n"
+                + "Matricule : P-C010\r\n"
+                + "Contacts : +237 690 981 943 / 675 807 434\r\n"
+                + "email: m.dyna@prooftagcatis.com", 200, 200);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
 
-		 return new ResponseEntity<byte[]> (bytes, headers, HttpStatus.CREATED);
-	}
+        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
+    }
 }

@@ -13,20 +13,20 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.catis.model.Utilisateur;
 
-@MappedSuperclass 
+@MappedSuperclass
 public class JournalData {
 
-	
-	@Column(name = "created_date", updatable = false)
+
+    @Column(name = "created_date", updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
- 
+
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
     @Column(columnDefinition = "bit default 1")
     private boolean activeStatus;
-   
+
     @Column(name = "created_by")
     @CreatedBy
     private String createdBy;
@@ -34,61 +34,54 @@ public class JournalData {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
-    
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
 
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
-	}
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
 
-	public boolean isActiveStatus() {
-		return activeStatus;
-	}
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
 
-	public String getActiveStatus() {
-		if(this.activeStatus) {
-			return "Activé";
-		}
-		else
-			return "Désactivé";
-	}
+    public boolean isActiveStatus() {
+        return activeStatus;
+    }
 
-	public void setActiveStatus(boolean activeStatus) {
-		this.activeStatus = activeStatus;
-	}
+    public String getActiveStatus() {
+        if (this.activeStatus) {
+            return "Activé";
+        } else
+            return "Désactivé";
+    }
 
-	
+    public void setActiveStatus(boolean activeStatus) {
+        this.activeStatus = activeStatus;
+    }
 
 
-	
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
 
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
-	public void setModifiedDate(LocalDateTime modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-	
-	
-    
-    
+
 }

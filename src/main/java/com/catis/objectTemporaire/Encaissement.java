@@ -4,136 +4,131 @@ import java.util.List;
 
 public class Encaissement {
 
-	private long clientId;
-	private long vendeurId;
-	private long contactId;
-	private int type;
-	private double montantTotal;
-	private double montantEncaisse;
-	private double montantHT;
-	private String numeroTicket;
-	private long sessionCaisseId;
-	private String lang;
-	private List<ProduitVue> produitVue;
-	
-	
+    private long clientId;
+    private long vendeurId;
+    private long contactId;
+    private int type;
+    private double montantTotal;
+    private double montantEncaisse;
+    private double montantHT;
+    private String numeroTicket;
+    private long sessionCaisseId;
+    private String lang;
+    private List<ProduitVue> produitVue;
 
-	public Encaissement(long clientId, long vendeurId, long contactid, double montantTotal, double montantEncaisse,
-			String numeroTicket, long sessionCaisseId, List<ProduitVue> produitVue) {
-		super();
-		this.clientId = clientId;
-		this.vendeurId = vendeurId;
-		this.contactId = contactid;
-		this.montantTotal = montantTotal;
-		this.montantEncaisse = montantEncaisse;
-		this.numeroTicket = numeroTicket;
-		this.sessionCaisseId = sessionCaisseId;
-		this.produitVue = produitVue;
-	}
 
-	public Encaissement() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public Encaissement(long clientId, long vendeurId, long contactid, double montantTotal, double montantEncaisse,
+                        String numeroTicket, long sessionCaisseId, List<ProduitVue> produitVue) {
+        super();
+        this.clientId = clientId;
+        this.vendeurId = vendeurId;
+        this.contactId = contactid;
+        this.montantTotal = montantTotal;
+        this.montantEncaisse = montantEncaisse;
+        this.numeroTicket = numeroTicket;
+        this.sessionCaisseId = sessionCaisseId;
+        this.produitVue = produitVue;
+    }
 
-	public long getClientId() {
-		return clientId;
-	}
+    public Encaissement() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
-	}
+    public long getClientId() {
+        return clientId;
+    }
 
-	public long getVendeurId() {
-		return vendeurId;
-	}
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
+    }
 
-	public void setVendeurId(long vendeurId) {
-		this.vendeurId = vendeurId;
-	}
+    public long getVendeurId() {
+        return vendeurId;
+    }
 
-	public long getContactId() {
-		return contactId;
-	}
+    public void setVendeurId(long vendeurId) {
+        this.vendeurId = vendeurId;
+    }
 
-	public void setContactId(long contactId) {
-		this.contactId = contactId;
-	}
+    public long getContactId() {
+        return contactId;
+    }
 
-	public double getMontantTotal() {
-		return montantTotal;
-	}
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
+    }
 
-	public void setMontantTotal(double montantTotal) {
-		this.montantTotal = montantTotal;
-	}
+    public double getMontantTotal() {
+        return montantTotal;
+    }
 
-	public double getMontantEncaisse() {
-		return montantEncaisse;
-	}
+    public void setMontantTotal(double montantTotal) {
+        this.montantTotal = montantTotal;
+    }
 
-	public void setMontantEncaisse(double montantEncaisse) {
-		this.montantEncaisse = montantEncaisse;
-	}
+    public double getMontantEncaisse() {
+        return montantEncaisse;
+    }
 
-	public String getNumeroTicket() {
-		return numeroTicket;
-	}
+    public void setMontantEncaisse(double montantEncaisse) {
+        this.montantEncaisse = montantEncaisse;
+    }
 
-	public void setNumeroTicket(String numeroTicket) {
-		this.numeroTicket = numeroTicket;
-	}
+    public String getNumeroTicket() {
+        return numeroTicket;
+    }
 
-	public long getSessionCaisseId() {
-		return sessionCaisseId;
-	}
+    public void setNumeroTicket(String numeroTicket) {
+        this.numeroTicket = numeroTicket;
+    }
 
-	public void setSessionCaisseId(long sessionCaisseId) {
-		this.sessionCaisseId = sessionCaisseId;
-	}
+    public long getSessionCaisseId() {
+        return sessionCaisseId;
+    }
 
-	public List<ProduitVue> getProduitVue() {
-		return produitVue;
-	}
+    public void setSessionCaisseId(long sessionCaisseId) {
+        this.sessionCaisseId = sessionCaisseId;
+    }
 
-	public void setProduitVue(List<ProduitVue> produitVue) {
-		this.produitVue = produitVue;
-	}
+    public List<ProduitVue> getProduitVue() {
+        return produitVue;
+    }
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
-	}
+    public void setProduitVue(List<ProduitVue> produitVue) {
+        this.produitVue = produitVue;
+    }
 
-	
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
 
-	public int getType() {
-		return type;
-	}
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public double getMontantHT() {
-		return montantHT;
-	}
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	public void setMontantHT(double montantHT) {
-		this.montantHT = montantHT;
-	}
+    public double getMontantHT() {
+        return montantHT;
+    }
 
-	public String getLang() {
-		return lang;
-	}
+    public void setMontantHT(double montantHT) {
+        this.montantHT = montantHT;
+    }
 
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
+    public String getLang() {
+        return lang;
+    }
 
-	
-	
-	
-	
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+
 }

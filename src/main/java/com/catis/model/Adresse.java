@@ -17,91 +17,91 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_adresse")
 public class Adresse extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long adresseId;
-	private String nom;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long adresseId;
+    private String nom;
+    private String description;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	@ManyToOne
-	private Partenaire partenaire;
+    @ManyToOne
+    private Partenaire partenaire;
 
-	@ManyToOne
-	private Pays pays;
+    @ManyToOne
+    private Pays pays;
 
-	@ManyToOne
-	private DivisionPays divisionPays;
+    @ManyToOne
+    private DivisionPays divisionPays;
 
-	public Adresse() {
-	}
+    public Adresse() {
+    }
 
-	public Adresse(Long adresseId, String nom, String description, Organisation organisation, Pays pays,
-			DivisionPays divisionPays) {
-		this.adresseId = adresseId;
-		this.nom = nom;
-		this.description = description;
-		this.organisation = organisation;
-		this.pays = pays;
-		this.divisionPays = divisionPays;
-	}
+    public Adresse(Long adresseId, String nom, String description, Organisation organisation, Pays pays,
+                   DivisionPays divisionPays) {
+        this.adresseId = adresseId;
+        this.nom = nom;
+        this.description = description;
+        this.organisation = organisation;
+        this.pays = pays;
+        this.divisionPays = divisionPays;
+    }
 
-	public Long getAdresseId() {
-		return adresseId;
-	}
+    public Long getAdresseId() {
+        return adresseId;
+    }
 
-	public void setAdresseId(Long adresseId) {
-		this.adresseId = adresseId;
-	}
+    public void setAdresseId(Long adresseId) {
+        this.adresseId = adresseId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Pays getPays() {
-		return pays;
-	}
+    public Pays getPays() {
+        return pays;
+    }
 
-	public void setPays(Pays pays) {
-		this.pays = pays;
-	}
+    public void setPays(Pays pays) {
+        this.pays = pays;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
-	public DivisionPays getDivisionPays() {
-		return divisionPays;
-	}
+    public DivisionPays getDivisionPays() {
+        return divisionPays;
+    }
 
-	public void setDivisionPays(DivisionPays divisionPays) {
-		this.divisionPays = divisionPays;
-	}
+    public void setDivisionPays(DivisionPays divisionPays) {
+        this.divisionPays = divisionPays;
+    }
 
-	public String getNom() {
-		return nom;
-	}
+    public String getNom() {
+        return nom;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-	public Partenaire getPartenaire() {
-		return partenaire;
-	}
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
 
-	public void setPartenaire(Partenaire partenaire) {
-		this.partenaire = partenaire;
-	}
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
 
 }

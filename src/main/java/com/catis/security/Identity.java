@@ -36,10 +36,10 @@ import org.keycloak.representations.idm.authorization.Permission;
  * @see org.keycloak.quickstart.springboot.web.ApplicationController
  */
 public class Identity {
-	
+
     private final KeycloakSecurityContext securityContext;
 
-    public  Identity(KeycloakSecurityContext securityContext) {
+    public Identity(KeycloakSecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
@@ -49,7 +49,7 @@ public class Identity {
      * @param name the name of the resource
      * @return true if user has was granted with a permission for the given resource. Otherwise, false.
      */
-    public  boolean hasResourcePermission(String name) {
+    public boolean hasResourcePermission(String name) {
         return getAuthorizationContext().hasResourcePermission(name);
     }
 

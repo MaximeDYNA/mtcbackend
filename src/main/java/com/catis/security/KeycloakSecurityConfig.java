@@ -45,130 +45,131 @@ import com.google.gson.JsonObject;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-	
-	 private final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
-	 	
-	    public KeycloakSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
-	        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
+    private final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
-	        // to use principal and authentication together with @async
-	        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-	    }
 
-	    /**
-	     * If you don't want to use the keycloak.json file, then uncomment this bean.
-	     
-	    
-	     * Use properties in application.properties instead of keycloak.json**/
-	    
-	    @Bean
-	    @Primary
-	    public KeycloakConfigResolver keycloakConfigResolver(KeycloakSpringBootProperties properties) {
-	        return new CustomKeycloakSpringBootConfigResolver(properties);
-	    }
+    public KeycloakSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
+        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
 
-	    @Bean
-	    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	    public KeycloakRestTemplate keycloakRestTemplate() {
-	        return new KeycloakRestTemplate(keycloakClientRequestFactory);
-	    }
+        // to use principal and authentication together with @async
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
 
-	    public SimpleAuthorityMapper grantedAuthority() {
-	        SimpleAuthorityMapper mapper = new SimpleAuthorityMapper();
-	        mapper.setConvertToUpperCase(true);
-	        return mapper;
-	    }
+    /**
+     * If you don't want to use the keycloak.json file, then uncomment this bean.
+     * <p>
+     * <p>
+     * Use properties in application.properties instead of keycloak.json
+     **/
 
-	    @Autowired
-	    public void configureGlobal(AuthenticationManagerBuilder auth) {
-	        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-	        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthority());
-	        auth.authenticationProvider(keycloakAuthenticationProvider);
-	    }
+    @Bean
+    @Primary
+    public KeycloakConfigResolver keycloakConfigResolver(KeycloakSpringBootProperties properties) {
+        return new CustomKeycloakSpringBootConfigResolver(properties);
+    }
 
-	    /**
-	     * Use NullAuthenticatedSessionStrategy for bearer-only tokens. Otherwise, use
-	     * RegisterSessionAuthenticationStrategy.
-	     */
-	    @Bean
-	    @Override
-	    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-	        return new NullAuthenticatedSessionStrategy();
-	    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public KeycloakRestTemplate keycloakRestTemplate() {
+        return new KeycloakRestTemplate(keycloakClientRequestFactory);
+    }
 
-	    /**
-	     * Secure appropriate endpoints
-	     **/
-	    @Override
-	    protected void configure(HttpSecurity http) throws Exception {
+    public SimpleAuthorityMapper grantedAuthority() {
+        SimpleAuthorityMapper mapper = new SimpleAuthorityMapper();
+        mapper.setConvertToUpperCase(true);
+        return mapper;
+    }
 
-	        super.configure(http);
-	        //ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
-	                http.httpBasic().disable().cors()
-	                .and()               
-	                .csrf().disable()
-	                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	                .and().authorizeRequests()
-	                .antMatchers("/api/v1/**").permitAll()
-	                //.antMatchers("/visites**").permitAll()
-	                .antMatchers("/pdf-resources**").permitAll()
-	                .antMatchers("/download-pdf**").permitAll()
-	                .antMatchers("/images/**").permitAll()
-	                
-	                .antMatchers("/uploaded/signatures/**").permitAll()
-	                //.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
-	                .anyRequest().permitAll();
-	       
-	    }
-	    
-	    @SuppressWarnings({ "rawtypes", "unchecked" })
-	    @Bean
-	    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthority());
+        auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
 
-	        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-	        registrationBean.setEnabled(false);
-	        return registrationBean;
-	    }
+    /**
+     * Use NullAuthenticatedSessionStrategy for bearer-only tokens. Otherwise, use
+     * RegisterSessionAuthenticationStrategy.
+     */
+    @Bean
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new NullAuthenticatedSessionStrategy();
+    }
 
-	    @SuppressWarnings({ "rawtypes", "unchecked" })
-	    @Bean
-	    public FilterRegistrationBean keycloakPreAuthActionsFilterRegistrationBean(KeycloakPreAuthActionsFilter filter) {
+    /**
+     * Secure appropriate endpoints
+     **/
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-	        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-	        registrationBean.setEnabled(false);
-	        return registrationBean;
-	    }
+        super.configure(http);
+        //ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
+        http.httpBasic().disable().cors()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests()
+                .antMatchers("/api/v1/**").permitAll()
+                //.antMatchers("/visites**").permitAll()
+                .antMatchers("/pdf-resources**").permitAll()
+                .antMatchers("/download-pdf**").permitAll()
+                .antMatchers("/images/**").permitAll()
 
-	    @SuppressWarnings({ "rawtypes", "unchecked" })
-	    @Bean
-	    public FilterRegistrationBean keycloakAuthenticatedActionsFilterBean(KeycloakAuthenticatedActionsFilter filter) {
+                .antMatchers("/uploaded/signatures/**").permitAll()
+                //.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
+                .anyRequest().permitAll();
 
-	        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-	        registrationBean.setEnabled(false);
-	        return registrationBean;
-	    }
+    }
 
-	    @SuppressWarnings({ "rawtypes", "unchecked" })
-	    @Bean
-	    public FilterRegistrationBean keycloakSecurityContextRequestFilterBean(KeycloakSecurityContextRequestFilter filter) {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Bean
+    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {
 
-	        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-	        registrationBean.setEnabled(false);
-	        return registrationBean;
-	    }
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
 
-	    @Bean
-	    @Override
-	    @ConditionalOnMissingBean(HttpSessionManager.class)
-	    protected HttpSessionManager httpSessionManager() {
-	        return new HttpSessionManager();
-	    }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Bean
+    public FilterRegistrationBean keycloakPreAuthActionsFilterRegistrationBean(KeycloakPreAuthActionsFilter filter) {
 
-	    @Bean
-	    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-	        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
-	    }
-	    
-	
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Bean
+    public FilterRegistrationBean keycloakAuthenticatedActionsFilterBean(KeycloakAuthenticatedActionsFilter filter) {
+
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Bean
+    public FilterRegistrationBean keycloakSecurityContextRequestFilterBean(KeycloakSecurityContextRequestFilter filter) {
+
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @Bean
+    @Override
+    @ConditionalOnMissingBean(HttpSessionManager.class)
+    protected HttpSessionManager httpSessionManager() {
+        return new HttpSessionManager();
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+    }
+
+
 }

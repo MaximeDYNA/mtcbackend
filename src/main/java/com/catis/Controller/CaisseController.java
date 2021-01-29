@@ -23,26 +23,27 @@ import com.catis.service.CaisseService;
 @RestController
 @CrossOrigin
 public class CaisseController {
-	@Autowired
-	private CaisseService caisserservice;
-	
-	private final HttpServletRequest request;
-	
-	public CaisseController(HttpServletRequest request) {
+    @Autowired
+    private CaisseService caisserservice;
 
-		this.request = request;
-	}
-	
-	private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
-	
-	@RequestMapping("/caisses")
-	public List<Caisse> afficherLesCaisses(){
-		return caisserservice.findAllCaisse();
-	}
-	@RequestMapping(method = RequestMethod.POST, value="/caisses")
-	public void creerUneCaisse(@RequestBody Caisse caisse){
-		caisserservice.addCaisse(caisse);
-	}
+    private final HttpServletRequest request;
+
+    public CaisseController(HttpServletRequest request) {
+
+        this.request = request;
+    }
+
+    private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
+
+    @RequestMapping("/caisses")
+    public List<Caisse> afficherLesCaisses() {
+        return caisserservice.findAllCaisse();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/caisses")
+    public void creerUneCaisse(@RequestBody Caisse caisse) {
+        caisserservice.addCaisse(caisse);
+    }
 	/*@GetMapping(value="/userconnected")
     public ResponseEntity<Object> getTasks()
     {

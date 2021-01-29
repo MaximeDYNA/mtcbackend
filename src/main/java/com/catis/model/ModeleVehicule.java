@@ -17,46 +17,46 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class ModeleVehicule extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idModele;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idModele;
+    private String description;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	public ModeleVehicule() {
+    public ModeleVehicule() {
 
-	}
+    }
 
-	public ModeleVehicule(Long idModele, String description, Organisation organisation) {
-		this.idModele = idModele;
-		this.description = description;
-		this.organisation = organisation;
-	}
+    public ModeleVehicule(Long idModele, String description, Organisation organisation) {
+        this.idModele = idModele;
+        this.description = description;
+        this.organisation = organisation;
+    }
 
-	public Long getIdModele() {
-		return idModele;
-	}
+    public Long getIdModele() {
+        return idModele;
+    }
 
-	public void setIdModele(Long idModele) {
-		this.idModele = idModele;
-	}
+    public void setIdModele(Long idModele) {
+        this.idModele = idModele;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
 }

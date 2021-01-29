@@ -15,29 +15,30 @@ import com.catis.service.PaysService;
 @RestController
 public class PaysController {
 
-	@Autowired
-	private PaysService paysService;
-	
-	@RequestMapping(method= RequestMethod.POST, value="/api/v1/adresse/pays")
-	public ResponseEntity<Object> addPays(@RequestBody Pays pays){
-		
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-					 , paysService.addPays(pays));
+    @Autowired
+    private PaysService paysService;
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/adresse/pays")
+    public ResponseEntity<Object> addPays(@RequestBody Pays pays) {
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                , paysService.addPays(pays));
 		/*try {} catch (Exception e) {
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue lors de l'ajout "
 					+ "d'un pays"
 					 , null);
 		}*/
-	}
-	@GetMapping("/api/v1/pays")
-	public ResponseEntity<Object> listPays(){
-		try {
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-					 , paysService.findAllPays());
-		} catch (Exception e) {
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue l'affichage de la liste des pays "
-					+ "d'un pays"
-					 , null);
-		}
-	}
+    }
+
+    @GetMapping("/api/v1/pays")
+    public ResponseEntity<Object> listPays() {
+        try {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    , paysService.findAllPays());
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue l'affichage de la liste des pays "
+                            + "d'un pays"
+                    , null);
+        }
+    }
 }

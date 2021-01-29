@@ -2,14 +2,14 @@ package com.catis.Controller.exception;
 
 public class DecaissementExistantException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public DecaissementExistantException() {
-	   super();
-	}
+    public DecaissementExistantException() {
+        super();
+    }
 
-	public DecaissementExistantException(String s) {
-	   super(s);
-	}
-	
+    public DecaissementExistantException(String s) {
+        super(s);
+    }
+
 }

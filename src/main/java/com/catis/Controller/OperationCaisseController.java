@@ -28,55 +28,57 @@ import com.catis.service.VenteService;
 @RestController
 public class OperationCaisseController {
 
-	
-	private OperationCaisseService ocs;
-	private VenteService venteService;
-	
-	@Autowired
-	public OperationCaisseController(OperationCaisseService ocs, VenteService venteService) {
-		super();
-		this.ocs = ocs;
-		this.venteService = venteService;
-	}
-	private static Logger LOGGER = LoggerFactory.getLogger(OperationCaisseController.class);
-	
-	@GetMapping("/api/v1/operationcaisse/{code}/listview")
-	public ResponseEntity<Object> reglementListView(@PathVariable int code) {
-		try {
-			LOGGER.info("Liste des adresses demandée");
-			Map<String ,Object> reglementListView; 
-			List<Map<String ,Object>> mapList = new ArrayList<>();
-			for(OperationCaisse o : ocs.encaissementList(code)) {
-				reglementListView = new HashMap<>();
-				reglementListView.put("id", o.getOperationDeCaisseId());
-				reglementListView.put("ticket", o.getNumeroTicket());
-				reglementListView.put("montant", o.getMontant());
-				//reglementListView.put("taxe", o.getTaxe().getValeur());
-				reglementListView.put("nom", o.getVente().getContact().getPartenaire().getNom());
-				reglementListView.put("createdDate", o.getCreatedDate());
-				reglementListView.put("modifiedDate", o.getModifiedDate());
-				mapList.add(reglementListView);
-			}
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  mapList);
-		} catch (Exception e) {
-			LOGGER.error("Erreur");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "règlement",  null);
-		}	
-	}
-	@PostMapping("/api/v1/operationcaisse/recap")
-	public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
-		try {
-			LOGGER.info("Recapitulatif demandé");
-		
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-			LocalDateTime start = LocalDateTime.parse(recapDTO.getDateDebut(), formatter);
-			LocalDateTime end = LocalDateTime.parse(recapDTO.getDateFin(), formatter);
-			List <OpCaisseDTO> ops = venteService.recapOp(recapDTO.getCaissierId(), start, end);
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  ops);
-		} catch (Exception e) {
-			LOGGER.error("Erreur");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "recap",  null);
-		}	
-	}
-	
+
+    private OperationCaisseService ocs;
+    private VenteService venteService;
+
+    @Autowired
+    public OperationCaisseController(OperationCaisseService ocs, VenteService venteService) {
+        super();
+        this.ocs = ocs;
+        this.venteService = venteService;
+    }
+
+    private static Logger LOGGER = LoggerFactory.getLogger(OperationCaisseController.class);
+
+    @GetMapping("/api/v1/operationcaisse/{code}/listview")
+    public ResponseEntity<Object> reglementListView(@PathVariable int code) {
+        try {
+            LOGGER.info("Liste des adresses demandée");
+            Map<String, Object> reglementListView;
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            for (OperationCaisse o : ocs.encaissementList(code)) {
+                reglementListView = new HashMap<>();
+                reglementListView.put("id", o.getOperationDeCaisseId());
+                reglementListView.put("ticket", o.getNumeroTicket());
+                reglementListView.put("montant", o.getMontant());
+                //reglementListView.put("taxe", o.getTaxe().getValeur());
+                reglementListView.put("nom", o.getVente().getContact().getPartenaire().getNom());
+                reglementListView.put("createdDate", o.getCreatedDate());
+                reglementListView.put("modifiedDate", o.getModifiedDate());
+                mapList.add(reglementListView);
+            }
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+        } catch (Exception e) {
+            LOGGER.error("Erreur");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "règlement", null);
+        }
+    }
+
+    @PostMapping("/api/v1/operationcaisse/recap")
+    public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
+        try {
+            LOGGER.info("Recapitulatif demandé");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime start = LocalDateTime.parse(recapDTO.getDateDebut(), formatter);
+            LocalDateTime end = LocalDateTime.parse(recapDTO.getDateFin(), formatter);
+            List<OpCaisseDTO> ops = venteService.recapOp(recapDTO.getCaissierId(), start, end);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ops);
+        } catch (Exception e) {
+            LOGGER.error("Erreur");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "recap", null);
+        }
+    }
+
 }

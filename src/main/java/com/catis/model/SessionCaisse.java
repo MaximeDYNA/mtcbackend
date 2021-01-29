@@ -23,151 +23,151 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class SessionCaisse extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long sessionCaisseId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long sessionCaisseId;
 
-	private Date dateHeureOuverture;
-	private Date dateHeureFermeture;
-	@ManyToOne
-	private Organisation organisationId;
-	@ManyToOne
-	private Caissier caissier;
-	private double montantOuverture;
-	private double montantfermeture;
-	private boolean active;
+    private Date dateHeureOuverture;
+    private Date dateHeureFermeture;
+    @ManyToOne
+    private Organisation organisationId;
+    @ManyToOne
+    private Caissier caissier;
+    private double montantOuverture;
+    private double montantfermeture;
+    private boolean active;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
-	@JsonIgnore
-	Set<OperationCaisse> operationCaisse;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
+    @JsonIgnore
+    Set<OperationCaisse> operationCaisse;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
-	@JsonIgnore
-	private Set<Vente> vente;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
+    @JsonIgnore
+    private Set<Vente> vente;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
-	@JsonIgnore
-	Set<Hold> holds;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
+    @JsonIgnore
+    Set<Hold> holds;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
-	@JsonIgnore
-	private Set<Posales> posales;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")
+    @JsonIgnore
+    private Set<Posales> posales;
 
-	public SessionCaisse() {
+    public SessionCaisse() {
 
-	}
+    }
 
-	public SessionCaisse(Long sessionCaisseId, Date dateHeureOuverture, Date dateHeureFermeture,
-			Organisation organisationId, Utilisateur user, double montantOuverture, boolean active,
-			Set<OperationCaisse> operationCaisse, Set<Vente> vente, Set<Hold> holds, Set<Posales> posales) {
+    public SessionCaisse(Long sessionCaisseId, Date dateHeureOuverture, Date dateHeureFermeture,
+                         Organisation organisationId, Utilisateur user, double montantOuverture, boolean active,
+                         Set<OperationCaisse> operationCaisse, Set<Vente> vente, Set<Hold> holds, Set<Posales> posales) {
 
-		this.sessionCaisseId = sessionCaisseId;
-		this.dateHeureOuverture = dateHeureOuverture;
-		this.dateHeureFermeture = dateHeureFermeture;
-		this.organisationId = organisationId;
-		
-		this.montantOuverture = montantOuverture;
-		this.active = active;
-		this.operationCaisse = operationCaisse;
-		this.vente = vente;
-		this.holds = holds;
-		this.posales = posales;
-	}
+        this.sessionCaisseId = sessionCaisseId;
+        this.dateHeureOuverture = dateHeureOuverture;
+        this.dateHeureFermeture = dateHeureFermeture;
+        this.organisationId = organisationId;
 
-	public Caissier getCaissier() {
-		return caissier;
-	}
+        this.montantOuverture = montantOuverture;
+        this.active = active;
+        this.operationCaisse = operationCaisse;
+        this.vente = vente;
+        this.holds = holds;
+        this.posales = posales;
+    }
 
-	public void setCaissier(Caissier caissier) {
-		this.caissier = caissier;
-	}
+    public Caissier getCaissier() {
+        return caissier;
+    }
 
-	public Date getDateHeureOuverture() {
-		return dateHeureOuverture;
-	}
+    public void setCaissier(Caissier caissier) {
+        this.caissier = caissier;
+    }
 
-	public void setDateHeureOuverture(Date dateHeureOuverture) {
-		this.dateHeureOuverture = dateHeureOuverture;
-	}
+    public Date getDateHeureOuverture() {
+        return dateHeureOuverture;
+    }
 
-	public Date getDateHeureFermeture() {
-		return dateHeureFermeture;
-	}
+    public void setDateHeureOuverture(Date dateHeureOuverture) {
+        this.dateHeureOuverture = dateHeureOuverture;
+    }
 
-	public void setDateHeureFermeture(Date dateHeureFermeture) {
-		this.dateHeureFermeture = dateHeureFermeture;
-	}
+    public Date getDateHeureFermeture() {
+        return dateHeureFermeture;
+    }
 
-	public Organisation getOrganisationId() {
-		return organisationId;
-	}
+    public void setDateHeureFermeture(Date dateHeureFermeture) {
+        this.dateHeureFermeture = dateHeureFermeture;
+    }
 
-	public void setOrganisationId(Organisation organisationId) {
-		this.organisationId = organisationId;
-	}
+    public Organisation getOrganisationId() {
+        return organisationId;
+    }
 
-	public double getMontantOuverture() {
-		return montantOuverture;
-	}
+    public void setOrganisationId(Organisation organisationId) {
+        this.organisationId = organisationId;
+    }
 
-	public void setMontantOuverture(double montantOuverture) {
-		this.montantOuverture = montantOuverture;
-	}
+    public double getMontantOuverture() {
+        return montantOuverture;
+    }
 
-	public Set<OperationCaisse> getOperationCaisse() {
-		return operationCaisse;
-	}
+    public void setMontantOuverture(double montantOuverture) {
+        this.montantOuverture = montantOuverture;
+    }
 
-	public void setOperationCaisse(Set<OperationCaisse> operationCaisse) {
-		this.operationCaisse = operationCaisse;
-	}
+    public Set<OperationCaisse> getOperationCaisse() {
+        return operationCaisse;
+    }
 
-	public Long getSessionCaisseId() {
-		return sessionCaisseId;
-	}
+    public void setOperationCaisse(Set<OperationCaisse> operationCaisse) {
+        this.operationCaisse = operationCaisse;
+    }
 
-	public void setSessionCaisseId(Long sessionCaisseId) {
-		this.sessionCaisseId = sessionCaisseId;
-	}
+    public Long getSessionCaisseId() {
+        return sessionCaisseId;
+    }
 
-	public Set<Vente> getVente() {
-		return vente;
-	}
+    public void setSessionCaisseId(Long sessionCaisseId) {
+        this.sessionCaisseId = sessionCaisseId;
+    }
 
-	public void setVente(Set<Vente> vente) {
-		this.vente = vente;
-	}
+    public Set<Vente> getVente() {
+        return vente;
+    }
 
-	public Set<Hold> getHolds() {
-		return holds;
-	}
+    public void setVente(Set<Vente> vente) {
+        this.vente = vente;
+    }
 
-	public void setHolds(Set<Hold> holds) {
-		this.holds = holds;
-	}
+    public Set<Hold> getHolds() {
+        return holds;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setHolds(Set<Hold> holds) {
+        this.holds = holds;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public Set<Posales> getPosales() {
-		return posales;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public void setPosales(Set<Posales> posales) {
-		this.posales = posales;
-	}
+    public Set<Posales> getPosales() {
+        return posales;
+    }
 
-	public double getMontantfermeture() {
-		return montantfermeture;
-	}
+    public void setPosales(Set<Posales> posales) {
+        this.posales = posales;
+    }
 
-	public void setMontantfermeture(double montantfermeture) {
-		this.montantfermeture = montantfermeture;
-	}
+    public double getMontantfermeture() {
+        return montantfermeture;
+    }
+
+    public void setMontantfermeture(double montantfermeture) {
+        this.montantfermeture = montantfermeture;
+    }
 
 }

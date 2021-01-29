@@ -23,19 +23,19 @@ import com.catis.service.AdresseService;
 
 @RestController
 public class AdresseController {
-	
-	@Autowired
-	private AdresseService adresseService;
-	
-	
-	private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
-	
-	@GetMapping("/api/v1/adresses")
-	public ResponseEntity<Object> adressList() {
-		 
-			 
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-					 , adresseService.findAll());
+
+    @Autowired
+    private AdresseService adresseService;
+
+
+    private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
+
+    @GetMapping("/api/v1/adresses")
+    public ResponseEntity<Object> adressList() {
+
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                , adresseService.findAll());
 		/*try { }
 			
 			catch(Exception e) {
@@ -43,48 +43,48 @@ public class AdresseController {
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
 						+ "l'ajout d'un client", null);
 			}*/
-	 }
-	@GetMapping("/api/v1/adresse/listview")
-	public ResponseEntity<Object> adressListView() {
-		
-		try {
-			LOGGER.info("Liste des adresses demandée");
-			
-			Map<String ,Object> adresseListView; 
-			List<Map<String ,Object>> mapList = new ArrayList<>();
-			for(Adresse a : adresseService.findAll()) {
-				adresseListView = new HashMap<>();
-				adresseListView.put("id", a.getAdresseId());
-				adresseListView.put("nom", a.getNom());
-				adresseListView.put("description", a.getDescription());
-				adresseListView.put("ville", a.getDivisionPays().getLibelle());
-				adresseListView.put("pays", a.getPays().getNomPays());
-				adresseListView.put("createdDate", a.getCreatedDate());
-				adresseListView.put("modifiedDate", a.getModifiedDate());
-				mapList.add(adresseListView);
-			}
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",  mapList);
-			
-		} catch (Exception e) {
-			LOGGER.error("Une erreur est survenu en affichage mode liste: Visite");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur",  null);
-		}
-		
-	 }
-	
-	@PostMapping("/api/v1/adresses")
-	public ResponseEntity<Object> addAddress(Adresse adresse) {
-		try {
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-					 , adresseService.addAdresse(adresse));
-			
-		}
-		catch(Exception e) {
-			LOGGER.error("Une erreur est survenu lors de l'ajout d'une adresse");
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
-					+ "l'ajout d'un client", null);
-		}
-	}
+    }
+
+    @GetMapping("/api/v1/adresse/listview")
+    public ResponseEntity<Object> adressListView() {
+
+        try {
+            LOGGER.info("Liste des adresses demandée");
+
+            Map<String, Object> adresseListView;
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            for (Adresse a : adresseService.findAll()) {
+                adresseListView = new HashMap<>();
+                adresseListView.put("id", a.getAdresseId());
+                adresseListView.put("nom", a.getNom());
+                adresseListView.put("description", a.getDescription());
+                adresseListView.put("ville", a.getDivisionPays().getLibelle());
+                adresseListView.put("pays", a.getPays().getNomPays());
+                adresseListView.put("createdDate", a.getCreatedDate());
+                adresseListView.put("modifiedDate", a.getModifiedDate());
+                mapList.add(adresseListView);
+            }
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu en affichage mode liste: Visite");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur", null);
+        }
+
+    }
+
+    @PostMapping("/api/v1/adresses")
+    public ResponseEntity<Object> addAddress(Adresse adresse) {
+        try {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    , adresseService.addAdresse(adresse));
+
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu lors de l'ajout d'une adresse");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
+                    + "l'ajout d'un client", null);
+        }
+    }
 
 	 /*@RequestMapping(
             path="api/v1/userInfos", 

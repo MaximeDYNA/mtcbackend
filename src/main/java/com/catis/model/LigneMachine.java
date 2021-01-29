@@ -16,63 +16,63 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_lignemachine")
 @EntityListeners(AuditingEntityListener.class)
 public class LigneMachine extends JournalData {
-	/*
-	 * table pivot qui nous permet de savoir quels sont les machines par lignes et
-	 * les lignes par machine
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ligneMachine;
-	@ManyToOne
-	private Machine machine;
+    /*
+     * table pivot qui nous permet de savoir quels sont les machines par lignes et
+     * les lignes par machine
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ligneMachine;
+    @ManyToOne
+    private Machine machine;
 
-	@ManyToOne
-	private Ligne ligne;
+    @ManyToOne
+    private Ligne ligne;
 
-	@ManyToOne
-	private Organisation organisation;
+    @ManyToOne
+    private Organisation organisation;
 
-	public LigneMachine() {
+    public LigneMachine() {
 
-	}
+    }
 
-	public LigneMachine(Long ligneMachine, Machine machine, Ligne ligne) {
+    public LigneMachine(Long ligneMachine, Machine machine, Ligne ligne) {
 
-		this.ligneMachine = ligneMachine;
-		this.machine = machine;
-		this.ligne = ligne;
-	}
+        this.ligneMachine = ligneMachine;
+        this.machine = machine;
+        this.ligne = ligne;
+    }
 
-	public Long getLigneMachine() {
-		return ligneMachine;
-	}
+    public Long getLigneMachine() {
+        return ligneMachine;
+    }
 
-	public void setLigneMachine(Long ligneMachine) {
-		this.ligneMachine = ligneMachine;
-	}
+    public void setLigneMachine(Long ligneMachine) {
+        this.ligneMachine = ligneMachine;
+    }
 
-	public Machine getMachine() {
-		return machine;
-	}
+    public Machine getMachine() {
+        return machine;
+    }
 
-	public void setMachine(Machine machine) {
-		this.machine = machine;
-	}
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+    }
 
-	public Ligne getLigne() {
-		return ligne;
-	}
+    public Ligne getLigne() {
+        return ligne;
+    }
 
-	public void setLigne(Ligne ligne) {
-		this.ligne = ligne;
-	}
+    public void setLigne(Ligne ligne) {
+        this.ligne = ligne;
+    }
 
-	public Organisation getOrganisation() {
-		return organisation;
-	}
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
-	}
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 
 }

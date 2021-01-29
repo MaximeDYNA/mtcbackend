@@ -20,71 +20,71 @@ import com.catis.model.configuration.JournalData;
 @EntityListeners(AuditingEntityListener.class)
 public class CategorieTestVehicule extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String type;
 
-	@ManyToOne
-	private CategorieTest categorieTest;
+    @ManyToOne
+    private CategorieTest categorieTest;
 
-	@ManyToOne
-	private CategorieVehicule categorieVehicule;
+    @ManyToOne
+    private CategorieVehicule categorieVehicule;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Set<Mesure> mesures;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Mesure> mesures;
 
-	public CategorieTestVehicule() {
-		// TODO Auto-generated constructor stub
-	}
+    public CategorieTestVehicule() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public CategorieTestVehicule(Long id, CategorieTest categorieTest, CategorieVehicule categorieVehicule,
-			Set<Mesure> mesures, Set<GieglanFile> gieglanFiles) {
-		this.id = id;
-		this.categorieTest = categorieTest;
-		this.categorieVehicule = categorieVehicule;
-		this.mesures = mesures;
-	}
+    public CategorieTestVehicule(Long id, CategorieTest categorieTest, CategorieVehicule categorieVehicule,
+                                 Set<Mesure> mesures, Set<GieglanFile> gieglanFiles) {
+        this.id = id;
+        this.categorieTest = categorieTest;
+        this.categorieVehicule = categorieVehicule;
+        this.mesures = mesures;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public CategorieTest getCategorieTest() {
-		return categorieTest;
-	}
+    public CategorieTest getCategorieTest() {
+        return categorieTest;
+    }
 
-	public void setCategorieTest(CategorieTest categorieTest) {
-		this.categorieTest = categorieTest;
-	}
+    public void setCategorieTest(CategorieTest categorieTest) {
+        this.categorieTest = categorieTest;
+    }
 
-	public CategorieVehicule getCategorieVehicule() {
-		return categorieVehicule;
-	}
+    public CategorieVehicule getCategorieVehicule() {
+        return categorieVehicule;
+    }
 
-	public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
-		this.categorieVehicule = categorieVehicule;
-	}
+    public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
+        this.categorieVehicule = categorieVehicule;
+    }
 
-	public Set<Mesure> getMesures() {
-		return mesures;
-	}
+    public Set<Mesure> getMesures() {
+        return mesures;
+    }
 
-	public void setMesures(Set<Mesure> mesures) {
-		this.mesures = mesures;
-	}
+    public void setMesures(Set<Mesure> mesures) {
+        this.mesures = mesures;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-	
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
 }

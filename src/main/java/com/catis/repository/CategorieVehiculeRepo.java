@@ -6,5 +6,5 @@ import com.catis.model.CategorieVehicule;
 
 public interface CategorieVehiculeRepo extends CrudRepository<CategorieVehicule, Long> {
 
-	CategorieVehicule findByType(String type);
+    CategorieVehicule findByType(String type);
 }

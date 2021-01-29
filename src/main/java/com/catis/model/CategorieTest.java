@@ -20,89 +20,88 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietest")
 public class CategorieTest extends JournalData {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCategorieTest;
 
-	private String libelle;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idCategorieTest;
 
-	private String description;
+    private String libelle;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTest")
-	@JsonIgnore
-	private Set<CategorieTestMachine> categorieTestMachines;
+    private String description;
 
-	@OneToMany(mappedBy = "categorieTest")
-	private Set<CategorieTestVehicule> categorieTestVehicules;
-	
-	@OneToMany(mappedBy = "categorieTest")
-	private Set<GieglanFile> gieglanFiles;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTest")
+    @JsonIgnore
+    private Set<CategorieTestMachine> categorieTestMachines;
 
-	public Long getIdCategorieTest() {
-		return idCategorieTest;
-	}
+    @OneToMany(mappedBy = "categorieTest")
+    private Set<CategorieTestVehicule> categorieTestVehicules;
 
-	public void setIdCategorieTest(Long idCategorieTest) {
-		this.idCategorieTest = idCategorieTest;
-	}
+    @OneToMany(mappedBy = "categorieTest")
+    private Set<GieglanFile> gieglanFiles;
 
-	public String getLibelle() {
-		return libelle;
-	}
+    public Long getIdCategorieTest() {
+        return idCategorieTest;
+    }
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
+    public void setIdCategorieTest(Long idCategorieTest) {
+        this.idCategorieTest = idCategorieTest;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getLibelle() {
+        return libelle;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-	public Set<CategorieTestMachine> getCategorieTestMachines() {
-		return categorieTestMachines;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setCategorieTestMachines(Set<CategorieTestMachine> categorieTestMachines) {
-		this.categorieTestMachines = categorieTestMachines;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<CategorieTestVehicule> getCategorieTestVehicules() {
-		return categorieTestVehicules;
-	}
+    public Set<CategorieTestMachine> getCategorieTestMachines() {
+        return categorieTestMachines;
+    }
 
-	public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
-		this.categorieTestVehicules = categorieTestVehicules;
-	}
+    public void setCategorieTestMachines(Set<CategorieTestMachine> categorieTestMachines) {
+        this.categorieTestMachines = categorieTestMachines;
+    }
+
+    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+        return categorieTestVehicules;
+    }
+
+    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+        this.categorieTestVehicules = categorieTestVehicules;
+    }
 
 
+    public Set<GieglanFile> getGieglanFiles() {
+        return gieglanFiles;
+    }
 
-	public Set<GieglanFile> getGieglanFiles() {
-		return gieglanFiles;
-	}
+    public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
+        this.gieglanFiles = gieglanFiles;
+    }
 
-	public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
-		this.gieglanFiles = gieglanFiles;
-	}
+    public CategorieTest(Long idCategorieTest, String libelle, String description,
+                         Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules,
+                         Set<GieglanFile> gieglanFiles) {
+        super();
+        this.idCategorieTest = idCategorieTest;
+        this.libelle = libelle;
+        this.description = description;
+        this.categorieTestMachines = categorieTestMachines;
+        this.categorieTestVehicules = categorieTestVehicules;
+        this.gieglanFiles = gieglanFiles;
+    }
 
-	public CategorieTest(Long idCategorieTest, String libelle, String description,
-			Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules,
-			Set<GieglanFile> gieglanFiles) {
-		super();
-		this.idCategorieTest = idCategorieTest;
-		this.libelle = libelle;
-		this.description = description;
-		this.categorieTestMachines = categorieTestMachines;
-		this.categorieTestVehicules = categorieTestVehicules;
-		this.gieglanFiles = gieglanFiles;
-	}
-
-	public CategorieTest() {
-		// TODO Auto-generated constructor stub
-	}
+    public CategorieTest() {
+        // TODO Auto-generated constructor stub
+    }
 
 }

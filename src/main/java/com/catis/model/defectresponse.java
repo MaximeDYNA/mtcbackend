@@ -4,29 +4,29 @@ import java.util.List;
 
 public class defectresponse {
 
-	private Long inspectionid;
+    private Long inspectionid;
 
-	private List<DefectsModel> defectslist;
+    private List<DefectsModel> defectslist;
 
-	public defectresponse(Long inspection,List<DefectsModel> defectslist ) {
-		
-		this.inspectionid = inspection;
-		this.defectslist = defectslist;
-	}
+    public defectresponse(Long inspection, List<DefectsModel> defectslist) {
 
-	public Long getInspectionid() {
-		return inspectionid;
-	}
+        this.inspectionid = inspection;
+        this.defectslist = defectslist;
+    }
 
-	public void setInspectionid(Long inspectionid) {
-		this.inspectionid = inspectionid;
-	}
+    public Long getInspectionid() {
+        return inspectionid;
+    }
 
-	public List<DefectsModel> getDefectslist() {
-		return defectslist;
-	}
+    public void setInspectionid(Long inspectionid) {
+        this.inspectionid = inspectionid;
+    }
 
-	public void setDefectslist(List<DefectsModel> defectslist) {
-		this.defectslist = defectslist;
-	}
+    public List<DefectsModel> getDefectslist() {
+        return defectslist;
+    }
+
+    public void setDefectslist(List<DefectsModel> defectslist) {
+        this.defectslist = defectslist;
+    }
 }

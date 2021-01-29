@@ -22,97 +22,97 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 public class VersionLexique extends JournalData {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String libelle;
+    private String libelle;
 
-	private Date date;
-	
-	private String version;
+    private Date date;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique")
-	@JsonIgnore
-	private Set<Lexique> lexiques;
+    private String version;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
-	@JsonIgnore
-	private List<RapportDeVisite> rapportDeVisites;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique")
+    @JsonIgnore
+    private Set<Lexique> lexiques;
 
-	@OneToOne(mappedBy = "visite")
-	private VerbalProcess process;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+    @JsonIgnore
+    private List<RapportDeVisite> rapportDeVisites;
 
-	public VersionLexique() {
+    @OneToOne(mappedBy = "visite")
+    private VerbalProcess process;
 
-		// TODO Auto-generated constructor stub
-	}
+    public VersionLexique() {
 
-	public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
-			List<RapportDeVisite> rapportDeVisites, VerbalProcess process) {
+        // TODO Auto-generated constructor stub
+    }
 
-		this.id = id;
-		this.libelle = libelle;
-		this.date = date;
-		this.lexiques = lexiques;
-		this.rapportDeVisites = rapportDeVisites;
-		this.process = process;
-	}
+    public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
+                          List<RapportDeVisite> rapportDeVisites, VerbalProcess process) {
 
-	public Long getId() {
-		return id;
-	}
+        this.id = id;
+        this.libelle = libelle;
+        this.date = date;
+        this.lexiques = lexiques;
+        this.rapportDeVisites = rapportDeVisites;
+        this.process = process;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getLibelle() {
-		return libelle;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
+    public String getLibelle() {
+        return libelle;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public Set<Lexique> getLexiques() {
-		return lexiques;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setLexiques(Set<Lexique> lexiques) {
-		this.lexiques = lexiques;
-	}
+    public Set<Lexique> getLexiques() {
+        return lexiques;
+    }
 
-	public List<RapportDeVisite> getRapportDeVisites() {
-		return rapportDeVisites;
-	}
+    public void setLexiques(Set<Lexique> lexiques) {
+        this.lexiques = lexiques;
+    }
 
-	public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
-		this.rapportDeVisites = rapportDeVisites;
-	}
+    public List<RapportDeVisite> getRapportDeVisites() {
+        return rapportDeVisites;
+    }
 
-	public VerbalProcess getProcess() {
-		return process;
-	}
+    public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
+        this.rapportDeVisites = rapportDeVisites;
+    }
 
-	public void setProcess(VerbalProcess process) {
-		this.process = process;
-	}
+    public VerbalProcess getProcess() {
+        return process;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public void setProcess(VerbalProcess process) {
+        this.process = process;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
 }
