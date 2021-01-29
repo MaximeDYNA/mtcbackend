@@ -1,5 +1,6 @@
 package com.catis.Controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,9 +8,11 @@ import java.nio.file.Paths;
 
 import org.apache.commons.codec.binary.Base64;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,6 +52,8 @@ public class InspectionController {
     private VisiteService visiteService;
     @Autowired
     private GieglanFileService gieglanFileService;
+    @Autowired
+    private Environment env;
 
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
@@ -83,11 +88,15 @@ public class InspectionController {
 
         try {
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
+            File f= new File(env.getProperty("signature.server.path"));
+            if(!f.exists())
+                f.mkdirs();
 
+            String filePath = env.getProperty("signature.server.path") + signatureDTO.getVisiteId() + ".png";
 
-            String filePath = "src/main/resources/static/uploaded/signatures/" + signatureDTO.getVisiteId() + ".png";
             Path path = Paths.get(filePath);
             System.out.println("*******************" + filePath);
+
             FileOutputStream fos = new FileOutputStream(path.toString());
             fos.write(decoded);
             fos.close();
