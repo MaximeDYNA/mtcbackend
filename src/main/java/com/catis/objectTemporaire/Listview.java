@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.catis.model.CategorieTest;
+import com.catis.model.GieglanFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.catis.model.Produit;
@@ -28,12 +30,7 @@ public class Listview {
     public Listview(Long id) {
         this.id = id;
         measures = new ArrayList<>();
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Jeep\"></i></span>&nbsp");
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Car-2\"></i></span>&nbsp");
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp");
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
-        measures.add("<span class=\"badge badge-light\"><i class=\"i-Pause\"></i></span>&nbsp");
+
     }
 
     public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
@@ -50,11 +47,18 @@ public class Listview {
 
     public void manageColor() {
         Visite visite = visiteService.findById(this.id);
-        if (!visite.isContreVisite()) {
 
+        if (visite.isContreVisite()) {
+            Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
+            visiteWithMissedTests.getInspection().getGieglanFiles()
+                .forEach( g -> {
+                this.measures.add(g.getCategorieTest().getIcon());
+            });
         }
     }
-
+    public void affectColor(GieglanFile g){
+        if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED))
+    }
 
     public Long getId() {
         return id;
@@ -151,7 +155,6 @@ public class Listview {
             default:
                 this.statut = "<span class=\"badge badge-warning\">" + statut + "</span>";
         }
-
     }
 
 

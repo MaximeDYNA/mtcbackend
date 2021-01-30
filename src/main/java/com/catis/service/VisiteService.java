@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,14 @@ public class VisiteService {
         processor = DirectProcessor.<Visite>create().serialize();
         sink = processor.sink();
 
+    }
+    public Visite visiteWithLastMissedTests(Visite visite){
+        List <Visite> v = visiteRepository
+                            .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
+        if(!v.isEmpty()) {
+            return v.get(0);
+        }
+        return null;
     }
 
     public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {

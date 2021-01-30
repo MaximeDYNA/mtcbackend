@@ -68,6 +68,22 @@ public class GieglanFile extends JournalData {
         INITIALIZED, REJECTED, VALIDATED
     }
 
+    public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
+                       Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
+                       CategorieTest categorieTest) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.fileCreatedAt = fileCreatedAt;
+        this.type = type;
+        this.status = status;
+        this.inspection = inspection;
+        this.machine = machine;
+        this.valeurTests = valeurTests;
+        this.rapportDeVisites = rapportDeVisites;
+        this.categorieTest = categorieTest;
+    }
+
     public StatusType getStatus() {
         return status;
     }
@@ -147,24 +163,9 @@ public class GieglanFile extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-
-    public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
-                       Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
-                       CategorieTest categorieTest) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.fileCreatedAt = fileCreatedAt;
-        this.type = type;
-        this.status = status;
-        this.inspection = inspection;
-        this.machine = machine;
-        this.valeurTests = valeurTests;
-        this.rapportDeVisites = rapportDeVisites;
-        this.categorieTest = categorieTest;
+    public Boolean getAccept() {
+        return isAccept;
     }
-
-
     public CategorieTest getCategorieTest() {
         return categorieTest;
     }

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
+import com.catis.objectTemporaire.ChangeColorPOJO;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -110,6 +111,12 @@ public class InspectionController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Failed", null);
         }
 
+    }
+    @PostMapping(value = "/api/v1/inspections/changecolor")
+    public ResponseEntity<Object> changeColor(ChangeColorPOJO changeColorPOJO){
+
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", inspectionService.findAllInspection());
     }
 
     @GetMapping(value = "/api/v1/inspections")

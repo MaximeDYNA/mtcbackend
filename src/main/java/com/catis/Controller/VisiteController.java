@@ -80,7 +80,6 @@ public class VisiteController {
                 lv.setStatut(visite.statutRender(visite.getStatut()));
                 lv.setType(visite.typeRender());
                 listVisit.add(lv);
-                lv.setId(visite.getIdVisite());
 
             }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
