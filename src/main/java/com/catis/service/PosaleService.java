@@ -24,10 +24,13 @@ public class PosaleService {
     }
 
     public void desactivateAll() {
-        for (Posales posales : psr.findAll()) {
-            posales.setStatus(false);
-            psr.save(posales);
-        }
+         psr.findAll().forEach(
+                 posales -> {
+                     posales.setStatus(false);
+                     psr.save(posales);
+                 }
+         );
+
     }
 
     public void deletePosale(Long number, Long sessionCaisseId) {

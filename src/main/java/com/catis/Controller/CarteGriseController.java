@@ -66,7 +66,6 @@ public class CarteGriseController {
     public ResponseEntity<Object> searchLast(@PathVariable String imCha) {
         LOGGER.info("Recherche carte grise...");
 
-        //cgs.findByImmatriculationOuCarteGrise(imCha)
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findLastCgBychassis(imCha));
 		/*try {	} 
 		catch(Exception e){ 

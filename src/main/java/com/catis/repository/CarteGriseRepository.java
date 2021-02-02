@@ -2,6 +2,7 @@ package com.catis.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,5 +14,5 @@ public interface CarteGriseRepository extends CrudRepository<CarteGrise, Long> {
 
     List<CarteGrise> findByVehicule_ChassisStartsWithIgnoreCase(String chassis);
 
-    List<CarteGrise> findByVehicule_ChassisStartsWithIgnoreCase(String chassis, Sort sort);
+    List<CarteGrise> findByVehicule_ChassisStartsWithIgnoreCaseOrderByCreatedDateDesc(String chassis, Pageable pageable);
 }

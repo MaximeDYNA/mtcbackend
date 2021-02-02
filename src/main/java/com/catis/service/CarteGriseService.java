@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -62,8 +63,11 @@ public class CarteGriseService {
 
     public List<CarteGrise> findLastCgBychassis(String chassis) {
         List<CarteGrise> reponse = new ArrayList<>();
-        reponse.add(cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis, Sort.by(Sort.Direction.DESC, "createdDate")).get(0))
-        ;
+        cgr.findByVehicule_ChassisStartsWithIgnoreCaseOrderByCreatedDateDesc(chassis,
+                PageRequest.of(0,1))
+                .forEach(
+                        carteGrise -> reponse.add(carteGrise)
+                );
         return reponse;
     }
 

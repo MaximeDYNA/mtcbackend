@@ -1,8 +1,11 @@
 package com.catis.Controller;
 
+import com.catis.model.*;
+import com.catis.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,30 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.exception.ContactVideException;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.CarteGrise;
-import com.catis.model.DetailVente;
-import com.catis.model.OperationCaisse;
-import com.catis.model.Organisation;
-import com.catis.model.Posales;
-import com.catis.model.Produit;
-import com.catis.model.Vehicule;
-import com.catis.model.Vente;
-import com.catis.model.Visite;
 import com.catis.objectTemporaire.Encaissement;
 import com.catis.objectTemporaire.EncaissementResponse;
-import com.catis.service.CarteGriseService;
-import com.catis.service.ClientService;
-import com.catis.service.ContactService;
-import com.catis.service.DetailVenteService;
-import com.catis.service.OperationCaisseService;
-import com.catis.service.OrganisationService;
-import com.catis.service.PosaleService;
-import com.catis.service.ProduitService;
-import com.catis.service.ProprietaireVehiculeService;
-import com.catis.service.SessionCaisseService;
-import com.catis.service.VendeurService;
-import com.catis.service.VenteService;
-import com.catis.service.VisiteService;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @CrossOrigin
@@ -71,6 +58,12 @@ public class EncaissementController {
     private VisiteService visiteService;
     @Autowired
     private ProprietaireVehiculeService pvs;
+    @Autowired
+    private GieglanFileService gieglanFileService;
+    @Autowired
+    private CategorieTestVehiculeService catSer;
+
+    List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     private static Logger LOGGER = LoggerFactory.getLogger(EncaissementController.class);
 
@@ -138,6 +131,7 @@ public class EncaissementController {
                 carteGrise.setProduit(produit);
                 visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
                         encaissement.getMontantEncaisse(), 1L);
+
             }
             /*-----------------Visite-----------------*/
 
@@ -153,6 +147,7 @@ public class EncaissementController {
             dvs.addVente(detailVente);
 
         }
+
         /* ---------Opération de caisse------------ */
         op.setMontant(encaissement.getMontantEncaisse());
 

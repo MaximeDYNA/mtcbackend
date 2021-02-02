@@ -52,12 +52,11 @@ public class VisiteController {
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
-    private VariableView v;
-    private final FluxProcessor<Visite, Visite> processor = DirectProcessor.<Visite>create().serialize();
 
-    List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
+    static List<SseEmitter> emittersForEdit = new CopyOnWriteArrayList<>();
 
-    /*@CrossOrigin
+    @CrossOrigin
     @GetMapping(value="/api/v1/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter  subscribe(){
 
@@ -72,115 +71,52 @@ public class VisiteController {
 //        emitters.add(emitter);
         return emitter;
     }
-
-    //dispatching all event
-    @PostMapping(value = "/api/v1/dispatchevent")
-    public void dispatcheventoclients(@RequestParam String title,@RequestParam String text){
-
-        String eventFormatted = new JSONObject()
-                .put("title",title)
-                .put("text",text).toString();
-
+    @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
+    public static void  dispatchEdit(Visite visite, VisiteService vs,
+                                    GieglanFileService gieglanFileService,
+                                    CategorieTestVehiculeService catSer, ProduitService ps){
         for(SseEmitter emitter:emitters){
             try{
-                emitter.send(SseEmitter.event().name("latestnews").data(eventFormatted));
+
+                emitter.send(SseEmitter.event().name("edit_visit").data(
+                        buildListView(visite, vs, gieglanFileService,catSer, ps)));
+
             }catch(IOException e){
                 emitters.remove(emitter);
             }
         }
     }
-*/
+
+    //dispatching all event
+    @PostMapping(value = "/api/v1/dispatchevent")
+    public static void dispatcheventoclients(Visite visite, VisiteService vs,
+                                             GieglanFileService gieglanFileService,
+                                             CategorieTestVehiculeService catSer, ProduitService ps ){
+        for(SseEmitter emitter:emitters){
+            try{
+                //System.out.println("emit " + emitters.size());
+                emitter.send(SseEmitter.event().name("new_visit").data(
+                        buildListView(visite, vs, gieglanFileService,catSer, ps)));
+            }catch(IOException e){
+                emitters.remove(emitter);
+            }
+        }
+    }
+
     @GetMapping(value = "/api/v1/visitesencours")
     public ResponseEntity<Object> listDesVisitesEncours() {
 
-            log.info("Liste des visites en cours");
-            List<Listview> listVisit = new ArrayList<>();
-            for (Visite visite : vs.enCoursVisitList()) {
-                Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
-
-                lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                        .getNumImmatriculation()));
-
-                if (venteService.findByVisite(visite.getIdVisite())
-                        == null)
-                    lv.setClient(null);
-                else
-                    lv.setClient(venteService.findByVisite(visite.getIdVisite())
-                            .getClient()
-                            .getPartenaire()
-                            .getNom());
-                lv.setDate(visite.getDateDebut());
-                lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-                lv.setStatut(visite.statutRender(visite.getStatut()));
-                lv.setType(visite.typeRender());
-                listVisit.add(lv);
-
-            }
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-
-       /* try { } catch (Exception e) {
-            log.error("Erreur lors de l'affichage de la liste des visite en cours");
-
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
-                    + " de la liste des visite en cours", null);
-            //ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
-
-
-        }*/
+        log.info("Liste des visites en cours");
+        List<Listview> listVisit = new ArrayList<>();
+        vs.enCoursVisitList().forEach(
+                visite -> {
+                    listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+                }
+        );
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
 
     }
 
-
-    /*@GetMapping(value="/api/v1/visites_encours")
-    public Flux<ServerSentEvent<ResponseEntity<Object>>> listDesVisitesEncours_(){
-
-            log.info("Liste des visites en coursoo");
-            List<Listview> listVisit = new ArrayList<>();
-            for(Visite visite: vs.enCoursVisitList()) {
-                Listview lv = new Listview(visite.getIdVisite());
-                lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                        .getNumImmatriculation()));
-
-                if (venteService.findByVisite(visite.getIdVisite())
-                         == null)
-                    lv.setClient(null);
-                else
-                lv.setClient(venteService.findByVisite(visite.getIdVisite())
-                        .getClient()
-                        .getPartenaire()
-                        .getNom());
-                lv.setDate(visite.getDateDebut());
-                lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-                lv.setStatut(visite.statutRender(visite.getStatut()));
-                lv.setType(visite.typeRender());
-                listVisit.add(lv);
-                lv.setId(visite.getIdVisite());
-
-            }
-            //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-            ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-            return processor
-              .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
-                  .event("new_visit")
-                  .data( o)
-                  .build());
-
-        /*try {} catch (Exception e) {
-            log.error("Erreur lors de l'affichage de la liste des visite en cours");
-
-            //return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
-            //		+ " de la liste des visite en cours", null);
-            ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
-
-            return Flux.interval(Duration.ofSeconds(1))
-              .map(sequence -> ServerSentEvent.<ResponseEntity<Object>> builder()
-                .id(String.valueOf(sequence))
-                  .event("periodic-event")
-                  .data( o)
-                  .build());
-        }
-
-    }*/
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visite/codestatut/{status}")
     public ResponseEntity<Object> visiteByStatut(@PathVariable int status) {
         try {
@@ -192,7 +128,6 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
                     + " de la liste des visite en cours", null);
         }
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visites")
@@ -205,28 +140,23 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
                     + " de la liste des visite en cours", null);
         }
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visit/kanbanview")
     public ResponseEntity<Object> listforKabanView() {
-
-
         try {
-
-
-            log.info("kaban view visit");
-            List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
-            kabanViewVisits.add(new KabanViewVisit("maj", vs.listParStatus(0), vs.listParStatus(0).size()));
-            kabanViewVisits.add(new KabanViewVisit("A inspecter", vs.listParStatus(1), vs.listParStatus(1).size()));
-            kabanViewVisits.add(new KabanViewVisit("En cours test", vs.listParStatus(2), vs.listParStatus(2).size()));
-            kabanViewVisits.add(new KabanViewVisit("A signer", vs.listParStatus(3), vs.listParStatus(3).size()));
-            kabanViewVisits.add(new KabanViewVisit("A imprimer", vs.listParStatus(4), vs.listParStatus(4).size()));
-            kabanViewVisits.add(new KabanViewVisit("A enregister", vs.listParStatus(5), vs.listParStatus(5).size()));
-            kabanViewVisits.add(new KabanViewVisit("A certifier", vs.listParStatus(6), vs.listParStatus(6).size()));
-            kabanViewVisits.add(new KabanViewVisit("Accepté", vs.listParStatus(7), vs.listParStatus(7).size()));
-            kabanViewVisits.add(new KabanViewVisit("Refusé", vs.listParStatus(8), vs.listParStatus(8).size()));
-            kabanViewVisits.add(new KabanViewVisit("A approuver", vs.listParStatus(9), vs.listParStatus(9).size()));
+                log.info("kaban view visit");
+                List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
+                kabanViewVisits.add(new KabanViewVisit("maj", vs.listParStatus(0), vs.listParStatus(0).size()));
+                kabanViewVisits.add(new KabanViewVisit("A inspecter", vs.listParStatus(1), vs.listParStatus(1).size()));
+                kabanViewVisits.add(new KabanViewVisit("En cours test", vs.listParStatus(2), vs.listParStatus(2).size()));
+                kabanViewVisits.add(new KabanViewVisit("A signer", vs.listParStatus(3), vs.listParStatus(3).size()));
+                kabanViewVisits.add(new KabanViewVisit("A imprimer", vs.listParStatus(4), vs.listParStatus(4).size()));
+                kabanViewVisits.add(new KabanViewVisit("A enregister", vs.listParStatus(5), vs.listParStatus(5).size()));
+                kabanViewVisits.add(new KabanViewVisit("A certifier", vs.listParStatus(6), vs.listParStatus(6).size()));
+                kabanViewVisits.add(new KabanViewVisit("Accepté", vs.listParStatus(7), vs.listParStatus(7).size()));
+                kabanViewVisits.add(new KabanViewVisit("Refusé", vs.listParStatus(8), vs.listParStatus(8).size()));
+                kabanViewVisits.add(new KabanViewVisit("A approuver", vs.listParStatus(9), vs.listParStatus(9).size()));
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
         } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
@@ -308,28 +238,11 @@ public class VisiteController {
 
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
-        for (Visite visite : vs.listParStatus(statutCode)) {
-            Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
-            lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                    .getNumImmatriculation()));
-
-            if (visite.getCarteGrise().getProprietaireVehicule()
-                    .getPartenaire()
-                    .getNom()
-                    == null)
-                lv.setClient(null);
-            else
-                lv.setClient(visite.getCarteGrise().getProprietaireVehicule()
-                        .getPartenaire()
-                        .getNom());
-            lv.setDate(visite.getDateDebut());
-            lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-            lv.setStatut(visite.statutRender(visite.getStatut()));
-            lv.setType(visite.typeRender());
-            listVisit.add(lv);
-            lv.setId(visite.getIdVisite());
-
-        }
+        vs.listParStatus(statutCode).forEach(
+                visite -> {
+                    listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+                }
+        );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 		
 		/*try {} catch (Exception e) {
@@ -350,6 +263,27 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'approbation", null);
         }
     }
+    public static Listview buildListView(Visite visite, VisiteService vs,
+                                 GieglanFileService gieglanFileService,
+                                 CategorieTestVehiculeService catSer, ProduitService ps ){
+        Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
+        lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+                .getNumImmatriculation()));
 
+        if (visite.getCarteGrise().getProprietaireVehicule()
+                .getPartenaire()
+                .getNom()
+                == null)
+            lv.setClient(null);
+        else
+            lv.setClient(visite.getCarteGrise().getProprietaireVehicule()
+                    .getPartenaire()
+                    .getNom());
+        lv.setDate(visite.getDateDebut());
+        lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+        lv.setStatut(visite.statutRender(visite.getStatut()));
+        lv.setType(visite.typeRender());
+        return lv;
+    }
 
 }

@@ -45,26 +45,23 @@ public class VisiteService {
     private ProduitService ps;
     @Autowired
     private VenteService venteService;
-
-    private final FluxSink<Visite> sink;
-    private final FluxProcessor<Visite, Visite> processor;
+    @Autowired
+    private ControlRepository controlRepository;
+    @Autowired
+    private GieglanFileService gieglanFileService;
+    @Autowired
+    private CategorieTestVehiculeService cat;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
 
-    public VisiteService() {
-        processor = DirectProcessor.<Visite>create().serialize();
-        sink = processor.sink();
 
-    }
     public Visite visiteWithLastMissedTests(Visite visite){
         List <Visite> v = visiteRepository
             .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
-
         if(!v.isEmpty()) {
             return v.get(0);
         }
-
         return null;
     }
 
@@ -107,17 +104,7 @@ public class VisiteService {
         return visiteRepository.save(visite);
     }
 
-    public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterEdit(Visite visite) {
-        ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", visite);
-        return processor
-                .map(sequence -> ServerSentEvent.<ResponseEntity<Object>>builder()
-                        .event("edit_visit")
-                        .data(o)
-                        .build());
-    }
 
-    @Autowired
-    private ControlRepository controlRepository;
 
     public List<Visite> findAll() {
         List<Visite> visites = new ArrayList<Visite>();
@@ -128,7 +115,7 @@ public class VisiteService {
     public Visite approuver(Visite visite) {
         visite.setStatut(0);
         Visite v = visiteRepository.save(visite);
-        //refreshVisiteAfterEdit(v);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
         return v;
     }
 
@@ -185,13 +172,14 @@ public class VisiteService {
         }
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
-        //refreshVisiteAfterAdd();
+        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat, ps);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) {
         Visite v = visiteRepository.save(visite);
-        //refreshVisiteAfterEdit(v);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+
         return v;
     }
 
@@ -214,7 +202,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-        //refreshVisiteAfterEdit(visite);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
 
     }
 
@@ -228,7 +216,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        //refreshVisiteAfterEdit(visite);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
     }
 
     public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
