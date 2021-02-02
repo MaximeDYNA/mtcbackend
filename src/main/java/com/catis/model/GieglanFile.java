@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -52,12 +53,15 @@ public class GieglanFile extends JournalData {
     private Machine machine;
 
     @OneToMany(mappedBy = "gieglanFile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<ValeurTest> valeurTests;
 
     @OneToMany(mappedBy = "gieglanFile")
+    @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
     @ManyToOne
+    @JsonIgnore
     private CategorieTest categorieTest;
 
     public enum FileType {
@@ -66,6 +70,22 @@ public class GieglanFile extends JournalData {
 
     public enum StatusType {
         INITIALIZED, REJECTED, VALIDATED
+    }
+
+    public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
+                       Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
+                       CategorieTest categorieTest) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.fileCreatedAt = fileCreatedAt;
+        this.type = type;
+        this.status = status;
+        this.inspection = inspection;
+        this.machine = machine;
+        this.valeurTests = valeurTests;
+        this.rapportDeVisites = rapportDeVisites;
+        this.categorieTest = categorieTest;
     }
 
     public StatusType getStatus() {
@@ -147,24 +167,9 @@ public class GieglanFile extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-
-    public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
-                       Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
-                       CategorieTest categorieTest) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.fileCreatedAt = fileCreatedAt;
-        this.type = type;
-        this.status = status;
-        this.inspection = inspection;
-        this.machine = machine;
-        this.valeurTests = valeurTests;
-        this.rapportDeVisites = rapportDeVisites;
-        this.categorieTest = categorieTest;
+    public Boolean getAccept() {
+        return isAccept;
     }
-
-
     public CategorieTest getCategorieTest() {
         return categorieTest;
     }

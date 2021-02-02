@@ -87,4 +87,11 @@ public class CategorieVehicule extends JournalData {
         this.lexique = lexique;
     }
 
+    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+        return categorieTestVehicules;
+    }
+
+    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+        this.categorieTestVehicules = categorieTestVehicules;
+    }
 }

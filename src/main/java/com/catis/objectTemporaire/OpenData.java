@@ -6,6 +6,9 @@ public class OpenData {
     private double montantOuverture;
     private double montantFermeture;
 
+    public OpenData() {
+    }
+
     public OpenData(Long userId, double montantOuverture, double montantFermeture) {
         super();
         this.userId = userId;

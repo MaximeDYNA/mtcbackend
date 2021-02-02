@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.catis.model.SessionCaisse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +29,9 @@ public class HoldService {
         return holdRepository.save(hold);
     }
 
-    public long maxNumber() {
-        if (holdRepository.max() != null)
-            return holdRepository.max();
+    public long maxNumber(SessionCaisse s) {
+        if (holdRepository.max(s) != null)
+            return holdRepository.max(s);
         else
             return 0;
     }

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +57,18 @@ public class VisiteService {
         sink = processor.sink();
 
     }
+    public Visite visiteWithLastMissedTests(Visite visite){
+        List <Visite> v = visiteRepository
+            .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
 
-    public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {
+        if(!v.isEmpty()) {
+            return v.get(0);
+        }
+
+        return null;
+    }
+
+    /*public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {
 
         log.info("Liste des visites en cours");
         List<Listview> listVisit = new ArrayList<>();
@@ -79,7 +90,7 @@ public class VisiteService {
             lv.setStatut(visite.statutRender(visite.getStatut()));
             lv.setType(visite.typeRender());
             listVisit.add(lv);
-            lv.setId(visite.getIdVisite());
+
 
         }
         //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
@@ -90,7 +101,7 @@ public class VisiteService {
                         .data(o)
                         .build());
 
-    }
+    }*/
 
     public Visite add(Visite visite) {
         return visiteRepository.save(visite);

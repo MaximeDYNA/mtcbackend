@@ -25,6 +25,10 @@ public class SessionCaisseService {
         return sessionCaisseRepository.findBySessionCaisseId(idSessionCaisse);
     }
 
+    public SessionCaisse findSessionCaisseByUserId(long userId) {
+        return sessionCaisseRepository.findByActiveTrueAndCaissier_User_UtilisateurId(userId);
+    }
+
     public SessionCaisse findActiveSessionCaissierById(long caissierId) {
         return sessionCaisseRepository.findByActiveTrueAndCaissierCaissierId(caissierId);
     }

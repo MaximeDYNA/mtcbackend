@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.catis.model.SessionCaisse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,9 @@ public class HoldController {
             LOGGER.info("création onglet demandé...");
 
             Hold hold = new Hold();
-            hold.setSessionCaisse(scs.findSessionCaisseById(sessionCaisseId));
-            hold.setNumber(holdService.maxNumber() + 1);
+            SessionCaisse sessionCaisse =scs.findSessionCaisseById(sessionCaisseId);
+            hold.setSessionCaisse(sessionCaisse);
+            hold.setNumber(holdService.maxNumber(sessionCaisse) + 1);
             SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
             Date date = format.parse(format.format(new Date()));
             hold.setTime(date);
@@ -72,7 +74,7 @@ public class HoldController {
             LOGGER.info("suppression de l'onglet " + holdData.getNumber() + " demandé...");
             holdService.deleteHoldByNumber(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
-            ps.activatePosale(holdService.maxNumber(), holdData.getSessionCaisseId());
+            ps.activatePosale(holdService.maxNumber(scs.findSessionCaisseById(holdData.getSessionCaisseId())), holdData.getSessionCaisseId());
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet supprimé", null);
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,

@@ -1,13 +1,12 @@
 package com.catis.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.print.Pageable;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.CarteGrise;
@@ -88,5 +87,10 @@ public class GieglanFileService {
             if (5 == j) j = 0;
         }
         return code;
+    }
+    public List<GieglanFile> findByExtensionAndVisite(String libelle, Long idVisite){
+        List<GieglanFile> gieglanfiles = gieglanFileRepository
+                .findByCategorieTestLibelleAndInspection_Visite_IdVisite(libelle, idVisite, PageRequest.of(0,1));
+        return gieglanfiles;
     }
 }

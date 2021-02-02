@@ -29,11 +29,14 @@ public class CategorieTest extends JournalData {
 
     private String description;
 
+    private String icon;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTest")
     @JsonIgnore
     private Set<CategorieTestMachine> categorieTestMachines;
 
     @OneToMany(mappedBy = "categorieTest")
+    @JsonIgnore
     private Set<CategorieTestVehicule> categorieTestVehicules;
 
     @OneToMany(mappedBy = "categorieTest")
@@ -57,6 +60,14 @@ public class CategorieTest extends JournalData {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public void setDescription(String description) {
