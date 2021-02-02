@@ -42,15 +42,15 @@ public class Machine extends JournalData {
     @OneToMany(mappedBy = "machine")
     private Set<GieglanFile> gieglanFiles;
 
+    @ManyToOne
+    private ConstructorModel constructorModel;
+
     public Machine() {
 
         // TODO Auto-generated constructor stub
     }
 
-    public Machine(Long idMachine, String numSerie, String fabriquant, String model, Organisation organisation,
-                   Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine,
-                   Set<GieglanFile> gieglanFiles) {
-
+    public Machine(Long idMachine, String numSerie, String fabriquant, String model, Organisation organisation, Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine, Set<GieglanFile> gieglanFiles, ConstructorModel constructorModel) {
         this.idMachine = idMachine;
         this.numSerie = numSerie;
         this.fabriquant = fabriquant;
@@ -59,6 +59,15 @@ public class Machine extends JournalData {
         this.ligneMachines = ligneMachines;
         this.categorieTestMachine = categorieTestMachine;
         this.gieglanFiles = gieglanFiles;
+        this.constructorModel = constructorModel;
+    }
+
+    public ConstructorModel getConstructorModel() {
+        return constructorModel;
+    }
+
+    public void setConstructorModel(ConstructorModel constructorModel) {
+        this.constructorModel = constructorModel;
     }
 
     public Long getIdMachine() {

@@ -1,17 +1,12 @@
 package com.catis.model;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -30,6 +25,12 @@ public class CategorieTestMachine extends JournalData {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Machine machine;
+
+    @OneToMany(mappedBy = "categorieTestMachine")
+    private Set<Pattern> patterns;
+
+    @ManyToOne
+    private RapportMachine rapportMachine;
 
     public CategorieTestMachine() {
         // TODO Auto-generated constructor stub
