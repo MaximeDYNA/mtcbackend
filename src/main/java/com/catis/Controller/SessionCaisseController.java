@@ -67,7 +67,7 @@ public class SessionCaisseController {
         sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
         Hold hold = new Hold();
 
-        hold.setNumber(hs.maxNumber() + 1);
+        hold.setNumber(hs.maxNumber(sessionCaisse) + 1);
         hold.setSessionCaisse(sessionCaisse);
         hold.setTime(sessionCaisse.getDateHeureOuverture());
         hs.addHold(hold);
