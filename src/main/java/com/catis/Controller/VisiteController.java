@@ -1,5 +1,6 @@
 package com.catis.Controller;
 
+import java.io.IOException;
 import java.time.Duration;
 
 import java.time.LocalTime;
@@ -7,7 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.catis.service.*;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.GraphView;
 import com.catis.objectTemporaire.KabanViewVisit;
 import com.catis.objectTemporaire.Listview;
-import com.catis.service.CarteGriseService;
-import com.catis.service.ProduitService;
-import com.catis.service.VariableView;
-import com.catis.service.VenteService;
-import com.catis.service.VisiteService;
 
 
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
@@ -50,20 +45,59 @@ public class VisiteController {
     private VenteService venteService;
     @Autowired
     private CarteGriseService cgs;
+    @Autowired
+    private GieglanFileService gieglanFileService;
+    @Autowired
+    private CategorieTestVehiculeService catSer;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
     private VariableView v;
     private final FluxProcessor<Visite, Visite> processor = DirectProcessor.<Visite>create().serialize();
 
+    List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
+    /*@CrossOrigin
+    @GetMapping(value="/api/v1/subscribe",consumes = MediaType.ALL_VALUE)
+    public SseEmitter  subscribe(){
+
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        try{
+            emitter.send(SseEmitter.event().name("INIT"));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        emitters.add(emitter);
+        emitter.onCompletion(()->emitters.remove(emitter));
+//        emitters.add(emitter);
+        return emitter;
+    }
+
+    //dispatching all event
+    @PostMapping(value = "/api/v1/dispatchevent")
+    public void dispatcheventoclients(@RequestParam String title,@RequestParam String text){
+
+        String eventFormatted = new JSONObject()
+                .put("title",title)
+                .put("text",text).toString();
+
+        for(SseEmitter emitter:emitters){
+            try{
+                emitter.send(SseEmitter.event().name("latestnews").data(eventFormatted));
+            }catch(IOException e){
+                emitters.remove(emitter);
+            }
+        }
+    }
+*/
     @GetMapping(value = "/api/v1/visitesencours")
     public ResponseEntity<Object> listDesVisitesEncours() {
-        try {
+
             log.info("Liste des visites en cours");
             List<Listview> listVisit = new ArrayList<>();
             for (Visite visite : vs.enCoursVisitList()) {
-                Listview lv = new Listview(visite.getIdVisite());
+                Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
+
                 lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                         .getNumImmatriculation()));
 
@@ -84,7 +118,7 @@ public class VisiteController {
             }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 
-        } catch (Exception e) {
+       /* try { } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
 
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Erreur lors de l'affichage"
@@ -92,7 +126,7 @@ public class VisiteController {
             //ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", null);
 
 
-        }
+        }*/
 
     }
 
@@ -239,7 +273,7 @@ public class VisiteController {
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
         for (Visite visite : vs.listParStatus(0)) {
-            Listview lv = new Listview(visite.getIdVisite());
+            Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                     .getNumImmatriculation()));
 
@@ -275,7 +309,7 @@ public class VisiteController {
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
         for (Visite visite : vs.listParStatus(statutCode)) {
-            Listview lv = new Listview(visite.getIdVisite());
+            Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                     .getNumImmatriculation()));
 

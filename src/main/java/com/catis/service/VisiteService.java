@@ -59,14 +59,16 @@ public class VisiteService {
     }
     public Visite visiteWithLastMissedTests(Visite visite){
         List <Visite> v = visiteRepository
-                            .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
+            .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
+
         if(!v.isEmpty()) {
             return v.get(0);
         }
+
         return null;
     }
 
-    public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {
+    /*public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {
 
         log.info("Liste des visites en cours");
         List<Listview> listVisit = new ArrayList<>();
@@ -88,7 +90,7 @@ public class VisiteService {
             lv.setStatut(visite.statutRender(visite.getStatut()));
             lv.setType(visite.typeRender());
             listVisit.add(lv);
-            lv.setId(visite.getIdVisite());
+
 
         }
         //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
@@ -99,7 +101,7 @@ public class VisiteService {
                         .data(o)
                         .build());
 
-    }
+    }*/
 
     public Visite add(Visite visite) {
         return visiteRepository.save(visite);

@@ -45,7 +45,7 @@ public class SessionCaisseController {
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable Long userId) {
         if (sessionCaisseService.findActiveSessionCaissierById(userId) != null) {
             LOGGER.info("Session de Caisse déjà ouverte");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.findActiveSessionCaissierById(userId));
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.findSessionCaisseByUserId(userId));
         } else {
             LOGGER.info("Aucune session caisse trouvée");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);

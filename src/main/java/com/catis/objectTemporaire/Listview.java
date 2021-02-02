@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.catis.model.CategorieTest;
 import com.catis.model.GieglanFile;
+import com.catis.service.CategorieTestVehiculeService;
+import com.catis.service.GieglanFileService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.catis.model.Produit;
@@ -22,16 +25,27 @@ public class Listview {
     private String client;
     private String date;
     private String statut;
-    private List<String> measures;
-
-    @Autowired
+    private List<CategorieTest> measures;
+    @JsonIgnore
     private VisiteService visiteService;
+    @JsonIgnore
+    private GieglanFileService gieglanFileService;
+    @JsonIgnore
+    private CategorieTestVehiculeService catSer;
 
-    public Listview(Long id) {
+    public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         this.id = id;
+        this.visiteService = visiteService;
+        this.gieglanFileService = gieglanFileService;
+        this.catSer = catSer;
         measures = new ArrayList<>();
+        manageColor();
+    }
+    public Listview() {
+
 
     }
+
 
     public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
                     String statut) {
@@ -46,19 +60,79 @@ public class Listview {
     }
 
     public void manageColor() {
+        System.out.println("----------"+ this.id);
         Visite visite = visiteService.findById(this.id);
 
         if (visite.isContreVisite()) {
             Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
-            visiteWithMissedTests.getInspection().getGieglanFiles()
+            visiteWithMissedTests
+                .getInspection().getGieglanFiles()
                 .forEach( g -> {
-                this.measures.add(g.getCategorieTest().getIcon());
-            });
+                    replaceIconIfNecessary(g.getCategorieTest(), this.id);
+                    this.measures.add(g.getCategorieTest());
+                });
+        } else {
+            visite.getCarteGrise().getProduit().getCategorieVehicule().getCategorieTestVehicules().forEach(
+                    categorieTestVehicule -> {
+                        System.out.println("*********"+categorieTestVehicule.getCategorieTest().getLibelle());
+                        replaceIconIfNecessary(categorieTestVehicule.getCategorieTest(), this.id);
+                        this.measures.add(categorieTestVehicule.getCategorieTest());
+                    }
+            );
         }
     }
-    public void affectColor(GieglanFile g){
-        if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED))
+
+    public void replaceIconIfNecessary(CategorieTest categorieTest, Long idVisite){
+        gieglanFileService.findByExtensionAndVisite(categorieTest.getLibelle(), idVisite)
+                .forEach(g -> {
+                    if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
+                        switch (categorieTest.getLibelle()){
+                            case "F":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                break;
+                            case "R":
+                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                 break;
+                            case "S":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                break;
+                            case "P":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                break;
+                            case "O":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                break;
+                            case "G":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                break;
+                        }
+                    }
+                    else{
+                        switch (categorieTest.getLibelle()){
+                            case "F":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                break;
+                            case "R":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                break;
+                            case "S":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                break;
+                            case "P":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                break;
+                            case "O":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                break;
+                            case "G":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                break;
+                        }
+                    }
+
+                });
     }
+
 
     public Long getId() {
         return id;
@@ -126,9 +200,9 @@ public class Listview {
 
                 this.statut = "";
                 int b = 0;
-                for (String i : measures) {
+                for (CategorieTest cat : measures) {
                     b++;
-                    this.statut += i;
+                    this.statut += cat.getIcon();
 //				  if(b%3==0) {
 //					  this.statut+="<br/>";
 //				  }
@@ -162,5 +236,35 @@ public class Listview {
         this.date = date;
     }
 
+    public List<CategorieTest> getMeasures() {
+        return measures;
+    }
 
+    public void setMeasures(List<CategorieTest> measures) {
+        this.measures = measures;
+    }
+
+    public VisiteService getVisiteService() {
+        return visiteService;
+    }
+
+    public void setVisiteService(VisiteService visiteService) {
+        this.visiteService = visiteService;
+    }
+
+    public GieglanFileService getGieglanFileService() {
+        return gieglanFileService;
+    }
+
+    public void setGieglanFileService(GieglanFileService gieglanFileService) {
+        this.gieglanFileService = gieglanFileService;
+    }
+
+    public CategorieTestVehiculeService getCatSer() {
+        return catSer;
+    }
+
+    public void setCatSer(CategorieTestVehiculeService catSer) {
+        this.catSer = catSer;
+    }
 }

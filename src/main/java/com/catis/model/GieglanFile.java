@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -52,12 +53,15 @@ public class GieglanFile extends JournalData {
     private Machine machine;
 
     @OneToMany(mappedBy = "gieglanFile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<ValeurTest> valeurTests;
 
     @OneToMany(mappedBy = "gieglanFile")
+    @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
     @ManyToOne
+    @JsonIgnore
     private CategorieTest categorieTest;
 
     public enum FileType {

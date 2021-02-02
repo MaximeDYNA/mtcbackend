@@ -112,6 +112,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/api/v1/**").permitAll()
+                .antMatchers("/**").permitAll()
                 //.antMatchers("/visites**").permitAll()
                 .antMatchers("/pdf-resources**").permitAll()
                 .antMatchers("/download-pdf**").permitAll()

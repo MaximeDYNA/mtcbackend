@@ -36,6 +36,7 @@ public class CategorieTest extends JournalData {
     private Set<CategorieTestMachine> categorieTestMachines;
 
     @OneToMany(mappedBy = "categorieTest")
+    @JsonIgnore
     private Set<CategorieTestVehicule> categorieTestVehicules;
 
     @OneToMany(mappedBy = "categorieTest")
