@@ -23,7 +23,7 @@ public class MarqueController {
 
     @GetMapping("/api/v1/marques")
     public ResponseEntity<Object> listMarque() {
-        LOGGER.info("List des marques...");
+        LOGGER.trace("List des marques...");
         try {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.marqueList());
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class MarqueController {
 
     @PostMapping("/api/v1/marques")
     public ResponseEntity<Object> addMarque(MarqueVehicule marque) {
-        LOGGER.info("List des marques...");
+        LOGGER.trace("List des marques...");
         try {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", marqueService.addMarque(marque));
         } catch (Exception e) {

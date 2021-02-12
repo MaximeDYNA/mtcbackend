@@ -31,8 +31,6 @@ public class Mesure extends JournalData {
     private String code;
     private String description;
 
-    @ManyToOne
-    private Organisation organisation;
 
     @ManyToOne
     private Formule formule;
@@ -72,13 +70,6 @@ public class Mesure extends JournalData {
         this.description = description;
     }
 
-    public Organisation getOganisation() {
-        return organisation;
-    }
-
-    public void setOganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Formule getFormule() {
         return formule;
@@ -88,13 +79,7 @@ public class Mesure extends JournalData {
         this.formule = formule;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Set<CategorieTestVehicule> getCategorieTestVehicules() {
         return categorieTestVehicules;
@@ -104,13 +89,13 @@ public class Mesure extends JournalData {
         this.categorieTestVehicules = categorieTestVehicules;
     }
 
-    public Mesure(Long idMesure, String code, String description, Organisation organisation,
+    public Mesure(Long idMesure, String code, String description,
                   Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
         super();
         this.idMesure = idMesure;
         this.code = code;
         this.description = description;
-        this.organisation = organisation;
+
         this.formule = formule;
         this.categorieTestVehicules = categorieTestVehicules;
     }

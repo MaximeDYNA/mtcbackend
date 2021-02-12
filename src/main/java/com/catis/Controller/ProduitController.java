@@ -65,7 +65,7 @@ public class ProduitController {
 
     @GetMapping("/api/v1/produits")
     public ResponseEntity<Object> listeDesProduits() {
-        LOGGER.info("liste des catégories...");
+        LOGGER.trace("liste des catégories...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.findProduitWithoutContreVisite());
     }
 
@@ -86,7 +86,7 @@ public class ProduitController {
         produit.setDelaiValidite(delaiValidite);
         produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
         produit.setImg(produitService.saveImage(file));
-        LOGGER.info("liste des catégories...");
+        LOGGER.trace("liste des catégories...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
 		      
 		   /* try {} 
@@ -119,7 +119,7 @@ public class ProduitController {
 
     @RequestMapping("/api/v1/produits/hold")
     public ResponseEntity<Object> listeDesProduitsParOnglet(@RequestBody HoldData holdeleter) {
-        LOGGER.info("produits par onglet...");
+        LOGGER.trace("produits par onglet...");
         List<Produit> produits = new ArrayList<>();
         for (Posales posales : posaleService.findByNumberSessionCaisse(holdeleter.getNumber(), holdeleter.getSessionCaisseId())) {
             produits.add(posales.getProduit());
@@ -133,7 +133,7 @@ public class ProduitController {
 
         if (visiteService.visiteEncours(imCha))
             throw new VisiteEnCoursException("Une visite est déjà en cours");
-        LOGGER.info("liste des catégories...");
+        LOGGER.trace("liste des catégories...");
         List<Produit> produits = new ArrayList<>();
         for (CarteGrise cg : cgs.findByImmatriculationOuCarteGrise(imCha)) {
             System.out.println("produit de carte grise");
@@ -194,7 +194,7 @@ public class ProduitController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/produits/listview")
     public ResponseEntity<Object> listViewProduits() {
-        LOGGER.info("Liste des produits");
+        LOGGER.trace("Liste des produits");
         Map<String, Object> produitsListView;
         List<Map<String, Object>> mapList = new ArrayList<>();
 

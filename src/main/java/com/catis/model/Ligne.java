@@ -27,8 +27,7 @@ public class Ligne extends JournalData {
     private Long idLigne;
     private String description;
 
-    @ManyToOne
-    private Organisation organisation;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne")
     @JsonIgnore
@@ -43,12 +42,12 @@ public class Ligne extends JournalData {
         // TODO Auto-generated constructor stub
     }
 
-    public Ligne(Long idLigne, String description, Organisation organisation, Set<LigneMachine> ligneMachines,
+    public Ligne(Long idLigne, String description,  Set<LigneMachine> ligneMachines,
                  Set<Inspection> inspections) {
 
         this.idLigne = idLigne;
         this.description = description;
-        this.organisation = organisation;
+
         this.ligneMachines = ligneMachines;
         this.inspections = inspections;
     }
@@ -69,13 +68,7 @@ public class Ligne extends JournalData {
         this.description = description;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Set<LigneMachine> getLigneMachines() {
         return ligneMachines;

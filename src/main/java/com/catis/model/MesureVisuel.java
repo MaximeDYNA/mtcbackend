@@ -5,12 +5,13 @@ import java.time.LocalTime;
 
 import javax.persistence.*;
 
+import com.catis.model.configuration.JournalData;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "t_mesurevisuel")
 @EntityListeners(AuditingEntityListener.class)
-public class MesureVisuel {
+public class MesureVisuel extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

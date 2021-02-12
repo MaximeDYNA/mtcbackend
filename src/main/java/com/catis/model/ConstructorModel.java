@@ -1,5 +1,6 @@
 package com.catis.model;
 
+import com.catis.model.configuration.JournalData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConstructorModel {
+public class ConstructorModel extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -44,7 +44,7 @@ public class OperationCaisseController {
     @GetMapping("/api/v1/operationcaisse/{code}/listview")
     public ResponseEntity<Object> reglementListView(@PathVariable int code) {
         try {
-            LOGGER.info("Liste des adresses demandée");
+            LOGGER.trace("Liste des adresses demandée");
             Map<String, Object> reglementListView;
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (OperationCaisse o : ocs.encaissementList(code)) {
@@ -68,7 +68,7 @@ public class OperationCaisseController {
     @PostMapping("/api/v1/operationcaisse/recap")
     public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
         try {
-            LOGGER.info("Recapitulatif demandé");
+            LOGGER.trace("Recapitulatif demandé");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime start = LocalDateTime.parse(recapDTO.getDateDebut(), formatter);

@@ -54,7 +54,7 @@ public class VisiteController {
 
 
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
-    static List<SseEmitter> emittersForEdit = new CopyOnWriteArrayList<>();
+
 
     @CrossOrigin
     @GetMapping(value="/api/v1/subscribe",consumes = MediaType.ALL_VALUE)
@@ -68,7 +68,7 @@ public class VisiteController {
         }
         emitters.add(emitter);
         emitter.onCompletion(()->emitters.remove(emitter));
-//        emitters.add(emitter);
+
         return emitter;
     }
     @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
@@ -108,11 +108,9 @@ public class VisiteController {
 
         log.info("Liste des visites en cours");
         List<Listview> listVisit = new ArrayList<>();
-        vs.enCoursVisitList().forEach(
-                visite -> {
-                    listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
-                }
-        );
+        vs.enCoursVisitList().forEach( visite -> {
+           listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+        });
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
 
     }
@@ -266,7 +264,7 @@ public class VisiteController {
     public static Listview buildListView(Visite visite, VisiteService vs,
                                  GieglanFileService gieglanFileService,
                                  CategorieTestVehiculeService catSer, ProduitService ps ){
-        Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
+        Listview lv = new Listview(visite.getIdVisite(), vs, gieglanFileService,catSer);
         lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                 .getNumImmatriculation()));
 

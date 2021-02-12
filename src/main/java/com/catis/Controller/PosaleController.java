@@ -57,7 +57,7 @@ public class PosaleController {
     public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData) {
 
         try {
-            LOGGER.info("Ajout d'un produit dans un onglet");
+            LOGGER.trace("Ajout d'un produit dans un onglet");
             if (posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId())) {
                 throw new DecaissementExistantException();
 
@@ -105,7 +105,7 @@ public class PosaleController {
         try {
             if (!holdData.isValid())
                 throw new InformationIncompleteException("Bien vouloir envoyer toutes les informations de l'onglet");
-            LOGGER.info("liste des produits de l'onglet " + holdData.getSessionCaisseId());
+            LOGGER.trace("liste des produits de l'onglet " + holdData.getSessionCaisseId());
             Card card;
             List<Card> cards = new ArrayList<>();
             List<Taxe> taxes = new ArrayList<>();
@@ -132,7 +132,7 @@ public class PosaleController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/deleteposale")
     public ResponseEntity<Object> deletePosales(@RequestBody PosaleDataForDelete posaleData) {
 
-        LOGGER.info("supression de " + posaleData.getReference() + " du panier");
+        LOGGER.trace("supression de " + posaleData.getReference() + " du panier");
         try {
             if (!posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).isEmpty())
                 posaleService.deletePosalesByReference(posaleData.getReference(), posaleData.getSessionCaisseId());
@@ -153,7 +153,7 @@ public class PosaleController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/posale/decaissement")
     public ResponseEntity<Object> ajoutDecaissement(@RequestBody PosaleData posaleData) {
 
-        LOGGER.info("Ajout d'un décaissement au panier");
+        LOGGER.trace("Ajout d'un décaissement au panier");
         try {
             posaleService.deletePosale(posaleData.getHoldId(), posaleData.getSessionCaisseId());
             Posales p = new Posales();

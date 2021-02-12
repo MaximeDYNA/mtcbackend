@@ -29,8 +29,7 @@ public class LigneMachine extends JournalData {
     @ManyToOne
     private Ligne ligne;
 
-    @ManyToOne
-    private Organisation organisation;
+
 
     public LigneMachine() {
 
@@ -67,12 +66,6 @@ public class LigneMachine extends JournalData {
         this.ligne = ligne;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
 }

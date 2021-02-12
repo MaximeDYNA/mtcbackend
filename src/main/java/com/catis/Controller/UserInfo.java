@@ -1,7 +1,9 @@
 package com.catis.Controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +75,26 @@ public class UserInfo {
     }
 
     @GetMapping("/api/v1/userconnected")
-    public UserDTO userconnectedInfo() {
+    public UserDTO handleUserInfoRequest() {
+        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
+        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+        UserDTO user = new UserDTO();
+        if (principal instanceof KeycloakPrincipal) {
+
+            KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
+            AccessToken accessToken = kp.getKeycloakSecurityContext().getToken();
+            user.setId(accessToken.getId());
+            user.setNom(accessToken.getName());
+            user.setPrenom(accessToken.getNickName());
+            user.setLogin(accessToken.getPreferredUsername());
+            user.setEmail(accessToken.getEmail());
+            Access realmAccess = accessToken.getRealmAccess();
+            user.setRoles(realmAccess.getRoles());
+            user.setOrganisanionId(accessToken.getOtherClaims().get("organisationId").toString());
+        }
+        return  user;
+    }
+   /* public UserDTO userconnectedInfo() {
         KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
         KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
         KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
@@ -85,8 +106,10 @@ public class UserInfo {
         user.setEmail(accessToken.getEmail());
         Access realmAccess = accessToken.getRealmAccess();
         user.setRoles(realmAccess.getRoles());
+
+        user.setOrganisanionId(accessToken.getOtherClaims());
         return user;
-    }
+    }*/
 
     public UserDTO userInfo(String KeycloakId) {
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());

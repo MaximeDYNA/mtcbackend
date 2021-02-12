@@ -1,14 +1,19 @@
 package com.catis.model;
 
+import com.catis.model.configuration.JournalData;
+
 import java.util.List;
 
-public class defectresponse {
+public class DefectResponse{
 
     private Long inspectionid;
 
     private List<DefectsModel> defectslist;
 
-    public defectresponse(Long inspection, List<DefectsModel> defectslist) {
+    public DefectResponse() {
+    }
+
+    public DefectResponse(Long inspection, List<DefectsModel> defectslist) {
 
         this.inspectionid = inspection;
         this.defectslist = defectslist;

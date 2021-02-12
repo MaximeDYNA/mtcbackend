@@ -52,7 +52,7 @@ public class CarteGriseController {
 
     @GetMapping("/api/v1/cartegrise/search/{imCha}")
     public ResponseEntity<Object> search(@PathVariable String imCha) {
-        LOGGER.info("Recherche carte grise...");
+        LOGGER.trace("Recherche carte grise...");
         try {
             //cgs.findByImmatriculationOuCarteGrise(imCha)
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findBychassis(imCha));
@@ -64,7 +64,7 @@ public class CarteGriseController {
 
     @GetMapping("/api/v1/search/last/{imCha}")
     public ResponseEntity<Object> searchLast(@PathVariable String imCha) {
-        LOGGER.info("Recherche carte grise...");
+        LOGGER.trace("Recherche carte grise...");
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findLastCgBychassis(imCha));
 		/*try {	} 
@@ -76,7 +76,7 @@ public class CarteGriseController {
 
     @GetMapping("/api/v1/cartegrises")
     public ResponseEntity<Object> findAll() {
-        LOGGER.info("Recherche carte grise...");
+        LOGGER.trace("Recherche carte grise...");
         try {
             //cgs.findByImmatriculationOuCarteGrise(imCha)
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findAll());
@@ -88,7 +88,7 @@ public class CarteGriseController {
 
     @PostMapping("/api/v1/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) {
-        LOGGER.info("mise à jour demandé...");
+        LOGGER.trace("mise à jour demandé...");
 
         System.out.println("......" + carteGriseR.getVisiteId());
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
@@ -128,9 +128,9 @@ public class CarteGriseController {
 
     @GetMapping("/api/v1/cartegrise/listview")
     public ResponseEntity<Object> carteGriseListView() {
-        LOGGER.info("Recherche carte grise...");
+        LOGGER.trace("Recherche carte grise...");
         try {
-            LOGGER.info("Liste des produits");
+            LOGGER.trace("Liste des produits");
             Map<String, Object> listView;
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (CarteGrise c : cgs.findAll()) {

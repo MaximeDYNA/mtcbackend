@@ -28,8 +28,6 @@ public class Caissier extends JournalData {
 
     private String codeCaissier;
 
-    @ManyToOne
-    private Organisation organisation;
 
     @ManyToOne
     private Partenaire partenaire;
@@ -48,12 +46,12 @@ public class Caissier extends JournalData {
     }
 
 
-    public Caissier(Long caissierId, String codeCaissier, Organisation organisation, Partenaire partenaire,
+    public Caissier(Long caissierId, String codeCaissier, Partenaire partenaire,
                     Caisse caisse, Utilisateur user, Set<SessionCaisse> sessionCaisses) {
         super();
         this.caissierId = caissierId;
         this.codeCaissier = codeCaissier;
-        this.organisation = organisation;
+
         this.partenaire = partenaire;
         this.caisse = caisse;
         this.user = user;
@@ -77,14 +75,6 @@ public class Caissier extends JournalData {
 
     public void setCodeCaissier(String codeCaissier) {
         this.codeCaissier = codeCaissier;
-    }
-
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
     }
 
     public Partenaire getPartenaire() {

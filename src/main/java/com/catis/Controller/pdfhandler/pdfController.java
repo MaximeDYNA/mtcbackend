@@ -44,6 +44,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.lowagie.text.DocumentException;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 
 @RestController
@@ -117,6 +119,10 @@ public class pdfController {
             modelAndView.addObject("defaultsTest", defaultsTest);
             modelAndView.addObject("controlleurName", user.getNom() + " " + user.getPrenom());
             modelAndView.setViewName("visites");
+
+            System.out.println(modelAndView.toString());
+            TemplateEngine templateEngine = new TemplateEngine();
+
             return modelAndView;
         }
 
@@ -167,4 +173,7 @@ public class pdfController {
 
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
     }
+
+
+
 }

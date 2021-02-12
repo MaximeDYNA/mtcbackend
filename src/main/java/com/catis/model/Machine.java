@@ -28,8 +28,7 @@ public class Machine extends JournalData {
     private String fabriquant;
     private String model;
 
-    @ManyToOne
-    private Organisation organisation;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "machine")
     @JsonIgnore
@@ -50,12 +49,12 @@ public class Machine extends JournalData {
         // TODO Auto-generated constructor stub
     }
 
-    public Machine(Long idMachine, String numSerie, String fabriquant, String model, Organisation organisation, Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine, Set<GieglanFile> gieglanFiles, ConstructorModel constructorModel) {
+    public Machine(Long idMachine, String numSerie, String fabriquant, String model,  Set<LigneMachine> ligneMachines, Set<CategorieTestMachine> categorieTestMachine, Set<GieglanFile> gieglanFiles, ConstructorModel constructorModel) {
         this.idMachine = idMachine;
         this.numSerie = numSerie;
         this.fabriquant = fabriquant;
         this.model = model;
-        this.organisation = organisation;
+
         this.ligneMachines = ligneMachines;
         this.categorieTestMachine = categorieTestMachine;
         this.gieglanFiles = gieglanFiles;
@@ -102,13 +101,7 @@ public class Machine extends JournalData {
         this.model = model;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Set<LigneMachine> getLigneMachines() {
         return ligneMachines;

@@ -5,15 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.catis.model.CategorieTest;
-import com.catis.model.GieglanFile;
+import com.catis.model.*;
 import com.catis.service.CategorieTestVehiculeService;
 import com.catis.service.GieglanFileService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.catis.model.Produit;
-import com.catis.model.Visite;
 import com.catis.service.VisiteService;
 
 public class Listview {
@@ -25,7 +22,7 @@ public class Listview {
     private String client;
     private String date;
     private String statut;
-    private List<CategorieTest> measures;
+    private List<GieglanFileIcon> measures;
     @JsonIgnore
     private VisiteService visiteService;
     @JsonIgnore
@@ -60,39 +57,64 @@ public class Listview {
     }
 
     public void manageColor() {
-        System.out.println("----------"+ this.id);
+        System.out.println("visite n0 "+ this.id);
         Visite visite = visiteService.findById(this.id);
 
         if (visite.isContreVisite()) {
+
             Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
-            visiteWithMissedTests
-                .getInspection().getGieglanFiles()
-                .forEach( g -> {
-                    replaceIconIfNecessary(g.getCategorieTest(), this.id);
-                    this.measures.add(g.getCategorieTest());
-                });
+            GieglanFileIcon gfi;
+            for(GieglanFile g: visiteWithMissedTests
+                    .getInspection().getGieglanFiles()){
+                    gfi = new GieglanFileIcon();
+                    gfi.setExtension(g.getCategorieTest().getLibelle());
+                    gfi.setIcon(g.getCategorieTest().getIcon());
+                    this.measures.add(replaceIconIfNecessary(gfi, this.id));
+                }
         } else {
-            visite.getCarteGrise().getProduit().getCategorieVehicule().getCategorieTestVehicules().forEach(
+            List<GieglanFileIcon> categorieTests = new ArrayList<>();
+            GieglanFileIcon gfi;
+            for(CategorieTestVehicule c : visite
+                    .getCarteGrise()
+                    .getProduit()
+                    .getCategorieVehicule()
+                    .getCategorieTestVehicules() ){
+                gfi = new GieglanFileIcon();
+                gfi.setExtension(c.getCategorieTest().getLibelle());
+                gfi.setIcon(c.getCategorieTest().getIcon());
+                categorieTests.add(gfi);
+            }
+            /*visite
+                    .getCarteGrise()
+                    .getProduit()
+                    .getCategorieVehicule()
+                    .getCategorieTestVehicules()
+                    .forEach(
                     categorieTestVehicule -> {
-                        System.out.println("*********"+categorieTestVehicule.getCategorieTest().getLibelle());
-                        replaceIconIfNecessary(categorieTestVehicule.getCategorieTest(), this.id);
-                        this.measures.add(categorieTestVehicule.getCategorieTest());
+                        categorieTests.se;
                     }
+            );*/
+            categorieTests.forEach(categorieTest -> {
+                this.measures.add(replaceIconIfNecessary(categorieTest, this.id));
+            });
+            measures.forEach(
+                    measure -> System.out.println(measure.getIcon())
             );
         }
     }
 
-    public void replaceIconIfNecessary(CategorieTest categorieTest, Long idVisite){
-        gieglanFileService.findByExtensionAndVisite(categorieTest.getLibelle(), idVisite)
-                .forEach(g -> {
+    public GieglanFileIcon replaceIconIfNecessary(GieglanFileIcon categorieTest, Long idVisite){
+        List<GieglanFile> gieglanFiles = gieglanFileService.findByExtensionAndVisite(categorieTest.getExtension(), idVisite);
+        gieglanFiles.forEach(g -> {
                     if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
-                        switch (categorieTest.getLibelle()){
+                        switch (categorieTest.getExtension()){
                             case "F":
                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
                             case "R":
-                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\"></i></span>&nbsp");
-                                 break;
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                break;
                             case "S":
                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
                                 break;
@@ -107,8 +129,31 @@ public class Listview {
                                 break;
                         }
                     }
-                    else{
-                        switch (categorieTest.getLibelle()){
+                    if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
+                        switch (categorieTest.getExtension()){
+                            case "F":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                break;
+                            case "R":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                break;
+                            case "S":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                break;
+                            case "P":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                break;
+                            case "O":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                break;
+                            case "G":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                break;
+                        }
+
+                    }
+                    if(g.getStatus().equals(GieglanFile.StatusType.REJECTED)){
+                        switch (categorieTest.getExtension()){
                             case "F":
                                 categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
@@ -131,6 +176,8 @@ public class Listview {
                     }
 
                 });
+        return categorieTest;
+
     }
 
 
@@ -200,7 +247,7 @@ public class Listview {
 
                 this.statut = "";
                 int b = 0;
-                for (CategorieTest cat : measures) {
+                for (GieglanFileIcon cat : measures) {
                     b++;
                     this.statut += cat.getIcon();
 //				  if(b%3==0) {
@@ -236,11 +283,11 @@ public class Listview {
         this.date = date;
     }
 
-    public List<CategorieTest> getMeasures() {
+    public List<GieglanFileIcon> getMeasures() {
         return measures;
     }
 
-    public void setMeasures(List<CategorieTest> measures) {
+    public void setMeasures(List<GieglanFileIcon> measures) {
         this.measures = measures;
     }
 

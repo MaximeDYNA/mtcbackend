@@ -52,7 +52,7 @@ public class VehiculeController {
     public ResponseEntity<Object> searchVehicule(@PathVariable String chassis) {
         try {
 
-            LOGGER.info("recherche de véhicule...");
+            LOGGER.trace("recherche de véhicule...");
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès", vehiculeService.findByChassis(chassis));
         } catch (Exception e) {

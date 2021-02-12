@@ -23,20 +23,17 @@ public class Utilisateur extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long utilisateurId;
     private String keycloakId;
-    @ManyToOne
-    @JsonIgnore
-    private Organisation organisation;
 
 
     public Utilisateur() {
     }
 
 
-    public Utilisateur(Long utilisateurId, String keycloakId, Organisation organisation) {
+    public Utilisateur(Long utilisateurId, String keycloakId) {
         super();
         this.utilisateurId = utilisateurId;
         this.keycloakId = keycloakId;
-        this.organisation = organisation;
+
     }
 
 
@@ -59,15 +56,6 @@ public class Utilisateur extends JournalData {
         this.keycloakId = keycloakId;
     }
 
-
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
 
 }

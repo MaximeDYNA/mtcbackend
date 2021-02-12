@@ -44,7 +44,7 @@ public class ContactController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/contacts")
     public ResponseEntity<Object> addContact(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
-        LOGGER.info("Ajout d'un contact...");
+        LOGGER.trace("Ajout d'un contact...");
 
         Contact contact = new Contact();
         Partenaire partenaire = new Partenaire();
@@ -67,7 +67,7 @@ public class ContactController {
         contact.setPartenaire(partenaireService.addPartenaire(partenaire));
         contact.setDescription(clientPartenaire.getVariants());
         contactService.addContact(contact);
-        LOGGER.info("Ajout de " + partenaire.getNom() + " réussi");
+        LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", contact);
 		/*try {}
 		catch (DataIntegrityViolationException integrity) {
@@ -75,7 +75,7 @@ public class ContactController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
 					 , null);
 		}catch(Exception e) {
-			LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
+			LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
 					+ "l'ajout d'un client", null);
 		}	*/
@@ -83,15 +83,15 @@ public class ContactController {
 
     @RequestMapping(value = "/api/v1/contacts")
     private ResponseEntity<Object> getContacts() {
-        LOGGER.info("liste des Contacts...");
+        LOGGER.trace("liste des Contacts...");
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/contacts/addtocustomer")
+    /*@RequestMapping(method = RequestMethod.POST, value = "/api/v1/contacts/addtocustomer")
     public ResponseEntity<Object> ajouterAuClient(@RequestBody ClientContactHandler cch) {
         try {
-            LOGGER.info("liste des Contacts...");
+            LOGGER.trace("liste des Contacts...");
             Client client = new Client();
             client.setClientId(cch.getClientId());
             Contact contact = contactService.findById(cch.getContactId());
@@ -104,11 +104,11 @@ public class ContactController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "success", null);
         }
 
-    }
+    }*/
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/search/contacts/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
-        LOGGER.info("Recherche contacts...");
+        LOGGER.trace("Recherche contacts...");
         try {
             List<ClientPartenaire> clientPartenaires = new ArrayList<>();
             ClientPartenaire cp;

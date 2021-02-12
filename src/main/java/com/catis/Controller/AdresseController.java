@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 //import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class AdresseController {
     public ResponseEntity<Object> adressListView() {
 
         try {
-            LOGGER.info("Liste des adresses demandée");
+            LOGGER.trace("Liste des adresses demandée");
 
             Map<String, Object> adresseListView;
             List<Map<String, Object>> mapList = new ArrayList<>();

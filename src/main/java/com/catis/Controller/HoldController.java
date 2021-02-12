@@ -45,7 +45,7 @@ public class HoldController {
     public ResponseEntity<Object> ajouterOnglet(@PathVariable Long sessionCaisseId) throws ParseException {
 
         try {
-            LOGGER.info("création onglet demandé...");
+            LOGGER.trace("création onglet demandé...");
 
             Hold hold = new Hold();
             SessionCaisse sessionCaisse =scs.findSessionCaisseById(sessionCaisseId);
@@ -71,7 +71,7 @@ public class HoldController {
     public ResponseEntity<Object> supprimerOnglet(@RequestBody HoldData holdData) throws ParseException {
 
         try {
-            LOGGER.info("suppression de l'onglet " + holdData.getNumber() + " demandé...");
+            LOGGER.trace("suppression de l'onglet " + holdData.getNumber() + " demandé...");
             holdService.deleteHoldByNumber(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.activatePosale(holdService.maxNumber(scs.findSessionCaisseById(holdData.getSessionCaisseId())), holdData.getSessionCaisseId());
@@ -88,7 +88,7 @@ public class HoldController {
     public ResponseEntity<Object> selectionnerOnglet(@RequestBody HoldData holdData) throws ParseException {
 
         try {
-            LOGGER.info("sélection de l'onglet " + holdData.getNumber() + " demandé...");
+            LOGGER.trace("sélection de l'onglet " + holdData.getNumber() + " demandé...");
             ps.activatePosale(holdData.getNumber(), holdData.getSessionCaisseId());
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "sélection de l'onglet " + holdData.getNumber() + " demandé...", holdService.findByNumberSessionCaisse(holdData.getNumber(), holdData.getSessionCaisseId()));
@@ -104,7 +104,7 @@ public class HoldController {
     public ResponseEntity<Object> sessionsHold(@PathVariable Long sessionCaisseId) {
 
         try {
-            LOGGER.info("sélection des onglets d'une session ID...");
+            LOGGER.trace("sélection des onglets d'une session ID...");
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id " + sessionCaisseId, holdService.findHoldBySessionCaisse(sessionCaisseId));
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class HoldController {
     public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
 
 
-        LOGGER.info("rafraichissement de l'onglet");
+        LOGGER.trace("rafraichissement de l'onglet");
         ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id " + holdData.getSessionCaisseId(), null);
 			 /*	try {} 

@@ -22,17 +22,16 @@ public class ModeleVehicule extends JournalData {
     private Long idModele;
     private String description;
 
-    @ManyToOne
-    private Organisation organisation;
+
 
     public ModeleVehicule() {
 
     }
 
-    public ModeleVehicule(Long idModele, String description, Organisation organisation) {
+    public ModeleVehicule(Long idModele, String description) {
         this.idModele = idModele;
         this.description = description;
-        this.organisation = organisation;
+
     }
 
     public Long getIdModele() {
@@ -51,12 +50,5 @@ public class ModeleVehicule extends JournalData {
         this.description = description;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
 }

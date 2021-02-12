@@ -1,17 +1,14 @@
 package com.catis.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -20,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_organisation")
 @EntityListeners(AuditingEntityListener.class)
-public class Organisation extends JournalData {
+public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long organisationId;
@@ -40,6 +37,83 @@ public class Organisation extends JournalData {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
+    private Set<Lexique> lexiques;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Pattern> patterns;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Pays> pays;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Posales> posales;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Produit> produits;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<ProprietaireVehicule> proprietaireVehicules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<RapportDeVisite> rapportDeVisites;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<RapportMachine> rapportMachines;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<SessionCaisse> sessionCaisses;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Seuil> seuils;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<StatutCode> statutCodes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Taxe> taxes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<TaxeProduit> taxeProduits;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<DetailVente> detailVentes;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<DivisionPays> divisionPays;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Energie> energies;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Formule> formules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<GieglanFile> gieglanFiles;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Hold> holds;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
     private Set<CategorieTestMachine> categorieTestMachine;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
@@ -49,6 +123,48 @@ public class Organisation extends JournalData {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
     private Set<Inspection> inspection;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<CategorieTestMachine> categorieTestMachines;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<CategorieTestVehicule> categorieTestVehicules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<CategorieVehicule> categorieVehicules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Classification> classifications;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Client> clients;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Constructor> constructors;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<ConstructorModel> constructorModels;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Control> controls;
+
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<CategorieProduit> categorieProduits;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<CategorieTest> categorieTests;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -68,6 +184,19 @@ public class Organisation extends JournalData {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
+    private Set<MesureVisuel> mesureVisuels;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<OperationCaisse> operationCaisses;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<ModeleVehicule> modeleVehicules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
     private Set<ValeurTest> valeurTests;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
@@ -76,7 +205,19 @@ public class Organisation extends JournalData {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
+    private Set<CarteGrise> carteGrises;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
     private Set<LigneMachine> ligneMachine;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<MarqueVehicule> marqueVehicules;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Vehicule> vehicules;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -90,6 +231,22 @@ public class Organisation extends JournalData {
     @JsonIgnore
     private Set<Organisation> childOrganisations;
 
+    @OneToMany(mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Vente> ventes;
+
+    @OneToMany(mappedBy = "organisation")
+    @JsonIgnore
+    private Set<VerbalProcess> verbalProcesses;
+
+    @OneToMany(mappedBy = "organisation")
+    @JsonIgnore
+    private Set<VersionLexique> versionLexiques;
+
+    @OneToMany(mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Visite> visites;
+
     @ManyToOne
     @JsonIgnore
     private Organisation parentOrganisation;
@@ -97,6 +254,28 @@ public class Organisation extends JournalData {
     @OneToMany(mappedBy = "organisation")
     @JsonIgnore
     private Set<Caisse> caisses;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
+    private Set<Vendeur> vendeurs;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+
+    @Column(columnDefinition = "bit default 1")
+    private boolean activeStatus;
+
+    @Column(name = "created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    private String modifiedBy;
 
     private String patente;
     private String statutJurique;
@@ -200,13 +379,7 @@ public class Organisation extends JournalData {
         this.partenaires = partenaires;
     }
 
-    public Set<Utilisateur> getUtilisateur() {
-        return utilisateurs;
-    }
 
-    public void setUtilisateur(Set<Utilisateur> utilisateur) {
-        this.utilisateurs = utilisateur;
-    }
 
     public Set<Organisation> getChildOrganisations() {
         return childOrganisations;
@@ -332,4 +505,365 @@ public class Organisation extends JournalData {
         this.mesure = mesure;
     }
 
+    public Set<CarteGrise> getCarteGrises() {
+        return carteGrises;
+    }
+
+    public void setCarteGrises(Set<CarteGrise> carteGrises) {
+        this.carteGrises = carteGrises;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    protected void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public boolean isActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(boolean activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public Set<Lexique> getLexiques() {
+        return lexiques;
+    }
+
+    public void setLexiques(Set<Lexique> lexiques) {
+        this.lexiques = lexiques;
+    }
+
+    public Set<Pattern> getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(Set<Pattern> patterns) {
+        this.patterns = patterns;
+    }
+
+    public Set<Pays> getPays() {
+        return pays;
+    }
+
+    public void setPays(Set<Pays> pays) {
+        this.pays = pays;
+    }
+
+    public Set<Posales> getPosales() {
+        return posales;
+    }
+
+    public void setPosales(Set<Posales> posales) {
+        this.posales = posales;
+    }
+
+    public Set<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(Set<Produit> produits) {
+        this.produits = produits;
+    }
+
+    public Set<ProprietaireVehicule> getProprietaireVehicules() {
+        return proprietaireVehicules;
+    }
+
+    public void setProprietaireVehicules(Set<ProprietaireVehicule> proprietaireVehicules) {
+        this.proprietaireVehicules = proprietaireVehicules;
+    }
+
+    public Set<RapportDeVisite> getRapportDeVisites() {
+        return rapportDeVisites;
+    }
+
+    public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
+        this.rapportDeVisites = rapportDeVisites;
+    }
+
+    public Set<RapportMachine> getRapportMachines() {
+        return rapportMachines;
+    }
+
+    public void setRapportMachines(Set<RapportMachine> rapportMachines) {
+        this.rapportMachines = rapportMachines;
+    }
+
+    public Set<SessionCaisse> getSessionCaisses() {
+        return sessionCaisses;
+    }
+
+    public void setSessionCaisses(Set<SessionCaisse> sessionCaisses) {
+        this.sessionCaisses = sessionCaisses;
+    }
+
+    public Set<Seuil> getSeuils() {
+        return seuils;
+    }
+
+    public void setSeuils(Set<Seuil> seuils) {
+        this.seuils = seuils;
+    }
+
+    public Set<StatutCode> getStatutCodes() {
+        return statutCodes;
+    }
+
+    public void setStatutCodes(Set<StatutCode> statutCodes) {
+        this.statutCodes = statutCodes;
+    }
+
+    public Set<Taxe> getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(Set<Taxe> taxes) {
+        this.taxes = taxes;
+    }
+
+    public Set<TaxeProduit> getTaxeProduits() {
+        return taxeProduits;
+    }
+
+    public void setTaxeProduits(Set<TaxeProduit> taxeProduits) {
+        this.taxeProduits = taxeProduits;
+    }
+
+    public Set<DetailVente> getDetailVentes() {
+        return detailVentes;
+    }
+
+    public void setDetailVentes(Set<DetailVente> detailVentes) {
+        this.detailVentes = detailVentes;
+    }
+
+
+
+    public Set<DivisionPays> getDivisionPays() {
+        return divisionPays;
+    }
+
+    public void setDivisionPays(Set<DivisionPays> divisionPays) {
+        this.divisionPays = divisionPays;
+    }
+
+    public Set<Energie> getEnergies() {
+        return energies;
+    }
+
+    public void setEnergies(Set<Energie> energies) {
+        this.energies = energies;
+    }
+
+    public Set<Formule> getFormules() {
+        return formules;
+    }
+
+    public void setFormules(Set<Formule> formules) {
+        this.formules = formules;
+    }
+
+    public Set<GieglanFile> getGieglanFiles() {
+        return gieglanFiles;
+    }
+
+    public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
+        this.gieglanFiles = gieglanFiles;
+    }
+
+    public Set<Hold> getHolds() {
+        return holds;
+    }
+
+    public void setHolds(Set<Hold> holds) {
+        this.holds = holds;
+    }
+
+    public Set<CategorieTestMachine> getCategorieTestMachines() {
+        return categorieTestMachines;
+    }
+
+    public void setCategorieTestMachines(Set<CategorieTestMachine> categorieTestMachines) {
+        this.categorieTestMachines = categorieTestMachines;
+    }
+
+    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+        return categorieTestVehicules;
+    }
+
+    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+        this.categorieTestVehicules = categorieTestVehicules;
+    }
+
+    public Set<CategorieVehicule> getCategorieVehicules() {
+        return categorieVehicules;
+    }
+
+    public void setCategorieVehicules(Set<CategorieVehicule> categorieVehicules) {
+        this.categorieVehicules = categorieVehicules;
+    }
+
+    public Set<Classification> getClassifications() {
+        return classifications;
+    }
+
+    public void setClassifications(Set<Classification> classifications) {
+        this.classifications = classifications;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
+
+    public Set<Constructor> getConstructors() {
+        return constructors;
+    }
+
+    public void setConstructors(Set<Constructor> constructors) {
+        this.constructors = constructors;
+    }
+
+    public Set<ConstructorModel> getConstructorModels() {
+        return constructorModels;
+    }
+
+    public void setConstructorModels(Set<ConstructorModel> constructorModels) {
+        this.constructorModels = constructorModels;
+    }
+
+    public Set<Control> getControls() {
+        return controls;
+    }
+
+    public void setControls(Set<Control> controls) {
+        this.controls = controls;
+    }
+
+    public Set<CategorieProduit> getCategorieProduits() {
+        return categorieProduits;
+    }
+
+    public void setCategorieProduits(Set<CategorieProduit> categorieProduits) {
+        this.categorieProduits = categorieProduits;
+    }
+
+    public Set<CategorieTest> getCategorieTests() {
+        return categorieTests;
+    }
+
+    public void setCategorieTests(Set<CategorieTest> categorieTests) {
+        this.categorieTests = categorieTests;
+    }
+
+    public Set<MesureVisuel> getMesureVisuels() {
+        return mesureVisuels;
+    }
+
+    public void setMesureVisuels(Set<MesureVisuel> mesureVisuels) {
+        this.mesureVisuels = mesureVisuels;
+    }
+
+    public Set<OperationCaisse> getOperationCaisses() {
+        return operationCaisses;
+    }
+
+    public void setOperationCaisses(Set<OperationCaisse> operationCaisses) {
+        this.operationCaisses = operationCaisses;
+    }
+
+    public Set<ModeleVehicule> getModeleVehicules() {
+        return modeleVehicules;
+    }
+
+    public void setModeleVehicules(Set<ModeleVehicule> modeleVehicules) {
+        this.modeleVehicules = modeleVehicules;
+    }
+
+    public Set<MarqueVehicule> getMarqueVehicules() {
+        return marqueVehicules;
+    }
+
+    public void setMarqueVehicules(Set<MarqueVehicule> marqueVehicules) {
+        this.marqueVehicules = marqueVehicules;
+    }
+
+    public Set<Vehicule> getVehicules() {
+        return vehicules;
+    }
+
+    public void setVehicules(Set<Vehicule> vehicules) {
+        this.vehicules = vehicules;
+    }
+
+    public Set<Vente> getVentes() {
+        return ventes;
+    }
+
+    public void setVentes(Set<Vente> ventes) {
+        this.ventes = ventes;
+    }
+
+    public Set<VerbalProcess> getVerbalProcesses() {
+        return verbalProcesses;
+    }
+
+    public void setVerbalProcesses(Set<VerbalProcess> verbalProcesses) {
+        this.verbalProcesses = verbalProcesses;
+    }
+
+    public Set<VersionLexique> getVersionLexiques() {
+        return versionLexiques;
+    }
+
+    public void setVersionLexiques(Set<VersionLexique> versionLexiques) {
+        this.versionLexiques = versionLexiques;
+    }
+
+    public Set<Visite> getVisites() {
+        return visites;
+    }
+
+    public void setVisites(Set<Visite> visites) {
+        this.visites = visites;
+    }
+
+    public Set<Vendeur> getVendeurs() {
+        return vendeurs;
+    }
+
+    public void setVendeurs(Set<Vendeur> vendeurs) {
+        this.vendeurs = vendeurs;
+    }
 }

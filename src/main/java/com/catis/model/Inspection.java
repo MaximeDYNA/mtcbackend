@@ -55,8 +55,6 @@ public class Inspection extends JournalData {
     @ManyToOne
     private Controleur controleur;
 
-    @ManyToOne
-    private Organisation organisation;
 
     @ManyToOne
     private Ligne ligne;
@@ -105,7 +103,7 @@ public class Inspection extends JournalData {
 
     public Inspection(Date dateDebut, Date dateFin, String signature, Produit produit,
                       double kilometrage, String chassis, int essieux, String position, Controleur controleur,
-                      Organisation organisation, Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
+                       Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
     ) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -116,7 +114,7 @@ public class Inspection extends JournalData {
         this.essieux = essieux;
         this.position = position;
         this.controleur = controleur;
-        this.organisation = organisation;
+
         this.ligne = ligne;
         this.visite = visite;
         this.gieglanFiles = gieglanFiles;
@@ -227,13 +225,7 @@ public class Inspection extends JournalData {
         this.gieglanFiles = gieglanFiles;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public MesureVisuel getMesureVisuel() {
         return mesureVisuel;

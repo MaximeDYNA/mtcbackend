@@ -39,7 +39,7 @@ public class ProprietaireVehiculeController {
     @GetMapping("/api/v1/proprietaires")
     public ResponseEntity<Object> proprioList() {
         try {
-            LOGGER.info("List des propriétaires des vehicules...");
+            LOGGER.trace("List des propriétaires des vehicules...");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
                     , proprietaireVehiculeadresseService.findAll());
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class ProprietaireVehiculeController {
     @PostMapping("/api/v1/proprietaires")
     public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) {
         try {
-            LOGGER.info("Ajout d'un propriétaire...");
+            LOGGER.trace("Ajout d'un propriétaire...");
 
             ProprietaireVehicule pv = new ProprietaireVehicule();
             Partenaire partenaire = new Partenaire();
@@ -76,7 +76,7 @@ public class ProprietaireVehiculeController {
             pv.setPartenaire(partenaireService.addPartenaire(partenaire));
             pv.setDescription(clientPartenaire.getVariants());
 
-            LOGGER.info("Ajout de " + partenaire.getNom() + " réussi");
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
                     , proprietaireVehiculeadresseService.addProprietaire(pv));
         } catch (Exception e) {

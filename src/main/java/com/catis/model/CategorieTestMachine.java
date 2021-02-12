@@ -17,8 +17,6 @@ public class CategorieTestMachine extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategorieTestMachine;
 
-    @ManyToOne
-    private Organisation organisation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private CategorieTest categorieTest;
@@ -36,10 +34,10 @@ public class CategorieTestMachine extends JournalData {
         // TODO Auto-generated constructor stub
     }
 
-    public CategorieTestMachine(Long idCategorieTestMachine, Organisation organisation, CategorieTest categorieTest,
+    public CategorieTestMachine(Long idCategorieTestMachine,  CategorieTest categorieTest,
                                 Machine machine) {
         this.idCategorieTestMachine = idCategorieTestMachine;
-        this.organisation = organisation;
+
         this.categorieTest = categorieTest;
         this.machine = machine;
     }
@@ -52,13 +50,6 @@ public class CategorieTestMachine extends JournalData {
         this.idCategorieTestMachine = idCategorieTestMachine;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public CategorieTest getCategorieTest() {
         return categorieTest;

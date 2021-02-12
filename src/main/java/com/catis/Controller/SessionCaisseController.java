@@ -3,17 +3,15 @@ package com.catis.Controller;
 import java.io.IOException;
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.catis.objectTemporaire.UserInfoIn;
+import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.model.Hold;
 import com.catis.model.SessionCaisse;
@@ -24,6 +22,8 @@ import com.catis.service.OperationCaisseService;
 import com.catis.service.OrganisationService;
 import com.catis.service.SessionCaisseService;
 import com.catis.service.UtilisateurService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -39,7 +39,10 @@ public class SessionCaisseController {
     private OrganisationService os;
     @Autowired
     private UtilisateurService us;
-    private static Logger LOGGER = LoggerFactory.getLogger(SessionCaisseController.class);
+    @Autowired
+    private HttpServletRequest request;
+
+    private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
     @RequestMapping(value = "/api/v1/sessioncaisseexist/{userId}")
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable Long userId) {
@@ -53,23 +56,35 @@ public class SessionCaisseController {
 
     }
 
-    @RequestMapping("/api/v1/ouverturecaisse")
+    @PostMapping("/api/v1/ouverturecaisse")
     public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
+        MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
+        System.out.println(MDC.get("user"));
+
         LOGGER.info("ouverture de caisse en cours...");
+
 
         Date now = new Date();
         SessionCaisse sessionCaisse = new SessionCaisse();
-        sessionCaisse.setOrganisationId(os.findByOrganisationId(1L));
+
+        sessionCaisse.setOrganisation(os.organisationIdRender(request));
         sessionCaisse.setDateHeureOuverture(now);
         sessionCaisse.setActive(true);
         sessionCaisse.setMontantOuverture(openData.getMontantOuverture());
         //sessionCaisse.setUser(us.findUtilisateurById(openData.getUserId()));
-        sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
+
+        SessionCaisse sessionAlreadyOpen = sessionCaisseService
+                .findSessionCaisseByUserId(openData.getUserId());
+        if( sessionAlreadyOpen == null)
+            sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
+        else
+            sessionCaisse = sessionAlreadyOpen;
+
         Hold hold = new Hold();
 
         hold.setNumber(hs.maxNumber(sessionCaisse) + 1);
         hold.setSessionCaisse(sessionCaisse);
-        hold.setTime(sessionCaisse.getDateHeureOuverture());
+        hold.setTime(now);
         hs.addHold(hold);
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
 		/*try {}

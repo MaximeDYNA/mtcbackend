@@ -43,7 +43,7 @@ public class LigneController {
     public ResponseEntity<Object> ajouterInspection(@RequestBody Ligne ligne) {
 
 
-        LOGGER.info("Nouvelle inpection...");
+        LOGGER.trace("Nouvelle inpection...");
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Ligne", ligneService.addLigne(ligne));
 			/*try {}
@@ -57,7 +57,7 @@ public class LigneController {
     public ResponseEntity<Object> ligneList() {
 
         try {
-            LOGGER.info("liste des lignes");
+            LOGGER.trace("liste des lignes");
 
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
@@ -71,7 +71,7 @@ public class LigneController {
     public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
 
         try {
-            LOGGER.info("liste des vehicules par ligne");
+            LOGGER.trace("liste des vehicules par ligne");
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             VehiculeByLineDTO v;
             for (CarteGrise cg : cgService.findByLigne(id)) {

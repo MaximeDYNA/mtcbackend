@@ -35,9 +35,11 @@ public class PosaleService {
 
     public void deletePosale(Long number, Long sessionCaisseId) {
         desactivateAll();
-        for (Posales posales : psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId)) {
-            psr.delete(posales);
-        }
+        psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId)
+                .forEach(
+                        posales ->
+                                psr.delete(posales)
+                );
     }
 
     public List<Posales> findByNumberSessionCaisse(Long number, Long sessionCaisseId) {
@@ -58,7 +60,6 @@ public class PosaleService {
 
     public Posales addPosales(Posales posales) {
         return psr.save(posales);
-
     }
 
     @Transactional

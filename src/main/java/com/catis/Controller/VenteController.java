@@ -39,7 +39,7 @@ public class VenteController {
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/listview")
     public ResponseEntity<Object> listVentes() {
 
-        LOGGER.info("Liste vente");
+        LOGGER.trace("Liste vente");
         Map<String, Object> venteListView;
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (Vente v : venteService.findAll()) {
@@ -69,7 +69,7 @@ public class VenteController {
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/{id}/detailsvente/listview")
     public ResponseEntity<Object> listVentes(@PathVariable Long id) {
         try {
-            LOGGER.info("Liste détails vente");
+            LOGGER.trace("Liste détails vente");
             Map<String, Object> venteListView;
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (DetailVente v : detailVenteService.findByVente(id)) {

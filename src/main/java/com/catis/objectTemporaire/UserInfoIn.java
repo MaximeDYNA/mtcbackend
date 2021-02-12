@@ -2,21 +2,29 @@ package com.catis.objectTemporaire;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.catis.model.Organisation;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.IDToken;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.catis.model.Controleur;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.security.Principal;
+import java.util.Map;
 
 
 public class UserInfoIn {
-    @Autowired
-    HttpServletRequest requestt;
+
     public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, String serverUrl, String realm) {
 
 
@@ -59,11 +67,13 @@ public class UserInfoIn {
         UserRepresentation userResource = keycloak.realm(realm).users().search(name).get(0);
 
 
+
         UserDTO user = new UserDTO();
         user.setNom(userResource.getLastName());
         user.setPrenom(userResource.getFirstName());
         user.setLogin(userResource.getUsername());
         user.setEmail(userResource.getEmail());
+
 
         return user;
 
@@ -85,6 +95,30 @@ public class UserInfoIn {
         return userResource.getId();
 
     }
+
+
+
+    public static UserDTO getUserInfo(HttpServletRequest request) {
+        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
+        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+        UserDTO user = new UserDTO();
+        if (principal instanceof KeycloakPrincipal) {
+
+            KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
+            AccessToken accessToken = kp.getKeycloakSecurityContext().getToken();
+            user.setId(accessToken.getId());
+            user.setNom(accessToken.getName());
+            user.setPrenom(accessToken.getNickName());
+            user.setLogin(accessToken.getPreferredUsername());
+            user.setEmail(accessToken.getEmail());
+            AccessToken.Access realmAccess = accessToken.getRealmAccess();
+            user.setRoles(realmAccess.getRoles());
+            user.setOrganisanionId(accessToken.getOtherClaims().get("organisationId").toString());
+        }
+        return  user;
+    }
+
+
 
 
 }

@@ -2,15 +2,7 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,11 +20,9 @@ public class Contact extends JournalData {
 
     private String description;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Partenaire partenaire;
 
-    @ManyToOne
-    private Client client;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
     @JsonIgnore
@@ -81,12 +71,6 @@ public class Contact extends JournalData {
         this.ventes = ventes;
     }
 
-    public Client getClient() {
-        return client;
-    }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
 }

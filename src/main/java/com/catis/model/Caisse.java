@@ -28,9 +28,6 @@ public class Caisse extends JournalData {
 
     private String description;
 
-    @ManyToOne
-    private Organisation organisation;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
     @JsonIgnore
     private Set<Caissier> caissiers;
@@ -58,20 +55,12 @@ public class Caisse extends JournalData {
     }
 
 
-    public Caisse(Long caisse_id, String description, Organisation organisation, Set<Caissier> caissiers) {
+    public Caisse(Long caisse_id, String description,  Set<Caissier> caissiers) {
         super();
         this.caisse_id = caisse_id;
         this.description = description;
-        this.organisation = organisation;
+
         this.caissiers = caissiers;
-    }
-
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
     }
 
     public Set<Caissier> getCaissiers() {

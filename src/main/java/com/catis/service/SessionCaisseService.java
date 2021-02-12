@@ -18,7 +18,9 @@ public class SessionCaisseService {
     private SessionCaisseRepository sessionCaisseRepository;
 
     public SessionCaisse enregistrerSessionCaisse(SessionCaisse sessionCaisse) {
-        return sessionCaisseRepository.save(sessionCaisse);
+
+            return sessionCaisseRepository.save(sessionCaisse);
+
     }
 
     public SessionCaisse findSessionCaisseById(long idSessionCaisse) {

@@ -1,11 +1,13 @@
 package com.catis.model.configuration;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import com.catis.model.Organisation;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -34,6 +36,9 @@ public class JournalData {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
+
+    @ManyToOne
+    private Organisation organisation;
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -83,5 +88,11 @@ public class JournalData {
         this.createdDate = createdDate;
     }
 
+    public Organisation getOrganisation() {
+        return organisation;
+    }
 
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
 }

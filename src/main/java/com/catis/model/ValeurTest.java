@@ -40,9 +40,6 @@ public class ValeurTest extends JournalData {
     private String description;
 
     @ManyToOne
-    private Organisation organisation;
-
-    @ManyToOne
     private GieglanFile gieglanFile;
 
     @ManyToOne
@@ -101,13 +98,7 @@ public class ValeurTest extends JournalData {
         this.description = description;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public GieglanFile getGieglanFile() {
         return gieglanFile;

@@ -1,5 +1,6 @@
 package com.catis.objectTemporaire;
 
+import java.util.Map;
 import java.util.Set;
 
 public class UserDTO {
@@ -83,14 +84,7 @@ public class UserDTO {
     }
 
 
-    public String getOrganisanionId() {
-        return organisanionId;
-    }
 
-
-    public void setOrganisanionId(String organisanionId) {
-        this.organisanionId = organisanionId;
-    }
 
 
     public Set<String> getRoles() {
@@ -117,10 +111,30 @@ public class UserDTO {
         return id;
     }
 
+    public String getOrganisanionId() {
+        return organisanionId;
+    }
+
+    public void setOrganisanionId(String organisanionId) {
+        this.organisanionId = organisanionId;
+    }
 
     public void setId(String id) {
         this.id = id;
     }
 
-
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id='" + id + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", tel='" + tel + '\'' +
+                ", organisanionId='" + organisanionId + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

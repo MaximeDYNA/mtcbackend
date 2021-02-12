@@ -50,7 +50,7 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/clients")
     public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
-            LOGGER.info("Ajout d'un client...");
+            LOGGER.trace("Ajout d'un client...");
 
             Client client = new Client();
             Partenaire partenaire = new Partenaire();
@@ -75,14 +75,14 @@ public class ClientController {
             client.setPartenaire(partenaireService.addPartenaire(partenaire));
             client.setDescription(clientPartenaire.getVariants());
             clientService.addCustomer(client);
-            LOGGER.info("Ajout de " + partenaire.getNom() + " réussi");
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", client);
         } catch (DataIntegrityViolationException integrity) {
             LOGGER.error("Duplicata de champ unique");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
                     , null);
         } catch (Exception e) {
-            LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
+            LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
                     + "l'ajout d'un client", null);
         }
@@ -92,15 +92,15 @@ public class ClientController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/clients")
     public ResponseEntity<Object> listeDesClients() {
-        LOGGER.info("liste des clients...");
+        LOGGER.trace("liste des clients...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientService.findAllCustomer());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/clients/listview")
     public ResponseEntity<Object> listeDesClientsView() {
-        LOGGER.info("listview clients...");
+        LOGGER.trace("listview clients...");
         try {
-            LOGGER.info("Liste des produits");
+            LOGGER.trace("Liste des produits");
             Map<String, Object> listView;
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (Client c : clientService.findAllCustomer()) {
@@ -127,7 +127,7 @@ public class ClientController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/search/clients/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
-        LOGGER.info("Recherche clients...");
+        LOGGER.trace("Recherche clients...");
         List<ClientPartenaire> clientPartenaires = new ArrayList<>();
         ClientPartenaire cp;
         for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
@@ -146,15 +146,4 @@ public class ClientController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/clients/{key}/contacts")
-    public ResponseEntity<Object> contact(@PathVariable Long key) {
-        try {
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientService.findCustomerById(key).getContact());
-
-        } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", null);
-            // TODO: handle exception
-        }
-
-    }
 }

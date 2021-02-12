@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.catis.model.Inspection;
 import com.catis.model.Lexique;
 import com.catis.model.MesureVisuel;
-import com.catis.model.defectresponse;
+import com.catis.model.DefectResponse;
 import com.catis.repository.InspectionRepository;
 import com.catis.repository.LexiqueRepository;
 import com.catis.service.MesureVisuelService;
@@ -41,7 +41,7 @@ public class MesureVisuelController {
     private static Logger LOGGER = LoggerFactory.getLogger(MesureVisuelController.class);
 
     @PostMapping("/api/v1/mesurevisuel")
-    public ResponseEntity<Object> addMesureVisuel(@RequestBody defectresponse defectrespons) {
+    public ResponseEntity<Object> addMesureVisuel(@RequestBody DefectResponse defectrespons) {
 
         try {
             Optional<Inspection> inspection = this.inspectionRepo.findById(defectrespons.getInspectionid());
@@ -51,11 +51,11 @@ public class MesureVisuelController {
                     lexique.ifPresent(inspection1::addLexique);
                 });
                 this.inspectionRepo.save(inspection1);
-                LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
+                LOGGER.trace("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
                         + defectrespons.getDefectslist());
                 /*
                  * for(DefectsModel h : defectrespons.getDefectslist()) {
-                 * LOGGER.info("List des mesures"+h.getDefect()); }
+                 * LOGGER.trace("List des mesures"+h.getDefect()); }
                  */
             });
 
@@ -71,7 +71,7 @@ public class MesureVisuelController {
     public ResponseEntity<Object> addDataInspection(@RequestBody MesureVisuel mesurevisuel) {
 
         System.out.println("hello " + mesurevisuel.toString());
-//		  LOGGER.info("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
+//		  LOGGER.trace("List des mesures visuelles...List<MesureVisuel> mesurevisuel "
 //		  +mesurevisuel.getImage1()); 
         Inspection i = inspectionRepo.findById(mesurevisuel.getInspection().getIdInspection()).get();
         mesurevisuel.setInspection(i);

@@ -3,16 +3,7 @@ package com.catis.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -45,22 +36,22 @@ public class Partenaire extends JournalData {
     private String telephone;
     @Column(unique = true)
     private String email;
+    @Column(unique = true)
+    private String numeroContribuable;
 
-    @ManyToOne
+    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Organisation organisation;
+    private Client client;
+
+    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Contact contact;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
     @JsonIgnore
     Set<ProprietaireVehicule> proprietaireVehicule;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
-    @JsonIgnore
-    Set<Client> client;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
-    @JsonIgnore
-    Set<Contact> contact;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
@@ -91,7 +82,7 @@ public class Partenaire extends JournalData {
     }
 
     public Partenaire(long id, String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
-                      String permiDeConduire, String cni, Organisation organisation,
+                      String permiDeConduire, String cni,
                       Set<ProprietaireVehicule> proprietaireVehicule, Set<Controleur> controleurs,
                       Set<Caissier> caissiers) {
 
@@ -103,7 +94,7 @@ public class Partenaire extends JournalData {
         this.passport = passport;
         this.permiDeConduire = permiDeConduire;
         this.cni = cni;
-        this.organisation = organisation;
+
         this.proprietaireVehicule = proprietaireVehicule;
 
         this.controleurs = controleurs;
@@ -206,13 +197,6 @@ public class Partenaire extends JournalData {
         this.caissiers = caissiers;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Set<Vendeur> getVendeurs() {
         return vendeurs;
@@ -230,19 +214,27 @@ public class Partenaire extends JournalData {
         this.email = email;
     }
 
-    public Set<Client> getClient() {
+    public String getNumeroContribuable() {
+        return numeroContribuable;
+    }
+
+    public void setNumeroContribuable(String numeroContribuable) {
+        this.numeroContribuable = numeroContribuable;
+    }
+
+    public Client getClient() {
         return client;
     }
 
-    public void setClient(Set<Client> client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 
-    public Set<Contact> getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Set<Contact> contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 

@@ -60,7 +60,7 @@ public class InspectionController {
     public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) {
 
 
-        LOGGER.info("Nouvelle inpection...");
+        LOGGER.trace("Nouvelle inpection...");
         Inspection inspection = new Inspection(inspectionReceived);
         inspection.setControleur(controleurService.findControleurById(inspectionReceived.getControleurId()));
         inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
@@ -116,7 +116,7 @@ public class InspectionController {
     public ResponseEntity<Object> inspectionList() {
 
         try {
-            LOGGER.info("création onglet demandé...");
+            LOGGER.trace("création onglet demandé...");
 
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", inspectionService.findAllInspection());

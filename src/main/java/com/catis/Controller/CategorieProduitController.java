@@ -77,7 +77,7 @@ public class CategorieProduitController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/categorieproduits")
     public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieProduit categorieProduit) {
         try {
-            LOGGER.info("Ajout d'une catégorie");
+            LOGGER.trace("Ajout d'une catégorie");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.addCategorieProduit(categorieProduit));
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
@@ -89,7 +89,7 @@ public class CategorieProduitController {
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/catproducts")
     public ResponseEntity<Object> categorieProduits() {
         try {
-            LOGGER.info("Liste des catégories");
+            LOGGER.trace("Liste des catégories");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.listeCategorieProduit());
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
@@ -102,7 +102,7 @@ public class CategorieProduitController {
     public ResponseEntity<Object> catProduits() {
 
 
-        LOGGER.info("Liste des catégories");
+        LOGGER.trace("Liste des catégories");
         List<ListViewCatProduit> l = new ArrayList<>();
         for (CategorieProduit cp : cateProduitService.listeCategorieProduit()) {
             ListViewCatProduit lvct = new ListViewCatProduit();

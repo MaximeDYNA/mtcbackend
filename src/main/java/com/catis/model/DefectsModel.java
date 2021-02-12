@@ -1,5 +1,7 @@
 package com.catis.model;
 
+import com.catis.model.configuration.JournalData;
+
 public class DefectsModel {
 
     public Long id;

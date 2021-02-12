@@ -23,8 +23,6 @@ public class Adresse extends JournalData {
     private String nom;
     private String description;
 
-    @ManyToOne
-    private Organisation organisation;
 
     @ManyToOne
     private Partenaire partenaire;
@@ -38,12 +36,12 @@ public class Adresse extends JournalData {
     public Adresse() {
     }
 
-    public Adresse(Long adresseId, String nom, String description, Organisation organisation, Pays pays,
+    public Adresse(Long adresseId, String nom, String description,  Pays pays,
                    DivisionPays divisionPays) {
         this.adresseId = adresseId;
         this.nom = nom;
         this.description = description;
-        this.organisation = organisation;
+
         this.pays = pays;
         this.divisionPays = divisionPays;
     }
@@ -72,13 +70,6 @@ public class Adresse extends JournalData {
         this.pays = pays;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public DivisionPays getDivisionPays() {
         return divisionPays;

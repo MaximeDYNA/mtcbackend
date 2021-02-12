@@ -2,15 +2,7 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,36 +19,23 @@ public class Client extends JournalData {
     private Long clientId;
     private String description;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Partenaire partenaire;
     @ManyToMany
     private Set<Lexique> lexiques;
-
-    @ManyToOne
-    private Partenaire partenaire;
 
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     Set<Vente> ventes;
 
-    @OneToMany(mappedBy = "client")
-    @JsonIgnore
-    Set<Contact> contact;
-
-    public Set<Contact> getContact() {
-        return contact;
-    }
-
-    public void setContact(Set<Contact> contact) {
-        this.contact = contact;
-    }
-
     public Client() {
     }
 
-    public Client(long clientId, String description, Partenaire partenaire) {
-
-        this.clientId = clientId;
+    public Client(String description, Partenaire partenaire, Set<Lexique> lexiques, Set<Vente> ventes) {
         this.description = description;
         this.partenaire = partenaire;
+        this.lexiques = lexiques;
+        this.ventes = ventes;
     }
 
     public String getDescription() {
@@ -98,5 +77,6 @@ public class Client extends JournalData {
     public void setLexiques(Set<Lexique> lexiques) {
         this.lexiques = lexiques;
     }
+
 
 }

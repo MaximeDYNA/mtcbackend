@@ -27,8 +27,6 @@ public class Hold extends JournalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long holdId;
-
-
     private Long number;
     private Date time;
 

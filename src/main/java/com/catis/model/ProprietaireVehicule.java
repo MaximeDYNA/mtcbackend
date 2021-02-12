@@ -25,8 +25,7 @@ public class ProprietaireVehicule extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proprietaireVehiculeId;
 
-    @ManyToOne
-    private Organisation organisation;
+
 
     @ManyToOne
     private Partenaire partenaire;
@@ -41,11 +40,11 @@ public class ProprietaireVehicule extends JournalData {
 
     }
 
-    public ProprietaireVehicule(Long proprietaireVehiculeId, Organisation organisation, Partenaire partenaire,
+    public ProprietaireVehicule(Long proprietaireVehiculeId, Partenaire partenaire,
                                 Set<CarteGrise> cartegrises, String description) {
 
         this.proprietaireVehiculeId = proprietaireVehiculeId;
-        this.organisation = organisation;
+
         this.partenaire = partenaire;
         this.cartegrises = cartegrises;
         this.description = description;
@@ -83,12 +82,6 @@ public class ProprietaireVehicule extends JournalData {
         this.cartegrises = cartegrises;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
 
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
 }

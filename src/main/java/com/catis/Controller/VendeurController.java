@@ -47,14 +47,14 @@ public class VendeurController {
 
     @RequestMapping("/api/v1/vendeurs")
     public ResponseEntity<Object> afficherLesVendeurs() {
-        LOGGER.info("liste des vendeurs...");
+        LOGGER.trace("liste des vendeurs...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", vendeurService.findAllVendeur());
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/vendeurs")
     @Transactional
     public ResponseEntity<Object> addVendeur(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
-        LOGGER.info("Ajout d'un vendeur...");
+        LOGGER.trace("Ajout d'un vendeur...");
         try {
             Vendeur vendeur = new Vendeur();
             Partenaire partenaire = new Partenaire();
@@ -77,14 +77,14 @@ public class VendeurController {
             vendeur.setPartenaire(partenaireService.addPartenaire(partenaire));
             vendeur.setDescription(clientPartenaire.getVariants());
             vendeurService.addVendeur(vendeur);
-            LOGGER.info("Ajout de " + partenaire.getNom() + " réussi");
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", vendeur);
         } catch (DataIntegrityViolationException integrity) {
             LOGGER.error("Duplicata de champ unique");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
                     , null);
         } catch (Exception e) {
-            LOGGER.info("Une erreur est survenu lors de l'ajout d'un client");
+            LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
                     + "l'ajout d'un client", null);
         }
@@ -94,9 +94,9 @@ public class VendeurController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/vendeurs/listview")
     public ResponseEntity<Object> listeDesClientsView() {
-        LOGGER.info("listview vendeurs...");
+        LOGGER.trace("listview vendeurs...");
         try {
-            LOGGER.info("Liste des vendeurs");
+            LOGGER.trace("Liste des vendeurs");
             Map<String, Object> listView;
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (Vendeur v : vendeurService.findAllVendeur()) {
@@ -123,7 +123,7 @@ public class VendeurController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/search/vendeurs/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
-        LOGGER.info("Recherche vendeurs...");
+        LOGGER.trace("Recherche vendeurs...");
         List<ClientPartenaire> clientPartenaires = new ArrayList<>();
         ClientPartenaire cp;
 

@@ -32,7 +32,7 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
     @Query(value = "select v from Visite v inner join v.control c " +
         "inner join v.inspection i inner join i.gieglanFiles g "+
         "inner join g.categorieTest cat where c = ?1 and v <> ?2 and " +
-        "g.isAccept = false ORDER BY v.createdDate desc ")
+        "g.isAccept = false and g.status = 'VALIDATED' ORDER BY v.createdDate desc ")
     List<Visite> getBeforeLastVisite(Control control, Visite visite, Pageable pageable);
 
     @Query(value = "select v from Visite v inner join v.inspection i " +
