@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.model.Inspection;
 import com.catis.model.Lexique;
@@ -44,7 +41,7 @@ public class MesureVisuelController {
     public ResponseEntity<Object> addMesureVisuel(@RequestBody DefectResponse defectrespons) {
 
         try {
-            Optional<Inspection> inspection = this.inspectionRepo.findById(defectrespons.getInspectionid());
+            Optional<Inspection> inspection = this.inspectionRepo.findById(defectrespons.getIdinspection());
             inspection.ifPresent(inspection1 -> {
                 defectrespons.getDefectslist().forEach(defectsmodel -> {
                     Optional<Lexique> lexique = this.lexiqueRepository.findById(defectsmodel.getId());
@@ -66,6 +63,18 @@ public class MesureVisuelController {
         }
     }
 
+    @PostMapping("/api/v1/signature")
+    public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
+
+            System.out.println(defectResponse.toString());
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+
+       /* try { } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+        }*/
+
+    }
 
     @PostMapping("/api/v1/datainspection")
     public ResponseEntity<Object> addDataInspection(@RequestBody MesureVisuel mesurevisuel) {

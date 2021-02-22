@@ -49,12 +49,11 @@ public class Inspection extends JournalData {
 
     private String position;
 
-    @OneToOne(mappedBy = "inspection")
+    @OneToOne(mappedBy = "inspection", cascade = CascadeType.ALL)
     private MesureVisuel mesureVisuel;
 
     @ManyToOne
     private Controleur controleur;
-
 
     @ManyToOne
     private Ligne ligne;
@@ -62,7 +61,7 @@ public class Inspection extends JournalData {
     @OneToOne(cascade = CascadeType.ALL)
     private Visite visite;
 
-    @OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles;
 
@@ -73,7 +72,6 @@ public class Inspection extends JournalData {
      * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
      */
     public Inspection() {
-
         // TODO Auto-generated constructor stub
     }
 

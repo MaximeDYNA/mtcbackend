@@ -13,4 +13,5 @@ public interface SessionCaisseRepository extends CrudRepository<SessionCaisse, S
     //List<SessionCaisse> findByUser_UtilisateurId(Long userId);
     SessionCaisse findByActiveTrueAndCaissierCaissierId(Long caissierId);
     SessionCaisse findByActiveTrueAndCaissier_User_UtilisateurId(Long userId);
+    SessionCaisse findByActiveTrueAndCaissier_User_KeycloakId(String keycloakId);
 }

@@ -16,7 +16,6 @@ public class ApiResponseHandler {
             map.put("status", status.value());
             map.put("success", error);
             map.put("message", message);
-            ;
             map.put("data", responseObj);
 
             return new ResponseEntity<Object>(map, status);

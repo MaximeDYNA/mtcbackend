@@ -74,8 +74,10 @@ public class CarteGriseService {
     public List<CarteGrise> findByLigne(Long idLigne) {
 
         List<CarteGrise> cgs = new ArrayList<>();
-        for (Inspection inspection : inpectionR.findByVisite_StatutAndLigne_IdLigne(3, idLigne)) {
+        for (Inspection inspection : inpectionR.inspectionbyligne(2, idLigne)) {
+
             cgs.add(inspection.getVisite().getCarteGrise());
+            System.out.println("inspection "+ inspection.getIdInspection()+" visite "+inspection.getVisite().getIdVisite() +" immatriculation "+inspection.getVisite().getCarteGrise().getNumImmatriculation());
         }
         return cgs;
     }

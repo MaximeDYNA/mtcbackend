@@ -27,6 +27,12 @@ public class SessionCaisseService {
         return sessionCaisseRepository.findBySessionCaisseId(idSessionCaisse);
     }
 
+    public SessionCaisse findSessionCaisseByKeycloakId(String keycloakId) {
+        SessionCaisse sessionCaisse = sessionCaisseRepository.findByActiveTrueAndCaissier_User_KeycloakId(keycloakId);
+
+        return sessionCaisse;
+    }
+
     public SessionCaisse findSessionCaisseByUserId(long userId) {
         return sessionCaisseRepository.findByActiveTrueAndCaissier_User_UtilisateurId(userId);
     }

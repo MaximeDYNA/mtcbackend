@@ -30,6 +30,9 @@ public class MesureVisuel extends JournalData {
     @Column(columnDefinition = "LONGTEXT")
     private String image2;
     private String gps;
+    private String signature1;
+
+    private String signature2;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Inspection inspection;
@@ -124,6 +127,22 @@ public class MesureVisuel extends JournalData {
 
     public void setGps(String gps) {
         this.gps = gps;
+    }
+
+    public String getSignature1() {
+        return signature1;
+    }
+
+    public void setSignature1(String signature1) {
+        this.signature1 = signature1;
+    }
+
+    public String getSignature2() {
+        return signature2;
+    }
+
+    public void setSignature2(String signature2) {
+        this.signature2 = signature2;
     }
 
     @Override

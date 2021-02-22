@@ -57,4 +57,9 @@ public class InspectionService {
         return inspectionR.save(inspection);
 
     }
+
+    public void deleteInspection (Long id){
+        System.out.println(id +" to delete");
+        inspectionR.deleteById(id);
+    }
 }

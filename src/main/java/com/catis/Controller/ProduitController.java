@@ -131,6 +131,9 @@ public class ProduitController {
     @RequestMapping(value = "/api/v1/produits/reference/{imCha}")
     public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) throws VisiteEnCoursException {
 
+        if(imCha.equalsIgnoreCase(null))
+            imCha="";
+
         if (visiteService.visiteEncours(imCha))
             throw new VisiteEnCoursException("Une visite est déjà en cours");
         LOGGER.trace("liste des catégories...");
@@ -142,8 +145,7 @@ public class ProduitController {
 
 
         if (visiteService.isVisiteInitial(imCha)) {
-
-            if (cgs.isCarteGriseExist(imCha)) {
+            if (!cgs.isCarteGriseExist(imCha)) {
                 List<ProduitEtTaxe> pets = new ArrayList<>();
                 List<Taxe> taxes;
                 ProduitEtTaxe pet;

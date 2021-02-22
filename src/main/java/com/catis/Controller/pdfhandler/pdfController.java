@@ -1,7 +1,7 @@
 package com.catis.Controller.pdfhandler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.catis.model.*;
 import com.catis.objectTemporaire.*;
+import com.lowagie.text.pdf.codec.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import static com.itextpdf.text.pdf.BaseFont.EMBEDDED;
+import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
 
 import com.catis.Controller.configuration.CryptoUtil;
 import com.catis.Controller.configuration.QRCodeGenerator;
@@ -45,7 +48,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.lowagie.text.DocumentException;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.w3c.tidy.Tidy;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
 @RestController
@@ -57,6 +64,9 @@ public class pdfController {
     private VisiteRepository visiteRepo;
     @Autowired
     private Environment environment;
+
+    @Autowired
+    PdfGenaratorUtil pdfGenaratorUtil;
 
     private VisiteService visiteService;
 
@@ -91,8 +101,9 @@ public class pdfController {
         return modelAndView;
     }
 
-    @GetMapping("/api/v1/visites/imprimer/{id}")
-    public ModelAndView showProcessVerval(ModelAndView modelAndView, @PathVariable long id) {
+
+
+    public String parseThymeleafTemplate(long id) throws Exception {
 
         Optional<Visite> visite = this.visiteRepo.findById(id);
         Taxe tp = taxeService.findByNom("TVA");
@@ -113,20 +124,81 @@ public class pdfController {
 
             UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request,
                     environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
-            modelAndView.addObject("v", visite.get());
+
+            ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+            templateResolver.setSuffix(".html");
+            templateResolver.setTemplateMode(TemplateMode.HTML);
+
+            TemplateEngine templateEngine = new TemplateEngine();
+            templateEngine.setTemplateResolver(templateResolver);
+
+            Context context = new Context();
+            context.setVariable("v", visite.get());
+            context.setVariable("tp", tp);
+            context.setVariable("result", results);
+            context.setVariable("defaultsTest", defaultsTest);
+            context.setVariable("controlleurName", user.getNom() + " " + user.getPrenom());
+
+            /*modelAndView.addObject("v", visite.get());
             modelAndView.addObject("tp", tp);
             modelAndView.addObject("result", results);
             modelAndView.addObject("defaultsTest", defaultsTest);
             modelAndView.addObject("controlleurName", user.getNom() + " " + user.getPrenom());
-            modelAndView.setViewName("visites");
+            modelAndView.setViewName("visites");*/
 
-            System.out.println(modelAndView.toString());
-            TemplateEngine templateEngine = new TemplateEngine();
 
-            return modelAndView;
+            return templateEngine.process("templates/visites", context);
         }
 
-        return modelAndView;
+        return null;
+
+    }
+    @GetMapping("/api/v1/visites/imprimer/{id}")
+    public void generatePdfFromHtml(@PathVariable Long id) throws Exception {
+        String outputFolder = "C:/PV/" + File.separator + id.toString() + ".pdf";
+        OutputStream outputStream = new FileOutputStream(outputFolder);
+
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(
+                parseThymeleafTemplate(id)
+        );
+        renderer.layout();
+        renderer.createPDF(outputStream);
+
+        outputStream.close();
+
+    }
+
+    public void generatePdfFromxHtml(@PathVariable Long id) throws Exception {
+        String outputFolder = "C:/PV/" + File.separator + id.toString() + ".pdf";
+
+        String xHtml = convertToXhtml(parseThymeleafTemplate(id));
+
+        ITextRenderer renderer = new ITextRenderer();
+        //renderer.getFontResolver().addFont("Code39.ttf", IDENTITY_H, EMBEDDED);
+
+        // FlyingSaucer has a working directory. If you run this test, the working directory
+        // will be the root folder of your project. However, all files (HTML, CSS, etc.) are
+        // located under "/src/test/resources". So we want to use this folder as the working
+        // directory.
+
+        String baseUrl = FileSystems
+                .getDefault()
+                .getPath("src","main","resources", "templates")
+                .toUri()
+                .toURL()
+                .toString();
+        renderer.setDocumentFromString(xHtml, baseUrl);
+        renderer.layout();
+
+        // And finally, we create the PDF:
+        OutputStream outputStream = new FileOutputStream(outputFolder);
+        renderer.createPDF(outputStream);
+        outputStream.close();
+
+
+
+        outputStream.close();
     }
 
     @GetMapping("/visites/qrcode/{id}")
@@ -135,7 +207,7 @@ public class pdfController {
         System.out.println("qrcode en cours de fabrication...");
 
 
-        byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 70, 70);
+        byte[] bytes = QRCodeGenerator.getQRCodeImage(CryptoUtil.encrypt(v.getIdVisite().toString(), "password"), 50, 50);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
@@ -173,7 +245,16 @@ public class pdfController {
 
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
     }
-
+    private String convertToXhtml(String html) throws UnsupportedEncodingException {
+        Tidy tidy = new Tidy();
+        tidy.setInputEncoding("UTF-8");
+        tidy.setOutputEncoding("UTF-8");
+        tidy.setXHTML(true);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(html.getBytes("UTF-8"));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        tidy.parseDOM(inputStream, outputStream);
+        return outputStream.toString("UTF-8");
+    }
 
 
 }

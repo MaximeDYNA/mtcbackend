@@ -2,9 +2,12 @@ package com.catis.Controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 
+import com.catis.model.Caissier;
 import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.repository.CaissierRepository;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.apache.logging.log4j.ThreadContext;
@@ -41,14 +44,18 @@ public class SessionCaisseController {
     private UtilisateurService us;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private CaissierRepository cr;
 
     private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
     @RequestMapping(value = "/api/v1/sessioncaisseexist/{userId}")
-    public ResponseEntity<Object> isSessionCaisseActive(@PathVariable Long userId) {
-        if (sessionCaisseService.findActiveSessionCaissierById(userId) != null) {
+    public ResponseEntity<Object> isSessionCaisseActive(@PathVariable String userId) {
+        SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
+        if (c != null) {
             LOGGER.info("Session de Caisse déjà ouverte");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseService.findSessionCaisseByUserId(userId));
+            System.out.println(c.getSessionCaisseId());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", c);
         } else {
             LOGGER.info("Aucune session caisse trouvée");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);
@@ -72,9 +79,15 @@ public class SessionCaisseController {
         sessionCaisse.setActive(true);
         sessionCaisse.setMontantOuverture(openData.getMontantOuverture());
         //sessionCaisse.setUser(us.findUtilisateurById(openData.getUserId()));
+        Optional<Caissier> c = cr.findByUser_KeycloakId(openData.getUserId()).stream().findFirst();
+        if(c.isPresent()){
+            sessionCaisse.setCaissier(c.get());
+        }
+        else
+            sessionCaisse.setCaissier(null);
 
         SessionCaisse sessionAlreadyOpen = sessionCaisseService
-                .findSessionCaisseByUserId(openData.getUserId());
+                .findSessionCaisseByKeycloakId(openData.getUserId());
         if( sessionAlreadyOpen == null)
             sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
         else

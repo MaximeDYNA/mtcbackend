@@ -2,25 +2,24 @@ package com.catis.objectTemporaire;
 
 public class OpenData {
 
-    private Long userId;
+    private String userId;
     private double montantOuverture;
     private double montantFermeture;
 
     public OpenData() {
     }
 
-    public OpenData(Long userId, double montantOuverture, double montantFermeture) {
-        super();
+    public OpenData(String userId, double montantOuverture, double montantFermeture) {
         this.userId = userId;
         this.montantOuverture = montantOuverture;
         this.montantFermeture = montantFermeture;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

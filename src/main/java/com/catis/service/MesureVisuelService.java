@@ -2,7 +2,9 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.catis.model.DefectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,24 @@ public class MesureVisuelService {
         return m;
 
     }
+
+    public MesureVisuel addSignatureToMesureVisuel(DefectResponse defectResponse) {
+
+        Optional<MesureVisuel> mesureVis = mesurevisuel.byIdInspection(defectResponse.getIdinspection()).stream().findFirst();
+        if(mesureVis.isPresent()){
+            MesureVisuel mesure = mesureVis.get();
+            mesure.setSignature1(defectResponse.getSignature1());
+            mesure.setSignature2(defectResponse.getSignature2());
+            mesure = mesurevisuel.save(mesure);
+            return mesure;
+        }
+
+        return null;
+
+
+
+    }
+
 
     public List<String> ImagePathList(Long visiteId) {
 
