@@ -29,15 +29,16 @@ public class UserInfoIn {
     @Autowired
     private Environment env;
 
-    public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, String serverUrl, String realm, Environment env) {
+    public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, Environment env) {
+
 
 
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
         Keycloak keycloak = KeycloakBuilder
                 .builder()
                 .clientId(env.getProperty("admin.keycloak"))
-                .serverUrl(serverUrl)
-                .realm(realm)
+                .serverUrl(env.getProperty("keycloak.auth-server-url"))
+                .realm(env.getProperty("keycloak.realm"))
                 .username(env.getProperty("admin.keycloak.login"))
                 .password(env.getProperty("admin.keycloak.password"))
 

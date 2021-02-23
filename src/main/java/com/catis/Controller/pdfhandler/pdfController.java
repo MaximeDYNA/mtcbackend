@@ -122,8 +122,7 @@ public class pdfController {
                 }
             });
 
-            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request,
-                    environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
+            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request, environment);
 
             ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
             templateResolver.setSuffix(".html");
@@ -133,7 +132,7 @@ public class pdfController {
             templateEngine.setTemplateResolver(templateResolver);
 
             Context context = new Context();
-            VisiteDATE v = new VisiteDATE(visite.get());
+            VisiteDate v = new VisiteDate(visite.get());
             context.setVariable("v", v);
             context.setVariable("tp", tp);
             context.setVariable("result", results);
