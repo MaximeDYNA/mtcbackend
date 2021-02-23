@@ -43,7 +43,7 @@ public class UserInfoIn {
                 .password(env.getProperty("admin.keycloak.password"))
 
                 .build();
-        UserResource userResource = keycloak.realm(realm).users().get(controleur.getKeycloakId());
+        UserResource userResource = keycloak.realm(env.getProperty("keycloak.realm")).users().get(controleur.getKeycloakId());
 
 
         UserDTO user = new UserDTO();
