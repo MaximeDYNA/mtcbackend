@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.catis.model.Controleur;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
@@ -25,18 +26,20 @@ import java.util.Map;
 
 public class UserInfoIn {
 
-    public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, String serverUrl, String realm) {
+    @Autowired
+    private Environment env;
+
+    public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, String serverUrl, String realm, Environment env) {
 
 
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
         Keycloak keycloak = KeycloakBuilder
                 .builder()
-                .clientId("admin-cli")
+                .clientId(env.getProperty("admin.keycloak"))
                 .serverUrl(serverUrl)
                 .realm(realm)
-                .username("tchoko")
-                .password("tchoko")
-
+                .username(env.getProperty("admin.keycloak.login"))
+                .password(env.getProperty("admin.keycloak.password"))
 
                 .build();
         UserResource userResource = keycloak.realm(realm).users().get(controleur.getKeycloakId());

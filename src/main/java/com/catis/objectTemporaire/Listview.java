@@ -30,6 +30,7 @@ public class Listview {
     @JsonIgnore
     private CategorieTestVehiculeService catSer;
 
+
     public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         this.id = id;
         this.visiteService = visiteService;
@@ -38,6 +39,7 @@ public class Listview {
         measures = new ArrayList<>();
         manageColor();
     }
+
     public Listview() {
 
 
@@ -256,7 +258,11 @@ public class Listview {
                 }
                 break;
             case "A signer":
-                this.statut = "<span class=\"badge badge-info\">" + statut + "</span>";
+                Visite visite = visiteService.findById(this.id);
+                if(visite.getProcess().isStatus())
+                    this.statut = "<span class=\"badge badge-info\"> ACCEPTE " + statut + "</span>";
+                else
+                    this.statut = "<span class=\"badge badge-info\"> REFUSE " + statut + "</span>";
                 break;
             case "A imprimer":
                 this.statut = "<span class=\"badge badge-success\">" + statut + "</span>";

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="zh-cmn-Hans" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -32,8 +32,6 @@
     </style>
 </head>
 <body>
-
-
 
 <div  th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type}">
     <div>
@@ -95,6 +93,8 @@
                             <span>
                                 Date du contrôle / Date of control :
                             </span>
+                            <span style="color: gray; font-size: 9px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
+                            </span>
                         </td>
                         <td style="width:35%;padding: 0px">
                             <img alt="QRcode" th:src="@{'http://localhost:8080/visites/qrcode/' +${v.idVisite}}" style="float: right;
@@ -133,11 +133,11 @@
                         <span style="color: gray;" th:utext="${v.carteGrise.vehicule.marqueVehicule.libelle}"></span> <br/>
                         <span class="text-left font-weight-bold">
                         N° chassis / Chassis N° :
-                    </span>
+                        </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.vehicule.chassis}"></span> <br/>
                         <span class="text-left font-weight-bold">
-                    Energie / Energy :
-                    </span>
+                         Energie / Energy :
+                        </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.vehicule.energie.libelle}"></span> <br/>
                         <span class="text-left font-weight-bold">
                         DMC / Date of first use :
@@ -149,7 +149,7 @@
                     Kilométrage / Milaege :
                     </span>
                         <span style="color: gray;"
-                              th:utext="${#numbers.formatDecimal(v.inspection.kilometrage, '0', 'WHITESPACE', 0, 'POINT')+' Km.'}"></span>
+                              th:utext="${#numbers.formatDecimal(v.inspection.kilometrage, 0, 'WHITESPACE', 0, 'POINT')+' Km.'}"></span>
                         <br/>
                         <span class="text-left font-weight-bold">
                          Affectation / Usage :
@@ -182,14 +182,14 @@
                             Montant payé HT / Amount ex.VAT :
                         </span>
                         <span style="color: gray;"
-                              th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, '0', 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br/>
+                              th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, 0, 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br/>
                         <span class="text-left font-weight-bold">
                             TVA / VAT :
                         </span> <span th:utext="${tp.valeur!=null ? tp.valeur+' %': ''}" style="color: gray;"></span><br/>
                         <span class="text-left font-weight-bold">
                             Montant payé TTC / Amount inc. VAT:
                         </span><span style="color: gray;"
-                                     th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), '0', 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br/>
+                                     th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), 0, 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br/>
 
 
                 </div>
@@ -204,14 +204,15 @@
                             th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
                     <p class="text-left font-weight-bold">
                         <span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
-                        <!--span style="font-size: 25px;"
-                              th:utext="${v.process.status ? #temporals.format(v.control.validityAt, 'dd/MM/yyyy') : #temporals.format(v.control.contreVDelayAt, 'dd/MM/yyyy')}"></span--><br/>
+                        <span style="font-size: 25px;"
+                              th:utext="${v.process.status ? #dates.format(#{T(com.catis.objectTemporaire.LocalDateTimeToDatePV).convert(v.control.validityAt)}, 'dd/MM/yyyy')
+                              : #dates.format(T(com.catis.objectTemporaire.LocalDateTimeToDatePV).convert(v.control.contreVDelayAt), 'dd/MM/yyyy')}"></span><br/>
                         NOM et visa du contrôleur /<br/>
                         Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
                     </p>
 
-                        <img style="height: 10%; width: 10%; float: right;"
-                             th:src="@{${v.inspection.signature !=null ? 'data:image/png    /uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
+                        <img style="height: 150px; width: 150px; float: right;"
+                             th:src="@{${v.inspection.signature !=null ? '~/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
 
 
                 </div>

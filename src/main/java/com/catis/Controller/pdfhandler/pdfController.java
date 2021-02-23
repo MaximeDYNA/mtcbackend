@@ -133,7 +133,8 @@ public class pdfController {
             templateEngine.setTemplateResolver(templateResolver);
 
             Context context = new Context();
-            context.setVariable("v", visite.get());
+            VisiteDATE v = new VisiteDATE(visite.get());
+            context.setVariable("v", v);
             context.setVariable("tp", tp);
             context.setVariable("result", results);
             context.setVariable("defaultsTest", defaultsTest);
