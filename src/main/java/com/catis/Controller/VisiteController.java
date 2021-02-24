@@ -78,8 +78,13 @@ public class VisiteController {
         for(SseEmitter emitter:emitters){
             try{
 
-                emitter.send(SseEmitter.event().name("edit_visit").data(
-                        buildListView(visite, vs, gieglanFileService,catSer, ps)));
+                if(visite.getStatut()==1){
+                    emitter.send(SseEmitter.event().name("edit_visit").data(visite));
+                }
+                else{
+                    emitter.send(SseEmitter.event().name("edit_visit").data(
+                            buildListView(visite, vs, gieglanFileService,catSer, ps)));
+                }
 
             }catch(IOException e){
                 emitters.remove(emitter);
@@ -249,6 +254,26 @@ public class VisiteController {
 		}*/
     }
 
+    @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
+    public String printPV(@PathVariable Long visiteId) {
+        try {
+            log.info("Impression PV");
+            Visite visite = vs.findById(visiteId);
+            if(visite.getProcess().isStatus()){
+                visite.setStatut(7);
+            }
+            else
+                visite.setStatut(5);
+
+            visite = vs.add(visite);
+
+            return "/pv/"+visiteId+".pdf";
+        } catch (Exception e) {
+            log.error("Erreur lors de l'impression du PV");
+            return "<h1> Erreur lors l'impression du PV </h1>";
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visites/approuver/{visiteId}")
     public ResponseEntity<Object> approuver(@PathVariable Long visiteId) {
         try {
@@ -261,6 +286,7 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'approbation", null);
         }
     }
+
     public static Listview buildListView(Visite visite, VisiteService vs,
                                  GieglanFileService gieglanFileService,
                                  CategorieTestVehiculeService catSer, ProduitService ps ){

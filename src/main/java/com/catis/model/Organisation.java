@@ -280,6 +280,9 @@ public class Organisation {
     private String patente;
     private String statutJurique;
     private String numeroDeContribuable;
+    private String lang;
+    private String region;
+    private String devise;
 
     public Organisation() {
 
@@ -865,5 +868,29 @@ public class Organisation {
 
     public void setVendeurs(Set<Vendeur> vendeurs) {
         this.vendeurs = vendeurs;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getDevise() {
+        return devise;
+    }
+
+    public void setDevise(String devise) {
+        this.devise = devise;
     }
 }

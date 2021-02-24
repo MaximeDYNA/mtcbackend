@@ -201,14 +201,12 @@ public class Visite extends JournalData {
         } else if (code == 4) {
             return "A imprimer";
         } else if (code == 5) {
-            return "A enregister";
+            return "Refusé";
         } else if (code == 6) {
             return "A certifier";
         } else if (code == 7) {
             return "Accepté";
         } else if (code == 8) {
-            return "Refusé";
-        } else if (code == 9) {
             return "A approuver";
         } else {
             return "erreur";

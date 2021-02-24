@@ -49,9 +49,6 @@ public class Inspection extends JournalData {
 
     private String position;
 
-    @OneToOne(mappedBy = "inspection", cascade = CascadeType.ALL)
-    private MesureVisuel mesureVisuel;
-
     @ManyToOne
     private Controleur controleur;
 
@@ -101,7 +98,7 @@ public class Inspection extends JournalData {
 
     public Inspection(Date dateDebut, Date dateFin, String signature, Produit produit,
                       double kilometrage, String chassis, int essieux, String position, Controleur controleur,
-                       Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
+                      Ligne ligne, Visite visite, Set<GieglanFile> gieglanFiles, List<Lexique> lexiques
     ) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -223,13 +220,4 @@ public class Inspection extends JournalData {
         this.gieglanFiles = gieglanFiles;
     }
 
-
-
-    public MesureVisuel getMesureVisuel() {
-        return mesureVisuel;
-    }
-
-    public void setMesureVisuel(MesureVisuel mesureVisuel) {
-        this.mesureVisuel = mesureVisuel;
-    }
 }

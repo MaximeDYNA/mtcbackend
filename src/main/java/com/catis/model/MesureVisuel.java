@@ -34,27 +34,26 @@ public class MesureVisuel extends JournalData {
 
     private String signature2;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Inspection inspection;
+    @OneToOne
+    private GieglanFile gieglanFile;
 
-    public MesureVisuel() {
-
-    }
-
-    public MesureVisuel(Long idMesureVisuel, String heureDebut, String heureFin, String dateControl
-            , String image1, String image2, String plateNumber, Inspection inspection) {
-
-        super();
+    public MesureVisuel(Long idMesureVisuel, String heureDebut, String heureFin, String dateControl, String plateNumber,
+            String image1, String image2, String gps, String signature1,
+            String signature2, GieglanFile gieglanFile) {
         this.idMesureVisuel = idMesureVisuel;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
-        this.plateNumber = plateNumber;
         this.dateControl = dateControl;
+        this.plateNumber = plateNumber;
         this.image1 = image1;
         this.image2 = image2;
+        this.gps = gps;
+        this.signature1 = signature1;
+        this.signature2 = signature2;
+        this.gieglanFile = gieglanFile;
+    }
 
-        this.inspection = inspection;
-
+    public MesureVisuel() {
     }
 
     public Long getIdMesureVisuel() {
@@ -89,6 +88,14 @@ public class MesureVisuel extends JournalData {
         this.dateControl = dateControl;
     }
 
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
     public String getImage1() {
         return image1;
     }
@@ -103,22 +110,6 @@ public class MesureVisuel extends JournalData {
 
     public void setImage2(String image2) {
         this.image2 = image2;
-    }
-
-    public Inspection getInspection() {
-        return inspection;
-    }
-
-    public void setInspection(Inspection inspection) {
-        this.inspection = inspection;
-    }
-
-    public String getPlateNumber() {
-        return plateNumber;
-    }
-
-    public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
     }
 
     public String getGps() {
@@ -145,10 +136,18 @@ public class MesureVisuel extends JournalData {
         this.signature2 = signature2;
     }
 
+    public GieglanFile getGieglanFile() {
+        return gieglanFile;
+    }
+
+    public void setGieglanFile(GieglanFile gieglanFile) {
+        this.gieglanFile = gieglanFile;
+    }
+
     @Override
     public String toString() {
         return "MesureVisuel [idMesureVisuel=" + idMesureVisuel + ", heureDebut=" + heureDebut + ", heureFin="
-                + heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + inspection + "]";
+                + heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + "]";
     }
 
 }

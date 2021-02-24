@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.catis.model.*;
+import com.catis.service.CarteGriseService;
 import com.catis.service.CategorieTestVehiculeService;
 import com.catis.service.GieglanFileService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +20,7 @@ public class Listview {
     private Produit categorie;
     private String type;
     private String reference;
+    private String chassis;
     private String client;
     private String date;
     private String statut;
@@ -31,8 +33,13 @@ public class Listview {
     private CategorieTestVehiculeService catSer;
 
 
+
     public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         this.id = id;
+        Visite v = visiteService.findById(id);
+        this.chassis = (v.getCarteGrise().getVehicule()==null
+                ? "": (v.getCarteGrise().getVehicule().getChassis()==null
+                ? "" : v.getCarteGrise().getVehicule().getChassis()));
         this.visiteService = visiteService;
         this.gieglanFileService = gieglanFileService;
         this.catSer = catSer;
@@ -267,9 +274,6 @@ public class Listview {
             case "A imprimer":
                 this.statut = "<span class=\"badge badge-success\">" + statut + "</span>";
                 break;
-            case "A enregister":
-                this.statut = "<span class=\"badge badge-dark\">" + statut + "</span>";
-                break;
             case "A certifier":
                 this.statut = "<span class=\"badge badge-primary\">" + statut + "</span>";
                 break;
@@ -277,7 +281,7 @@ public class Listview {
                 this.statut = "<span class=\"badge badge-success\">" + statut + "</span>";
                 break;
             case "Refusé":
-                this.statut = "<span class=\"badge badge-danger\">" + statut + "</span>";
+                this.statut = "<span class=\"badge badge-dark\">" + statut + "</span>";
                 break;
             default:
                 this.statut = "<span class=\"badge badge-warning\">" + statut + "</span>";
@@ -319,5 +323,13 @@ public class Listview {
 
     public void setCatSer(CategorieTestVehiculeService catSer) {
         this.catSer = catSer;
+    }
+
+    public String getChassis() {
+        return chassis;
+    }
+
+    public void setChassis(String chassis) {
+        this.chassis = chassis;
     }
 }

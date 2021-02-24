@@ -7,20 +7,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.catis.model.*;
 import com.catis.objectTemporaire.*;
+import com.catis.repository.MesureVisuelRepository;
 import com.lowagie.text.pdf.codec.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -72,6 +72,9 @@ public class pdfController {
 
     @Autowired
     private RapportDeVisiteRepo rapportDeVisiteRepo;
+
+    @Autowired
+    private MesureVisuelRepository mesureVisuelRepository;
 
     private PdfService pdfService;
 
@@ -133,8 +136,40 @@ public class pdfController {
 
             Context context = new Context();
             VisiteDate v = new VisiteDate(visite.get());
+            List<MesureVisuel> mesureVisuels = mesureVisuelRepository.getMesureVisuelByInspection(
+                v.getInspection(),
+                PageRequest.of(0,1)
+            );
+
+            context.setVariable("controlValidityAt", convert(v.getControl().getValidityAt()));
+            context.setVariable("controlDelayAt", convert(v.getControl().getContreVDelayAt()));
+            context.setVariable("mesurevisuel", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0));
             context.setVariable("v", v);
             context.setVariable("tp", tp);
+            context.setVariable("r0410", Double.valueOf(results.get("0410")));
+            context.setVariable("r0411", Double.valueOf(results.get("0411")));
+            context.setVariable("r0413", Double.valueOf(results.get("0413")));
+            context.setVariable("r0414", Double.valueOf(results.get("0414")));
+            context.setVariable("r0412", Double.valueOf(results.get("0412")));
+            context.setVariable("r0415", Double.valueOf(results.get("0415")));
+            context.setVariable("r0401", Double.valueOf(results.get("0401")));
+            context.setVariable("r0402", Double.valueOf(results.get("0402")));
+            context.setVariable("r0465", Double.valueOf(results.get("0465")));
+            context.setVariable("r0446", Double.valueOf(results.get("0446")));
+            context.setVariable("r1001", results.get("1001"));
+            context.setVariable("r0430", Double.valueOf(results.get("0430")));
+            context.setVariable("r0421", Double.valueOf(results.get("0421")));
+            context.setVariable("r0434", Double.valueOf(results.get("0434")));
+            context.setVariable("r0431", Double.valueOf(results.get("0431")));
+            context.setVariable("r0420", Double.valueOf(results.get("0420")));
+            context.setVariable("r0438", Double.valueOf(results.get("0438")));
+            context.setVariable("r0424", Double.valueOf(results.get("0424")));
+            context.setVariable("r0442", Double.valueOf(results.get("0442")));
+            context.setVariable("r1125", results.get("1125"));
+            context.setVariable("r0439", Double.valueOf(results.get("0439")));
+
+            context.setVariable("r0423", Double.valueOf(results.get("0423")));
+
             context.setVariable("result", results);
             context.setVariable("defaultsTest", defaultsTest);
             context.setVariable("controlleurName", user.getNom() + " " + user.getPrenom());
@@ -155,7 +190,11 @@ public class pdfController {
     }
     @GetMapping("/api/v1/visites/imprimer/{id}")
     public void generatePdfFromHtml(@PathVariable Long id) throws Exception {
-        String outputFolder = "C:/PV/" + File.separator + id.toString() + ".pdf";
+        File f= new File(environment.getProperty("pv.path"));
+        if(!f.exists())
+            f.mkdirs();
+
+        String outputFolder = environment.getProperty("pv.path") + File.separator + id.toString() + ".pdf";
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
         ITextRenderer renderer = new ITextRenderer();
@@ -256,5 +295,10 @@ public class pdfController {
         return outputStream.toString("UTF-8");
     }
 
+    public static Date convert(LocalDateTime dateToConvert) {
+        return java.util.Date
+                .from(dateToConvert.atZone(ZoneId.systemDefault())
+                        .toInstant());
+    }
 
 }

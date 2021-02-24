@@ -3,18 +3,7 @@ package com.catis.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -59,6 +48,9 @@ public class GieglanFile extends JournalData {
     @OneToMany(mappedBy = "gieglanFile")
     @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
+
+    @OneToOne(mappedBy = "gieglanFile")
+    private MesureVisuel mesureVisuel;
 
     @ManyToOne
     @JsonIgnore

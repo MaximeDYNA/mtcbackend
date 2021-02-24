@@ -13,7 +13,7 @@ import com.catis.repository.MesureVisuelRepository;
 
 @Service
 public class MesureVisuelService {
-
+/*
     @Autowired
     private MesureVisuelRepository mesurevisuel;
 
@@ -50,5 +50,5 @@ public class MesureVisuelService {
         paths.add(m.getImage2());
 
         return paths;
-    }
+    }*/
 }

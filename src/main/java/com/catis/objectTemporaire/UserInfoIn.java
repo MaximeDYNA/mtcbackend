@@ -39,6 +39,7 @@ public class UserInfoIn {
                 .clientId(env.getProperty("admin.keycloak"))
                 .serverUrl(env.getProperty("keycloak.auth-server-url"))
                 .realm(env.getProperty("keycloak.realm"))
+
                 .username(env.getProperty("admin.keycloak.login"))
                 .password(env.getProperty("admin.keycloak.password"))
 
