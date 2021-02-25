@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.catis.model.DefectResponse;
+import com.catis.model.Inspection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import com.catis.repository.MesureVisuelRepository;
 
 @Service
 public class MesureVisuelService {
-/*
+
     @Autowired
     private MesureVisuelRepository mesurevisuel;
+    @Autowired
+    private InspectionService inspectionService;
 
 
     public MesureVisuel addDataInspection(MesureVisuel mesurevisuels) {
@@ -26,16 +29,18 @@ public class MesureVisuelService {
 
     public MesureVisuel addSignatureToMesureVisuel(DefectResponse defectResponse) {
 
-        Optional<MesureVisuel> mesureVis = mesurevisuel.byIdInspection(defectResponse.getIdinspection()).stream().findFirst();
-        if(mesureVis.isPresent()){
-            MesureVisuel mesure = mesureVis.get();
+        //Optional<MesureVisuel> mesureVis = mesurevisuel.byIdInspection(defectResponse.getIdinspection()).stream().findFirst();
+        Inspection i = inspectionService.findInspectionById(defectResponse.getIdinspection());
+        //if(mesureVis.isPresent()){
+            MesureVisuel mesure = new MesureVisuel();
+            //mesure.setGieglanFile();
             mesure.setSignature1(defectResponse.getSignature1());
             mesure.setSignature2(defectResponse.getSignature2());
             mesure = mesurevisuel.save(mesure);
             return mesure;
-        }
+        //}
 
-        return null;
+        //return null;
 
 
 
@@ -44,11 +49,11 @@ public class MesureVisuelService {
 
     public List<String> ImagePathList(Long visiteId) {
 
-        MesureVisuel m = mesurevisuel.findByInspection_VisiteIdVisite(visiteId);
+        MesureVisuel m = mesurevisuel.findByGieglanFile_Inspection_VisiteIdVisite(visiteId);
         List<String> paths = new ArrayList<>();
         paths.add(m.getImage1());
         paths.add(m.getImage2());
 
         return paths;
-    }*/
+    }
 }

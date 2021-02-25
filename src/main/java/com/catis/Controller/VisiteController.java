@@ -256,7 +256,7 @@ public class VisiteController {
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
     public String printPV(@PathVariable Long visiteId) {
-        try {
+
             log.info("Impression PV");
             Visite visite = vs.findById(visiteId);
             if(visite.getProcess().isStatus()){
@@ -268,10 +268,10 @@ public class VisiteController {
             visite = vs.add(visite);
 
             return "/pv/"+visiteId+".pdf";
-        } catch (Exception e) {
+        /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
             return "<h1> Erreur lors l'impression du PV </h1>";
-        }
+        }*/
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visites/approuver/{visiteId}")

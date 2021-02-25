@@ -63,7 +63,7 @@ public class MesureVisuelController {
         }
     }
 
-    /*
+
     @PostMapping("/api/v1/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 
@@ -75,9 +75,9 @@ public class MesureVisuelController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
         }*/
 
-    /*}
+    }
 
-    @PostMapping("/api/v1/datainspection")
+   /* @PostMapping("/api/v1/datainspection")
     public ResponseEntity<Object> addDataInspection(@RequestBody MesureVisuel mesurevisuel) {
 
         System.out.println("hello " + mesurevisuel.toString());

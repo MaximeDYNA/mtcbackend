@@ -1,8 +1,10 @@
 package com.catis.Controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 import com.catis.service.ProprietaireVehiculeService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class ProprietaireVehiculeController {
@@ -33,6 +37,8 @@ public class ProprietaireVehiculeController {
     private PartenaireService partenaireService;
     @Autowired
     private OrganisationService os;
+    @Autowired
+    HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
@@ -49,7 +55,7 @@ public class ProprietaireVehiculeController {
     }
 
     @PostMapping("/api/v1/proprietaires")
-    public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) {
+    public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
             LOGGER.trace("Ajout d'un propriétaire...");
 
@@ -72,7 +78,11 @@ public class ProprietaireVehiculeController {
             partenaire.setPassport(clientPartenaire.getPassport());
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-            partenaire.setOrganisation(os.findByOrganisationId(0L));
+            partenaire.setOrganisation(os
+                    .findByOrganisationId(Long
+                    .valueOf(UserInfoIn
+                    .getUserInfo(request)
+                    .getOrganisanionId())));
             pv.setPartenaire(partenaireService.addPartenaire(partenaire));
             pv.setDescription(clientPartenaire.getVariants());
 

@@ -12,12 +12,12 @@ import java.util.List;
 
 public interface MesureVisuelRepository extends CrudRepository<MesureVisuel, Long> {
 
-    /*
-    MesureVisuel findByInspection_VisiteIdVisite(Long id);
+
+    MesureVisuel findByGieglanFile_Inspection_VisiteIdVisite(Long id);
 
 
-    @Query("select m from MesureVisuel m where m.inspection.idInspection = ?1")
-    List<MesureVisuel> byIdInspection(Long idInspection);*/
+    @Query("select m from MesureVisuel m where m.gieglanFile.inspection.idInspection = ?1")
+    List<MesureVisuel> byIdInspection(Long idInspection);
 
     @Query("select m from MesureVisuel m join m.gieglanFile f " +
         "where f.inspection = ?1")

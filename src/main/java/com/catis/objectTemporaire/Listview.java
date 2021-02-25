@@ -24,6 +24,8 @@ public class Listview {
     private String client;
     private String date;
     private String statut;
+    private int statutVisite;
+
     private List<GieglanFileIcon> measures;
     @JsonIgnore
     private VisiteService visiteService;
@@ -37,6 +39,7 @@ public class Listview {
     public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         this.id = id;
         Visite v = visiteService.findById(id);
+        this.statutVisite = v.getStatut();
         this.chassis = (v.getCarteGrise().getVehicule()==null
                 ? "": (v.getCarteGrise().getVehicule().getChassis()==null
                 ? "" : v.getCarteGrise().getVehicule().getChassis()));
@@ -331,5 +334,13 @@ public class Listview {
 
     public void setChassis(String chassis) {
         this.chassis = chassis;
+    }
+
+    public int getStatutVisite() {
+        return statutVisite;
+    }
+
+    public void setStatutVisite(int statutVisite) {
+        this.statutVisite = statutVisite;
     }
 }
