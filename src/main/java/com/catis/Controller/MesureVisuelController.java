@@ -67,9 +67,11 @@ public class MesureVisuelController {
     @PostMapping("/api/v1/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 
-            System.out.println(defectResponse.toString());
+           // System.out.println(defectResponse.toString());
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+            //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
 
        /* try { } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);

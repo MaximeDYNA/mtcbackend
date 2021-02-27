@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.CarteGrise;
@@ -91,7 +92,7 @@ public class GieglanFileService {
     }
     public List<GieglanFile> findByExtensionAndVisite(String libelle, Long idVisite){
         List<GieglanFile> gieglanfiles = gieglanFileRepository
-                .findByCategorieTestLibelleAndInspection_Visite_IdVisite(libelle, idVisite, PageRequest.of(0,1));
+                .findByCategorieTestLibelleAndInspection_Visite_IdVisite(libelle, idVisite, PageRequest.of(0,1, Sort.by("id").ascending()));
         return gieglanfiles;
     }
 }

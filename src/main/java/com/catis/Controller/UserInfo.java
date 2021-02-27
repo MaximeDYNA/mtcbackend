@@ -120,6 +120,7 @@ public class UserInfo {
                 .authorization(context.getTokenString())
                 .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
                 .build();
+
         UserResource userResource = keycloak.realm(realm).users().get(KeycloakId);
 
 

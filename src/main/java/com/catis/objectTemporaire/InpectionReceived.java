@@ -14,7 +14,7 @@ public class InpectionReceived {
     private String chassis;
     private int essieux;
     private String position;
-    private Long controleurId;
+    private String controleurId;
     private Long ligneId;
     private Long visiteId;
 
@@ -26,7 +26,7 @@ public class InpectionReceived {
 
 
     public InpectionReceived(Long idInspection, Date dateDebut, Date dateFin, String signature, Long produitId,
-                             double kilometrage, String chassis, int essieux, String position, Long controleurId, Long ligneId,
+                             double kilometrage, String chassis, int essieux, String position, String controleurId, Long ligneId,
                              Long visiteId) {
         super();
         this.idInspection = idInspection;
@@ -134,12 +134,12 @@ public class InpectionReceived {
     }
 
 
-    public Long getControleurId() {
+    public String getControleurId() {
         return controleurId;
     }
 
 
-    public void setControleurId(Long controleurId) {
+    public void setControleurId(String controleurId) {
         this.controleurId = controleurId;
     }
 

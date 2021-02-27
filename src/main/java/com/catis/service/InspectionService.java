@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.catis.Controller.VisiteController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,13 @@ public class InspectionService {
 
     @Autowired
     private VisiteService visiteService;
+    @Autowired
+    private ProduitService ps;
+
+    @Autowired
+    private CategorieTestVehiculeService cat;
+    @Autowired
+    private GieglanFileService gieglanFileService;
 
     public Inspection addInspection(Inspection inspection) {
         return inspectionR.save(inspection);
@@ -54,7 +62,10 @@ public class InspectionService {
         Visite visite = visiteService.findById(id);
         visite.setStatut(4);
         inspection.setVisite(visiteService.add(visite));
-        return inspectionR.save(inspection);
+        inspection = inspectionR.save(inspection);
+
+        VisiteController.dispatchEdit(visite, visiteService, gieglanFileService, cat, ps);
+        return inspection;
 
     }
 

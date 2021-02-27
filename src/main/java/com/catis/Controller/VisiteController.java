@@ -1,48 +1,84 @@
 package com.catis.Controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.time.Duration;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
+import com.catis.model.*;
+import com.catis.objectTemporaire.*;
+import com.catis.repository.MesureVisuelRepository;
+import com.catis.repository.RapportDeVisiteRepo;
+import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
+import com.lowagie.text.DocumentException;
 import org.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Visite;
-import com.catis.objectTemporaire.GraphView;
-import com.catis.objectTemporaire.KabanViewVisit;
-import com.catis.objectTemporaire.Listview;
-
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class VisiteController {
+    @Autowired
+    private Environment environment;
+    @Autowired
+    HttpServletRequest request;
+    @Autowired
+    private VisiteRepository visiteRepo;
 
+
+    @Autowired
+    PdfGenaratorUtil pdfGenaratorUtil;
+
+    private VisiteService visiteService;
+
+    @Autowired
+    private RapportDeVisiteRepo rapportDeVisiteRepo;
+
+    @Autowired
+    private MesureVisuelRepository mesureVisuelRepository;
+    @Autowired
+    private PdfService pdfService;
+    @Autowired
+    private InspectionService inspectionService;
+    @Autowired
+    private VenteService venteService;
+    @Autowired
+    private TaxeService taxeService;
     @Autowired
     private VisiteService vs;
     @Autowired
     private ProduitService ps;
-    @Autowired
-    private VenteService venteService;
+
     @Autowired
     private CarteGriseService cgs;
     @Autowired
@@ -79,7 +115,9 @@ public class VisiteController {
             try{
 
                 if(visite.getStatut()==1){
-                    emitter.send(SseEmitter.event().name("edit_visit").data(visite));
+                    emitter.send(SseEmitter.event().name("edit_visit").data(
+                            buildListView(visite, vs, gieglanFileService,catSer, ps)));
+                    emitter.send(SseEmitter.event().name("controleur_visit").data(visite));
                 }
                 else{
                     emitter.send(SseEmitter.event().name("edit_visit").data(
@@ -255,9 +293,27 @@ public class VisiteController {
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public String printPV(@PathVariable Long visiteId) {
+    public String printPV(@PathVariable Long visiteId) throws Exception {
 
             log.info("Impression PV");
+
+        File f= new File(environment.getProperty("pv.path"));
+        if(!f.exists())
+            f.mkdirs();
+
+        String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
+        OutputStream outputStream = new FileOutputStream(outputFolder);
+
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(
+                parseThymeleafTemplate(visiteId)
+        );
+        Thread.sleep(10000);
+        renderer.layout();
+        renderer.createPDF(outputStream);
+
+        outputStream.close();
+
             Visite visite = vs.findById(visiteId);
             if(visite.getProcess().isStatus()){
                 visite.setStatut(7);
@@ -266,7 +322,7 @@ public class VisiteController {
                 visite.setStatut(5);
 
             visite = vs.add(visite);
-
+            VisiteController.dispatchEdit(visite,vs,gieglanFileService,catSer,ps);
             return "/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
@@ -309,5 +365,102 @@ public class VisiteController {
         lv.setType(visite.typeRender());
         return lv;
     }
+    public String parseThymeleafTemplate(long id) throws Exception {
 
+        Optional<Visite> visite = this.visiteRepo.findById(id);
+        Taxe tp = taxeService.findByNom("TVA");
+        if (visite.isPresent()) {
+            List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(visite.get());
+            List<Visite> lastVisiteWithTestIsOk = this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get());
+            lastVisiteWithTestIsOk.forEach(visite1 -> {
+                rapports.addAll(visite1.getRapportDeVisites());
+            });
+            HashMap<String, String> results = new HashMap<>();
+            List<Lexique> defaultsTest = new ArrayList<>();
+            rapports.forEach(rapport -> {
+                results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
+                if (rapport.getSeuil().getLexique() != null) {
+                    defaultsTest.add(rapport.getSeuil().getLexique());
+                }
+            });
+
+            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request, environment);
+
+            ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+            templateResolver.setSuffix(".html");
+            templateResolver.setTemplateMode(TemplateMode.HTML);
+
+            TemplateEngine templateEngine = new TemplateEngine();
+            templateEngine.setTemplateResolver(templateResolver);
+
+            Context context = new Context();
+            VisiteDate v = new VisiteDate(visite.get());
+            List<MesureVisuel> mesureVisuels = mesureVisuelRepository.getMesureVisuelByInspection(
+                    v.getInspection(),
+                    PageRequest.of(0,1)
+            );
+            //Thread.sleep(120000);
+            //wait(120000);
+            //System.out.println(mesureVisuels.get(0).getImage1());
+
+            context.setVariable("controlValidityAt", convert(v.getControl().getValidityAt()));
+            context.setVariable("controlDelayAt", convert(v.getControl().getContreVDelayAt() == null
+                    ? LocalDateTime.now(): v.getControl().getContreVDelayAt() ));
+            context.setVariable("mesurevisuel", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0));
+            context.setVariable("v", v);
+            context.setVariable("tp", tp);
+            context.setVariable("r0410", Double.valueOf(results.get("0410")));
+            context.setVariable("r0411", Double.valueOf(results.get("0411")));
+            context.setVariable("r0413", Double.valueOf(results.get("0413")));
+            context.setVariable("r0414", Double.valueOf(results.get("0414")));
+            context.setVariable("r0412", Double.valueOf(results.get("0412")));
+            context.setVariable("r0415", Double.valueOf(results.get("0415")));
+            context.setVariable("r0401", Double.valueOf(results.get("0401")));
+            context.setVariable("r0402", Double.valueOf(results.get("0402")));
+            context.setVariable("r0465", Double.valueOf(results.get("0465")));
+            context.setVariable("r0446", Double.valueOf(results.get("0446")));
+            context.setVariable("r1001", results.get("1001"));
+            context.setVariable("r0430", Double.valueOf(results.get("0430")));
+            context.setVariable("r0421", Double.valueOf(results.get("0421")));
+            context.setVariable("r0434", Double.valueOf(results.get("0434")));
+            context.setVariable("r0431", Double.valueOf(results.get("0431")));
+            context.setVariable("r0420", Double.valueOf(results.get("0420")));
+            context.setVariable("r0438", Double.valueOf(results.get("0438")));
+            context.setVariable("r0424", Double.valueOf(results.get("0424")));
+            context.setVariable("r0442", Double.valueOf(results.get("0442")));
+            context.setVariable("r1125", results.get("1125"));
+            context.setVariable("r0439", Double.valueOf(results.get("0439")));
+            context.setVariable("r1002", results.get("1002"));
+            context.setVariable("r0423", Double.valueOf(results.get("0423")));
+
+            context.setVariable("result", results);
+            context.setVariable("defaultsTest", defaultsTest);
+            context.setVariable("controlleurName", user.getNom() + " " + user.getPrenom());
+            context.setVariable("gps", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0).getGps());
+            context.setVariable("o", v.getOrganisation());
+
+            /*modelAndView.addObject("v", visite.get());
+            modelAndView.addObject("tp", tp);
+            modelAndView.addObject("result", results);
+            modelAndView.addObject("defaultsTest", defaultsTest);
+            modelAndView.addObject("controlleurName", user.getNom() + " " + user.getPrenom());
+            modelAndView.setViewName("visites");*/
+
+
+            return templateEngine.process("templates/visites", context);
+        }
+
+        return null;
+
+    }
+
+    public Date convert(LocalDateTime dateToConvert) {
+        return Date
+                .from(
+                        dateToConvert
+                                .atZone(
+                                        ZoneId
+                                                .systemDefault())
+                        .toInstant());
+    }
 }

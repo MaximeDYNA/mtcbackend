@@ -130,67 +130,67 @@ public class ProduitController {
 
     @RequestMapping(value = "/api/v1/produits/reference/{imCha}")
     public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) throws VisiteEnCoursException {
+        try {
+                if(imCha.equalsIgnoreCase(null))
+                imCha="";
 
-        if(imCha.equalsIgnoreCase(null))
-            imCha="";
-
-        if (visiteService.visiteEncours(imCha))
-            throw new VisiteEnCoursException("Une visite est déjà en cours");
-        LOGGER.trace("liste des catégories...");
-        List<Produit> produits = new ArrayList<>();
-        for (CarteGrise cg : cgs.findByImmatriculationOuCarteGrise(imCha)) {
-            System.out.println("produit de carte grise");
-            produits.add(cg.getProduit());
-        }
+                if (visiteService.visiteEncours(imCha))
+                throw new VisiteEnCoursException("Une visite est déjà en cours");
+                LOGGER.trace("liste des catégories...");
+                List<Produit> produits = new ArrayList<>();
+                for (CarteGrise cg : cgs.findByImmatriculationOuCarteGrise(imCha)) {
+                    System.out.println("produit de carte grise");
+                    produits.add(cg.getProduit());
+                }
 
 
-        if (visiteService.isVisiteInitial(imCha)) {
-            if (!cgs.isCarteGriseExist(imCha)) {
-                List<ProduitEtTaxe> pets = new ArrayList<>();
-                List<Taxe> taxes;
-                ProduitEtTaxe pet;
-                for (Produit produit : produitService.findProduitWithoutContreVisite()) {
-                    pet = new ProduitEtTaxe();
-                    pet.setProduit(produit);
-                    taxes = new ArrayList<>();
-                    for (TaxeProduit tp : tps.findByProduitId(produit.getProduitId())) {
-                        taxes.add(tp.getTaxe());
+                if (visiteService.isVisiteInitial(imCha)) {
+                    if (!cgs.isCarteGriseExist(imCha)) {
+                        List<ProduitEtTaxe> pets = new ArrayList<>();
+                        List<Taxe> taxes;
+                        ProduitEtTaxe pet;
+                        for (Produit produit : produitService.findProduitWithoutContreVisite()) {
+                            pet = new ProduitEtTaxe();
+                            pet.setProduit(produit);
+                            taxes = new ArrayList<>();
+                            for (TaxeProduit tp : tps.findByProduitId(produit.getProduitId())) {
+                                taxes.add(tp.getTaxe());
+                            }
+                            pet.setTaxe(taxes);
+                            pets.add(pet);
+
+                        }
+                        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
+                    } else {
+                        List<ProduitEtTaxe> pets = new ArrayList<>();
+                        ProduitEtTaxe pet = new ProduitEtTaxe();
+                        List<Taxe> taxes = new ArrayList<>();
+                        pet.setProduit(produitService.findByImmatriculation(imCha));
+
+                        pet.setTaxe(taxeService.taxListByLibelle(produitService.findByLibelle("cv").getLibelle()));
+                        pets.add(pet);
+
+                        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
                     }
-                    pet.setTaxe(taxes);
+
+                } else {
+
+                    List<ProduitEtTaxe> pets = new ArrayList<>();
+                    ProduitEtTaxe pet = new ProduitEtTaxe(produitService.findByLibelle("cv"), taxeService.taxListByLibelle("cv"));
                     pets.add(pet);
 
+
+                    return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
                 }
-                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
-            } else {
-                List<ProduitEtTaxe> pets = new ArrayList<>();
-                ProduitEtTaxe pet = new ProduitEtTaxe();
-                List<Taxe> taxes = new ArrayList<>();
-                pet.setProduit(produitService.findByImmatriculation(imCha));
-
-                pet.setTaxe(taxeService.taxListByLibelle(produitService.findByLibelle("cv").getLibelle()));
-                pets.add(pet);
-
-                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
-            }
-
-        } else {
-
-            List<ProduitEtTaxe> pets = new ArrayList<>();
-            ProduitEtTaxe pet = new ProduitEtTaxe(produitService.findByLibelle("cv"), taxeService.taxListByLibelle("cv"));
-            pets.add(pet);
-
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
-        }
 			
-				/*try {}
+        }
 			catch (VisiteEnCoursException vece) {
-				LOGGER.error("Veuillez signaler cette erreur à Franck");
+				LOGGER.error("visite déjà en cours! Veuillez vérifier la liste des visites en cours");
 				return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une visite est actuellement en cours pour ce véhicule", null);
 			}catch (Exception e) {
 				LOGGER.error("Veuillez signaler cette erreur à Franck");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
-			}*/
+			}
 
     }
 

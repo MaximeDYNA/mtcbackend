@@ -2,8 +2,8 @@ package com.catis.objectTemporaire;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.catis.model.*;
 import com.catis.service.CarteGriseService;
@@ -86,11 +86,16 @@ public class Listview {
         } else {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
             GieglanFileIcon gfi;
-            for(CategorieTestVehicule c : visite
+
+            Set<CategorieTestVehicule> integersSet = new LinkedHashSet<CategorieTestVehicule>(visite
                     .getCarteGrise()
                     .getProduit()
                     .getCategorieVehicule()
-                    .getCategorieTestVehicules() ){
+                    .getCategorieTestVehicules());
+            List<CategorieTestVehicule> list = new ArrayList<CategorieTestVehicule>(integersSet);
+            list.sort((CategorieTestVehicule s1, CategorieTestVehicule s2)->s1.getId().compareTo(s2.getId()));
+
+            for(CategorieTestVehicule c : list ){
                 gfi = new GieglanFileIcon();
                 gfi.setExtension(c.getCategorieTest().getLibelle());
                 gfi.setIcon(c.getCategorieTest().getIcon());
@@ -133,11 +138,11 @@ public class Listview {
                             case "P":
                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Flash\"></i></span>&nbsp");
                                 break;
-                            case "O":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                            case "JSON":
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Eye\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Cloud1\"></i></span>&nbsp");
                                 break;
                         }
                     }
@@ -155,11 +160,11 @@ public class Listview {
                             case "P":
                                 categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Flash\"></i></span>&nbsp");
                                 break;
-                            case "O":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                            case "JSON":
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
                                 break;
                         }
 
@@ -178,11 +183,11 @@ public class Listview {
                             case "P":
                                 categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Flash\"></i></span>&nbsp");
                                 break;
-                            case "O":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                            case "JSON":
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Eye\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Cloud1\"></i></span>&nbsp");
                                 break;
                         }
                     }

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.catis.objectTemporaire.UserInfoIn;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -28,10 +29,14 @@ import com.catis.service.LigneService;
 import com.catis.service.ProduitService;
 import com.catis.service.VisiteService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class InspectionController {
 
+    @Autowired
+    HttpServletRequest request;
     @Autowired
     private InspectionService inspectionService;
     @Autowired
@@ -55,7 +60,8 @@ public class InspectionController {
 
         LOGGER.trace("Nouvelle inpection...");
         Inspection inspection = new Inspection(inspectionReceived);
-        inspection.setControleur(controleurService.findControleurById(inspectionReceived.getControleurId()));
+        System.out.println("Contrôleur ---"+UserInfoIn.getUserInfo(request).getId());
+        inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
         inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
         inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
         Visite visite = visiteService.findById(inspectionReceived.getVisiteId());

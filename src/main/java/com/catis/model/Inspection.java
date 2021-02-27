@@ -63,6 +63,7 @@ public class Inspection extends JournalData {
     private Set<GieglanFile> gieglanFiles;
 
     @ManyToMany
+    @JsonIgnore
     private List<Lexique> lexiques;
 
     /*

@@ -21,6 +21,10 @@ public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long organisationId;
+    private String nom;
+    private String adress;
+    private String tel1;
+    private String tel2;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -892,5 +896,37 @@ public class Organisation {
 
     public void setDevise(String devise) {
         this.devise = devise;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getTel1() {
+        return tel1;
+    }
+
+    public void setTel1(String tel1) {
+        this.tel1 = tel1;
+    }
+
+    public String getTel2() {
+        return tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
     }
 }

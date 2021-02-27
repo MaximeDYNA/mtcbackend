@@ -44,13 +44,14 @@ public class VisiteService {
     @Autowired
     private ProduitService ps;
     @Autowired
+    private CategorieTestVehiculeService cat;
+    @Autowired
     private VenteService venteService;
     @Autowired
     private ControlRepository controlRepository;
     @Autowired
     private GieglanFileService gieglanFileService;
-    @Autowired
-    private CategorieTestVehiculeService cat;
+
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 

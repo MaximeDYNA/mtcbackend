@@ -1,6 +1,7 @@
 package com.catis.Controller;
 
 import com.catis.model.*;
+import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import com.catis.objectTemporaire.EncaissementResponse;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,6 +31,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController
 @CrossOrigin
 public class EncaissementController {
+    @Autowired
+    HttpServletRequest request;
 
     @Autowired
     private OperationCaisseService ocs;
@@ -130,7 +134,7 @@ public class EncaissementController {
                 carteGrise.setNumImmatriculation(posale.getReference());
                 carteGrise.setProduit(produit);
                 visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-                        encaissement.getMontantEncaisse(), 1L);
+                        encaissement.getMontantEncaisse(), Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId() ));
 
             }
             /*-----------------Visite-----------------*/
@@ -150,7 +154,9 @@ public class EncaissementController {
 
         /* ---------Opération de caisse------------ */
         op.setMontant(encaissement.getMontantEncaisse());
-
+        op.setOrganisation(os.findByOrganisationId(
+                Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()))
+                );
         op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
         op.setNumeroTicket(ocs.genererTicket());
         op.setVente(vente);
