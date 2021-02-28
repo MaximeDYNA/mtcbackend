@@ -1,6 +1,7 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /opt
 WORKDIR /usr/app
+VOLUME /opt
 COPY ./target/mtc-* ./
 EXPOSE 8086
 CMD ["java", "-jar", "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
