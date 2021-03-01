@@ -403,7 +403,7 @@ public class VisiteController {
             //wait(120000);
             //System.out.println(mesureVisuels.get(0).getImage1());
 
-            context.setVariable("controlValidityAt", convert(v.getControl().getValidityAt()));
+            context.setVariable("controlValidityAt", v.getControl().getValidityAt() ==null ? null : convert(v.getControl().getValidityAt() ));
             context.setVariable("controlDelayAt", convert(v.getControl().getContreVDelayAt() == null
                     ? LocalDateTime.now(): v.getControl().getContreVDelayAt() ));
             context.setVariable("mesurevisuel", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0));
