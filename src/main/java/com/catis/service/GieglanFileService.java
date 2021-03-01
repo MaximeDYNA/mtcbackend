@@ -41,7 +41,7 @@ public class GieglanFileService {
         file.setInspection(inspection);
         file.setFileCreatedAt(new Date());
         this.creategieglanforCardGrise(file);
-        file.setValeurTests(this.codeGieglans);
+        //file.setValeurTests(this.codeGieglans);
         this.gieglanFileRepository.save(file);
     }
 

@@ -70,7 +70,7 @@ public class LigneController {
     @GetMapping(value = "/api/v1/vehicules/lignes/{id}")
     public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
 
-        try {
+
             LOGGER.trace("liste des vehicules par ligne");
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             VehiculeByLineDTO v;
@@ -89,9 +89,9 @@ public class LigneController {
             }
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Véhicule par ligne", vehicules);
-        } catch (Exception e) {
+        /*try {} catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
-        }
+        }*/
 
     }
 }
