@@ -1,7 +1,9 @@
 package com.catis.Controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -82,9 +84,9 @@ public class InspectionController {
     }
 
     @RequestMapping(value = "/api/v1/upload/signature", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) {
+    public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws IOException {
 
-        try {
+
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
             File f= new File(env.getProperty("signature.server.path"));
             if(!f.exists())
@@ -103,10 +105,10 @@ public class InspectionController {
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", inspection);
 
-        } catch (Exception e) {
+          /*  try {} catch (Exception e) {
             e.printStackTrace();
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Failed", null);
-        }
+        }*/
 
     }
 
