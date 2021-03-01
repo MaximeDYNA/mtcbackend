@@ -1,6 +1,5 @@
 package com.catis.service;
 
-import java.awt.print.Pageable;
 import java.util.*;
 
 import javax.transaction.Transactional;
@@ -19,7 +18,6 @@ import com.catis.model.Inspection;
 import com.catis.model.ValeurTest;
 
 @Service("GieglanService")
-@Transactional
 public class GieglanFileService {
 
     private CarteGrise carteGrise;
@@ -30,6 +28,7 @@ public class GieglanFileService {
     private GieglanFileRepository gieglanFileRepository;
 
 
+    @Transactional
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
 
         this.carteGrise = carteGrise;
@@ -41,7 +40,7 @@ public class GieglanFileService {
         file.setInspection(inspection);
         file.setFileCreatedAt(new Date());
         this.creategieglanforCardGrise(file);
-        //file.setValeurTests(this.codeGieglans);
+        file.setValeurTests(this.codeGieglans);
         this.gieglanFileRepository.save(file);
     }
 
