@@ -88,11 +88,11 @@ public class InspectionController {
 
 
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
-            File f= new File(env.getProperty("signature.server.path"));
+            File f= new File(env.getProperty("signature.disk.path"));
             if(!f.exists())
                 f.mkdirs();
-
-            String filePath = env.getProperty("signature.server.path") + signatureDTO.getVisiteId() + ".png";
+            
+            String filePath = env.getProperty("signature.disk.path") + signatureDTO.getVisiteId() + ".png";
 
             Path path = Paths.get(filePath);
             System.out.println("*******************" + filePath);
