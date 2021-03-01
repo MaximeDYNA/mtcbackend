@@ -91,7 +91,7 @@ public class InspectionController {
             File f= new File(env.getProperty("signature.disk.path"));
             if(!f.exists())
                 f.mkdirs();
-            
+
             String filePath = env.getProperty("signature.disk.path") + signatureDTO.getVisiteId() + ".png";
 
             Path path = Paths.get(filePath);
