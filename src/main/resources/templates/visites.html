@@ -226,7 +226,7 @@
                     </p>
 
                         <img style="height: 150px; width: 150px; float: right;"
-                             th:src="@{${v.inspection.signature !=null ? '/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
+                             th:src="@{${v.inspection.signature !=null ? 'localhost:8080/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
 
 
                 </div>
@@ -250,15 +250,15 @@
                                                 <span style="font-weight: bold; font-size: 7px; border-spacing: 0px;">SUSPENSION</span>
                                             </td>
                                             <td align="center"
-                                                style="  width:65px;
+                                                style="width:65px;
                                 border: solid thin; font-weight: bold; font-size: 5px;">
                                                 Eff AG<br/>LF Eff
                                             </td>
-                                            <td align="center" style="  font-weight: bold; width:65px;
+                                            <td align="center" style="font-weight: bold; width:65px;
                                 border: solid thin; font-size: 5px;">
                                                 Eff AD<br/>Rf Eff
                                             </td>
-                                            <td align="center" style="  font-weight: bold; width:65px;
+                                            <td align="center" style="font-weight: bold; width:65px;
                                 border: solid thin; font-size: 5px;">
                                                 Eff RG<br/>LR Eff
                                             </td>
