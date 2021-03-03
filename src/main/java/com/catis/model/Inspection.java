@@ -1,6 +1,7 @@
 package com.catis.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public class Inspection extends JournalData {
 
     @OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<GieglanFile> gieglanFiles;
+    private Set<GieglanFile> gieglanFiles =new HashSet<>();
 
     @ManyToMany
     @JsonIgnore

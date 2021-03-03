@@ -120,7 +120,7 @@ public class EncaissementController {
 
             if (produit.getLibelle().equalsIgnoreCase("cv")) {
                 carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
-                carteGrise.setProduit(produit);
+                //carteGrise.setProduit(produit);
                 visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
                         encaissement.getMontantEncaisse(), 1L);
             } else {

@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.catis.repository.faileTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,10 @@ public class VisiteService {
     private ControlRepository controlRepository;
     @Autowired
     private GieglanFileService gieglanFileService;
+    @Autowired
+    private CarteGriseService cgs;
+    @Autowired
+    private faileTest faileTet;
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
@@ -58,7 +63,7 @@ public class VisiteService {
 
 
     public Visite visiteWithLastMissedTests(Visite visite){
-        List <Visite> v = visiteRepository
+        List <Visite> v = faileTet
             .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
         if(!v.isEmpty()) {
             return v.get(0);
@@ -162,7 +167,13 @@ public class VisiteService {
             visite.setControl(control);
 
         } else {
-            visite.setContreVisite(false);
+            visite.setContreVisite(true);
+            visite.setStatut(1);
+            List<Visite> vi =visiteRepository.getBeforeLastVisiteWithHisControl(cg.getNumImmatriculation(), PageRequest.of(0,1));
+            if(!vi.isEmpty()) {
+                visite.setControl(vi.get(0).getControl());
+            }
+
             visite.setEncours(true);
             visite.setCarteGrise(cg);
             visite.setDateDebut(LocalDateTime.now());

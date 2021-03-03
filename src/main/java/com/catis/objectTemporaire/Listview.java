@@ -76,9 +76,11 @@ public class Listview {
 
             Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
             GieglanFileIcon gfi;
+            System.out.println("missed test size "+ visiteWithMissedTests.getInspection().getGieglanFiles().size());
             for(GieglanFile g: visiteWithMissedTests
                     .getInspection().getGieglanFiles()){
                     gfi = new GieglanFileIcon();
+                    System.out.println("-----555--"+g.getCategorieTest().getLibelle());
                     gfi.setExtension(g.getCategorieTest().getLibelle());
                     gfi.setIcon(g.getCategorieTest().getIcon());
                     this.measures.add(replaceIconIfNecessary(gfi, this.id));
