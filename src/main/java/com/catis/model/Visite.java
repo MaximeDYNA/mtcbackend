@@ -40,7 +40,6 @@ public class Visite extends JournalData {
     @Column(columnDefinition = "bit default 1")
     private boolean encours;
 
-
     @ManyToOne
     private Caissier caissier;
 

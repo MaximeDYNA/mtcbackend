@@ -57,7 +57,7 @@ public class InspectionController {
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
     @PostMapping(value = "/api/v1/inspections")
-    public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) {
+    public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws IOException {
 
 
         LOGGER.trace("Nouvelle inpection...");

@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -54,7 +55,7 @@ public class InspectionService {
         return inspection;
     }
 
-    public Inspection setSignature(Long id, String signature) {
+    public Inspection setSignature(Long id, String signature) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);
         Inspection inspection = findInspectionByVisite(id);

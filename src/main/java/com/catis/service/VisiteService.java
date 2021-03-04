@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 
 @Service
-
 public class VisiteService {
     @Autowired
     private VisiteRepository visiteRepository;
@@ -54,8 +54,7 @@ public class VisiteService {
     private GieglanFileService gieglanFileService;
     @Autowired
     private CarteGriseService cgs;
-    @Autowired
-    private faileTest faileTet;
+
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
@@ -63,7 +62,7 @@ public class VisiteService {
 
 
     public Visite visiteWithLastMissedTests(Visite visite){
-        List <Visite> v = faileTet
+        List <Visite> v = visiteRepository
             .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
         if(!v.isEmpty()) {
             return v.get(0);
@@ -118,7 +117,7 @@ public class VisiteService {
         return visites;
     }
 
-    public Visite approuver(Visite visite) {
+    public Visite approuver(Visite visite) throws IOException {
         visite.setStatut(0);
         Visite v = visiteRepository.save(visite);
         VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
@@ -188,7 +187,7 @@ public class VisiteService {
         return visite;
     }
 
-    public Visite modifierVisite(Visite visite) {
+    public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
 
@@ -207,7 +206,7 @@ public class VisiteService {
         return visiteEnCours;
     }
 
-    public void terminerInspection(Long visiteId) {
+    public void terminerInspection(Long visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
         visite.setEncours(false);
@@ -222,7 +221,7 @@ public class VisiteService {
         return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
     }
 
-    public void commencerInspection(Long visiteId) {
+    public void commencerInspection(Long visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
         visite.setDateFin(LocalDateTime.now());

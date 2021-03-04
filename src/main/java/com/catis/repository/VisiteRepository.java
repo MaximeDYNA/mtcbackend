@@ -14,7 +14,7 @@ import com.catis.model.Visite;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VisiteRepository extends JpaRepository<Visite, Long> {
+public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
 
     List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
