@@ -8,15 +8,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.catis.Event.VisiteCreatedEvent;
 import com.catis.repository.faileTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.catis.Controller.ApiResponseHandler;
@@ -31,6 +34,8 @@ import com.catis.objectTemporaire.Listview;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
@@ -55,6 +60,8 @@ public class VisiteService {
     @Autowired
     private CarteGriseService cgs;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
@@ -120,7 +127,7 @@ public class VisiteService {
     public Visite approuver(Visite visite) throws IOException {
         visite.setStatut(0);
         Visite v = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
         return v;
     }
 
@@ -143,6 +150,7 @@ public class VisiteService {
         }
     }
 
+    @Transactional
     public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId) throws VisiteEnCoursException {
         Visite visite = new Visite();
 
@@ -183,13 +191,14 @@ public class VisiteService {
         }
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat, ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+       // VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
 
         return v;
     }
@@ -213,7 +222,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
 
     }
 
@@ -227,7 +236,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
     public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
@@ -263,5 +272,14 @@ public class VisiteService {
         if (findByReference(ref).isEmpty())
             return false;
         return true;
+    }
+
+    @Async
+    @TransactionalEventListener
+    public void dispatchVisite(VisiteCreatedEvent event) {
+
+        Visite visite = event.getVisite();
+        System.out.println("Visite test ---------"+ visite.getIdVisite());
+        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat, ps);
     }
 }

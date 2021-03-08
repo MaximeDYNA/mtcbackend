@@ -191,24 +191,24 @@
         <tr>
             <td style=" width: 50%; border: 1px solid black;" rowspan="2">
                 <div th:style="${v.process.status} ? 'width:90%; height: 650px; padding: 4px;' : 'width:90%; height: 540px; padding: 4px; '">
-                    <div th:if="${#lists.size(defaultsTest)} != 0">
+                    <div th:if="${#lists.size(majorDefault)} != 0">
                         <h6 class="font-weight-bold">
                             <p>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</p>
                         </h6>
                         <ol class="text-left font-weight-bold">
-                            <li th:each="lexique : ${defaultsTest}">
-                                <span style="color: gray;" th:text="${lexique.libelle}"> Commande de freins de stationnement: Absence de verrouillage</span>
+                            <li th:each="lexique : ${majorDefault}">
+                                <span style="color: gray;" th:text="${lexique.libelle}"></span>
                             </li>
                         </ol>
                     </div>
-                    <div th:if="${#lists.size(v.inspection.lexiques)} != 0">
+                    <div th:if="${#lists.size(minorDefault)} != 0">
                         <h6 class="font-weight-bold">
                             <p>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p>
                         </h6>
                         <ol class="text-left font-weight-bold">
-                            <li th:each="lexique : ${v.inspection.lexiques}">
+                            <li th:each="lexique : ${minorDefault}">
                                 <span style="color: gray;" th:text="${lexique.libelle}"> </span>
                             </li>
                         </ol>
@@ -226,7 +226,7 @@
                     </p>
 
                         <img style="height: 150px; width: 150px; float: right;"
-                             th:src="@{${v.inspection.signature !=null ? '~/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
+                             th:src="@{${v.inspection.signature !=null ? 'http://localhost:8080/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
 
 
                 </div>
@@ -469,15 +469,15 @@
                                                         <td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
 
                                                         </td-->
-                                                        <td style="font-size: 10px; width: 43%" th:if="${ typeVehicule=='VL'}">
+                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule=='VL'}">
                                                             <span th:utext="${typeVehicule=='VL' ? (r0430!=null ? #numbers.formatInteger(r0430,1)+' daN': '' ) : ''}"></span>
                                                             <span th:utext="${typeVehicule=='VL' ? (r0421 !=null ? #numbers.formatInteger(r0421,1)+' kg': '' ) : ''}"></span>
                                                         </td>
-                                                        <td style="vertical-align: top; width: 14%;"
+                                                        <td style="vertical-align: top; width: 20%;"
                                                             th:utext="${ typeVehicule=='VL' ? (r0434 !=null ? #numbers.formatInteger(r0434, 1)+' %': '' ) : (r1002!=null ? #numbers.formatInteger(r1002,1)+' %': '' )}">
 
                                                         </td>
-                                                        <td style="font-size: 10px; width: 43%" th:if="${ typeVehicule=='VL'}">
+                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule=='VL'}">
                                                             <span th:utext="${  typeVehicule=='VL' ? (result.get('0431')!=null ? #numbers.formatInteger(r0431,1)+' daN': '' ) : ''}"></span><br/>
                                                             <span th:utext="${  typeVehicule=='VL' ? (result.get('0420')!=null ? #numbers.formatInteger(r0420,1)+' kg': '' ) : ''}"></span>
                                                         </td>
@@ -510,15 +510,15 @@
                                                         <td >
 
                                                         </td-->
-                                                        <td  style="font-size: 10px; width: 43%" th:if="${ typeVehicule == 'VL'}">
+                                                        <td  style="font-size: 10px; width: 40%" th:if="${ typeVehicule == 'VL'}">
                                                             <span th:utext="${ typeVehicule=='VL' ? (result.get('0438')!=null ? #numbers.formatInteger(r0438,1)+' daN': '' ) : ''}"></span><br/>
                                                             <span th:utext="${ typeVehicule=='VL' ? (result.get('0424')!=null ? #numbers.formatInteger(r0424, 1)+' kg': '' ) : ''}"></span>
                                                         </td>
-                                                        <td style="vertical-align: top; width: 14%;"
+                                                        <td style="vertical-align: top; width: 20%;"
                                                             th:utext="${ typeVehicule=='VL' ? (result.get('0442')!=null ? #numbers.formatInteger(r0442, 1)+' %': '' ) : (result.get('1125')!=null ? #numbers.formatInteger(r1125, 1)+' %': '' )}">
 
                                                         </td>
-                                                        <td style="font-size: 10px; width: 43%" th:if="${ typeVehicule == 'VL'}">
+                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule == 'VL'}">
                                                             <span th:utext="${ typeVehicule == 'VL' ? (result.get('0439')!=null ? #numbers.formatInteger(r0439,1)+' daN': '' ): ''}"></span><br/>
                                                             <span th:utext="${ typeVehicule == 'VL' ? (result.get('0423')!=null ? #numbers.formatInteger(r0423,1)+' kg': '' ): ''}"></span>
                                                         </td>
