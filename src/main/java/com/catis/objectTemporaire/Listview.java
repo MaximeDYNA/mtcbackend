@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import com.catis.model.*;
-import com.catis.service.CarteGriseService;
 import com.catis.service.CategorieTestVehiculeService;
 import com.catis.service.GieglanFileService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.catis.service.VisiteService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Listview {
 
     private Long id;
@@ -25,8 +25,8 @@ public class Listview {
     private String date;
     private String statut;
     private int statutVisite;
+    private List<GieglanFileIcon> measures = new ArrayList<>();
 
-    private List<GieglanFileIcon> measures;
     @JsonIgnore
     private VisiteService visiteService;
     @JsonIgnore
@@ -34,11 +34,15 @@ public class Listview {
     @JsonIgnore
     private CategorieTestVehiculeService catSer;
 
+    public Listview() {
 
 
+    }
     public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
+        super();
         this.id = id;
         Visite v = visiteService.findById(id);
+        this.statut="";
         this.statutVisite = v.getStatut();
         this.chassis = (v.getCarteGrise().getVehicule()==null
                 ? "": (v.getCarteGrise().getVehicule().getChassis()==null
@@ -46,27 +50,13 @@ public class Listview {
         this.visiteService = visiteService;
         this.gieglanFileService = gieglanFileService;
         this.catSer = catSer;
-        measures = new ArrayList<>();
+        this.measures = new ArrayList<>();
         manageColor();
     }
 
-    public Listview() {
 
 
-    }
 
-
-    public Listview(Long id, Produit categorie, String type, String reference, String client, String date,
-                    String statut) {
-        super();
-        this.id = id;
-        this.categorie = categorie;
-        this.type = type;
-        this.reference = reference;
-        this.client = client;
-        this.date = date;
-        this.statut = statut;
-    }
 
     public void manageColor() {
         System.out.println("visite n0 "+ this.id);
@@ -81,7 +71,7 @@ public class Listview {
                     gfi = new GieglanFileIcon();
                     gfi.setExtension(g.getCategorieTest().getLibelle());
                     gfi.setIcon(g.getCategorieTest().getIcon());
-                    this.measures.add(replaceIconIfNecessary(gfi, this.id));
+                   this.measures.add(replaceIconIfNecessary(gfi, this.id));
                 }
         } else {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
@@ -126,45 +116,46 @@ public class Listview {
                     if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
                         switch (categorieTest.getExtension()){
                             case "F":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
                             case "R":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp");
                                 break;
                             case "S":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp");
                                 break;
                             case "P":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp");
                                 break;
                             case "JSON":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp");
                                 break;
                         }
                     }
                     if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
                         switch (categorieTest.getExtension()){
                             case "F":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
                             case "R":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp");
                                 break;
                             case "S":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp");
                                 break;
                             case "P":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp");
                                 break;
                             case "JSON":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp");
                                 break;
                         }
 
@@ -172,22 +163,23 @@ public class Listview {
                     if(g.getStatus().equals(GieglanFile.StatusType.REJECTED)){
                         switch (categorieTest.getExtension()){
                             case "F":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
+                                //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
                             case "R":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Car-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp");
                                 break;
                             case "S":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp");
                                 break;
                             case "P":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Flash\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp");
                                 break;
                             case "JSON":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Eye\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp");
                                 break;
                             case "G":
-                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Cloud1\"></i></span>&nbsp");
+                                categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp");
                                 break;
                         }
                     }
@@ -348,4 +340,31 @@ public class Listview {
     public void setStatutVisite(int statutVisite) {
         this.statutVisite = statutVisite;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Listview listview = (Listview) o;
+        return statutVisite == listview.statutVisite &&
+                Objects.equals(id, listview.id) &&
+                Objects.equals(categorie, listview.categorie) &&
+                Objects.equals(type, listview.type) &&
+                Objects.equals(reference, listview.reference) &&
+                Objects.equals(chassis, listview.chassis) &&
+                Objects.equals(client, listview.client) &&
+                Objects.equals(date, listview.date) &&
+                Objects.equals(statut, listview.statut) &&
+                Objects.equals(measures, listview.measures) &&
+                Objects.equals(visiteService, listview.visiteService) &&
+                Objects.equals(gieglanFileService, listview.gieglanFileService) &&
+                Objects.equals(catSer, listview.catSer);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, categorie, type, reference, chassis, client, date, statut, statutVisite, measures, visiteService, gieglanFileService, catSer);
+    }
+
 }

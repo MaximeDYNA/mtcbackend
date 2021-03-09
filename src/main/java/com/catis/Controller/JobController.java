@@ -4,11 +4,13 @@ import com.catis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 public class JobController {
 
     @Autowired
@@ -23,7 +25,6 @@ public class JobController {
     @GetMapping("/api/v1/visite/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
         try {
-            System.out.println("testttttttttttttttttttttttttttttttttttttttttttttttttttt\n");
             VisiteController.dispatchEdit(vs.findById(id),
                     vs, gieglanFileService, catSer, ps);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");

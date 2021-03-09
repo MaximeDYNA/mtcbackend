@@ -110,21 +110,23 @@ public class VisiteController {
     @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
     public static void  dispatchEdit(Visite visite, VisiteService vs,
                                     GieglanFileService gieglanFileService,
-                                    CategorieTestVehiculeService catSer, ProduitService ps){
+                                    CategorieTestVehiculeService catSer, ProduitService ps)  {
+
         for(SseEmitter emitter:emitters){
             try{
-
+                System.out.println("-----sse----");
                 if(visite.getStatut()==1){
                     emitter.send(SseEmitter.event().name("edit_visit").data(
                             buildListView(visite, vs, gieglanFileService,catSer, ps)));
                     emitter.send(SseEmitter.event().name("controleur_visit").data(visite));
                 }
                 else{
-                    emitter.send(SseEmitter.event().name("edit_visit").data(
-                            buildListView(visite, vs, gieglanFileService,catSer, ps)));
+                    Listview l = buildListView(visite, vs, gieglanFileService,catSer, ps);
+                    emitter.send(SseEmitter.event().name("edit_visit").data(l));
                 }
 
             }catch(IOException e){
+                System.out.println("---SSE ERROR---");
                 emitters.remove(emitter);
             }
         }
@@ -308,7 +310,6 @@ public class VisiteController {
         renderer.setDocumentFromString(
                 parseThymeleafTemplate(visiteId)
         );
-        Thread.sleep(10000);
         renderer.layout();
         renderer.createPDF(outputStream);
 
@@ -316,10 +317,12 @@ public class VisiteController {
 
             Visite visite = vs.findById(visiteId);
             if(visite.getProcess().isStatus()){
-                visite.setStatut(7);
+                visite.setStatut(6);
             }
-            else
+            else{
                 visite.setStatut(5);
+                visite.setEncours(false);
+            }
 
             visite = vs.add(visite);
             VisiteController.dispatchEdit(visite,vs,gieglanFileService,catSer,ps);
@@ -346,24 +349,24 @@ public class VisiteController {
     public static Listview buildListView(Visite visite, VisiteService vs,
                                  GieglanFileService gieglanFileService,
                                  CategorieTestVehiculeService catSer, ProduitService ps ){
-        Listview lv = new Listview(visite.getIdVisite(), vs, gieglanFileService,catSer);
-        lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+        Listview v = new Listview(visite.getIdVisite(), vs, gieglanFileService,catSer);
+        v.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                 .getNumImmatriculation()));
 
         if (visite.getCarteGrise().getProprietaireVehicule()
                 .getPartenaire()
                 .getNom()
                 == null)
-            lv.setClient(null);
+            v.setClient(null);
         else
-            lv.setClient(visite.getCarteGrise().getProprietaireVehicule()
+            v.setClient(visite.getCarteGrise().getProprietaireVehicule()
                     .getPartenaire()
                     .getNom());
-        lv.setDate(visite.getDateDebut());
-        lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-        lv.setStatut(visite.statutRender(visite.getStatut()));
-        lv.setType(visite.typeRender());
-        return lv;
+        v.setDate(visite.getDateDebut());
+        v.setReference(visite.getCarteGrise().getNumImmatriculation());
+        v.setStatut(visite.statutRender(visite.getStatut()));
+        v.setType(visite.typeRender());
+        return v;
     }
     public String parseThymeleafTemplate(long id) throws Exception {
 

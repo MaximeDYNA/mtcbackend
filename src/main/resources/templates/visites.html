@@ -190,7 +190,7 @@
         </tr>
         <tr>
             <td style=" width: 50%; border: 1px solid black;" rowspan="2">
-                <div style="width:90%; height: 540px; padding: 4px;">
+                <div th:style="${v.process.status} ? 'width:90%; height: 650px; padding: 4px;' : 'width:90%; height: 540px; padding: 4px; '">
                     <div th:if="${#lists.size(defaultsTest)} != 0">
                         <h6 class="font-weight-bold">
                             <p>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
@@ -217,7 +217,7 @@
                     <h2
                             th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
                     <p class="text-left font-weight-bold">
-                        <span th:utext="${v.process.status} ? 'PROCHAINE VISITE: ' : 'JUSQU\'AU / UNTIL: '"></span>
+                        <span th:utext="${v.process.status} ? 'PROCHAINE VISITE / NEXT VISIT: ' : 'JUSQU\'AU / UNTIL: '"></span>
                         <span style="font-size: 25px;"
                               th:utext="${v.process.status ? #dates.format(controlValidityAt, 'dd/MM/yyyy')
                               : #dates.format(controlDelayAt, 'dd/MM/yyyy')}"></span><br/>
@@ -226,7 +226,7 @@
                     </p>
 
                         <img style="height: 150px; width: 150px; float: right;"
-                             th:src="@{${v.inspection.signature !=null ? 'localhost:8080/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
+                             th:src="@{${v.inspection.signature !=null ? '~/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
 
 
                 </div>
@@ -614,7 +614,7 @@
 <div style="page-break-after: always;"></div>
 
 <div align="center" style="height:100%">
-    <table cellspacing="10" style="margin-top: 200px; margin-bottom: 300px">
+    <table cellspacing="10" style="margin-top: 300px; margin-bottom: 300px">
         <tr>
             <td align="center" colspan="2">
                 <h3> Véhicule immatriculé /

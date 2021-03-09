@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.catis.repository.faileTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,6 @@ import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 
 @Service
-
 public class VisiteService {
     @Autowired
     private VisiteRepository visiteRepository;
@@ -51,6 +52,9 @@ public class VisiteService {
     private ControlRepository controlRepository;
     @Autowired
     private GieglanFileService gieglanFileService;
+    @Autowired
+    private CarteGriseService cgs;
+
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
@@ -113,7 +117,7 @@ public class VisiteService {
         return visites;
     }
 
-    public Visite approuver(Visite visite) {
+    public Visite approuver(Visite visite) throws IOException {
         visite.setStatut(0);
         Visite v = visiteRepository.save(visite);
         VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
@@ -162,7 +166,13 @@ public class VisiteService {
             visite.setControl(control);
 
         } else {
-            visite.setContreVisite(false);
+            visite.setContreVisite(true);
+            visite.setStatut(1);
+            List<Visite> vi =visiteRepository.getBeforeLastVisiteWithHisControl(cg.getNumImmatriculation(), PageRequest.of(0,1));
+            if(!vi.isEmpty()) {
+                visite.setControl(vi.get(0).getControl());
+            }
+
             visite.setEncours(true);
             visite.setCarteGrise(cg);
             visite.setDateDebut(LocalDateTime.now());
@@ -177,7 +187,7 @@ public class VisiteService {
         return visite;
     }
 
-    public Visite modifierVisite(Visite visite) {
+    public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
 
@@ -196,7 +206,7 @@ public class VisiteService {
         return visiteEnCours;
     }
 
-    public void terminerInspection(Long visiteId) {
+    public void terminerInspection(Long visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
         visite.setEncours(false);
@@ -211,7 +221,7 @@ public class VisiteService {
         return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
     }
 
-    public void commencerInspection(Long visiteId) {
+    public void commencerInspection(Long visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
         visite.setDateFin(LocalDateTime.now());

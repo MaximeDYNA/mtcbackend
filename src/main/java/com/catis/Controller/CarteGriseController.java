@@ -1,5 +1,6 @@
 package com.catis.Controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,7 @@ public class CarteGriseController {
     }
 
     @PostMapping("/api/v1/cartegrise")
-    public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) {
+    public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
 
         System.out.println("......" + carteGriseR.getVisiteId());
