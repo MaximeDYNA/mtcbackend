@@ -11,7 +11,8 @@ import com.catis.model.Visite;
 
 public interface RapportDeVisiteRepo extends JpaRepository<RapportDeVisite, Long> {
 
-    @Query(value = "select r from RapportDeVisite r inner join r.seuil s "
-            + "inner join s.formule f inner join f.mesures m where r.visite = ?1")
+    @Query(value = "select r from RapportDeVisite r join fetch r.seuil s "
+            + "left join fetch s.lexique l left join fetch l.classification cl "
+            + "join fetch s.formule f join fetch f.mesures m where r.visite = ?1")
     List<RapportDeVisite> getRapportDeVisite(Visite visite);
 }

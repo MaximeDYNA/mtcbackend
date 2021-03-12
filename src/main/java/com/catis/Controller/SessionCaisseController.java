@@ -65,8 +65,8 @@ public class SessionCaisseController {
 
     @PostMapping("/api/v1/ouverturecaisse")
     public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
-        MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
-        System.out.println(MDC.get("user"));
+        //MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
+        // System.out.println(MDC.get("user"));
 
         LOGGER.info("ouverture de caisse en cours...");
 

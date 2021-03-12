@@ -27,9 +27,10 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     List<Visite> findByEncoursTrueAndStatut(int status, Sort sort);
 
-    @Query(value = "select v from Visite v inner join v.rapportDeVisites r "
-            + "inner join r.seuil s inner join s.formule f inner join f.mesures m "
-            + "inner join r.gieglanFile g where v.control = ?1 and v <> ?2 and g.isAccept = true")
+    @Query(value = "select v from Visite v join fetch v.rapportDeVisites r "
+            + "join fetch r.seuil s join fetch s.formule f join fetch f.mesures m "
+            + "join fetch r.gieglanFile g where v.control = ?1 and v <> ?2 and g.isAccept = true "
+            + "and g.status = 'VALIDATED' order by v.idVisite desc")
     List<Visite> getLastVisiteWithTestIsOk(Control control, Visite visite);
 
     @Query(value = "select v from Visite v join fetch v.inspection i "

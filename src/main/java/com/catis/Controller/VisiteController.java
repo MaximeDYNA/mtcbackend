@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
+import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.MesureVisuelRepository;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -85,6 +87,8 @@ public class VisiteController {
     private GieglanFileService gieglanFileService;
     @Autowired
     private CategorieTestVehiculeService catSer;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -325,7 +329,7 @@ public class VisiteController {
             }
 
             visite = vs.add(visite);
-            VisiteController.dispatchEdit(visite,vs,gieglanFileService,catSer,ps);
+        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
             return "/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
@@ -372,19 +376,34 @@ public class VisiteController {
 
         Optional<Visite> visite = this.visiteRepo.findById(id);
         Taxe tp = taxeService.findByNom("TVA");
-        if (visite.isPresent()) {
+        if (visite.isPresent() ) {
             List<RapportDeVisite> rapports = this.rapportDeVisiteRepo.getRapportDeVisite(visite.get());
-            List<Visite> lastVisiteWithTestIsOk = this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get());
-            lastVisiteWithTestIsOk.forEach(visite1 -> {
-                rapports.addAll(visite1.getRapportDeVisites());
-            });
+            this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get())
+                .forEach(visite1 -> { rapports.addAll(visite1.getRapportDeVisites()); });
+
             HashMap<String, String> results = new HashMap<>();
-            List<Lexique> defaultsTest = new ArrayList<>();
+            List<Lexique> minorDefault = new ArrayList<>();
+            List<Lexique> majorDefault = new ArrayList<>();
             rapports.forEach(rapport -> {
-                results.put(rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(), rapport.getResult());
-                if (rapport.getSeuil().getLexique() != null) {
-                    defaultsTest.add(rapport.getSeuil().getLexique());
-                }
+                results.put(
+                    rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(),
+                    rapport.getResult()
+                );
+                if (rapport.getSeuil().getLexique() != null &&
+                    "majeure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
+                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
+                        majorDefault.add(rapport.getSeuil().getLexique());
+                else if (rapport.getSeuil().getLexique() != null &&
+                    "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
+                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
+                        minorDefault.add(rapport.getSeuil().getLexique());
+
+            });
+            visite.get().getInspection().getLexiques().forEach(lexique -> {
+                if ("majeure".equalsIgnoreCase(lexique.getClassification().getCode()))
+                    majorDefault.add(lexique);
+                else
+                    minorDefault.add(lexique);
             });
 
             UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request, environment);
@@ -437,7 +456,8 @@ public class VisiteController {
             context.setVariable("r0423", Double.valueOf(results.get("0423")));
 
             context.setVariable("result", results);
-            context.setVariable("defaultsTest", defaultsTest);
+            context.setVariable("minorDefault", minorDefault);
+            context.setVariable("majorDefault", majorDefault);
             context.setVariable("controlleurName", user.getNom() + " " + user.getPrenom());
             context.setVariable("gps", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0).getGps());
             context.setVariable("o", v.getOrganisation());
