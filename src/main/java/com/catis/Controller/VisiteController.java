@@ -438,7 +438,7 @@ public class VisiteController {
             context.setVariable("r0412", Double.valueOf(results.get("0412")));
             context.setVariable("r0415", Double.valueOf(results.get("0415")));
             context.setVariable("r0401", Double.valueOf(results.get("0401")));
-            context.setVariable("r0402", Double.valueOf(results.get("0402")));
+            context.setVariable("r0402", results.get("0402")== null ? null : Double.valueOf(results.get("0402")));
             context.setVariable("r0465", Double.valueOf(results.get("0465")));
             context.setVariable("r0446", Double.valueOf(results.get("0446")));
             context.setVariable("r1001", results.get("1001"));
