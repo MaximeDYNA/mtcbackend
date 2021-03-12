@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Visites View</title>
+
     <!--script type="application/javascript" src="bootstrap.min.js"></script>
     <link type="text/css" media="all" href="bootstrap.css" rel="stylesheet" /-->
     <style>
@@ -23,8 +24,8 @@
            color: yellow;
            font-size: 10px;
            pointer-events: none;
-           transform: rotate(45deg);
-           -moz-transform: rotate(-45deg);
+
+
        }
        tr:not(:first-child) td {
            padding-top: 2px;
@@ -644,7 +645,7 @@
             </td>
         </tr>
     </table>
-    <div id="watermark">
+    <div id="watermark" style="transform: rotate(45deg);">
         <p th:if="${v.process.reference} != null">
             <span th:each="i: ${#numbers.sequence(0, 133)}" th:text="${v.process.reference}+'. '"></span>
         </p>
@@ -656,6 +657,7 @@
         <p><span th:text="${o.nom} + ' - ' +${o.adress} + ' - ' + ${o.tel1}+ '/' + ${o.tel2}"></span></p>
     </center>
 </footer>
+
 </body>
 </html>
 

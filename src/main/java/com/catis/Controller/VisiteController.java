@@ -390,10 +390,12 @@ public class VisiteController {
                     rapport.getResult()
                 );
                 if (rapport.getSeuil().getLexique() != null &&
-                    "majeure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification().getCode()))
+                    "majeure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
+                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
                         majorDefault.add(rapport.getSeuil().getLexique());
                 else if (rapport.getSeuil().getLexique() != null &&
-                    "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification().getCode()))
+                    "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
+                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
                         minorDefault.add(rapport.getSeuil().getLexique());
 
             });

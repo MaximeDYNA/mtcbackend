@@ -56,13 +56,12 @@ public class Listview {
 
 
     public void manageColor() {
-        System.out.println("visite n0 "+ this.id);
         Visite visite = visiteService.findById(this.id);
 
         if (visite.isContreVisite()) {
 
             Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
-            System.out.println("Failed test size "+visiteWithMissedTests.getInspection().getGieglanFiles().size());
+
             GieglanFileIcon gfi;
             for(GieglanFile g: visiteWithMissedTests
                     .getInspection().getGieglanFiles()){
@@ -103,9 +102,7 @@ public class Listview {
             categorieTests.forEach(categorieTest -> {
                 this.measures.add(replaceIconIfNecessary(categorieTest, this.id));
             });
-            measures.forEach(
-                    measure -> System.out.println(measure.getIcon())
-            );
+
         }
     }
 
