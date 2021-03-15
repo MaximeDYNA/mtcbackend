@@ -2,12 +2,7 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,7 +19,7 @@ public class CategorieVehicule extends JournalData {
 
     private String type;
 
-    @OneToMany(mappedBy = "categorieVehicule")
+    @OneToMany(mappedBy = "categorieVehicule", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CategorieTestVehicule> categorieTestVehicules;
 
