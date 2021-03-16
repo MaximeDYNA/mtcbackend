@@ -330,6 +330,8 @@ public class VisiteController {
 
             visite = vs.add(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+        VisiteController.dispatchEdit(visite,
+                vs, gieglanFileService, catSer, ps);
             return "/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
