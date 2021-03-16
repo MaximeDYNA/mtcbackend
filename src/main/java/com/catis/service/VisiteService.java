@@ -128,6 +128,7 @@ public class VisiteService {
         visite.setStatut(0);
         Visite v = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+
         return v;
     }
 
@@ -192,14 +193,14 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-       // VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
         return v;
     }
 
@@ -222,6 +223,8 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
 
     }
@@ -236,6 +239,8 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 

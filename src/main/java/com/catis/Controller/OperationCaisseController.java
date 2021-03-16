@@ -26,7 +26,7 @@ import com.catis.service.OperationCaisseService;
 import com.catis.service.VenteService;
 
 @RestController
-public class OperationCaisseController {
+public class  OperationCaisseController {
 
 
     private OperationCaisseService ocs;
@@ -43,7 +43,7 @@ public class OperationCaisseController {
 
     @GetMapping("/api/v1/operationcaisse/{code}/listview")
     public ResponseEntity<Object> reglementListView(@PathVariable int code) {
-        try {
+
             LOGGER.trace("Liste des adresses demandée");
             Map<String, Object> reglementListView;
             List<Map<String, Object>> mapList = new ArrayList<>();
@@ -57,17 +57,17 @@ public class OperationCaisseController {
                 reglementListView.put("createdDate", o.getCreatedDate());
                 reglementListView.put("modifiedDate", o.getModifiedDate());
                 mapList.add(reglementListView);
-            }
+                }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
-        } catch (Exception e) {
+        /*try {} catch (Exception e) {
             LOGGER.error("Erreur");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "règlement", null);
-        }
+        }*/
     }
 
     @PostMapping("/api/v1/operationcaisse/recap")
     public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
-        try {
+
             LOGGER.trace("Recapitulatif demandé");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -75,10 +75,10 @@ public class OperationCaisseController {
             LocalDateTime end = LocalDateTime.parse(recapDTO.getDateFin(), formatter);
             List<OpCaisseDTO> ops = venteService.recapOp(recapDTO.getCaissierId(), start, end);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ops);
-        } catch (Exception e) {
+           /* try { } catch (Exception e) {
             LOGGER.error("Erreur");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "recap", null);
-        }
+        }*/
     }
 
 }
