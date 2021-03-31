@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.service.*;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -24,12 +25,6 @@ import com.catis.model.Inspection;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
 import com.catis.objectTemporaire.SignatureDTO;
-import com.catis.service.ControleurService;
-import com.catis.service.GieglanFileService;
-import com.catis.service.InspectionService;
-import com.catis.service.LigneService;
-import com.catis.service.ProduitService;
-import com.catis.service.VisiteService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,6 +47,8 @@ public class InspectionController {
     @Autowired
     private GieglanFileService gieglanFileService;
     @Autowired
+    private OrganisationService os;
+    @Autowired
     private Environment env;
 
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
@@ -62,10 +59,10 @@ public class InspectionController {
 
         LOGGER.trace("Nouvelle inpection...");
         Inspection inspection = new Inspection(inspectionReceived);
-        System.out.println("Contrôleur ---"+UserInfoIn.getUserInfo(request).getId());
         inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
         inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
         inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
+        inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
         Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
         inspection.setVisite(visite);
         visiteService.commencerInspection(inspectionReceived.getVisiteId());
