@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.catis.objectTemporaire.CategorieproduitProduitPOJO;
+import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class CategorieProduitController {
     private CategorieProduitService cateProduitService;
     @Autowired
     private TaxeProduitService tps;
+    @Autowired
+    private OrganisationService os;
+
 
     private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 
@@ -70,18 +75,6 @@ public class CategorieProduitController {
         } catch (java.lang.IllegalArgumentException il) {
             LOGGER.error("Identifiant catégorie produit incorrect");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Identifiant catégorie produit incorrect", null);
-        }
-
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/categorieproduits")
-    public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieProduit categorieProduit) {
-        try {
-            LOGGER.trace("Ajout d'une catégorie");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.addCategorieProduit(categorieProduit));
-        } catch (Exception e) {
-            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
         }
 
     }
@@ -121,4 +114,39 @@ public class CategorieProduitController {
 
     }
 
+
+    //***Admin***//
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/catproducts")
+    public List<CategorieProduit> catproduct() {
+        try {
+            LOGGER.trace("Liste des catégories");
+            return  cateProduitService.listeCategorieProduit();
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return null;
+        }
+
+    }
+    /***admin**/
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/categorieproduits")
+    public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieproduitProduitPOJO categorieProduit) {
+
+            LOGGER.trace("Ajout d'une catégorie");
+            CategorieProduit c = new CategorieProduit();
+            c.setCategorieProduitId(categorieProduit.getCategorieProduitId());
+            c.setLibelle(categorieProduit.getLibelle());
+            c.setDescription(categorieProduit.getDescription());
+            c.setOrganisation(
+                    os.findByOrganisationId(
+                            categorieProduit
+                                    .getOrganisation()
+                                    ));
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.addCategorieProduit(c));
+        /*try { } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
+        }*/
+
+    }
 }

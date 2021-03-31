@@ -4,6 +4,7 @@ package com.catis.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,14 @@ import com.catis.model.Hold;
 import com.catis.model.Posales;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
-import com.catis.objectTemporaire.Card;
-import com.catis.objectTemporaire.HoldData;
-import com.catis.objectTemporaire.PosaleData;
-import com.catis.objectTemporaire.PosaleDataForDelete;
-import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.CarteGriseService;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
 import com.catis.service.VisiteService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -50,6 +48,8 @@ public class PosaleController {
     private ProduitService produitService;
     @Autowired
     private TaxeProduitService tps;
+    @Autowired
+    HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(PosaleController.class);
 
@@ -68,7 +68,8 @@ public class PosaleController {
             Posales posale = new Posales();
             posale.setHold(hold);
             posale.setProduit(produitService.findById(posaleData.getProduitId()));
-            if (visiteService.visiteEncours(posaleData.getReference()))
+            if (visiteService.visiteEncours(posaleData.getReference(),
+                    Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())))
                 throw new VisiteEnCoursException();
             posale.setReference(posaleData.getReference());
             posale.setStatus(true);

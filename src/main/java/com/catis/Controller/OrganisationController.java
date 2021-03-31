@@ -1,6 +1,7 @@
 package com.catis.Controller;
 
 import com.catis.Controller.message.Message;
+import com.catis.objectTemporaire.OrganisationListDTO;
 import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
@@ -14,6 +15,9 @@ import com.catis.model.Organisation;
 import com.catis.service.OrganisationService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class OrganisationController {
@@ -37,6 +41,21 @@ public class OrganisationController {
                 Organisation organisation = organisationService.findByOrganisationId(Long.valueOf(u.getOrganisanionId()));
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", organisation);
+        /*try {} catch (Exception e) {
+
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Organisation", null);
+        }*/
+    }
+    /**Admin**/
+    @GetMapping("/api/v1/organisations")
+    public List<OrganisationListDTO> getOrganisation() {
+
+        List<Organisation> organisations = organisationService.findAllOrganisation();
+        List<OrganisationListDTO> organisationsForVue = new ArrayList<>();
+        organisations.forEach(organisation -> {
+            organisationsForVue.add(new OrganisationListDTO(organisation.getOrganisationId(), organisation.getNom()));
+        });
+        return organisationsForVue;
         /*try {} catch (Exception e) {
 
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Organisation", null);

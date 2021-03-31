@@ -21,6 +21,7 @@ public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long organisationId;
+    private String name;
     private String nom;
     private String adress;
     private String tel1;
@@ -928,5 +929,13 @@ public class Organisation {
 
     public void setTel2(String tel2) {
         this.tel2 = tel2;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
