@@ -3,6 +3,7 @@ package com.catis.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +61,7 @@ public class CarteGriseService {
     public List<CarteGrise> findBychassis(String chassis) {
 
         return cgr.findByVehicule_ChassisStartsWithIgnoreCase(chassis);
+
     }
 
     public List<CarteGrise> findLastCgBychassis(String chassis) {
@@ -83,6 +85,12 @@ public class CarteGriseService {
         return cgs;
     }
 
+    public List<CarteGrise> findCartegriseForAssurance(String imma){
+        Optional<List<CarteGrise>> c = cgr.findCartegriseWithPartOfImma(imma);
+        if(c.isPresent())
+            return c.get();
+        return null;
+    }
     public boolean isCarteGriseExist(String ref) {
         if (findByImmatriculationOuCarteGrise(ref).isEmpty())
             return false;

@@ -132,8 +132,8 @@ public class VisiteService {
         return v;
     }
 
-    public List<Visite> findByReference(String ref) {
-        return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(ref, ref);
+    public List<Visite> findByReference(String ref, Long organisationId) {
+        return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(ref, ref, organisationId);
     }
 
     public Visite findById(Long i) {
@@ -161,7 +161,7 @@ public class VisiteService {
         } else
             visite.setStatut(0);
 
-        if (isVisiteInitial(cg.getNumImmatriculation())) {
+        if (isVisiteInitial(cg.getNumImmatriculation(), organisationId)) {
             visite.setContreVisite(false);
             visite.setEncours(true);
             visite.setCarteGrise(cg);
@@ -204,8 +204,8 @@ public class VisiteService {
         return v;
     }
 
-    public boolean visiteEncours(String imCha) {
-        return !visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
+    public boolean visiteEncours(String imCha, Long organisationId) {
+        return !visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(imCha, imCha, organisationId)
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
                 .isEmpty();
     }
@@ -244,8 +244,8 @@ public class VisiteService {
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
-    public boolean isVisiteInitial(String ref) throws VisiteEnCoursException {
-        List<Visite> visites = findByReference(ref);
+    public boolean isVisiteInitial(String ref, Long organisationId) throws VisiteEnCoursException {
+        List<Visite> visites = findByReference(ref, organisationId);
 
         Visite visite = visites.stream().max(Comparator.comparing(Visite::getCreatedDate))
                 .orElse(null);
@@ -273,8 +273,8 @@ public class VisiteService {
         return true;
     }
 
-    public boolean isVehiculeExist(String ref) {
-        if (findByReference(ref).isEmpty())
+    public boolean isVehiculeExist(String ref, Long organisationId) {
+        if (findByReference(ref, organisationId).isEmpty())
             return false;
         return true;
     }

@@ -18,7 +18,6 @@ import com.catis.model.Utilisateur;
 @MappedSuperclass
 public class JournalData {
 
-
     @Column(name = "created_date", updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;

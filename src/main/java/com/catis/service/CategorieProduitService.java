@@ -17,7 +17,7 @@ public class CategorieProduitService {
 
     public List<CategorieProduit> listeCategorieProduit() {
         List<CategorieProduit> categorieProduites = new ArrayList<>();
-        categoProduitRepository.findAll().forEach(categorieProduites::add);
+        categoProduitRepository.findByActiveStatusTrue().forEach(categorieProduites::add);
         return categorieProduites;
     }
 

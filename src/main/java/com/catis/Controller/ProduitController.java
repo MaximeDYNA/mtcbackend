@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ import com.catis.service.TaxeProduitService;
 import com.catis.service.TaxeService;
 import com.catis.service.VisiteService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class ProduitController {
@@ -57,7 +60,8 @@ public class ProduitController {
     private TaxeProduitService tps;
     @Autowired
     private TaxeService taxeService;
-
+    @Autowired
+    HttpServletRequest request;
     @Autowired
     FilesStorageService storageService;
 
@@ -134,7 +138,8 @@ public class ProduitController {
                 if(imCha.equalsIgnoreCase(null))
                 imCha="";
 
-                if (visiteService.visiteEncours(imCha))
+                if (visiteService.visiteEncours(imCha,
+                        Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())))
                 throw new VisiteEnCoursException("Une visite est déjà en cours");
                 LOGGER.trace("liste des catégories...");
                 List<Produit> produits = new ArrayList<>();
@@ -144,7 +149,8 @@ public class ProduitController {
                 }
 
 
-                if (visiteService.isVisiteInitial(imCha)) {
+                if (visiteService.isVisiteInitial(imCha,
+                        Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()))) {
                     if (!cgs.isCarteGriseExist(imCha)) {
                         List<ProduitEtTaxe> pets = new ArrayList<>();
                         List<Taxe> taxes;

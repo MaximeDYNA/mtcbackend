@@ -26,6 +26,7 @@ public class Ligne extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLigne;
     private String description;
+    private String nom;
 
 
 
@@ -86,4 +87,11 @@ public class Ligne extends JournalData {
         this.inspections = inspections;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }
