@@ -4,7 +4,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class ProduitService {
     private ProduitRepository produitRepository;
     @Autowired
     private CarteGriseRepository cgr;
+    @Autowired
+    private VisiteService visiteService;
 
     public String saveImage(MultipartFile imageFile) throws Exception {
         String folder = "uploaded/";
@@ -76,6 +81,37 @@ public class ProduitService {
     public Produit addProduit(Produit produit) {
         return produitRepository.save(produit);
 
+    }
+
+    public List<String> getLibelleList(){
+        List<String> produits = new ArrayList<>();
+        findAllProduit().forEach(produit -> {
+            produits.add(produit.getLibelle());
+        });
+        return produits;
+    }
+    public Map<String, Integer> getLibelleAndOccurence(){
+        Map<String, Integer> maps = new HashMap<>();
+        produitRepository.findByActiveStatusTrue().forEach(
+                produit -> {
+                    if(!visiteService.findbyProduit(produit).isEmpty());
+                                maps.put(produit.getLibelle(),
+                                        productOccurenceInVisitList(produit));
+                    if(produit.getLibelle().equalsIgnoreCase("cv"))
+                        maps.put(produit.getLibelle(), visiteService.findActiveCV().size());
+                }
+        );
+        return maps;
+    }
+
+    public int productOccurenceInVisitList(Produit produit){
+        int occurrence = visiteService.findActiveVI().stream()
+                .filter(visite ->
+                            visite.getCarteGrise().getProduit().getLibelle().equals(produit.getLibelle()
+                        )
+                ).collect(Collectors.toList())
+                .size();
+        return occurrence;
     }
 
 }

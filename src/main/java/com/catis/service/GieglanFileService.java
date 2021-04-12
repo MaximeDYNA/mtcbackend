@@ -38,6 +38,7 @@ public class GieglanFileService {
         file.setType(FileType.CARD_REGISTRATION);
         file.setStatus(StatusType.INITIALIZED);
         file.setInspection(inspection);
+        file.setOrganisation(inspection.getOrganisation());
         file.setFileCreatedAt(new Date());
         this.creategieglanforCardGrise(file);
         file.setValeurTests(this.codeGieglans);
@@ -64,6 +65,7 @@ public class GieglanFileService {
                 ValeurTest valeurTest = new ValeurTest();
                 valeurTest.setActiveStatus(true);
                 valeurTest.setCode(key);
+                valeurTest.setOrganisation(file.getOrganisation());
                 valeurTest.setGieglanFile(file);
                 valeurTest.setValeur(value);
                 valeurTest.setCrc(crc);

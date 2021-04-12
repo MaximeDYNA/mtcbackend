@@ -2,9 +2,12 @@ package com.catis.Controller;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.catis.objectTemporaire.CatProductForSelectDTO;
 import com.catis.objectTemporaire.CategorieproduitProduitPOJO;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
@@ -122,6 +125,23 @@ public class CategorieProduitController {
         try {
             LOGGER.trace("Liste des catégories");
             return  cateProduitService.listeCategorieProduit();
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return null;
+        }
+
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/catproducts/forselect")
+    public List<CatProductForSelectDTO> catProductForSelectDTOS() {
+        try {
+            LOGGER.trace("Liste des catégories");
+            List<CatProductForSelectDTO> cat = new ArrayList<>();
+            cateProduitService.listeCategorieProduit()
+                    .forEach(categorieProduit -> {
+                        cat.add(new CatProductForSelectDTO(categorieProduit.getCategorieProduitId(),
+                                categorieProduit.getLibelle()));
+                    });
+            return cat;
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
             return null;
