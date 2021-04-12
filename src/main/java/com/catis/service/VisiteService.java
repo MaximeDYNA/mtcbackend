@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.catis.Event.VisiteCreatedEvent;
+import com.catis.model.*;
 import com.catis.repository.faileTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +26,7 @@ import org.springframework.stereotype.Service;
 import com.catis.Controller.ApiResponseHandler;
 import com.catis.Controller.VisiteController;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.CarteGrise;
-import com.catis.model.Control;
-import com.catis.model.Organisation;
 import com.catis.model.Control.StatusType;
-import com.catis.model.Visite;
 import com.catis.objectTemporaire.Listview;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
@@ -66,7 +63,20 @@ public class VisiteService {
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
+    public List<Visite> findActiveVI(){
+        return visiteRepository.findByActiveStatusTrueAndContreVisiteFalse();
+    }
+    public List<Visite> findActiveCV(){
+        return visiteRepository.findByActiveStatusTrueAndContreVisiteTrue();
+    }
 
+    public List<Visite> findActiveVisites(){
+        return visiteRepository.findByActiveStatusTrue();
+    }
+
+    public List<Visite> findbyProduit(Produit produit){
+        return visiteRepository.findByActiveStatusTrueAndCarteGriseProduit(produit);
+    }
 
     public Visite visiteWithLastMissedTests(Visite visite){
         List <Visite> v = visiteRepository

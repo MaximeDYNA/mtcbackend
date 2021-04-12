@@ -6,20 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.catis.Controller.exception.VisiteEnCoursException;
@@ -28,9 +21,6 @@ import com.catis.model.Posales;
 import com.catis.model.Produit;
 import com.catis.model.Taxe;
 import com.catis.model.TaxeProduit;
-import com.catis.objectTemporaire.HoldData;
-import com.catis.objectTemporaire.ListViewCatProduit;
-import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.repository.FilesStorageService;
 import com.catis.service.CarteGriseService;
 import com.catis.service.CategorieProduitService;
@@ -73,7 +63,7 @@ public class ProduitController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.findProduitWithoutContreVisite());
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/produits")
+    @PostMapping("/api/v1/produits")
     public ResponseEntity<Object> addProduit(
             @RequestParam("libelle") String libelle,
             @RequestParam("description") String description,
@@ -225,5 +215,103 @@ public class ProduitController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
     }
+
+    /*Administration*/
+    @GetMapping(value = "/api/v1/admin/produits")
+    public ResponseEntity<Object> ProduitList() {
+
+        List<Produit> produits = produitService.findAllProduit();
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produits);
+    }
+    @GetMapping("/api/v1/admin/produits/graphview/legende")
+    public ResponseEntity<Object> legendeforGraphView() {
+        try {
+            //log
+            List<String> legends = produitService.getLibelleList();
+            String[] datas = new String[legends.size()];
+            for (int i = 0; i < datas.length; i++) {
+                datas[i] = legends.get(i);
+            }
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage graph view visit", datas);
+        } catch (Exception e) {
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
+                    + " de la liste des visite en cours", null);
+        }
+
+    }
+    @GetMapping("/api/v1/admin/produits/graphview/data")
+    public ResponseEntity<Object> dataforGraphView() {
+        try {
+            //occurence produit dans la liste des visites
+            Map<String, Integer> legendAndOccurence = produitService.getLibelleAndOccurence();
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Occurences de produit", legendAndOccurence);
+        } catch (Exception e) {
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
+                    + " de la liste des visite en cours", null);
+        }
+
+    }
+    @PostMapping("/api/v1/admin/produits")
+    public ResponseEntity<Object> addProduitAdmin(
+            @RequestParam("libelle") String libelle,
+            @RequestParam("description") String description,
+            @RequestParam("prix") double prix,
+            @RequestParam("delaiValidite") int delaiValidite,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("categorieProduitId") Long categorieProduitId) throws Exception {
+
+
+        Produit produit = new Produit();
+        produit.setLibelle(libelle);
+        produit.setDescription(description);
+        produit.setPrix(prix);
+        produit.setDelaiValidite(delaiValidite);
+        produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
+        produit.setImg(produitService.saveImage(file));
+        LOGGER.trace("liste des catégories...");
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
+
+		   /* try {}
+		    catch (Exception e) {
+		    	LOGGER.error("Erreur lors de l'ajout d'un produit");
+				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
+		    }*/
+
+
+    }
+    /*@GetMapping("/api/v1/admin/produits/graphview")
+    public ResponseEntity<Object> listforGraphView() {
+        try {
+
+            List<Object> graphViews = new ArrayList<>();
+            int[] datas = new int[produitService.findAllProduit().size()];
+            for (int i = 0; i < datas.length; i++) {
+                datas[i] = produitService.findAllProduit().size();
+            }
+            Map<String, int[]> result = new HashMap<>();
+            result.put("tab", datas);
+            graphViews.add(new GraphView("maj", vs.listParStatus(0).size()));
+            graphViews.add(new GraphView("A inspecter", vs.listParStatus(1).size()));
+            graphViews.add(new GraphView("En cours test", vs.listParStatus(2).size()));
+            graphViews.add(new GraphView("A signer", vs.listParStatus(3).size()));
+            graphViews.add(new GraphView("A imprimer", vs.listParStatus(4).size()));
+            graphViews.add(new GraphView("A enregister", vs.listParStatus(5).size()));
+            graphViews.add(new GraphView("A certifier", vs.listParStatus(6).size()));
+            graphViews.add(new GraphView("Accepté", vs.listParStatus(7).size()));
+            graphViews.add(new GraphView("Refusé", vs.listParStatus(8).size()));
+
+            return ApiResponseHandler.generateResponses(HttpStatus.OK, true, "Affichage graph view visit", graphViews, datas);
+        } catch (Exception e) {
+            log.error("Erreur lors de l'affichage de la liste des visite en cours");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
+                    + " de la liste des visite en cours", null);
+        }
+
+    }*/
 
 }

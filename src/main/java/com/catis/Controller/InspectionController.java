@@ -66,6 +66,7 @@ public class InspectionController {
         Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
         inspection.setVisite(visite);
         visiteService.commencerInspection(inspectionReceived.getVisiteId());
+
         inspection = inspectionService.addInspection(inspection);
         this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
 				

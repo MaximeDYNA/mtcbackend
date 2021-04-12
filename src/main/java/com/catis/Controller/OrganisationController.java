@@ -36,7 +36,6 @@ public class OrganisationController {
 
     @GetMapping("/api/v1/organisation")
     public ResponseEntity<Object> connectedUserOrganisation() {
-
                 UserDTO u =UserInfoIn.getUserInfo(request);
                 Organisation organisation = organisationService.findByOrganisationId(Long.valueOf(u.getOrganisanionId()));
 
