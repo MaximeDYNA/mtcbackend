@@ -48,8 +48,12 @@ public class CarteGriseService {
         return cgr.findById(carteGriseId).get();
     }
 
+
     public List<CarteGrise> findByImmatriculationOuCarteGrise(String imOrCha) {
         return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(imOrCha, imOrCha);
+    }
+    public CarteGrise findByImmatriculation(String imOrCha) {
+        return cgr.findByNumImmatriculationIgnoreCase(imOrCha);
     }
 
     public CarteGrise findLastByImmatriculationOuCarteGrise(String imOrCha) {
@@ -96,6 +100,17 @@ public class CarteGriseService {
             return false;
 
         return true;
+    }
+
+    public boolean isCarteGriseHasValidVisite(String immatriculation){
+        Optional<CarteGrise> result = cgr.findCGWithOrderedValidControl(immatriculation);
+        if(result.isPresent()){
+            if(result.get().getControls()
+                    .stream().findFirst().isPresent()){
+                return true;
+            }
+        }
+        return false;
     }
 
 

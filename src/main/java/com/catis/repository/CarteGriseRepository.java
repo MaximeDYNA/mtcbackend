@@ -24,5 +24,16 @@ public interface CarteGriseRepository extends CrudRepository<CarteGrise, Long> {
 
     List<CarteGrise> findByVehicule_ChassisStartsWithIgnoreCase(String chassis);
 
+    CarteGrise findByNumImmatriculationIgnoreCase(String imma);
+
     List<CarteGrise> findByVehicule_ChassisStartsWithIgnoreCaseOrderByCreatedDateDesc(String chassis, Pageable pageable);
+
+    @Query("select c from CarteGrise c " +
+            "join fetch c.controls con " +
+            "where con.activeStatus = true " +
+            "and con.status = 'VALIDATED' " +
+            "and con.validityAt >= current_date " +
+            "and c.numImmatriculation = ?1 " +
+            "order by con.id desc")
+    Optional<CarteGrise> findCGWithOrderedValidControl(String immatriculation);
 }
