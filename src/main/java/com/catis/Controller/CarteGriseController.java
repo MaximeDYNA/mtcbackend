@@ -76,7 +76,31 @@ public class CarteGriseController {
 
         }
     }
+    @GetMapping("/api/v1/search/cartegrise/assurance/imma/{imma}")
+    public ResponseEntity<Object> searchForAssuranceByImma(@PathVariable String imma) {
+        LOGGER.trace("Recherche carte grise...");
+        try {
+            ;
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
+                    cgs.findByImmatriculation(imma));
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
+                    "Une erreur est survenue", null);
 
+        }
+    }
+    @GetMapping("/api/v1/search/cartegrise/assurance/visite/{imma}")
+    public ResponseEntity<Object> isCGhasValidVisite(@PathVariable String imma) {
+        LOGGER.trace("visite...");
+        try {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
+                    cgs.isCarteGriseHasValidVisite(imma));
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
+                    "Une erreur est survenue", null);
+
+        }
+    }
 
 
     @GetMapping("/api/v1/search/last/{imCha}")

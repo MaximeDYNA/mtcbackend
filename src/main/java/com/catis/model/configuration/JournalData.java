@@ -26,7 +26,7 @@ public class JournalData {
     private LocalDateTime modifiedDate;
 
     @Column(columnDefinition = "bit default 1")
-    private boolean activeStatus;
+    private boolean activeStatus = true;
 
     @Column(name = "created_by")
     @CreatedBy
