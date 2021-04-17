@@ -25,7 +25,6 @@ public class Caisse extends JournalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long caisse_id;
-
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
