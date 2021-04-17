@@ -80,7 +80,6 @@ public class CarteGriseController {
     public ResponseEntity<Object> searchForAssuranceByImma(@PathVariable String imma) {
         LOGGER.trace("Recherche carte grise...");
         try {
-            ;
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
                     cgs.findByImmatriculation(imma));
         } catch (Exception e) {
