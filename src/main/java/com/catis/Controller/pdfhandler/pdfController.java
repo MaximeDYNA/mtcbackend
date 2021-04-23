@@ -104,16 +104,8 @@ public class pdfController {
         return modelAndView;
     }
 
-
-
-
     @GetMapping("/api/v1/visites/imprimer/{id}")
-    public void generatePdfFromHtml(@PathVariable Long id) throws Exception {
-
-
-    }
-
-
+    public void generatePdfFromHtml(@PathVariable Long id) throws Exception { }
 
     @GetMapping("/visites/qrcode/{id}")
     public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
@@ -159,6 +151,7 @@ public class pdfController {
 
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
     }
+
     private String convertToXhtml(String html) throws UnsupportedEncodingException {
         Tidy tidy = new Tidy();
         tidy.setInputEncoding("UTF-8");
@@ -171,9 +164,10 @@ public class pdfController {
     }
 
     public static Date convert(LocalDateTime dateToConvert) {
-        return java.util.Date
-                .from(dateToConvert.atZone(ZoneId.systemDefault())
-                        .toInstant());
+        return Date.from(dateToConvert
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+        );
     }
 
 }
