@@ -4,7 +4,9 @@ jobs:
     sonarQubeTrigger:
     name: SonarQube Trigger
     runs-on: fedora-server
-    steps:  
+    steps:
+    - name: Trigger Jenkins Job
+      uses: appleboy/jenkins-action@0.0.1
     - uses: actions/checkout@master
     - name: SonarQube Scanner
       uses: ItsEcholot/sonarqube-action@v0.0.2
