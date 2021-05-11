@@ -31,8 +31,6 @@ public class UserInfoIn {
 
     public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, Environment env) {
 
-
-
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
         Keycloak keycloak = KeycloakBuilder
                 .builder()
@@ -49,7 +47,6 @@ public class UserInfoIn {
                 .users()
                 .get(controleur
                         .getKeycloakId());
-
 
         UserDTO user = new UserDTO();
         user.setId(userResource.toRepresentation().getId());
