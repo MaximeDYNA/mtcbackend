@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
-VOLUME /opt
+VOLUME /tmp
 WORKDIR /usr/app
 COPY ./target/mtc-* ./
 EXPOSE 8086
