@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_organisation")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
+@SQLDelete(sql = "UPDATE t_organisation SET active_status=false WHERE organisation_id=?")
 public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +30,7 @@ public class Organisation {
     private String adress;
     private String tel1;
     private String tel2;
+    private boolean parent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -272,7 +277,7 @@ public class Organisation {
     private LocalDateTime modifiedDate;
 
     @Column(columnDefinition = "bit default 1")
-    private boolean activeStatus;
+    private boolean activeStatus = true;
 
     @Column(name = "created_by")
     @CreatedBy
@@ -937,5 +942,13 @@ public class Organisation {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isParent() {
+        return parent;
+    }
+
+    public void setParent(boolean parent) {
+        this.parent = parent;
     }
 }

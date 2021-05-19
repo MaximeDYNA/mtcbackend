@@ -84,18 +84,18 @@ public class EncaissementController {
         CarteGrise carteGrise;
         Vehicule vehicule;
         /* ---------client------------ */
-        vente.setClient(
-                clientService.findCustomerById(encaissement.getClientId() == 0 ? 1 : encaissement.getClientId()));
+        vente.setClient(encaissement.getClientId() == 0 ? null :
+                clientService.findCustomerById(encaissement.getClientId()));
         /*------------------------------*/
 
         /* ---------Vendeur------------ */
 
-        vente.setVendeur(
-                vendeurService.findVendeurById(encaissement.getVendeurId() == 0 ? 1 : encaissement.getVendeurId()));
+        vente.setVendeur(encaissement.getVendeurId() == 0 ? null :
+                vendeurService.findVendeurById(encaissement.getVendeurId()));
         /*------------------------------*/
 
         /* ---------Contact------------ */
-        vente.setContact(contactService.findById(encaissement.getContactId()));
+        vente.setContact(encaissement.getContactId() == 0 ? null : contactService.findById(encaissement.getContactId()));
         /*------------------------------*/
 
         /* ---------Session Caisse------------ */

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -19,6 +20,7 @@ import com.catis.model.configuration.JournalData;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class Classification extends JournalData {
 
     @Id

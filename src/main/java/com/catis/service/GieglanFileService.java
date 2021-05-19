@@ -27,7 +27,6 @@ public class GieglanFileService {
     @Autowired
     private GieglanFileRepository gieglanFileRepository;
 
-
     @Transactional
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
 

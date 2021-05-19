@@ -1,7 +1,9 @@
 package com.catis.model;
 
 import com.catis.model.configuration.JournalData;
+import org.hibernate.envers.Audited;
 
+@Audited
 public class DefectsModel {
 
     public Long id;
