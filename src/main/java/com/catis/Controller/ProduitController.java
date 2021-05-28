@@ -64,24 +64,20 @@ public class ProduitController {
     }
 
     @PostMapping("/api/v1/produits")
-    public ResponseEntity<Object> addProduit(
-            @RequestParam("libelle") String libelle,
-            @RequestParam("description") String description,
-            @RequestParam("prix") double prix,
-            @RequestParam("delaiValidite") int delaiValidite,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("categorieProduitId") Long categorieProduitId) throws Exception {
+    public ResponseEntity<Object> addProduit(@RequestBody ProduitPOJO produitPOJO) throws Exception {
 
+        LOGGER.trace("liste des produits...");
 
         Produit produit = new Produit();
-        produit.setLibelle(libelle);
-        produit.setDescription(description);
-        produit.setPrix(prix);
-        produit.setDelaiValidite(delaiValidite);
-        produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
-        produit.setImg(produitService.saveImage(file));
-        LOGGER.trace("liste des catégories...");
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
+        produit.setLibelle(produitPOJO.getLibelle());
+        produit.setDescription(produitPOJO.getDescription());
+        produit.setPrix(produitPOJO.getPrix());
+        produit.setDelaiValidite(produitPOJO.getDelaiValidite());
+        produit.setCategorieProduit(produitPOJO.getCategorieProduitId() == null ? null : categorieProduitService.findById(produitPOJO.getCategorieProduitId()));
+        produit.setImg(produitPOJO.getImg() ==  null ? null : produitService.saveImage(produitPOJO.getImg(),produitPOJO.getLibelle() ));
+
+        produit = produitService.addProduit(produit);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produit );
 		      
 		   /* try {} 
 		    catch (Exception e) {
@@ -272,7 +268,7 @@ public class ProduitController {
         produit.setPrix(prix);
         produit.setDelaiValidite(delaiValidite);
         produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
-        produit.setImg(produitService.saveImage(file));
+        //produit.setImg(produitService.saveImage(file));
         LOGGER.trace("liste des catégories...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
 

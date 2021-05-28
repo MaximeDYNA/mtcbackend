@@ -301,7 +301,7 @@ public class VisiteController {
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
     public String printPV(@PathVariable Long visiteId) throws Exception {
 
-            log.info("Impression PV");
+        log.info("Impression PV");
 
         File f= new File(environment.getProperty("pv.path"));
         if(!f.exists())
@@ -311,9 +311,7 @@ public class VisiteController {
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
         ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(
-                parseThymeleafTemplate(visiteId)
-        );
+        renderer.setDocumentFromString(parseThymeleafTemplate(visiteId));
         renderer.layout();
         renderer.createPDF(outputStream);
 
@@ -383,24 +381,24 @@ public class VisiteController {
             this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get())
                 .forEach(visite1 -> { rapports.addAll(visite1.getRapportDeVisites()); });
 
-            HashMap<String, String> results = new HashMap<>();
             List<Lexique> minorDefault = new ArrayList<>();
             List<Lexique> majorDefault = new ArrayList<>();
+            Context context = new Context();
             rapports.forEach(rapport -> {
-                results.put(
-                    rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode(),
-                    rapport.getResult()
-                );
+                String index = rapport.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode();
+                context.setVariable("r"+index, Double.valueOf(rapport.getResult()));
+
                 if (rapport.getSeuil().getLexique() != null &&
                     "majeure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
-                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
-                        majorDefault.add(rapport.getSeuil().getLexique());
+                        null : rapport.getSeuil().getLexique().getClassification().getCode()))
+                    majorDefault.add(rapport.getSeuil().getLexique());
                 else if (rapport.getSeuil().getLexique() != null &&
                     "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
-                            null : rapport.getSeuil().getLexique().getClassification().getCode()))
-                        minorDefault.add(rapport.getSeuil().getLexique());
+                        null : rapport.getSeuil().getLexique().getClassification().getCode()))
+                    minorDefault.add(rapport.getSeuil().getLexique());
 
             });
+
             visite.get().getInspection().getLexiques().forEach(lexique -> {
                 if ("majeure".equalsIgnoreCase(lexique.getClassification().getCode()))
                     majorDefault.add(lexique);
@@ -417,60 +415,24 @@ public class VisiteController {
             TemplateEngine templateEngine = new TemplateEngine();
             templateEngine.setTemplateResolver(templateResolver);
 
-            Context context = new Context();
             VisiteDate v = new VisiteDate(visite.get());
             List<MesureVisuel> mesureVisuels = mesureVisuelRepository.getMesureVisuelByInspection(
-                    v.getInspection(),
-                    PageRequest.of(0,1)
+                v.getInspection(),
+                PageRequest.of(0,1)
             );
-            //Thread.sleep(120000);
-            //wait(120000);
-            //System.out.println(mesureVisuels.get(0).getImage1());
 
-            context.setVariable("controlValidityAt", v.getControl().getValidityAt() ==null ? null : convert(v.getControl().getValidityAt() ));
+            context.setVariable("controlValidityAt", v.getControl().getValidityAt() == null ? null : convert(v.getControl().getValidityAt() ));
             context.setVariable("controlDelayAt", convert(v.getControl().getContreVDelayAt() == null
                     ? LocalDateTime.now(): v.getControl().getContreVDelayAt() ));
             context.setVariable("mesurevisuel", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0));
             context.setVariable("v", v);
             context.setVariable("tp", tp);
-            context.setVariable("r0410", results.get("0410")== null ? null : Double.valueOf(results.get("0410")));
-            context.setVariable("r0411", results.get("0411")== null ? null : Double.valueOf(results.get("0411")));
-            context.setVariable("r0413", results.get("0413")== null ? null : Double.valueOf(results.get("0413")));
-            context.setVariable("r0414", results.get("0414")== null ? null : Double.valueOf(results.get("0414")));
-            context.setVariable("r0412", results.get("0412")== null ? null : Double.valueOf(results.get("0412")));
-            context.setVariable("r0415", results.get("0415")== null ? null : Double.valueOf(results.get("0415")));
-            context.setVariable("r0401", results.get("0401")== null ? null : Double.valueOf(results.get("0401")));
-            context.setVariable("r0402", results.get("0402")== null ? null : Double.valueOf(results.get("0402")));
-            context.setVariable("r0465", results.get("465")== null ? null : Double.valueOf(results.get("0465")));
-            context.setVariable("r0446", results.get("0446")== null ? null : Double.valueOf(results.get("0446")));
-            context.setVariable("r1001", results.get("1001"));
-            context.setVariable("r0430", results.get("0430")== null ? null : Double.valueOf(results.get("0430")));
-            context.setVariable("r0421", results.get("0421")== null ? null : Double.valueOf(results.get("0421")));
-            context.setVariable("r0434", results.get("0434")== null ? null : Double.valueOf(results.get("0434")));
-            context.setVariable("r0431", results.get("0431")== null ? null : Double.valueOf(results.get("0431")));
-            context.setVariable("r0420", results.get("0420")== null ? null : Double.valueOf(results.get("0420")));
-            context.setVariable("r0438", results.get("0438")== null ? null : Double.valueOf(results.get("0438")));
-            context.setVariable("r0424", results.get("0424")== null ? null : Double.valueOf(results.get("0424")));
-            context.setVariable("r0442", results.get("0442")== null ? null : Double.valueOf(results.get("0442")));
-            context.setVariable("r1125", results.get("1125"));
-            context.setVariable("r0439", results.get("0439")== null ? null : Double.valueOf(results.get("0439")));
-            context.setVariable("r1002", results.get("1002"));
-            context.setVariable("r0423", results.get("0423")== null ? null : Double.valueOf(results.get("0423")));
 
-            context.setVariable("result", results);
             context.setVariable("minorDefault", minorDefault);
             context.setVariable("majorDefault", majorDefault);
             context.setVariable("controlleurName", user.getNom() + " " + user.getPrenom());
             context.setVariable("gps", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0).getGps());
             context.setVariable("o", v.getOrganisation());
-
-            /*modelAndView.addObject("v", visite.get());
-            modelAndView.addObject("tp", tp);
-            modelAndView.addObject("result", results);
-            modelAndView.addObject("defaultsTest", defaultsTest);
-            modelAndView.addObject("controlleurName", user.getNom() + " " + user.getPrenom());
-            modelAndView.setViewName("visites");*/
-
 
             return templateEngine.process("templates/visites", context);
         }

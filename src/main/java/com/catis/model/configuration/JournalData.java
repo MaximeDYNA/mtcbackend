@@ -1,6 +1,5 @@
 package com.catis.model.configuration;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -8,12 +7,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import com.catis.model.Organisation;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import com.catis.model.Utilisateur;
 
 @MappedSuperclass
 public class JournalData {

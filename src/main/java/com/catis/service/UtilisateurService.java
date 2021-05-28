@@ -14,8 +14,8 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    public void addUtilisateur(Utilisateur utilisateur) {
-        utilisateurRepository.save(utilisateur);
+    public Utilisateur addUtilisateur(Utilisateur utilisateur) {
+        return utilisateurRepository.save(utilisateur);
     }
 
     public void updateUtilisateur(Utilisateur utilisateur) {
@@ -24,7 +24,7 @@ public class UtilisateurService {
 
     public List<Utilisateur> findAllUtilisateur() {
         List<Utilisateur> utilisateurs = new ArrayList<>();
-        utilisateurRepository.findAll().forEach(utilisateurs::add);
+        utilisateurRepository.findByActiveStatusTrue().forEach(utilisateurs::add);
         return utilisateurs;
     }
 
@@ -36,8 +36,8 @@ public class UtilisateurService {
         return utilisateurRepository.findByKeycloakId(keycloakId);
     }
 
-    public void deleteUtilisateurById(Long idCaissierCaisse) {
-        utilisateurRepository.deleteById(idCaissierCaisse);
+    public void deleteUtilisateurById(Long id) {
+        utilisateurRepository.deleteById(id);
     }
 
 

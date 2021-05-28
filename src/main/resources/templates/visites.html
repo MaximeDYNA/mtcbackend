@@ -34,7 +34,7 @@
 </head>
 <body>
 
-<div  th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type}">
+<div  th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type == 'VL'}">
     <div>
 
     </div>
@@ -100,7 +100,6 @@
                 </table>
 
             </td>
-
             <td style="width:50%;">
                 <div>
                     <span class="text-left font-weight-bold">
@@ -160,8 +159,7 @@
             </td>
             <td style="width: 50%; border: 1px solid black;">
                 <div style=" height: 105px; padding: 4px">
-
-                            <span>
+                    <span>
                         Client/ Customer:
                     </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
@@ -176,16 +174,14 @@
                             Montant payé HT / Amount ex.VAT :
                         </span>
                         <span style="color: gray;"
-                              th:utext="${ v.carteGrise.produit.prix!=null ? #numbers.formatDecimal(v.carteGrise.produit.prix, 0, 'WHITESPACE', 0, 'POINT')+' F CFA' : ''}"></span><br/>
+                              th:utext="${ #numbers.formatDecimal(v.carteGrise.produit.prix, 0, 'WHITESPACE', 0, 'POINT')+' F CFA'}"></span><br/>
                         <span class="text-left font-weight-bold">
                             TVA / VAT :
-                        </span> <span th:utext="${tp.valeur!=null ? tp.valeur+' %': ''}" style="color: gray;"></span><br/>
+                        </span> <span th:utext="${tp.valeur+' %'}" style="color: gray;"></span><br/>
                         <span class="text-left font-weight-bold">
                             Montant payé TTC / Amount inc. VAT:
                         </span><span style="color: gray;"
-                                     th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), 0, 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br/>
-
-
+                             th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), 0, 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br/>
                 </div>
             </td>
         </tr>
@@ -226,10 +222,7 @@
                         Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
                     </p>
 
-                        <img style="height: 150px; width: 150px; float: right;"
-                             th:src="@{${v.inspection.signature !=null ? 'http://localhost:8080/uploaded/signatures/'+v.inspection.signature : null} ?: ''}"/>
-
-
+                        <img style="height: 150px; width: 150px; float: right;" th:src="@{${'http://localhost:8080/uploaded/signatures/'+v.inspection.signature}}"/>
                 </div>
             </td>
             <td style="width: 50%; border: 1px solid black;">
@@ -244,7 +237,7 @@
                                     </h4>
                                 </div>
                                 <div>
-                                    <table cellspacing="0" border="1" rules="cols" style="border : none; height:10px; border-collapse: collapse;" th:if="${v.carteGrise.produit.categorieVehicule.type == 'VL'}">
+                                    <table cellspacing="0" border="1" rules="cols" style="border : none; height:10px; border-collapse: collapse;" th:if="${typeVehicule}">
                                         <tr >
                                             <td style="height: 13px; width:120px;
                                 border : solid thin; font-size: 9px; padding: 4px">
@@ -278,250 +271,256 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="border-left: none ;
-                                 border-bottom: none ;"></td>
-                                            <td align="center"  style="color: gray;"
-                                            th:utext="${(typeVehicule=='VL' and r0410 !=null)
-                                                    ? #numbers.formatInteger(r0410, 1)+' %' :''}"></td>
-                                            <td align="center"  style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0411!=null)
-                                            ? #numbers.formatInteger(r0411, 1)+' %' :'' }"></td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0413!=null)
-                                            ? #numbers.formatInteger(r0413, 1)+' %' :'' }"></td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0414!=null)
-                                            ? #numbers.formatInteger(r0414, 1)+' %' :'' }"></td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0412!=null)
-                                            ? #numbers.formatInteger(r0412, 1)+' %' :'' }">5</td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0415!=null)
-                                            ? #numbers.formatInteger(r0415, 1)+' %' :'' }">5</td>
-                                            <!--td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                ">
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                >
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${ (typeVehicule=='VL'  and result.get('0413')!=null) ? #numbers.formatInteger(result.get('0413'), 1)+' %' :'' }">
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${ (typeVehicule=='VL'  and result.get('0414')!=null) ? #numbers.formatInteger(result.get('0414'), 1)+' %' :'' }">
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${ (typeVehicule=='VL' and result.get('0412')!=null) ? #numbers.formatInteger(result.get('0412'), 1)+' %' :'' }">
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${ (typeVehicule=='VL' and result.get('0415')!=null) ? #numbers.formatInteger(result.get('0415'), 1)+' %' :'' }">
-                                            </td-->
+                                            <td style="border-left: none ; border-bottom: none ;"></td>
+                                            <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0410, 1)+' %'}"></td>
+                                            <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0411, 1)+' %'}"></td>
+                                            <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0413, 1)+' %'}"></td>
+                                            <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0414, 1)+' %' }"></td>
+                                            <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0412, 1)+' %' }"></td>
+                                            <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0415, 1)+' %'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
                                     <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                         <tr>
-                                            <td style="height: 13px; width:27%;
-                                border : solid thin; font-size: 9px;  padding: 4px">
+                                            <td style="height: 13px; width:27%; border : solid thin; font-size: 9px;  padding: 4px">
                                                 <span style="font-weight: bold; font-size: 7px; border-spacing: 0px;">RIPAGE / SHIFT.</span>
                                             </td>
-                                            <td align="center"
-                                                style=" width:36%;
-                                border: solid thin; font-weight: bold; font-size: 5px;"
-                                            >
+                                            <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 5px;">
                                                 Ripage avant <br/>Front Deviation
                                             </td>
-                                            <td align="center"
-                                                style=" width: 36.5%;
-                                border: solid thin; font-weight: bold; font-size: 5px;">
+                                            <td align="center" style=" width: 36.5%; border: solid thin; font-weight: bold; font-size: 5px;">
                                                 Ripage Arrière<br/>Rear Deviation
                                             </td>
                                         </tr>
                                         <tr>
-                                            <!--td style="border-left: 0px solid ;
-                                             border-bottom: 0px solid ;"></td>
-
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${result.get('0401') != null ? #strings.replace(result.get('0401'), '.0', '')+' mm/m': ''}">
-                                            </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black"
-                                                th:utext="${result.get('0402') != null ? result.get('0402')+' mm/m' : ''}">
-                                            </td-->
-                                            <td style="border-left: none ;
-                                 border-bottom: none ;"></td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0401!=null)
-                                            ? #numbers.formatInteger(r0401, 1)+' mm/m' :'' }"></td>
-                                            <td align="center" style="color: gray;" th:utext="${ (typeVehicule=='VL' and r0402!=null)
-                                            ? #numbers.formatInteger(r0402, 1)+' mm/m' :'' }"></td>
+                                            <td style="border-left: none ; border-bottom: none ;"></td>
+                                            <td align="center" style="color: gray;" th:utext="${#numbers.formatInteger(r0401, 1)+' mm/m'}"></td>
+                                            <td align="center" style="color: gray;" th:utext="${#numbers.formatInteger(r0402, 1)+' mm/m'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
                                     <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                         <tr>
-                                            <td style="height: 13px; width:28%;
-                                border : solid thin; font-size: 9px;  padding: 4px">
+                                            <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
                                                 <span style="font-weight: bold; font-size: 7px; border-spacing: 0px;">POLLUTION</span>
                                             </td>
-                                            <td align="center"
-                                                style=" width:36%;
-                                border: solid thin; font-weight: bold; font-size: 5px;">
+                                            <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 5px;">
                                                 Opacité<br/>Opacity
                                             </td>
-                                            <td align="center" style="color: gray;" th:utext="${ typeVehicule=='VL' ? (result.get('0509')!=null ? #strings.replace(result.get('0509'), '.0', '')+' m-1': '' ): (result.get('0538')!=null ? #strings.replace(result.get('0538'), '.0', '')+' m-1': '' )}">55 m-1</td>
-                                            <!--td class="text-center font-weight-bold"
-                                                style="height:5px; width:195px;
-                                                border: 1px solid black; color: gray; font-size: 13px;"
-                                                >
-                                            </td-->
+                                            <td align="center" style="color: gray;" th:utext="${ typeVehicule ? #strings.replace(r0509, '.0', '')+' m-1' : #strings.replace(r0538, '.0', '')+' m-1'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
                                     <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                         <tr>
-                                            <td style="height: 13px; width:28%;
-                                border : solid thin; font-size: 9px;  padding: 4px">
+                                            <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
                                                 <span style="font-weight: bold; font-size: 7px; border-spacing: 0px;">PHARES / LAMPS</span>
                                             </td>
                                             <td align="center"
-                                                style="  font-weight: bold;  width:65px;
-                                border: solid thin; font-size: 5px;">
+                                                style="  font-weight: bold;  width:65px; border: solid thin; font-size: 5px;">
                                                 Feu Crois. gauche<br/>Left Headlamp
                                             </td>
                                             <td align="center"
-                                                style="  font-weight: bold;  width:65px;
-                                border: solid thin; font-size: 5px;">
+                                                style="  font-weight: bold;  width:65px; border: solid thin; font-size: 5px;">
                                                 Feu Crois. droite<br/>Right Headlamp
                                             </td>
 
                                         </tr>
                                         <tr>
-                                            <td style="border-left: none ;
-                                 border-bottom: none ;">
+                                            <td style="border-left: none ; border-bottom: none ;">
                                             </td>
                                             <td align="center"  style="border-bottom: solid thin;"
-                                                th:utext="${result.get('0490')} =='1.0' ? 'Correct': 'Unknow'"></td>
+                                                th:utext="${#numbers.formatInteger(r0490,1)==1 ? 'Correct': 'Unknown'}"></td>
                                             <td align="center"  style=" border-bottom: solid thin;"
-                                                th:utext="${result.get('0492')} =='1.0' ? 'Correct': 'Unknow'"></td>
+                                                th:utext="${#numbers.formatInteger(r0492,1)==1 ? 'Correct': 'Unknown'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
                                     <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                         <tr>
-                                            <td style="height: 13px; width:28%;
-                                border : solid thin; font-size: 9px;  padding: 4px">
+                                            <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
                                                 <span style="font-weight: bold; font-size: 7px; border-spacing: 0px;">FREINS / BRAKES</span>
                                             </td>
-                                            <td align="center"
-                                                style="  font-weight: bold;  width:36%;
-                                border: solid thin; font-size: 5px;">
+                                            <td align="center" style=" font-weight: bold;  width:36%; border: solid thin; font-size: 5px;">
                                                 Eff. Frein de service<br/>Service Brake Eff
                                             </td>
-                                            <td align="center"
-                                                style="color: gray; width:36%;
-                                            " th:utext="${typeVehicule=='VL'
-                                                ? (result.get('0446')!=null ? #numbers.formatInteger(r0446, 1)+' %': '' ): (result.get('1000')!=null ? result.get('1000')+' %': '' )}"></td>
-                                            <!--td class="text-center"
-                                                style="color: gray; border: 1px solid black; width:195px;"
-                                                >
-                                            </td-->
+                                            <td align="center" style="color: gray; width:36%;"
+                                                th:utext="${typeVehicule ? #numbers.formatInteger(r0446, 1)+' %': #numbers.formatInteger(r1000,1)+' %'}">
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td style="border-left: none ;
-                                 border-bottom: 0px ;
-                                ">
-                                            </td>
+                                            <td style="border-left: none ; border-bottom: 0px ;"></td>
                                             <td align="center"
-                                                style="  font-weight: bold;
-                                border: solid thin; font-size: 5px;">
+                                                style="  font-weight: bold; border: solid thin; font-size: 5px;">
                                                 Eff. Frein de station.<br/> Parking Brake Eff.
                                             </td>
                                             <td align="center" style="color: gray;"
-                                                th:utext="${typeVehicule=='VL' ? (result.get('0465')!=null ? #numbers.formatInteger(r0465, 1)+' %': '' ): (r1001!=null ? #numbers.formatInteger(r1001, 1)+' %': '' )}"
+                                                th:utext="${typeVehicule ? #numbers.formatInteger(r0465, 1)+' %': #numbers.formatInteger(r1001, 1)+' %'}"
                                             ></td>
-                                            <!--td class="text-center" style="color: gray;
-                                          border: 1px solid black; width:195px;"
-                                                >
-                                            </td-->
+                                        </tr>
+                                        <tr th:if="${!typeVehicule}">
+                                            <td style="border-left: none ; border-bottom: none; border-top: none"></td>
+                                            <td align="center"
+                                                style="font-weight: bold; border: solid thin; font-size: 5px;">
+                                                Eff. Frein de secours<br/> Safety Brake Eff.
+                                            </td>
+                                            <td align="center" style="color: gray;"
+                                                th:utext="${#numbers.formatInteger(r1002, 1)+' %'}"
+                                            ></td>
                                         </tr>
                                         <tr>
-                                            <td style="border-left: none ;
-                                 border-bottom: none ;
-                                 border-top: none;
-                                "></td>
+                                            <td style="border-left: none ; border-bottom: none; border-top: none"></td>
                                             <td align="center"
-                                                style="  font-weight: bold;
-                                border: solid thin; font-size: 5px;">
+                                                style="font-weight: bold; border: solid thin; font-size: 5px;">
+                                                Pesée totale du véhicule<br/> Total vehicle weight.
+                                            </td>
+                                            <td align="center" style="color: gray;"
+                                                th:utext="${typeVehicule ? #numbers.formatInteger(r0426, 1)+' daN': #numbers.formatInteger(r1003, 1)+' daN'}"
+                                            ></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-left: none ;border-bottom: none ;border-top: none;"></td>
+                                            <td align="center" style="  font-weight: bold; border: solid thin; font-size: 5px;">
                                                 #1 Déséq./ Unbal.
                                             </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black; height:50px; width:195px;">
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:195px;">
                                                 <table style="height:100%; width:100%">
                                                     <tr>
-                                                        <!--td style="font-size: 10px;" >
-                                                            <span ></span><br/>
-
+                                                        <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule}">
+                                                            <span th:utext="${ #numbers.formatInteger(r0430,1)+' daN'}"></span><br/>
+                                                            <span th:utext="${ #numbers.formatInteger(r0421,1)+' kg' }"></span>
                                                         </td>
-                                                        <td
-                                                            >
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule }">
+                                                            <span th:utext="${ #numbers.formatInteger(r1121,1)+' daN'}"></span>
                                                         </td>
-                                                        <td style="font-size: 10px;" th:if="${ typeVehicule=='VL'}">
-
-                                                        </td-->
-                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule=='VL'}">
-                                                            <span th:utext="${typeVehicule=='VL' ? (r0430!=null ? #numbers.formatInteger(r0430,1)+' daN': '' ) : ''}"></span>
-                                                            <span th:utext="${typeVehicule=='VL' ? (r0421 !=null ? #numbers.formatInteger(r0421,1)+' kg': '' ) : ''}"></span>
+                                                        <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
+                                                            th:utext="${ typeVehicule ? #numbers.formatInteger(r0434, 1)+' %' : #numbers.formatInteger(r1125,1)+' %'}">
                                                         </td>
-                                                        <td style="vertical-align: top; width: 20%;"
-                                                            th:utext="${ typeVehicule=='VL' ? (r0434 !=null ? #numbers.formatInteger(r0434, 1)+' %': '' ) : (r1002!=null ? #numbers.formatInteger(r1002,1)+' %': '' )}">
-
+                                                        <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule}">
+                                                            <span th:utext="${#numbers.formatInteger(r0431,1)+' daN'}"></span><br/>
+                                                            <span th:utext="${#numbers.formatInteger(r0420,1)+' kg'}"></span>
                                                         </td>
-                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule=='VL'}">
-                                                            <span th:utext="${  typeVehicule=='VL' ? (result.get('0431')!=null ? #numbers.formatInteger(r0431,1)+' daN': '' ) : ''}"></span><br/>
-                                                            <span th:utext="${  typeVehicule=='VL' ? (result.get('0420')!=null ? #numbers.formatInteger(r0420,1)+' kg': '' ) : ''}"></span>
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule }">
+                                                            <span th:utext="${ #numbers.formatInteger(r1120,1)+' daN'}"></span>
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="border-left: none ;
-                                 border-bottom: none;
-                                 border-top: none">
+                                            <td style="border-left: none; border-bottom: none; border-top: none">
                                             </td>
-                                            <td align="center"
-                                                style="  font-weight: bold;
-                                border: solid thin; font-size: 5px;">
-                                                #2 Déséq./ Unbal.
+                                            <td align="center" style= "font-weight: bold; border: solid thin; font-size: 5px;">
+                                               #2 Déséq./ Unbal.
                                             </td>
-                                            <td class="text-center"
-                                                style="color: gray; border: 1px solid black; height:50px; width:140px;">
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
+                                                 <table style="height:100%; width:100%">
+                                                     <tr>
+                                                         <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule }">
+                                                             <span th:utext="${ #numbers.formatInteger(r0438,1)+' daN'}"></span><br/>
+                                                             <span th:utext="${ #numbers.formatInteger(r0424, 1)+' kg'}"></span>
+                                                         </td>
+                                                         <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule}">
+                                                             <span th:utext="${ #numbers.formatInteger(r1221,1)+' daN'}"></span>
+                                                         </td>
+                                                         <td style="vertical-align: top; width: 30%; font-size: 9px; text-align: center"
+                                                             th:utext="${ typeVehicule ? #numbers.formatInteger(r0442, 1)+' %' : #numbers.formatInteger(r1225, 1)+' %'}">
+                                                         </td>
+                                                         <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule }">
+                                                             <span th:utext="${ #numbers.formatInteger(r0439,1)+' daN'}"></span><br/>
+                                                             <span th:utext="${ #numbers.formatInteger(r0423,1)+' kg'}"></span>
+                                                         </td>
+                                                         <td style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule}">
+                                                             <span th:utext="${ #numbers.formatInteger(r1220,1)+' daN'}"></span>
+                                                         </td>
+                                                     </tr>
+                                                 </table>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${ !typeVehicule and r1325 != null}">
+                                            <td style="border-left: none; border-bottom: none; border-top: none">
+                                            </td>
+                                            <td align="center" style=" font-weight: bold; border: solid thin; font-size: 5px;">
+                                                #3 Déséq./ Unbal.
+                                            </td>
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                 <table style="height:100%; width:100%">
                                                     <tr>
-                                                        <!--td>
-
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1321,1)+' daN'}"></span>
                                                         </td>
-
-                                                        <td
-                                                            >
+                                                        <td style="vertical-align: top; width: 30%; font-size: 9px; text-align: center"
+                                                            th:utext="${#numbers.formatInteger(r1325, 1)+' %'}">
                                                         </td>
-
-                                                        <td >
-
-                                                        </td-->
-                                                        <td  style="font-size: 10px; width: 40%" th:if="${ typeVehicule == 'VL'}">
-                                                            <span th:utext="${ typeVehicule=='VL' ? (result.get('0438')!=null ? #numbers.formatInteger(r0438,1)+' daN': '' ) : ''}"></span><br/>
-                                                            <span th:utext="${ typeVehicule=='VL' ? (result.get('0424')!=null ? #numbers.formatInteger(r0424, 1)+' kg': '' ) : ''}"></span>
+                                                        <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1320,1)+' daN'}"></span>
                                                         </td>
-                                                        <td style="vertical-align: top; width: 20%;"
-                                                            th:utext="${ typeVehicule=='VL' ? (result.get('0442')!=null ? #numbers.formatInteger(r0442, 1)+' %': '' ) : (result.get('1125')!=null ? #numbers.formatInteger(r1125, 1)+' %': '' )}">
-
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${ !typeVehicule and r1425 != null}">
+                                            <td style="border-left: none; border-bottom: none; border-top: none">
+                                            </td>
+                                            <td align="center" style=" font-weight: bold; border: solid thin; font-size: 5px;">
+                                                #4 Déséq./ Unbal.
+                                            </td>
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
+                                                <table style="height:100%; width:100%">
+                                                    <tr>
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1421,1)+' daN'}"></span>
                                                         </td>
-                                                        <td style="font-size: 10px; width: 40%" th:if="${ typeVehicule == 'VL'}">
-                                                            <span th:utext="${ typeVehicule == 'VL' ? (result.get('0439')!=null ? #numbers.formatInteger(r0439,1)+' daN': '' ): ''}"></span><br/>
-                                                            <span th:utext="${ typeVehicule == 'VL' ? (result.get('0423')!=null ? #numbers.formatInteger(r0423,1)+' kg': '' ): ''}"></span>
+                                                        <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
+                                                            th:utext="${#numbers.formatInteger(r1425, 1)+' %'}">
+                                                        </td>
+                                                        <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1420,1)+' daN'}"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${ !typeVehicule and r1525 != null}">
+                                            <td style="border-left: none; border-bottom: none; border-top: none">
+                                            </td>
+                                            <td align="center" style=" font-weight: bold; border: solid thin; font-size: 5px;">
+                                                #5 Déséq./ Unbal.
+                                            </td>
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
+                                                <table style="height:100%; width:100%">
+                                                    <tr>
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1521,1)+' daN'}"></span>
+                                                        </td>
+                                                        <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
+                                                            th:utext="${#numbers.formatInteger(r1525, 1)+' %'}">
+                                                        </td>
+                                                        <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1520,1)+' daN'}"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${ !typeVehicule and r1625 != null}">
+                                            <td style="border-left: none; border-bottom: none; border-top: none">
+                                            </td>
+                                            <td align="center" style=" font-weight: bold; border: solid thin; font-size: 5px;">
+                                                #6 Déséq./ Unbal.
+                                            </td>
+                                            <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
+                                                <table style="height:100%; width:100%">
+                                                    <tr>
+                                                        <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1621,1)+' daN'}"></span>
+                                                        </td>
+                                                        <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
+                                                            th:utext="${#numbers.formatInteger(r1625, 1)+' %'}">
+                                                        </td>
+                                                        <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <span th:utext="${ #numbers.formatInteger(r1620,1)+' daN'}"></span>
                                                         </td>
                                                     </tr>
                                                 </table>

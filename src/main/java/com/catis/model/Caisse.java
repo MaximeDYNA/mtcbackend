@@ -2,16 +2,10 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -20,23 +14,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caisse")
+@Audited
+@SQLDelete(sql = "UPDATE t_caisse SET active_status=false WHERE caisse_id=?")
 public class Caisse extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long caisse_id;
+    private Long caisseId;
+
+    private String libelle;
+
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "caisse")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "caisse")
     @JsonIgnore
-    private Set<Caissier> caissiers;
+    private Caissier caissier;
 
     public Long getCaisse_id() {
-        return caisse_id;
+        return caisseId;
     }
 
     public void setCaisse_id(Long caisse_id) {
-        this.caisse_id = caisse_id;
+        this.caisseId = caisse_id;
     }
 
     public String getDescription() {
@@ -53,22 +52,26 @@ public class Caisse extends JournalData {
         // TODO Auto-generated constructor stub
     }
 
-
-    public Caisse(Long caisse_id, String description,  Set<Caissier> caissiers) {
-        super();
-        this.caisse_id = caisse_id;
+    public Caisse(Long caisse_id, String libelle, String description, Caissier caissier) {
+        this.caisseId = caisse_id;
+        this.libelle = libelle;
         this.description = description;
-
-        this.caissiers = caissiers;
+        this.caissier = caissier;
     }
 
-    public Set<Caissier> getCaissiers() {
-        return caissiers;
+    public Caissier getCaissier() {
+        return caissier;
     }
 
-    public void setCaissiers(Set<Caissier> caissiers) {
-        this.caissiers = caissiers;
+    public void setCaissier(Caissier caissier) {
+        this.caissier = caissier;
     }
 
+    public String getLibelle() {
+        return libelle;
+    }
 
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 }

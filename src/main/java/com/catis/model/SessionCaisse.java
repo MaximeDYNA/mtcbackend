@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_sessioncaisse")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class SessionCaisse extends JournalData {
 
     @Id
@@ -28,12 +30,17 @@ public class SessionCaisse extends JournalData {
     private Long sessionCaisseId;
 
     private Date dateHeureOuverture;
+
     private Date dateHeureFermeture;
+
 
     @ManyToOne
     private Caissier caissier;
+
     private double montantOuverture;
+
     private double montantfermeture;
+
     private boolean active;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sessionCaisse")

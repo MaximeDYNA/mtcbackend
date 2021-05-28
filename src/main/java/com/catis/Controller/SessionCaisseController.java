@@ -63,6 +63,20 @@ public class SessionCaisseController {
 
     }
 
+    @RequestMapping(value = "/api/v1/connexion/log")
+    public ResponseEntity<Object> logConnexion(@PathVariable String userId) {
+        SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
+        if (c != null) {
+            LOGGER.info("Session de Caisse déjà ouverte");
+            System.out.println(c.getSessionCaisseId());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", c);
+        } else {
+            LOGGER.info("Aucune session caisse trouvée");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);
+        }
+
+    }
+
     @PostMapping("/api/v1/ouverturecaisse")
     public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
         //MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());

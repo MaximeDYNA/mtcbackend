@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -15,12 +16,14 @@ import com.catis.model.configuration.JournalData;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_detailvente")
+@Audited
 public class DetailVente extends JournalData {
     // table pivot entre produit et vente
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idDetailVente;
     private String reference;
+    private double prix;
 
     @ManyToOne
     private Produit produit;
@@ -71,4 +74,11 @@ public class DetailVente extends JournalData {
         this.vente = vente;
     }
 
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 }

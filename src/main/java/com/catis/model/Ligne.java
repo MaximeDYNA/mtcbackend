@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_ligne")
+@Audited
 public class Ligne extends JournalData {
 
     @Id

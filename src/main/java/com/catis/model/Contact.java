@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_contact")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class Contact extends JournalData {
 
     @Id

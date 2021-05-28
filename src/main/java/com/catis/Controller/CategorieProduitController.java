@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.catis.objectTemporaire.CatProductForSelectDTO;
 import com.catis.objectTemporaire.CategorieproduitProduitPOJO;
 import com.catis.service.OrganisationService;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.model.CategorieProduit;
 import com.catis.model.Produit;
@@ -157,16 +153,50 @@ public class CategorieProduitController {
             c.setCategorieProduitId(categorieProduit.getCategorieProduitId());
             c.setLibelle(categorieProduit.getLibelle());
             c.setDescription(categorieProduit.getDescription());
-            c.setOrganisation(
+            c.setOrganisation( categorieProduit.getOrganisation() == null? null :
                     os.findByOrganisationId(
                             categorieProduit
                                     .getOrganisation()
                                     ));
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.addCategorieProduit(c));
+
+            c = cateProduitService.addCategorieProduit(c);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", c);
         /*try { } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
         }*/
 
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/v1/categorieproduits/{id}")
+    public ResponseEntity<Object> deleteCategorieProduits(@PathVariable Long id) {
+
+        LOGGER.trace("suppression de la catégorie produit ID = "+ id);
+
+        cateProduitService.deleteCategorieProduit(id);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null);
+        /*try { } catch (Exception e) {
+            LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
+        }*/
+
+    }
+    @GetMapping("/api/v1/categorieproduits/select")
+    public ResponseEntity<Object> getCaissesOfMtcforSelect(){
+
+        List<CategorieProduit> cats = cateProduitService.listeCategorieProduit();
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(CategorieProduit c: cats){
+            cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getCategorieProduitId()));
+            cat.put("name", c.getLibelle() +" | "
+                    + (c.getOrganisation() == null? "Tous" : c.getOrganisation().getNom()));
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "Select catégorie produit OK", catsSelect);
     }
 }

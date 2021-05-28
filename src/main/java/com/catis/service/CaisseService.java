@@ -15,8 +15,8 @@ public class CaisseService {
     @Autowired
     private CaisseRepository caisseRepository;
 
-    public void addCaisse(Caisse caisse) {
-        caisseRepository.save(caisse);
+    public Caisse addCaisse(Caisse caisse) {
+        return caisseRepository.save(caisse);
     }
 
     public void updateCaisse(Caisse caisse) {
@@ -25,15 +25,15 @@ public class CaisseService {
 
     public List<Caisse> findAllCaisse() {
         List<Caisse> caisses = new ArrayList<>();
-        caisseRepository.findAll().forEach(caisses::add);
+        caisseRepository.findByActiveStatusTrue().forEach(caisses::add);
         return caisses;
     }
 
-    public Caisse findCaisseById(String idCaisse) {
+    public Caisse findCaisseById(Long idCaisse) {
         return caisseRepository.findById(idCaisse).get();
     }
 
-    public void deleteCaisseById(String idCaisse) {
+    public void deleteCaisseById(Long idCaisse) {
         caisseRepository.deleteById(idCaisse);
     }
 

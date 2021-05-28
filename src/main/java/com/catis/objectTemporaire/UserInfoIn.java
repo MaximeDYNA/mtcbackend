@@ -31,8 +31,6 @@ public class UserInfoIn {
 
     public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, Environment env) {
 
-
-
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
         Keycloak keycloak = KeycloakBuilder
                 .builder()
@@ -49,7 +47,6 @@ public class UserInfoIn {
                 .users()
                 .get(controleur
                         .getKeycloakId());
-
 
         UserDTO user = new UserDTO();
         user.setId(userResource.toRepresentation().getId());
@@ -102,6 +99,29 @@ public class UserInfoIn {
         UserRepresentation userResource = keycloak.realm(realm).users().search(name).get(0);
 
         return userResource.getId();
+
+    }
+
+    public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm) {
+
+        KeycloakSecurityContext context ;
+        Keycloak keycloak;
+        UserRepresentation userResource;
+        if(request != null){
+            context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+            keycloak= KeycloakBuilder
+                    .builder()
+                    .serverUrl(serverUrl)
+                    .realm(realm)
+                    .authorization(context.getTokenString())
+                    .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                    .build();
+            userResource = keycloak.realm(realm).users().search(name).get(0);
+            return userResource.getUsername();
+        }
+        else
+            return "Yvan's Job";
+
 
     }
 
