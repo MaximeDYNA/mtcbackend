@@ -2,16 +2,10 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -20,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caissier")
+@Audited
+@SQLDelete(sql = "UPDATE t_caissier SET active_status=false WHERE caissier_id=?")
 public class Caissier extends JournalData {
 
     @Id
@@ -29,13 +25,13 @@ public class Caissier extends JournalData {
     private String codeCaissier;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Partenaire partenaire;
 
-    @ManyToOne
+    @OneToOne (cascade = CascadeType.PERSIST)
     private Caisse caisse;
 
-    @ManyToOne(optional = true) // id utilisateur optionel
+    @ManyToOne(optional = true,  cascade = CascadeType.PERSIST) // id utilisateur optionel
     private Utilisateur user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")

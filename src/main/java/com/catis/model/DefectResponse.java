@@ -1,9 +1,10 @@
 package com.catis.model;
 
 import com.catis.model.configuration.JournalData;
+import org.hibernate.envers.Audited;
 
 import java.util.List;
-
+@Audited
 public class DefectResponse{
 
     private Long idinspection;

@@ -102,6 +102,29 @@ public class UserInfoIn {
 
     }
 
+    public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm) {
+
+        KeycloakSecurityContext context ;
+        Keycloak keycloak;
+        UserRepresentation userResource;
+        if(request != null){
+            context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+            keycloak= KeycloakBuilder
+                    .builder()
+                    .serverUrl(serverUrl)
+                    .realm(realm)
+                    .authorization(context.getTokenString())
+                    .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                    .build();
+            userResource = keycloak.realm(realm).users().search(name).get(0);
+            return userResource.getUsername();
+        }
+        else
+            return "Yvan's Job";
+
+
+    }
+
 
 
     public static UserDTO getUserInfo(HttpServletRequest request) {
