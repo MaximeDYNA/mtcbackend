@@ -143,6 +143,11 @@ public class OrganisationService {
         organisationRepository.findByActiveStatusTrueAndParentTrue().forEach(orgs::add);
         return orgs;
     }
+    public List<Organisation> findAllChildForSelect(){
+        List<Organisation> orgs = new ArrayList<>();
+        organisationRepository.findByActiveStatusTrueAndParentFalse().forEach(orgs::add);
+        return orgs;
+    }
     public void deleteById(Long id){
         organisationRepository.deleteById(id);
     }

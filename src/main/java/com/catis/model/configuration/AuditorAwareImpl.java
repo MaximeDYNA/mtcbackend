@@ -26,16 +26,15 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
 
-        //KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
-        //KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        //KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
-        //AccessToken accessToken = session.getToken();
+        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
+        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
+        AccessToken accessToken = session.getToken();
 
-        //String keycloakId = UserInfoIn.getKeycloakId(accessToken.getPreferredUsername(), request,
-          //      environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
+        String keycloakId = UserInfoIn.getUserName(accessToken.getPreferredUsername(), request,
+                environment.getProperty("keycloak.auth-server-url"), environment.getProperty("keycloak.realm"));
 
-        //return Optional.ofNullable(keycloakId);
-         return Optional.ofNullable("TEST");
+        return Optional.ofNullable(keycloakId);
     }
 
 }

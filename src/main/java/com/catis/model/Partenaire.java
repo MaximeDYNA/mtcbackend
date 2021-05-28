@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.catis.objectTemporaire.CaissierPOJO;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -52,7 +53,6 @@ public class Partenaire extends JournalData {
 
     @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
     @JsonIgnore
-
     private Client client;
 
     @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
@@ -113,6 +113,16 @@ public class Partenaire extends JournalData {
 
         this.controleurs = controleurs;
         this.caissiers = caissiers;
+    }
+    public Partenaire(CaissierPOJO caissierPOJO){
+        this.nom = caissierPOJO == null ? null : caissierPOJO.getNom();
+        this.prenom = caissierPOJO== null ? null : caissierPOJO.getPrenom();
+        this.lieuDeNaiss = caissierPOJO== null ? null : caissierPOJO.getLieuDeNaiss();
+        this.permiDeConduire = caissierPOJO== null ?null: caissierPOJO.getPermiDeConduire();
+        this.passport = caissierPOJO == null ? null : caissierPOJO.getPassport();
+        this.cni = caissierPOJO == null ? null : caissierPOJO.getCni();
+        this.telephone = caissierPOJO== null ? null : caissierPOJO.getTelephone();
+        this.email = caissierPOJO == null ? null : caissierPOJO.getEmail();
     }
 
     public Set<ProprietaireVehicule> getProprietaireVehicule() {

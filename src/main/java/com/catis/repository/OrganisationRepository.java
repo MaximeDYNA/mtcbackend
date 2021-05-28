@@ -15,6 +15,7 @@ public interface OrganisationRepository extends CrudRepository<Organisation, Lon
     Page<Organisation> findByActiveStatusTrueAndParentTrue(Pageable pageable);
 
     List<Organisation> findByActiveStatusTrueAndParentTrue();
+    List<Organisation> findByActiveStatusTrueAndParentFalse();
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_OrganisationId(Long id, Pageable pageable);
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_OrganisationId(Long id);
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_Nom(String nomOrganisation);

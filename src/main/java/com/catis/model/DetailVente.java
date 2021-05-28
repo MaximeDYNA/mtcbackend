@@ -23,6 +23,7 @@ public class DetailVente extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idDetailVente;
     private String reference;
+    private double prix;
 
     @ManyToOne
     private Produit produit;
@@ -73,4 +74,11 @@ public class DetailVente extends JournalData {
         this.vente = vente;
     }
 
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 }

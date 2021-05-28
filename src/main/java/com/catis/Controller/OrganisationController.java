@@ -178,6 +178,25 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+    @GetMapping("/api/v1/organisation/child/select")
+    public ResponseEntity<Object> findAllChildForSelect(){
+        try {
+            List<Organisation> results = os.findAllChildForSelect();
+            List<Map<String, String>> mapList = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            for(Organisation organisation : results){
+                map.put("id",String.valueOf(organisation.getOrganisationId()));
+                map.put("name", organisation.getNom()+" | "+organisation.getParentOrganisation().getNom());
+                mapList.add(map);
+                map = new HashMap<>();
+            }
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "OK", mapList);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
+        }
+    }
     @GetMapping("/api/v1/organisations/parents")
     public ResponseEntity<Object> findParent(){
         try {

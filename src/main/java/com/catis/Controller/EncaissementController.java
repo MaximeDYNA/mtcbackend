@@ -83,6 +83,7 @@ public class EncaissementController {
         Produit produit;
         CarteGrise carteGrise;
         Vehicule vehicule;
+        double taxedetail;
         /* ---------client------------ */
         vente.setClient(encaissement.getClientId() == 0 ? null :
                 clientService.findCustomerById(encaissement.getClientId()));
@@ -146,6 +147,12 @@ public class EncaissementController {
             vente = venteService.addVente(vente);
             /*------------------------------------------*/
             detailVente.setProduit(produit);
+            taxedetail = 0;
+            for(TaxeProduit t : produit.getTaxeProduit())
+                taxedetail += t.getTaxe().getValeur();
+
+
+            detailVente.setPrix(produit.getPrix() + produit.getPrix() *taxedetail/100);
             detailVente.setVente(vente);
             detailVente.setReference(posale.getReference());
             dvs.addVente(detailVente);

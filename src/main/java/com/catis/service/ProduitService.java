@@ -1,19 +1,10 @@
 package com.catis.service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
+import java.io.FileOutputStream;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.catis.model.CarteGrise;
 import com.catis.model.Produit;
 import com.catis.repository.CarteGriseRepository;
@@ -29,13 +20,16 @@ public class ProduitService {
     private CarteGriseRepository cgr;
     @Autowired
     private VisiteService visiteService;
+    @Autowired
+    org.springframework.core.env.Environment env;
 
-    public String saveImage(MultipartFile imageFile) throws Exception {
-        String folder = "uploaded/";
-        byte[] bytes = imageFile.getBytes();
-        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-        Files.write(path, bytes);
-        return folder + imageFile.getOriginalFilename();
+    public String saveImage(String base64, String libelle) throws Exception {
+        String folder = env.getProperty("uploaded.image");
+        base64 = base64.replace("data:image/png;base64,","");
+        byte[] bytes = Base64.getMimeDecoder().decode(base64);
+        FileOutputStream output = new FileOutputStream(folder+libelle+".png");
+        output.write(bytes);
+        return folder + libelle + ".png";
     }
 
     public List<Produit> findAllProduit() {
