@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableAsync
 public class MtcApplication {
-    
+
     public static void main(String[] args) {
         SpringApplication.run(MtcApplication.class, args);
     }
