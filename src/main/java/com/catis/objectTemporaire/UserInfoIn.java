@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class UserInfoIn {
@@ -106,7 +107,7 @@ public class UserInfoIn {
 
         KeycloakSecurityContext context ;
         Keycloak keycloak;
-        UserRepresentation userResource;
+        Optional<UserRepresentation> userResource;
         if(request != null){
             context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
             keycloak= KeycloakBuilder
@@ -116,8 +117,11 @@ public class UserInfoIn {
                     .authorization(context.getTokenString())
                     .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
                     .build();
-            userResource = keycloak.realm(realm).users().search(name).get(0);
-            return userResource.getUsername();
+            userResource = keycloak.realm(realm).users().search(name).stream().findFirst();
+            if(userResource.isPresent())
+                return userResource.get().getUsername();
+            else
+                return null;
         }
         else
             return "Yvan's Job";
