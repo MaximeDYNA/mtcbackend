@@ -44,7 +44,6 @@ public class CaissierController {
         Caisse caisse = caissierPOJO.getCaisse() == null? null : caisseService.findCaisseById(caissierPOJO.getCaisse());
         Utilisateur utilisateur = caissierPOJO.getUser() == null? null : us.findUtilisateurById(caissierPOJO.getUser());
         Organisation organisation = caissierPOJO.getOrganisationId()==null ? null : organisationService.findByOrganisationId(caissierPOJO.getOrganisationId());
-        System.out.println(ToStringBuilder.reflectionToString(caissierPOJO));
 
         Partenaire partenaire = new Partenaire(caissierPOJO);
         partenaire.setOrganisation(organisation);

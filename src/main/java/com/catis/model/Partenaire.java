@@ -32,32 +32,26 @@ public class Partenaire extends JournalData {
     private Date dateNaiss; // date de naissance
 
     private String lieuDeNaiss; // lieu de naissance
-    @Column(unique = true)
 
     private String passport;
-    @Column(unique = true)
 
     private String permiDeConduire;
-    @Column(unique = true)
 
     private String cni;
-    @Column(unique = true)
 
     private String telephone;
-    @Column(unique = true)
 
     private String email;
     @Column(unique = true)
 
     private String numeroContribuable;
 
-    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "partenaire")
     @JsonIgnore
     private Client client;
 
-    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "partenaire")
     @JsonIgnore
-
     private Contact contact;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")

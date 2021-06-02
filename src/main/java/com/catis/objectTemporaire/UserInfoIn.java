@@ -121,12 +121,10 @@ public class UserInfoIn {
             if(userResource.isPresent())
                 return userResource.get().getUsername();
             else
-                return null;
+                return "";
         }
         else
             return "Yvan's Job";
-
-
     }
 
 
@@ -150,8 +148,6 @@ public class UserInfoIn {
         }
         return  user;
     }
-
-
 
 
 }

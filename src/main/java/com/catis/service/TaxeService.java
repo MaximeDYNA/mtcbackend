@@ -20,15 +20,21 @@ public class TaxeService {
 
     public List<Taxe> taxListByLibelle(String libelle) {
         List<Taxe> taxes = new ArrayList<>();
-
         for (TaxeProduit tp : taxeProduitRepository.findByProduit_LibelleIgnoreCase(libelle)) {
             taxes.add(tp.getTaxe());
         }
+        return taxes;
+    }
 
+    public List<Taxe> getAllActiveTax() {
+        List<Taxe> taxes = new ArrayList<>();
+        taxeRepository.findByActiveStatusTrue().forEach(taxes::add);
         return taxes;
     }
 
     public Taxe findByNom(String nom) {
         return taxeRepository.findByNom(nom);
     }
+
+
 }
