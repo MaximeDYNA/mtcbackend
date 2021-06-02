@@ -32,6 +32,14 @@ public class TaxeService {
         return taxes;
     }
 
+    public Taxe save(Taxe taxe) {
+        taxe = taxeRepository.save(taxe);
+        return taxe;
+    }
+
+    public void deleteById(Long id) {
+        taxeRepository.deleteById(id);
+    }
     public Taxe findByNom(String nom) {
         return taxeRepository.findByNom(nom);
     }

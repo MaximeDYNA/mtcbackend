@@ -2,14 +2,9 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_taxe")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@SQLDelete(sql = "UPDATE t_taxe SET active_status=false WHERE taxe_id=?")
 public class Taxe extends JournalData {
 
     @Id
@@ -32,7 +28,7 @@ public class Taxe extends JournalData {
 
     private boolean incluse;
 
-    @OneToMany(mappedBy = "taxe")
+    @OneToMany(mappedBy = "taxe", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private Set<TaxeProduit> taxeProduit;
 
