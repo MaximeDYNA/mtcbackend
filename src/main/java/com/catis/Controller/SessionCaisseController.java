@@ -2,6 +2,7 @@ package com.catis.Controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -142,6 +143,15 @@ public class SessionCaisseController {
 					+ "bien vouloir le signaler à l'équipe CATIS", null);
 		}*/
 
+    }
+
+    //Admin session de caisse
+
+    @GetMapping("/api/v1/admin/sessioncaisses")
+    public ResponseEntity<Object> sessionCaisse() {
+
+        List<SessionCaisse> sessionCaisseList = sessionCaisseService.getAll();
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseList);
     }
 
 }
