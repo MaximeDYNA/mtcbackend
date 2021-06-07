@@ -54,7 +54,9 @@ public class TaxeController {
             for(ObjectForSelect i : taxePOJO.getProduits()){
                 tp = new TaxeProduit(taxe, ps.findById(i.getId()));
                 tp.setOrganisation(o);
-                taxeProduits.add(tp);
+                //ajoute la ligne TaxeProduit seulement si elle n'existe pas déjà
+                    if(!taxeProduitService.findBytaxeIdAndProduitId(taxe.getTaxeId(), i.getId()).isPresent())
+                        taxeProduits.add(tp);
             }
         }
         taxe.setTaxeProduit(taxeProduits);

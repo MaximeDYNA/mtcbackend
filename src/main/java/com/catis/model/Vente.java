@@ -52,7 +52,6 @@ public class Vente extends JournalData {
     private Set<OperationCaisse> operationCaisse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
-    @JsonIgnore
     private Set<DetailVente> detailventes;
 
     private String numFacture;
