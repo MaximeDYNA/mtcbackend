@@ -17,7 +17,7 @@ public class MarqueService {
 
     public List<MarqueVehicule> marqueList() {
         List<MarqueVehicule> marques = new ArrayList<>();
-        marqueRepo.findAll().forEach(marques::add);
+        marqueRepo.findByActiveStatusTrue().forEach(marques::add);
         return marques;
     }
 
@@ -27,8 +27,12 @@ public class MarqueService {
     }
 
     public MarqueVehicule addMarque(MarqueVehicule marque) {
+        MarqueVehicule marqueVehicule = marqueRepo.save(marque);
+        return marqueVehicule;
+    }
 
-        return marqueRepo.save(marque);
+    public void deleteById(Long id){
+        marqueRepo.deleteById(id);
     }
 
 

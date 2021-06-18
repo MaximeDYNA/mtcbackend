@@ -3,16 +3,9 @@ package com.catis.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_vehicule")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@SQLDelete(sql = "UPDATE t_vehicule SET active_status=false WHERE vehicule_id=?")
 public class Vehicule extends JournalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +26,6 @@ public class Vehicule extends JournalData {
     private String carrosserie;
     private int placeAssise;
     private String chassis;
-    private Date dateMiseEnCirculation;
     private Date premiereMiseEnCirculation;
     private int puissAdmin; // Puissance Administrative
     private int poidsTotalCha; // poids total en charge
@@ -42,7 +35,7 @@ public class Vehicule extends JournalData {
 
     @ManyToOne
     private MarqueVehicule marqueVehicule;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Energie energie;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicule")
     @JsonIgnore
@@ -77,7 +70,6 @@ public class Vehicule extends JournalData {
         this.carrosserie = carrosserie;
         this.placeAssise = placeAssise;
         this.chassis = chassis;
-        this.dateMiseEnCirculation = dateMiseEnCirculation;
         this.premiereMiseEnCirculation = premiereMiseEnCirculation;
         this.energie = energie;
         this.cylindre = cylindre;
@@ -115,14 +107,6 @@ public class Vehicule extends JournalData {
 
     public void setChassis(String chassis) {
         this.chassis = chassis;
-    }
-
-    public Date getDateMiseEnCirculation() {
-        return dateMiseEnCirculation;
-    }
-
-    public void setDateMiseEnCirculation(Date dateMiseEnCirculation) {
-        this.dateMiseEnCirculation = dateMiseEnCirculation;
     }
 
     public Date getPremiereMiseEnCirculation() {

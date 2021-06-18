@@ -3,16 +3,10 @@ package com.catis.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.catis.objectTemporaire.CarteGrisePOJO;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_cartegrise")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@SQLDelete(sql = "UPDATE t_cartegrise SET active_status=false WHERE carte_grise_id=?")
 public class CarteGrise extends JournalData {
 
     @Id
@@ -83,6 +78,26 @@ public class CarteGrise extends JournalData {
         this.centre_ssdt = c.getCentre_ssdt();
 
     }
+    public CarteGrise(CarteGrisePOJO c) {
+
+        this.carteGriseId = c.getCarteGriseId();
+        this.numImmatriculation = c.getNumImmatriculation();
+        this.preImmatriculation = c.getPreImmatriculation();
+        this.dateDebutValid = c.getDateDebutValid();
+        this.dateFinValid = c.getDateFinValid();
+        this.ssdt_id = c.getSsdt_id();
+        this.commune = c.getCommune();
+        this.montantPaye = c.getMontantPaye();
+        this.vehiculeGage = c.isVehiculeGage();
+        this.genreVehicule = c.getGenreVehicule();
+
+        this.enregistrement = c.getEnregistrement();
+        this.dateDelivrance = c.getDateDelivrance();
+        this.lieuDedelivrance = c.getLieuDedelivrance();
+        this.centre_ssdt = c.getCentre_ssdt();
+
+    }
+
 
     public CarteGrise(Long carteGriseId, String numImmatriculation, String preImmatriculation, Date dateDebutValid,
                       Date dateFinValid, String ssdt_id, String commune, double montantPaye, boolean vehiculeGage,

@@ -47,7 +47,7 @@ public class UserInfoIn {
                 .realm(env.getProperty("keycloak.realm"))
                 .users()
                 .get(controleur
-                        .getKeycloakId());
+                        .getUtilisateur().getKeycloakId());
 
         UserDTO user = new UserDTO();
         user.setId(userResource.toRepresentation().getId());

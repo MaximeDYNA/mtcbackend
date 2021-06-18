@@ -22,17 +22,19 @@ public class ControleurService {
 
     public List<Controleur> findAllControleur() {
         List<Controleur> controleurs = new ArrayList<>();
-        controleurR.findAll().forEach(controleurs::add);
+        controleurR.findByActiveStatusTrue().forEach(controleurs::add);
         return controleurs;
     }
 
     public Controleur findControleurById(Long id) {
-
         return controleurR.findById(id).get();
     }
 
     public Controleur findControleurBykeycloakId(String keycloakId) {
+        return controleurR.findByUtilisateur_keycloakId(keycloakId);
+    }
 
-        return controleurR.findByKeycloakId(keycloakId);
+    public void delete(Long id) {
+        controleurR.deleteById(id);
     }
 }

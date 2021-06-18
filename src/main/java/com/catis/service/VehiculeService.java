@@ -17,13 +17,20 @@ public class VehiculeService {
 
     public List<Vehicule> vehiculeList() {
         List<Vehicule> vehicules = new ArrayList<>();
-        vehiculeRepo.findAll().forEach(vehicules::add);
+        vehiculeRepo.findByActiveStatusTrue().forEach(vehicules::add);
         return vehicules;
     }
 
     public Vehicule addVehicule(Vehicule vehicule) {
         return vehiculeRepo.save(vehicule);
     }
+
+
+    public void deleteById(Long id) {
+         vehiculeRepo.deleteById(id);
+    }
+
+
 
     public Vehicule findById(Long id) {
         return vehiculeRepo.findById(id).get();
