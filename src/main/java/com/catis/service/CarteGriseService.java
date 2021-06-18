@@ -34,13 +34,23 @@ public class CarteGriseService {
                     carteGrise.getNumImmatriculation()).get(0);
     }
 
+    public CarteGrise save(CarteGrise c){
+        c = cgr.save(c);
+
+        return c;
+    }
+
+    public void deleteById(Long id){
+        cgr.deleteById(id);
+    }
+
     public CarteGrise updateCarteGrise(CarteGrise carteGrise) {
         return cgr.save(carteGrise);
     }
 
     public List<CarteGrise> findAll() {
         List<CarteGrise> carteGrises = new ArrayList<>();
-        cgr.findAll().forEach(carteGrises::add);
+        cgr.findByActiveStatusTrue().forEach(carteGrises::add);
         return carteGrises;
     }
 
@@ -79,7 +89,6 @@ public class CarteGriseService {
     }
 
     public List<CarteGrise> findByLigne(Long idLigne) {
-
         List<CarteGrise> cgs = new ArrayList<>();
         for (Inspection inspection : inpectionR.inspectionbyligne(2, idLigne)) {
 

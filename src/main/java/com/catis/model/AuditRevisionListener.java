@@ -13,13 +13,10 @@ public class AuditRevisionListener implements RevisionListener {
     HttpServletRequest request;
     @Override
     public void newRevision(Object revisionEntity) {
-
         String currentUser = Optional.ofNullable(UserInfoIn.getUserInfo(request).getLogin())
                 .orElse("Unknown-User");
-
         AuditRevisionEntity audit = (AuditRevisionEntity) revisionEntity;
         audit.setUser(currentUser);
-
     }
 }
 

@@ -36,4 +36,6 @@ public interface CarteGriseRepository extends CrudRepository<CarteGrise, Long> {
             "and c.numImmatriculation = ?1 " +
             "order by con.id desc")
     Optional<CarteGrise> findCGWithOrderedValidControl(String immatriculation);
+
+    List<CarteGrise> findByActiveStatusTrue();
 }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -29,6 +30,7 @@ public class DetailVente extends JournalData {
     private Produit produit;
 
     @ManyToOne
+    @JsonIgnore
     private Vente vente;
 
     public DetailVente() {

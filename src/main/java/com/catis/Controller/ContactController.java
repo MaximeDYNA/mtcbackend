@@ -6,24 +6,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.catis.model.Organisation;
+import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.model.Client;
 import com.catis.model.Contact;
 import com.catis.model.Partenaire;
-import com.catis.objectTemporaire.ClientContactHandler;
-import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.ContactService;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
@@ -49,6 +44,8 @@ public class ContactController {
         Contact contact = new Contact();
         Partenaire partenaire = new Partenaire();
         partenaire.setCni(clientPartenaire.getCni());
+
+
         if (clientPartenaire.getDateNaiss() != null) {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss());
             partenaire.setDateNaiss(date);
@@ -87,7 +84,84 @@ public class ContactController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
     }
+    @GetMapping("/api/v1/admin/contacts")
+    private ResponseEntity<Object> getAdminContacts() {
+        LOGGER.trace("liste des Contacts...");
+        List<Contact> contacts = contactService.getContacts();
+        List<ContactDTO> contactDTOs = new ArrayList<>();
 
+        ContactDTO c;
+        for(Contact contact : contacts){
+            c = new ContactDTO();
+            c.setCni(contact.getPartenaire().getCni());
+            c.setContactId(contact.getContactId());
+            c.setEmail(contact.getPartenaire().getEmail());
+            c.setTelephone(contact.getPartenaire().getTelephone());
+            c.setCreatedDate(contact.getCreatedDate());
+            c.setNom(contact.getPartenaire().getNom());
+            c.setPrenom(contact.getPartenaire().getPrenom());
+            c.setDateNaiss(contact.getPartenaire().getDateNaiss());
+            c.setPermiDeConduire(contact.getPartenaire().getPermiDeConduire());
+            c.setOrganisation(contact.getOrganisation());
+            c.setLieuDeNaiss(contact.getPartenaire().getLieuDeNaiss());
+            c.setPassport(contact.getPartenaire().getPassport());
+            c.setDescription(contact.getDescription());
+            contactDTOs.add(c);
+
+        }
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactDTOs);
+    }
+    @DeleteMapping("/api/v1/admin/contacts/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) throws ParseException {
+        try {
+            contactService.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    true, "OK", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    true, "KO", null);
+        }
+
+    }
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/contacts")
+    public ResponseEntity<Object> addClient(@RequestBody ContactPOJO contactPOJO) throws ParseException {
+        try {
+            LOGGER.trace("Ajout d'un client...");
+            Contact contact = new Contact();
+            Partenaire partenaire = new Partenaire();
+            partenaire.setCni(contactPOJO.getCni());
+            Date date = contactPOJO.getDateNaiss() == null ? null:
+                    contactPOJO.getDateNaiss();
+
+            partenaire.setEmail(contactPOJO.getEmail());
+            partenaire.setTelephone(contactPOJO.getTelephone());
+            partenaire.setNom(contactPOJO.getNom());
+            partenaire.setPrenom(contactPOJO.getPrenom());
+            partenaire.setPassport(contactPOJO.getPassport());
+            partenaire.setDateNaiss(date);
+            partenaire.setLieuDeNaiss(contactPOJO.getLieuDeNaiss());
+            partenaire.setPermiDeConduire(contactPOJO.getPermiDeConduire());
+            Organisation organisation = contactPOJO.getOrganisationId()==null ? null : os.findByOrganisationId(contactPOJO.getOrganisationId());
+            partenaire.setOrganisation(organisation);
+            contact.setContactId(contactPOJO.getContactId());
+            contact.setPartenaire(partenaire);
+            contact.setOrganisation(organisation);
+            contact.setDescription(contactPOJO.getDescription());
+            contact = contactService.addContact(contact);
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", contact);
+        } catch (DataIntegrityViolationException integrity) {
+            LOGGER.error("Duplicata de champ unique");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
+                    , null);
+        } catch (Exception e) {
+            LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
+                    + "l'ajout d'un client", null);
+        }
+
+    }
     /*@RequestMapping(method = RequestMethod.POST, value = "/api/v1/contacts/addtocustomer")
     public ResponseEntity<Object> ajouterAuClient(@RequestBody ClientContactHandler cch) {
         try {

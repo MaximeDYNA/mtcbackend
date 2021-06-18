@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_produit")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@SQLDelete(sql = "UPDATE t_produit SET active_status=false WHERE produit_id=?")
 public class Produit extends JournalData {
 
     @Id

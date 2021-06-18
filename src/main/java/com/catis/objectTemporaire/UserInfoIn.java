@@ -47,7 +47,7 @@ public class UserInfoIn {
                 .realm(env.getProperty("keycloak.realm"))
                 .users()
                 .get(controleur
-                        .getKeycloakId());
+                        .getUtilisateur().getKeycloakId());
 
         UserDTO user = new UserDTO();
         user.setId(userResource.toRepresentation().getId());
@@ -121,12 +121,10 @@ public class UserInfoIn {
             if(userResource.isPresent())
                 return userResource.get().getUsername();
             else
-                return null;
+                return "";
         }
         else
             return "Yvan's Job";
-
-
     }
 
 
@@ -150,8 +148,6 @@ public class UserInfoIn {
         }
         return  user;
     }
-
-
 
 
 }

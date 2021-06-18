@@ -2,13 +2,7 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
@@ -28,6 +22,10 @@ public class Utilisateur extends JournalData {
     private Long utilisateurId;
 
     private String keycloakId;
+
+    @OneToOne(mappedBy = "utilisateur")
+    @JsonIgnore
+    private Controleur controleur;
 
 
     public Utilisateur() {

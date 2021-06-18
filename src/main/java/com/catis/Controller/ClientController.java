@@ -10,18 +10,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.catis.model.Organisation;
+import com.catis.objectTemporaire.ClientDTO;
+import com.catis.objectTemporaire.ClientPOJO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.Client;
@@ -51,11 +49,9 @@ public class ClientController {
     public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
             LOGGER.trace("Ajout d'un client...");
-
             Client client = new Client();
             Partenaire partenaire = new Partenaire();
             partenaire.setCni(clientPartenaire.getCni());
-            System.out.println("*******************" + clientPartenaire.getDateNaiss());
             if (clientPartenaire.getDateNaiss() != null) {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss());
                 ;
@@ -144,6 +140,88 @@ public class ClientController {
 
         }
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/clients")
+    public ResponseEntity<Object> addClient(@RequestBody ClientPOJO clientPOJO) throws ParseException {
+        try {
+            LOGGER.trace("Ajout d'un client...");
+            Client client = new Client();
+            Partenaire partenaire = new Partenaire();
+            partenaire.setCni(clientPOJO.getCni());
+            Date date = clientPOJO.getDateNaiss() == null ? null:
+                    clientPOJO.getDateNaiss();
+
+            partenaire.setEmail(clientPOJO.getEmail());
+            partenaire.setTelephone(clientPOJO.getTelephone());
+            partenaire.setNom(clientPOJO.getNom());
+            partenaire.setPrenom(clientPOJO.getPrenom());
+            partenaire.setPassport(clientPOJO.getPassport());
+            partenaire.setDateNaiss(date);
+            partenaire.setLieuDeNaiss(clientPOJO.getLieuDeNaiss());
+            partenaire.setPermiDeConduire(clientPOJO.getPermiDeConduire());
+            Organisation organisation = clientPOJO.getOrganisationId()==null ? null : os.findByOrganisationId(clientPOJO.getOrganisationId());
+            partenaire.setOrganisation(organisation);
+            client.setClientId(clientPOJO.getClientId());
+            client.setPartenaire(partenaire);
+            client.setOrganisation(organisation);
+            client.setDescription(clientPOJO.getDescription());
+            client = clientService.addCustomer(client);
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", client);
+        } catch (DataIntegrityViolationException integrity) {
+            LOGGER.error("Duplicata de champ unique");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
+                    , null);
+        } catch (Exception e) {
+            LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu lors de "
+                    + "l'ajout d'un client", null);
+        }
+
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/clients")
+    public ResponseEntity<Object> getClients() {
+        LOGGER.trace("liste des clients...");
+        List<Client> clients = clientService.findAllCustomer();
+        List<ClientDTO> clientDTOS = new ArrayList<>();
+        ClientDTO c;
+        for(Client client : clients){
+            c = new ClientDTO();
+            c.setCni(client.getPartenaire().getCni());
+            c.setClientId(client.getPartenaire().getClient().getClientId());
+            c.setEmail(client.getPartenaire().getEmail());
+            c.setTelephone(client.getPartenaire().getTelephone());
+            c.setCreatedDate(client.getCreatedDate());
+            c.setNom(client.getPartenaire().getNom());
+            c.setPrenom(client.getPartenaire().getPrenom());
+            c.setDateNaiss(client.getPartenaire().getDateNaiss());
+            c.setPermiDeConduire(client.getPartenaire().getPermiDeConduire());
+            c.setOrganisation(client.getOrganisation());
+            c.setLieuDeNaiss(client.getPartenaire().getLieuDeNaiss());
+            c.setPassport(client.getPartenaire().getPassport());
+            c.setDescription(client.getDescription());
+            clientDTOS.add(c);
+
+        }
+
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientDTOS );
+    }
+
+    @DeleteMapping("/api/v1/admin/clients/{id}")
+    public ResponseEntity<Object> getClients(@PathVariable Long id){
+        try {
+            clientService.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    true, "OK", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    false, "KO", null);
+        }
     }
 
 }

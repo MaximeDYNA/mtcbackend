@@ -25,8 +25,10 @@ public class ProduitService {
 
     public String saveImage(String base64, String libelle) throws Exception {
         String folder = env.getProperty("uploaded.image");
-        base64 = base64.replace("data:image/png;base64,","");
-        byte[] bytes = Base64.getMimeDecoder().decode(base64);
+        String base64New = base64.substring(base64.indexOf(",")+1);
+        base64New.trim();
+        //base64 = base64.replace("data:image/png;base64,","");
+        byte[] bytes = Base64.getMimeDecoder().decode(base64New);
         FileOutputStream output = new FileOutputStream(folder+libelle+".png");
         output.write(bytes);
         return folder + libelle + ".png";
@@ -34,7 +36,7 @@ public class ProduitService {
 
     public List<Produit> findAllProduit() {
         List<Produit> produits = new ArrayList<>();
-        produitRepository.findAll().forEach(produits::add);
+        produitRepository.findByActiveStatusTrue().forEach(produits::add);
         return produits;
     }
 
@@ -42,6 +44,9 @@ public class ProduitService {
         return produitRepository.findByCategorieProduit_CategorieProduitId(id);
     }
 
+    public void deleteById(Long id){
+        produitRepository.deleteById(id);
+    }
     public Produit findById(Long id) {
         return produitRepository.findById(id).get();
     }

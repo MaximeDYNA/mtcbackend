@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.catis.objectTemporaire.CaissierPOJO;
+import com.catis.objectTemporaire.ProprietairePOJO;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,7 +22,7 @@ public class Partenaire extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long partenaireId;
+    private Long partenaireId;
     @NotEmpty
 
     private String nom;
@@ -32,41 +33,35 @@ public class Partenaire extends JournalData {
     private Date dateNaiss; // date de naissance
 
     private String lieuDeNaiss; // lieu de naissance
-    @Column(unique = true)
 
     private String passport;
-    @Column(unique = true)
 
     private String permiDeConduire;
-    @Column(unique = true)
 
     private String cni;
-    @Column(unique = true)
 
     private String telephone;
-    @Column(unique = true)
 
     private String email;
     @Column(unique = true)
 
     private String numeroContribuable;
 
-    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "partenaire")
     @JsonIgnore
     private Client client;
 
-    @OneToOne(mappedBy = "partenaire", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "partenaire")
     @JsonIgnore
-
     private Contact contact;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
+    @OneToOne(mappedBy = "partenaire")
     @JsonIgnore
+    private ProprietaireVehicule proprietaireVehicule;
 
-    Set<ProprietaireVehicule> proprietaireVehicule;
-
-
-
+    @OneToOne(mappedBy = "partenaire")
+    @JsonIgnore
+    private Controleur controleur;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "partenaire")
     @JsonIgnore
@@ -96,8 +91,7 @@ public class Partenaire extends JournalData {
     }
 
     public Partenaire(long id, String nom, String prenom, Date dateNaiss, String lieuDeNaiss, String passport,
-                      String permiDeConduire, String cni,
-                      Set<ProprietaireVehicule> proprietaireVehicule, Set<Controleur> controleurs,
+                      String permiDeConduire, String cni, Set<Controleur> controleurs,
                       Set<Caissier> caissiers) {
 
         this.partenaireId = id;
@@ -108,9 +102,6 @@ public class Partenaire extends JournalData {
         this.passport = passport;
         this.permiDeConduire = permiDeConduire;
         this.cni = cni;
-
-        this.proprietaireVehicule = proprietaireVehicule;
-
         this.controleurs = controleurs;
         this.caissiers = caissiers;
     }
@@ -124,12 +115,28 @@ public class Partenaire extends JournalData {
         this.telephone = caissierPOJO== null ? null : caissierPOJO.getTelephone();
         this.email = caissierPOJO == null ? null : caissierPOJO.getEmail();
     }
+    public Partenaire(ProprietairePOJO caissierPOJO){
 
-    public Set<ProprietaireVehicule> getProprietaireVehicule() {
+        this.nom = caissierPOJO == null ? null : caissierPOJO.getNom();
+
+        this.prenom = caissierPOJO== null ? null : caissierPOJO.getPrenom();
+        this.lieuDeNaiss = caissierPOJO== null ? null : caissierPOJO.getLieuDeNaiss();
+        this.permiDeConduire = caissierPOJO== null ?null: caissierPOJO.getPermiDeConduire();
+        this.passport = caissierPOJO == null ? null : caissierPOJO.getPassport();
+        this.cni = caissierPOJO == null ? null : caissierPOJO.getCni();
+        this.telephone = caissierPOJO== null ? null : caissierPOJO.getTelephone();
+        this.email = caissierPOJO == null ? null : caissierPOJO.getEmail();
+        this.partenaireId
+                = caissierPOJO == null ? null :
+                caissierPOJO
+                        .getPartenaireId();
+    }
+
+    public ProprietaireVehicule getProprietaireVehicule() {
         return proprietaireVehicule;
     }
 
-    public void setProprietaireVehicule(Set<ProprietaireVehicule> proprietaireVehicule) {
+    public void setProprietaireVehicule(ProprietaireVehicule proprietaireVehicule) {
         this.proprietaireVehicule = proprietaireVehicule;
     }
 
@@ -257,6 +264,7 @@ public class Partenaire extends JournalData {
     public Contact getContact() {
         return contact;
     }
+
 
     public void setContact(Contact contact) {
         this.contact = contact;

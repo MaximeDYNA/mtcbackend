@@ -9,4 +9,5 @@ import com.catis.model.Vehicule;
 public interface VehiculeRepository extends CrudRepository<Vehicule, Long> {
 
     List<Vehicule> findByChassisStartsWithIgnoreCase(String chassis);
+    List<Vehicule> findByActiveStatusTrue();
 }

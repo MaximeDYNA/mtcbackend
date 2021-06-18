@@ -8,5 +8,7 @@ import com.catis.model.Contact;
 
 public interface ContactRepository extends CrudRepository<Contact, Long> {
     Contact findByPartenaire_PartenaireId(long id);
+    List<Contact> findByActiveStatusTrue();
+
 
 }

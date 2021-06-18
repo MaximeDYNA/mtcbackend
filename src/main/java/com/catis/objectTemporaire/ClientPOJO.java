@@ -6,17 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaissierPOJO {
+public class ClientPOJO {
 
-    private Long caissierId;
+    private Long clientId;
     private String nom;
+    private String description;
     private String prenom;
-    private Long dateNaiss;
+    private Date dateNaiss;
     private String lieuDeNaiss;
     private String passport;
     private String permiDeConduire;
@@ -24,7 +26,4 @@ public class CaissierPOJO {
     private String telephone;
     private String email;
     private Long organisationId;
-    private Long caisse;
-    private Long user;
-
 }
