@@ -10,5 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MachinePOJO {
-
+    private Long idMachine;
+    private String numSerie; // numéro de série
+    private String fabriquant;
+    private String model;
 }
