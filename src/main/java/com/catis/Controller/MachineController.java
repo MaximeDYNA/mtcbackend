@@ -1,26 +1,29 @@
 package com.catis.Controller;
 
+import com.catis.model.ConstructorModel;
 import com.catis.model.Machine;
+import com.catis.model.Organisation;
+import com.catis.objectTemporaire.ContructorModelPOJO;
 import com.catis.objectTemporaire.MachinePOJO;
+import com.catis.repository.ConstructorModelRepo;
 import com.catis.service.MachineService;
 import com.catis.service.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/machines")
+@RequestMapping("/api/v1/admin/machines")
 public class MachineController {
     @Autowired
     private OrganisationService os;
     @Autowired
     private MachineService ms;
+    @Autowired
+    private ConstructorModelRepo constructorModelRepo;
 
 
     @GetMapping
@@ -33,12 +36,36 @@ public class MachineController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addMachine(MachinePOJO pojo){
+    public ResponseEntity<Object> addMachine(@RequestBody MachinePOJO pojo){
+        ConstructorModel cm = pojo.getConstructorModel() == null ? null : constructorModelRepo.findById(pojo.getConstructorModel().getId()).get();
+        Organisation o = pojo.getOrganisationId() == null ? null : os.findByOrganisationId(pojo.getOrganisationId().getId());
+        Machine machine = new Machine();
 
-        List<Machine> machines = ms.findAllActive();
+        machine.setIdMachine(pojo.getIdMachine());
+        machine.setFabriquant(pojo.getFabriquant());
+        machine.setModel(pojo.getModel());
+        machine.setNumSerie(pojo.getNumSerie());
+        machine.setConstructorModel(cm);
+        machine.setOrganisation(o);
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", machines);
+        machine = ms.save(machine);
 
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", machine);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable Long id){
+
+        try{
+            ms.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "failed", null);
+        }
     }
 
 }

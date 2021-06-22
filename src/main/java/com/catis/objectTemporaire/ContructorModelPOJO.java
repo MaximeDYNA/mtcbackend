@@ -9,11 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MachinePOJO {
-    private Long idMachine;
-    private String numSerie; // numéro de série
-    private String fabriquant;
-    private String model;
-    private ObjectForSelect constructorModel;
+public class ContructorModelPOJO {
+
+    private Long id;
+    private String name;
     private ObjectForSelect organisationId;
+    private ObjectForSelect constructor;
 }

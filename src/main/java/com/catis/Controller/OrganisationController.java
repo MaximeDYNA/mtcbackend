@@ -186,7 +186,7 @@ public class OrganisationController {
             Map<String, String> map = new HashMap<>();
             for(Organisation organisation : results){
                 map.put("id",String.valueOf(organisation.getOrganisationId()));
-                map.put("name", organisation.getNom()+" | "+organisation.getParentOrganisation().getNom());
+                map.put("name", organisation.getNom()+" | "+organisation.getParentOrganisation() == null ? "No parent" : organisation.getParentOrganisation().getNom());
                 mapList.add(map);
                 map = new HashMap<>();
             }
