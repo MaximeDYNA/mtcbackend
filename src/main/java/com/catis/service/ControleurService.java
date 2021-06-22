@@ -26,6 +26,12 @@ public class ControleurService {
         return controleurs;
     }
 
+    public List<Controleur> findAllByOrganisation(Long organisationId) {
+        List<Controleur> controleurs = new ArrayList<>();
+        controleurR.findByOrganisation_OrganisationId(organisationId).forEach(controleurs::add);
+        return controleurs;
+    }
+
     public Controleur findControleurById(Long id) {
         return controleurR.findById(id).get();
     }
