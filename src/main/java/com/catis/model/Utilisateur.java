@@ -23,6 +23,8 @@ public class Utilisateur extends JournalData {
 
     private String keycloakId;
 
+    private String login;
+
     @OneToOne(mappedBy = "utilisateur")
     @JsonIgnore
     private Controleur controleur;
@@ -59,6 +61,19 @@ public class Utilisateur extends JournalData {
         this.keycloakId = keycloakId;
     }
 
+    public String getLogin() {
+        return login;
+    }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
+    public Controleur getControleur() {
+        return controleur;
+    }
+
+    public void setControleur(Controleur controleur) {
+        this.controleur = controleur;
+    }
 }
