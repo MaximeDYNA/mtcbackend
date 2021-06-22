@@ -23,13 +23,17 @@ public class LigneService {
 
     public List<Ligne> findAllLigne() {
         List<Ligne> lignes = new ArrayList<>();
-        ligneR.findAll().forEach(lignes::add);
+        ligneR.findByActiveStatusTrue().forEach(lignes::add);
         return lignes;
     }
 
     public Ligne findLigneById(Long id) {
 
         return ligneR.findById(id).get();
+    }
+
+    public void deleteById(Long id){
+        ligneR.deleteById(id);
     }
 
 }

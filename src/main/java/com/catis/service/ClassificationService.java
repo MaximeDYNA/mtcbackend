@@ -6,15 +6,17 @@ import org.springframework.stereotype.Service;
 import com.catis.model.Classification;
 import com.catis.repository.ClassificationRepository;
 
+import java.util.Optional;
+
 @Service
 public class ClassificationService {
 
     @Autowired
     private ClassificationRepository cR;
 
-    public Classification findById(Long id) {
+    public Optional<Classification> findById(Long id) {
         if (id == null)
             return null;
-        return cR.findById(id).get();
+        return cR.findById(id);
     }
 }
