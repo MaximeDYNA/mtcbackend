@@ -100,7 +100,6 @@ public class UserInfoIn {
         UserRepresentation userResource = keycloak.realm(realm).users().search(name).get(0);
 
         return userResource.getId();
-
     }
 
     public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm) {
