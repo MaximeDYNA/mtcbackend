@@ -1,19 +1,10 @@
 package com.catis.service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
+import java.io.FileOutputStream;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.catis.model.CarteGrise;
 import com.catis.model.Produit;
 import com.catis.repository.CarteGriseRepository;
@@ -29,18 +20,23 @@ public class ProduitService {
     private CarteGriseRepository cgr;
     @Autowired
     private VisiteService visiteService;
+    @Autowired
+    org.springframework.core.env.Environment env;
 
-    public String saveImage(MultipartFile imageFile) throws Exception {
-        String folder = "uploaded/";
-        byte[] bytes = imageFile.getBytes();
-        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-        Files.write(path, bytes);
-        return folder + imageFile.getOriginalFilename();
+    public String saveImage(String base64, String libelle) throws Exception {
+        String folder = env.getProperty("uploaded.image");
+        String base64New = base64.substring(base64.indexOf(",")+1);
+        base64New.trim();
+        //base64 = base64.replace("data:image/png;base64,","");
+        byte[] bytes = Base64.getMimeDecoder().decode(base64New);
+        FileOutputStream output = new FileOutputStream(folder+libelle+".png");
+        output.write(bytes);
+        return folder + libelle + ".png";
     }
 
     public List<Produit> findAllProduit() {
         List<Produit> produits = new ArrayList<>();
-        produitRepository.findAll().forEach(produits::add);
+        produitRepository.findByActiveStatusTrue().forEach(produits::add);
         return produits;
     }
 
@@ -48,6 +44,9 @@ public class ProduitService {
         return produitRepository.findByCategorieProduit_CategorieProduitId(id);
     }
 
+    public void deleteById(Long id){
+        produitRepository.deleteById(id);
+    }
     public Produit findById(Long id) {
         return produitRepository.findById(id).get();
     }

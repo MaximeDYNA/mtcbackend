@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class UserInfoIn {
@@ -46,7 +47,7 @@ public class UserInfoIn {
                 .realm(env.getProperty("keycloak.realm"))
                 .users()
                 .get(controleur
-                        .getKeycloakId());
+                        .getUtilisateur().getKeycloakId());
 
         UserDTO user = new UserDTO();
         user.setId(userResource.toRepresentation().getId());
@@ -101,6 +102,30 @@ public class UserInfoIn {
         return userResource.getId();
     }
 
+    public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm) {
+
+        KeycloakSecurityContext context ;
+        Keycloak keycloak;
+        Optional<UserRepresentation> userResource;
+        if(request != null){
+            context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+            keycloak= KeycloakBuilder
+                    .builder()
+                    .serverUrl(serverUrl)
+                    .realm(realm)
+                    .authorization(context.getTokenString())
+                    .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                    .build();
+            userResource = keycloak.realm(realm).users().search(name).stream().findFirst();
+            if(userResource.isPresent())
+                return userResource.get().getUsername();
+            else
+                return "";
+        }
+        else
+            return "Yvan's Job";
+    }
+
 
 
     public static UserDTO getUserInfo(HttpServletRequest request) {
@@ -122,8 +147,6 @@ public class UserInfoIn {
         }
         return  user;
     }
-
-
 
 
 }

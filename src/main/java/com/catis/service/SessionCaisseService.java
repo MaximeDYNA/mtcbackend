@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,14 @@ public class SessionCaisseService {
 
 
         return sessionCaisse;
+    }
+
+    public List<SessionCaisse> getAll(){
+        List<SessionCaisse> sessionCaisses = new ArrayList<>();
+
+        sessionCaisseRepository.findByActiveStatusTrue().forEach(sessionCaisses::add);
+
+        return sessionCaisses;
     }
 
 

@@ -6,11 +6,13 @@ import java.time.LocalTime;
 import javax.persistence.*;
 
 import com.catis.model.configuration.JournalData;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "t_mesurevisuel")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class MesureVisuel extends JournalData {
 
     @Id

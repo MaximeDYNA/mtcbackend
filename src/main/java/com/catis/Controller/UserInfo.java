@@ -127,7 +127,7 @@ public class UserInfo {
         UserDTO user = new UserDTO();
         user.setNom(userResource.toRepresentation().getLastName());
         user.setPrenom(userResource.toRepresentation().getFirstName());
-        user.setLogin(userResource.toRepresentation().getUsername());
+        user.setLogin(userResource.toRepresentation().getLastName());
         user.setEmail(userResource.toRepresentation().getEmail());
 
         user.setRoles(userResource.toRepresentation().getClientRoles().keySet());

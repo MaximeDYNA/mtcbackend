@@ -11,5 +11,6 @@ public interface ProduitRepository extends CrudRepository<Produit, Long> {
     List<Produit> findByCategorieProduit_CategorieProduitId(Long id);
 
     List<Produit> findByActiveStatusTrue();
+
     Produit findByLibelleIgnoreCase(String libelle);
 }

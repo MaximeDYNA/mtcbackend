@@ -64,24 +64,20 @@ public class ProduitController {
     }
 
     @PostMapping("/api/v1/produits")
-    public ResponseEntity<Object> addProduit(
-            @RequestParam("libelle") String libelle,
-            @RequestParam("description") String description,
-            @RequestParam("prix") double prix,
-            @RequestParam("delaiValidite") int delaiValidite,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("categorieProduitId") Long categorieProduitId) throws Exception {
+    public ResponseEntity<Object> addProduit(@RequestBody ProduitPOJO produitPOJO) throws Exception {
 
+        LOGGER.trace("liste des produits...");
 
         Produit produit = new Produit();
-        produit.setLibelle(libelle);
-        produit.setDescription(description);
-        produit.setPrix(prix);
-        produit.setDelaiValidite(delaiValidite);
-        produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
-        produit.setImg(produitService.saveImage(file));
-        LOGGER.trace("liste des catégories...");
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
+        produit.setLibelle(produitPOJO.getLibelle());
+        produit.setDescription(produitPOJO.getDescription());
+        produit.setPrix(produitPOJO.getPrix());
+        produit.setDelaiValidite(produitPOJO.getDelaiValidite());
+        produit.setCategorieProduit(produitPOJO.getCategorieProduitId() == null ? null : categorieProduitService.findById(produitPOJO.getCategorieProduitId()));
+        produit.setImg(produitPOJO.getImg() ==  null ? null : produitService.saveImage(produitPOJO.getImg(),produitPOJO.getLibelle() ));
+
+        produit = produitService.addProduit(produit);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produit );
 		      
 		   /* try {} 
 		    catch (Exception e) {
@@ -91,25 +87,20 @@ public class ProduitController {
 
 
     }
-	/*@PostMapping("/upload")
-	  public ResponseEntity<Object> uploadFile(@RequestParam("img") Produit produit) {
-	    String message = "";
-	    try {
-	    	 try {
-	    	      Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-	    	    } catch (Exception e) {
-	    	      throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-	    	    }
-	      storageService.save(file);
+    @DeleteMapping("/api/v1/produits/{id}")
+    public ResponseEntity<Object> addProduit(@PathVariable Long id) throws Exception {
 
-	      message = "Uploaded the file successfully: " + file.getOriginalFilename();
-	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-	    } catch (Exception e) {
-	      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-	    }
-	  }
-	*/
+            produitService.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null );
+
+		   /* try {}
+		    catch (Exception e) {
+		    	LOGGER.error("Erreur lors de l'ajout d'un produit");
+				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
+		    }*/
+
+
+    }
 
     @RequestMapping("/api/v1/produits/hold")
     public ResponseEntity<Object> listeDesProduitsParOnglet(@RequestBody HoldData holdeleter) {
@@ -224,6 +215,25 @@ public class ProduitController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produits);
     }
+    @GetMapping(value = "/api/v1/admin/produits/select")
+    public ResponseEntity<Object> produitListForSelect() {
+        try {
+            List<Produit> results = produitService.findAllProduit();
+            List<Map<String, String>> mapList = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            for(Produit produit : results){
+                map.put("id",String.valueOf(produit.getProduitId()));
+                map.put("name", produit.getLibelle());
+                mapList.add(map);
+                map = new HashMap<>();
+            }
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "OK", mapList);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
+        }
+    }
     @GetMapping("/api/v1/admin/produits/graphview/legende")
     public ResponseEntity<Object> legendeforGraphView() {
         try {
@@ -272,7 +282,7 @@ public class ProduitController {
         produit.setPrix(prix);
         produit.setDelaiValidite(delaiValidite);
         produit.setCategorieProduit(categorieProduitService.findById(categorieProduitId));
-        produit.setImg(produitService.saveImage(file));
+        //produit.setImg(produitService.saveImage(file));
         LOGGER.trace("liste des catégories...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.addProduit(produit));
 

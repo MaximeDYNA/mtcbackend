@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_vente")
-
+@Audited
 public class Vente extends JournalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +52,6 @@ public class Vente extends JournalData {
     private Set<OperationCaisse> operationCaisse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
-    @JsonIgnore
     private Set<DetailVente> detailventes;
 
     private String numFacture;

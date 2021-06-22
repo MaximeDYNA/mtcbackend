@@ -21,7 +21,7 @@ public class ContactService {
 
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
-        contactRepository.findAll().forEach(contacts::add);
+        contactRepository.findByActiveStatusTrue().forEach(contacts::add);
         return contacts;
     }
 
@@ -31,6 +31,10 @@ public class ContactService {
 
     public Contact findById(Long id) {
         return contactRepository.findById(id).get();
+    }
+
+    public void deleteById(Long id){
+        contactRepository.deleteById(id);
     }
 
 

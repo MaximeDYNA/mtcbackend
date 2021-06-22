@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -12,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_client")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
+@SQLDelete(sql = "UPDATE t_client SET active_status=false WHERE client_id=?")
 public class Client extends JournalData {
 
     @Id
@@ -19,7 +23,7 @@ public class Client extends JournalData {
     private Long clientId;
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Partenaire partenaire;
     @ManyToMany
     private Set<Lexique> lexiques;

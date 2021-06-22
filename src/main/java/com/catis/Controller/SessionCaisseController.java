@@ -2,13 +2,14 @@ package com.catis.Controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
 import com.catis.model.Caissier;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.repository.CaissierRepository;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +48,31 @@ public class SessionCaisseController {
     @Autowired
     private CaissierRepository cr;
 
-    private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
+   // private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
     @RequestMapping(value = "/api/v1/sessioncaisseexist/{userId}")
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable String userId) {
         SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
         if (c != null) {
-            LOGGER.info("Session de Caisse déjà ouverte");
+         //   LOGGER.info("Session de Caisse déjà ouverte");
             System.out.println(c.getSessionCaisseId());
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", c);
         } else {
-            LOGGER.info("Aucune session caisse trouvée");
+        //    LOGGER.info("Aucune session caisse trouvée");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);
+        }
+
+    }
+
+    @RequestMapping(value = "/api/v1/connexion/log")
+    public ResponseEntity<Object> logConnexion(@PathVariable String userId) {
+        SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
+        if (c != null) {
+         //   LOGGER.info("Session de Caisse déjà ouverte");
+            System.out.println(c.getSessionCaisseId());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", c);
+        } else {
+         //   LOGGER.info("Aucune session caisse trouvée");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);
         }
 
@@ -68,7 +83,7 @@ public class SessionCaisseController {
         //MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
         // System.out.println(MDC.get("user"));
 
-        LOGGER.info("ouverture de caisse en cours...");
+      //  LOGGER.info("ouverture de caisse en cours...");
 
 
         Date now = new Date();
@@ -116,7 +131,7 @@ public class SessionCaisseController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/fermerSessionCaisse")
     public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData) throws IOException {
 
-        LOGGER.info("Fermeture session caisse...");
+       // LOGGER.info("Fermeture session caisse...");
         hs.deleteHoldBySessionCaisse(closeSessionData.getSessionCaisseId());
         //System.out.println("******6262626262"+		ImageSizeHandler.compress("bonjour"));
         //System.out.println("*....................**decompressed***"+	 ImageSizeHandler.decompress(ImageSizeHandler.compress("bonjour")));
@@ -128,6 +143,15 @@ public class SessionCaisseController {
 					+ "bien vouloir le signaler à l'équipe CATIS", null);
 		}*/
 
+    }
+
+    //Admin session de caisse
+
+    @GetMapping("/api/v1/admin/sessioncaisses")
+    public ResponseEntity<Object> sessionCaisse() {
+
+        List<SessionCaisse> sessionCaisseList = sessionCaisseService.getAll();
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseList);
     }
 
 }

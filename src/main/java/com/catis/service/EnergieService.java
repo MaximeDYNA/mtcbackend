@@ -25,7 +25,10 @@ public class EnergieService {
 
     public List<Energie> energieList() {
         List<Energie> energies = new ArrayList<>();
-        energieRepo.findAll().forEach(energies::add);
+        energieRepo.findByActiveStatusTrue().forEach(energies::add);
         return energies;
+    }
+    public void deleteById(Long id){
+        energieRepo.deleteById(id);
     }
 }

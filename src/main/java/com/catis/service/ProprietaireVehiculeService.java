@@ -23,7 +23,7 @@ public class ProprietaireVehiculeService {
 
     public List<ProprietaireVehicule> findAll() {
         List<ProprietaireVehicule> proprietaires = new ArrayList<>();
-        pvr.findAll().forEach(proprietaires::add);
+        pvr.findByActiveStatusTrue().forEach(proprietaires::add);
         return proprietaires;
     }
 
@@ -33,6 +33,10 @@ public class ProprietaireVehiculeService {
 
     public ProprietaireVehicule findById(Long id) {
         return pvr.findById(id).get();
+    }
+
+    public void deleteById(Long id){
+        pvr.deleteById(id);
     }
 
     public ProprietaireVehicule addClientToProprietaire(Client client) {

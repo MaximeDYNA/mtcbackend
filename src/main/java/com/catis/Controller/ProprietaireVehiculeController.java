@@ -2,19 +2,18 @@ package com.catis.Controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
+import com.catis.model.Organisation;
+import com.catis.objectTemporaire.ProprietaireDTO;
+import com.catis.objectTemporaire.ProprietairePOJO;
 import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.Client;
@@ -93,5 +92,100 @@ public class ProprietaireVehiculeController {
             LOGGER.error("Une erreur est survenu l'ajout d'un proprietaire");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Propietaire", null);
         }
+    }
+
+    /**Admin**/
+
+    @GetMapping("/api/v1/admin/proprietaires")
+    public ResponseEntity<Object> proprioAdminList() {
+        try {
+
+            LOGGER.trace("List des propriétaires des vehicules...");
+            List<ProprietaireVehicule> props = proprietaireVehiculeadresseService.findAll();
+            List<ProprietaireDTO> ps = new ArrayList<>();
+            ProprietaireDTO pro;
+            for(ProprietaireVehicule p : props){
+                pro = new ProprietaireDTO();
+                pro.setProprietaireVehiculeId(p.getProprietaireVehiculeId());
+                pro.setNom(p.getPartenaire().getNom());
+                pro.setPrenom(p.getPartenaire().getPrenom());
+                pro.setDateNaiss(p.getPartenaire().getDateNaiss());
+                pro.setEmail(p.getPartenaire().getEmail());
+                pro.setLieuDeNaiss(p.getPartenaire().getLieuDeNaiss());
+                pro.setOrganisation(p.getOrganisation());
+                pro.setPassport(p.getPartenaire().getPassport());
+                pro.setPermiDeConduire(p.getPartenaire().getPermiDeConduire());
+                pro.setTelephone(p.getPartenaire().getTelephone());
+                pro.setCreatedDate(p.getPartenaire().getCreatedDate());
+                pro.setCni(p.getPartenaire().getCni());
+                pro.setDescription(p.getDescription());
+                pro.setPartenaireId(p.getPartenaire().getPartenaireId());
+                ps.add(pro);
+            }
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    ,ps);
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
+        }
+    }
+
+    @PostMapping("/api/v1/admin/proprietaires")
+    public ResponseEntity<Object> addproprioAdmin(@RequestBody ProprietairePOJO proprietairePOJO) {
+        try {
+
+            LOGGER.trace("List des propriétaires des vehicules...");
+            ProprietaireVehicule proprio = new ProprietaireVehicule();
+            Date date = proprietairePOJO.getDateNaiss() == null ? null:
+                    proprietairePOJO.getDateNaiss();
+            Organisation organisation = proprietairePOJO.getOrganisationId()==null ? null : os.findByOrganisationId(proprietairePOJO.getOrganisationId().getId());
+
+            Partenaire partenaire = new Partenaire(proprietairePOJO);
+            partenaire.setOrganisation(organisation);
+            partenaire.setDateNaiss(date);
+            proprio.setPartenaire(partenaire);
+            proprio.setOrganisation(organisation);
+            proprio.setProprietaireVehiculeId(proprietairePOJO.getProprietaireVehiculeId());
+
+            proprio = proprietaireVehiculeadresseService.addProprietaire(proprio);
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    ,proprio);
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
+        }
+    }
+    @DeleteMapping("/api/v1/admin/proprietaires/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id){
+        try {
+            proprietaireVehiculeadresseService.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    true, "OK", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                    false, "KO", null);
+        }
+    }
+
+    @GetMapping("/api/v1/admin/proprietaires/select")
+    public ResponseEntity<Object> getCaissesOfMtcforSelect(){
+
+        List<ProprietaireVehicule> cats = proprietaireVehiculeadresseService.findAll();
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(ProprietaireVehicule c: cats){
+            cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getProprietaireVehiculeId()));
+            cat.put("name", c.getPartenaire().getNom() +" "+ c.getPartenaire().getPrenom() +" | "
+                    + (c.getOrganisation() == null? "Toutes" : c.getOrganisation().getNom()));
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "Select catégorie produit OK", catsSelect);
     }
 }

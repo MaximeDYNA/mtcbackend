@@ -2,6 +2,7 @@ package com.catis.model;
 
 import javax.persistence.*;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietestmachine")
+@Audited
 public class CategorieTestMachine extends JournalData {
     // table pivot entre catégorietest et machine
     @Id

@@ -83,19 +83,20 @@ public class EncaissementController {
         Produit produit;
         CarteGrise carteGrise;
         Vehicule vehicule;
+        double taxedetail;
         /* ---------client------------ */
-        vente.setClient(
-                clientService.findCustomerById(encaissement.getClientId() == 0 ? 1 : encaissement.getClientId()));
+        vente.setClient(encaissement.getClientId() == 0 ? null :
+                clientService.findCustomerById(encaissement.getClientId()));
         /*------------------------------*/
 
         /* ---------Vendeur------------ */
 
-        vente.setVendeur(
-                vendeurService.findVendeurById(encaissement.getVendeurId() == 0 ? 1 : encaissement.getVendeurId()));
+        vente.setVendeur(encaissement.getVendeurId() == 0 ? null :
+                vendeurService.findVendeurById(encaissement.getVendeurId()));
         /*------------------------------*/
 
         /* ---------Contact------------ */
-        vente.setContact(contactService.findById(encaissement.getContactId()));
+        vente.setContact(encaissement.getContactId() == 0 ? null : contactService.findById(encaissement.getContactId()));
         /*------------------------------*/
 
         /* ---------Session Caisse------------ */
@@ -146,6 +147,12 @@ public class EncaissementController {
             vente = venteService.addVente(vente);
             /*------------------------------------------*/
             detailVente.setProduit(produit);
+            taxedetail = 0;
+            for(TaxeProduit t : produit.getTaxeProduit())
+                taxedetail += t.getTaxe().getValeur();
+
+
+            detailVente.setPrix(produit.getPrix() + produit.getPrix() *taxedetail/100);
             detailVente.setVente(vente);
             detailVente.setReference(posale.getReference());
             dvs.addVente(detailVente);

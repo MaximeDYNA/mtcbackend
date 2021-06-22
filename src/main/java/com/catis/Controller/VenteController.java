@@ -10,13 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.DetailVente;
@@ -98,6 +92,18 @@ public class VenteController {
             LOGGER.error(Message.ERREUR_LIST_VIEW + "Vente");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
         }
+    }
+    @GetMapping("/api/v1/admin/ventes")
+    public ResponseEntity<Object> getVentes() {
+
+
+            List<Vente> ventes = venteService.findAll();
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Succès", ventes);
+           /* try { } catch (Exception e) {
+            LOGGER.error(Message.ERREUR_LIST_VIEW + "Vente");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
+        }*/
     }
 
 

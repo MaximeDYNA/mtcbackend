@@ -2,16 +2,10 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -20,24 +14,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_controleur")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
+@SQLDelete(sql = "UPDATE t_controleur SET active_status=false WHERE id_controleur=?")
 public class Controleur extends JournalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idControleur;
     private String agremment;
-    private int score;
+    private int score=0;
 
-    @ManyToOne(optional = true) // id utilisateur optionel
+    @OneToOne(optional = true) // id utilisateur optionel
     private Utilisateur utilisateur;
 
-    @ManyToOne
+    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Partenaire partenaire;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
     @JsonIgnore
     private Set<Inspection> inspections;
-    private String keycloakId;
 
     public Controleur() {
 
@@ -45,7 +40,7 @@ public class Controleur extends JournalData {
 
 
     public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
-                       Set<Inspection> inspections, String keycloakId) {
+                       Set<Inspection> inspections) {
         super();
         this.idControleur = idControleur;
         this.agremment = agremment;
@@ -54,7 +49,6 @@ public class Controleur extends JournalData {
         this.partenaire = partenaire;
 
         this.inspections = inspections;
-        this.keycloakId = keycloakId;
     }
 
 
@@ -107,14 +101,6 @@ public class Controleur extends JournalData {
     }
 
 
-    public String getKeycloakId() {
-        return keycloakId;
-    }
-
-
-    public void setKeycloakId(String keycloakId) {
-        this.keycloakId = keycloakId;
-    }
 
 
 }

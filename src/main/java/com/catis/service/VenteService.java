@@ -30,7 +30,7 @@ public class VenteService {
 
     public List<Vente> findAll() {
         List<Vente> ventes = new ArrayList<>();
-        venteRepository.findAll().forEach(ventes::add);
+        venteRepository.findByActiveStatusTrue().forEach(ventes::add);
         return ventes;
     }
 

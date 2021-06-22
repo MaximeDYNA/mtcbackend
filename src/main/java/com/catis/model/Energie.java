@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -15,6 +17,8 @@ import com.catis.objectTemporaire.CarteGriseReceived;
 @Entity
 @Table(name = "t_energie")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
+@SQLDelete(sql = "UPDATE t_energie SET active_status=false WHERE energie_id=?")
 public class Energie extends JournalData {
 
     @Id

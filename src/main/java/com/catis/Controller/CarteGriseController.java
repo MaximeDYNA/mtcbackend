@@ -6,30 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.catis.objectTemporaire.CarteGrisePOJO;
+import com.catis.service.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.CarteGrise;
 import com.catis.model.Vehicule;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.CarteGriseReceived;
-import com.catis.service.CarteGriseService;
-import com.catis.service.EnergieService;
-import com.catis.service.MarqueService;
-import com.catis.service.ProduitService;
-import com.catis.service.ProprietaireVehiculeService;
-import com.catis.service.VehiculeService;
-import com.catis.service.VisiteService;
 
 @RestController
 @CrossOrigin
@@ -48,6 +39,8 @@ public class CarteGriseController {
     private VisiteService visiteService;
     @Autowired
     private EnergieService energieService;
+    @Autowired
+    private OrganisationService os;
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
 
@@ -165,7 +158,6 @@ public class CarteGriseController {
 		}*/
 
     }
-
     @GetMapping("/api/v1/cartegrise/listview")
     public ResponseEntity<Object> carteGriseListView() {
         LOGGER.trace("Recherche carte grise...");
@@ -193,5 +185,77 @@ public class CarteGriseController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Client", null);
         }
 
+    }
+    /*Admin*/
+    @GetMapping("/api/v1/admin/cartegrises")
+    public ResponseEntity<Object> findAllforAdmin() {
+        LOGGER.trace("Recherche carte grise...");
+        try {
+            List<CarteGrise> cs = cgs.findAll();
+            //cgs.findByImmatriculationOuCarteGrise(imCha)
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cs);
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }
+    }
+
+    @PostMapping("/api/v1/admin/cartegrises")
+    public ResponseEntity<Object> saveCGforAdmin(@RequestBody CarteGrisePOJO c) {
+        LOGGER.trace("Add CG...");
+
+
+            CarteGrise carteGrise = new CarteGrise();
+        carteGrise.setCarteGriseId(c.getCarteGriseId());
+        carteGrise.setNumImmatriculation(c.getNumImmatriculation());
+        carteGrise.setPreImmatriculation(c.getPreImmatriculation());
+        carteGrise.setDateDebutValid(c.getDateDebutValid());
+        carteGrise.setDateFinValid(c.getDateFinValid());
+        carteGrise.setSsdt_id(c.getSsdt_id());
+        carteGrise.setCommune(c.getCommune());
+        carteGrise.setMontantPaye(c.getMontantPaye());
+        carteGrise.setVehiculeGage(c.isVehiculeGage());
+        carteGrise.setGenreVehicule(c.getGenreVehicule());
+
+        carteGrise.setEnregistrement(c.getEnregistrement());
+        carteGrise.setDateDelivrance(c.getDateDelivrance());
+        carteGrise.setLieuDedelivrance(c.getLieuDedelivrance());
+        carteGrise.setCentre_ssdt(c.getCentre_ssdt());
+            carteGrise.setCarteGriseId(c.getCarteGriseId());
+
+            carteGrise.setProprietaireVehicule(c.getProprietaire() == null ?
+                    null : pvs.findById(c.getProprietaire().getId()));
+
+            carteGrise.setProduit(c.getProduit() == null ?
+                    null : ps.findById(c.getProduit().getId()) );
+
+            carteGrise.setVehicule(c.getVehicule() == null ?
+                    null : vs.findById(c.getVehicule().getId()) );
+
+            System.out.println(ToStringBuilder.reflectionToString(c.getProprietaire()));
+
+            carteGrise.setOrganisation(c.getOrganisationId() == null ?
+                    null : os.findByOrganisationId(c.getOrganisationId().getId()));
+
+            System.out.println(ToStringBuilder.reflectionToString(carteGrise));
+
+            carteGrise = cgs.save(carteGrise);
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", carteGrise);
+        /*try { } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+
+        }*/
+    }
+    @DeleteMapping("/api/v1/admin/cartegrises/{id}")
+    public ResponseEntity<Object> energie(@PathVariable Long id) {
+        try {
+            cgs.deleteById(id);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    , null);
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Energie", null);
+        }
     }
 }

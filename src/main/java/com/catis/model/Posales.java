@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,22 +20,28 @@ import com.sun.istack.NotNull;
 @Entity
 @Table(name = "t_posales")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class Posales extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long posalesId;
 
+
     @ManyToOne
     private Produit produit;
 
+
     private boolean status;
+
 
     @ManyToOne
     private SessionCaisse sessionCaisse;
 
+
     @ManyToOne
     private Hold hold;
+
 
     @NotNull
     @NotEmpty(message = "La référence ne peut être vide")

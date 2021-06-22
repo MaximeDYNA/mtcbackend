@@ -2,15 +2,10 @@ package com.catis.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -19,15 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_proprietairevehicule")
+@Audited
+@SQLDelete(sql = "UPDATE t_proprietairevehicule SET active_status=false WHERE proprietaire_vehicule_id=?")
 public class ProprietaireVehicule extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proprietaireVehiculeId;
 
-
-
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Partenaire partenaire;
 
     @OneToMany(mappedBy = "proprietaireVehicule")
@@ -37,7 +32,6 @@ public class ProprietaireVehicule extends JournalData {
     private String description;
 
     public ProprietaireVehicule() {
-
     }
 
     public ProprietaireVehicule(Long proprietaireVehiculeId, Partenaire partenaire,

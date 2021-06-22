@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -21,16 +23,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_produit")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
+@SQLDelete(sql = "UPDATE t_produit SET active_status=false WHERE produit_id=?")
 public class Produit extends JournalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long produitId;
+
     private String libelle;
+
     private String description;
+
     private double prix;
+
     private int delaiValidite;
+
     private String img;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
     @JsonIgnore

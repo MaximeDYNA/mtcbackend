@@ -15,8 +15,8 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public void addCustomer(Client client) {
-        clientRepository.save(client);
+    public Client addCustomer(Client client) {
+        return clientRepository.save(client);
     }
 
     public void editCustomer(Client client) {
@@ -25,8 +25,12 @@ public class ClientService {
 
     public List<Client> findAllCustomer() {
         List<Client> clients = new ArrayList<>();
-        clientRepository.findAll().forEach(clients::add);
+        clientRepository.findByActiveStatusTrue().forEach(clients::add);
         return clients;
+    }
+
+    public void deleteById(Long id){
+        clientRepository.deleteById(id);
     }
 
     public Client findCustomerById(long id) {
