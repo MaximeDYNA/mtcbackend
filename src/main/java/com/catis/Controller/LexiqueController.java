@@ -1,7 +1,9 @@
 package com.catis.Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -151,5 +153,24 @@ public class LexiqueController {
             }
         }
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", parents);
+    }
+    @GetMapping("/api/v1/admin/lexique/select")
+    public ResponseEntity<Object> getLexiquesOfMtcforSelect(){
+
+        List<Lexique> cats = lexiqueService.findAllActive();
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(Lexique c: cats){
+            cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getId()));
+            cat.put("name", c.getLibelle() +" | "
+                    + (c.getOrganisation() == null? "Tous" : c.getOrganisation().getNom()));
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "OK", catsSelect);
     }
 }

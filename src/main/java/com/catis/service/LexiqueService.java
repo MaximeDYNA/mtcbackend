@@ -26,4 +26,8 @@ public class LexiqueService {
     public List<Lexique> findByVersionLexique(Long versionLexiqueId) {
         return lexiqueRepository.findByVersionLexique_id(versionLexiqueId);
     }
+
+    public List<Lexique> findAllActive() {
+        return lexiqueRepository.findByActiveStatusTrue();
+    }
 }

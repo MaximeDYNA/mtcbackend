@@ -32,4 +32,5 @@ public class ProprietaireDTO {
     private LocalDateTime createdDate;
     private Long partenaireId;
     private String agremment;
+    private String login;
 }
