@@ -1,12 +1,9 @@
 package com.catis.Controller;
 
 import java.io.*;
-import java.time.Duration;
+import java.time.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -56,11 +53,16 @@ public class VisiteController {
     HttpServletRequest request;
     @Autowired
     private VisiteRepository visiteRepo;
+    @Autowired
+    private CaissierService caissierService;
+    @Autowired
+    private OrganisationService os;
 
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
 
+    @Autowired
     private VisiteService visiteService;
 
     @Autowired
@@ -450,4 +452,84 @@ public class VisiteController {
                                                 .systemDefault())
                         .toInstant());
     }
+
+
+    /****Administration****/
+
+    @GetMapping(value = "/api/v1/admin/visites")
+    public ResponseEntity<Object> getAllActive() {
+        List<Listview> listVisit = new ArrayList<>();
+        vs.findActiveVisites().forEach( visite -> {
+            listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+        });
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
+    }
+
+    @PostMapping(value = "/api/v1/admin/visites")
+    public ResponseEntity<Object> saveVisite(@RequestBody VisitePOJO visitePOJO) {
+
+        Visite v = visitePOJO.getIdVisite() == null ? new Visite() : vs.findById(visitePOJO.getIdVisite());
+        //LocalDateTime dated = visitePOJO.getDateDebut() == null ? null: LocalDateTime.ofInstant(Instant.ofEpochMilli(visitePOJO.getDateDebut()), ZoneId.systemDefault());
+        //LocalDateTime datef = visitePOJO.getDateFin() == null ? null: LocalDateTime.ofInstant(Instant.ofEpochMilli(visitePOJO.getDateFin()), ZoneId.systemDefault());
+        //Caissier caissier = visitePOJO.getCaissier() == null ? null : caissierService.findById(visitePOJO.getIdVisite());
+        //CarteGrise carteGrise = visitePOJO.getCarteGrise() == null ? null : cgs.findCarteGriseById(visitePOJO.getCarteGrise().getId());
+        //Organisation organisation = visitePOJO.getOrganisationId()==null ? null : os.findByOrganisationId(visitePOJO.getOrganisationId().getId());
+
+        v.setContreVisite(visitePOJO.isContreVisite());
+        v.setEncours(visitePOJO.isEncours());
+        v.setStatut(Integer.valueOf(visitePOJO.getStatut()));
+        //v.setCarteGrise(carteGrise);
+        v.setStatut(v.getStatut());
+        //v.setOrganisation(organisation);
+       // v.setDateFin(datef);
+        //v.setDateDebut(dated);
+        //v.setCaissier(caissier);
+        v.setIdVisite(visitePOJO.getIdVisite());
+        v = vs.add(v);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", v);
+    }
+
+    @PostMapping(value = "/api/v1/admin/visites/reset/{id}")
+    public ResponseEntity<Object> reset(@PathVariable Long id) {
+
+        System.out.println("id-----------"+id);
+        Visite v = visiteService.findById(id);
+
+        v.setStatut(1);
+        gieglanFileService.findActiveByInspection(v.getInspection().getIdInspection())
+            .forEach(gieglanFile -> {
+                gieglanFile.setActiveStatus(false);
+                gieglanFile.getValeurTests().forEach(valeurTest -> {
+                    valeurTest.setActiveStatus(false);
+                });
+                gieglanFile.getRapportDeVisites().forEach(rapportDeVisite -> {
+                    rapportDeVisite.setActiveStatus(false);
+                });
+                if(gieglanFile.getMesureVisuel() != null){
+                    gieglanFile.getMesureVisuel().setGieglanFileDeleted(gieglanFile.getId());
+                    gieglanFile.getMesureVisuel().setGieglanFile(null);
+                    gieglanFile.getMesureVisuel().setActiveStatus(false);
+                }
+
+            });
+        v.getInspection().getLexiques().forEach(lexique -> {
+                lexique.setActiveStatus(false);
+            });
+        v.getInspection().setVisiteIdReseted(v.getIdVisite());
+
+        v = visiteService.add(v);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", v);
+    }
+
+    @GetMapping(value = "/api/v1/admin/visites/{id}")
+    public ResponseEntity<Object> getOneVisite(@PathVariable Long id) {
+
+        Visite visite = vs.findById(id);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
+
+    }
+
 }

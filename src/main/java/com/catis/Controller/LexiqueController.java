@@ -165,7 +165,7 @@ public class LexiqueController {
         for(Lexique c: cats){
             cat = new HashMap<>();
             cat.put("id", String.valueOf(c.getId()));
-            cat.put("name", c.getLibelle() +" | "
+            cat.put("name", c.getCode() +" | "
                     + (c.getOrganisation() == null? "Tous" : c.getOrganisation().getNom()));
             catsSelect.add(cat);
         }

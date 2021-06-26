@@ -36,6 +36,8 @@ public class MesureVisuel extends JournalData {
 
     private String signature2;
 
+    private Long gieglanFileDeleted;
+
     @OneToOne
     private GieglanFile gieglanFile;
 
@@ -152,4 +154,11 @@ public class MesureVisuel extends JournalData {
                 + heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + "]";
     }
 
+    public Long getGieglanFileDeleted() {
+        return gieglanFileDeleted;
+    }
+
+    public void setGieglanFileDeleted(Long gieglanFileDeleted) {
+        this.gieglanFileDeleted = gieglanFileDeleted;
+    }
 }
