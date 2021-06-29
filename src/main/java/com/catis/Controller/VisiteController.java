@@ -531,5 +531,13 @@ public class VisiteController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
 
     }
+    @GetMapping(value = "/api/v1/admin/visites/today")
+    public ResponseEntity<Object> getTodayVisite() {
+
+        int size = vs.getVisitsOfTheDay();
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", size);
+
+    }
 
 }

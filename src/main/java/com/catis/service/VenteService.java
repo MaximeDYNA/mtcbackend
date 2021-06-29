@@ -3,6 +3,7 @@ package com.catis.service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,5 +85,41 @@ public class VenteService {
             opCaisses.add(op);
         }
         return opCaisses;
+    }
+    public double getTodayCA(){
+        double ca = 0;
+        List<Vente> ventes = venteRepository.venteOftheDay();
+        for(Vente v : ventes){
+            ca += v.getMontantTotal();
+        }
+        return ca;
+    }
+
+    public double TaxeOfTheDay(){
+        double tax = 0;
+        List<Vente> ventes = venteRepository.venteOftheDay();
+        for(Vente v : ventes){
+            tax += v.getMontantTotal() - v.getMontantHT();
+        }
+        return tax;
+    }
+
+    public List<Double> caGraphWeek(){
+        List<Double> caWeek=new ArrayList<>();
+        List<Vente> ventes;
+        for(int i=0;i<7;i++){
+            ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i),LocalDateTime.now());
+            caWeek.add(0,getCA(ventes));
+
+        }
+        return caWeek;
+    }
+
+    public double getCA(List<Vente> ventes){
+        double ca = 0;
+        for(Vente v : ventes){
+            ca += v.getMontantTotal();
+        }
+        return ca;
     }
 }

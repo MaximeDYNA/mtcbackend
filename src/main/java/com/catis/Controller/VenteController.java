@@ -105,6 +105,18 @@ public class VenteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
         }*/
     }
+    @GetMapping("/api/v1/admin/ventes/ca/today")
+    public ResponseEntity<Object> getCAToday() {
+
+
+        double ca = venteService.getTodayCA();
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Succès", ca);
+           /* try { } catch (Exception e) {
+            LOGGER.error(Message.ERREUR_LIST_VIEW + "Vente");
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
+        }*/
+    }
 
 
 }
