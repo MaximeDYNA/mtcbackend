@@ -258,4 +258,24 @@ public class CarteGriseController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Energie", null);
         }
     }
+
+    @GetMapping("/api/v1/admin/cartegrises/select")
+    public ResponseEntity<Object> getLexiquesOfMtcforSelect(){
+
+        List<CarteGrise> cats = cgs.findAll();
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(CarteGrise c: cats){
+            cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getCarteGriseId()));
+            cat.put("name", c.getNumImmatriculation() +" | "
+                    + (c.getOrganisation() == null? "Tous" : c.getOrganisation().getNom()));
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "OK", catsSelect);
+    }
 }

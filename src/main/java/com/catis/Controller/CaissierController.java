@@ -18,9 +18,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -111,5 +109,25 @@ public class CaissierController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK,
                     true, "KO", null);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="/api/v1/admin/caissiers/select")
+    public ResponseEntity<Object> getLexiquesOfMtcforSelect(){
+
+        List<Caissier> cats = caissierService.findAll();
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(Caissier c: cats){
+            cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getCaissierId()));
+            cat.put("name", c.getPartenaire().getNom()+" "+ c.getPartenaire().getPrenom() +" | "
+                    + (c.getOrganisation() == null? "Tous" : c.getOrganisation().getNom()));
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "OK", catsSelect);
     }
 }

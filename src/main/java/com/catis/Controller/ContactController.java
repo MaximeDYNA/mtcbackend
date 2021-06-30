@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,8 @@ import com.catis.service.ContactService;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class ContactController {
@@ -33,6 +36,8 @@ public class ContactController {
     private PartenaireService partenaireService;
     @Autowired
     private OrganisationService os;
+    @Autowired
+    HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
@@ -52,16 +57,18 @@ public class ContactController {
         } else
             partenaire.setDateNaiss(null);
 
-
+        Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
         partenaire.setEmail(clientPartenaire.getEmail());
         partenaire.setTelephone(clientPartenaire.getTelephone());
         partenaire.setNom(clientPartenaire.getNom());
+
         partenaire.setPrenom(clientPartenaire.getPrenom());
         partenaire.setPassport(clientPartenaire.getPassport());
         partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
         partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-        partenaire.setOrganisation(os.findByOrganisationId(1L));
-        contact.setPartenaire(partenaireService.addPartenaire(partenaire));
+        partenaire.setOrganisation(os.findByOrganisationId(orgId));
+        partenaire.setContact(contact);
+        contact.setPartenaire(partenaire);
         contact.setDescription(clientPartenaire.getVariants());
         contactService.addContact(contact);
         LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");

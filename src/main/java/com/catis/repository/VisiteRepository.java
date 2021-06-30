@@ -1,13 +1,12 @@
 package com.catis.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import com.catis.model.Control;
 import com.catis.model.Produit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -21,6 +20,8 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
     List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, Long id);
 
     List<Visite> findByContreVisiteFalse();
+
+    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrue(Long id);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteTrue();
 
@@ -59,6 +60,12 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
             "inner join i.gieglanFiles g "+
             "inner join g.categorieTest cat where g.type = 'MEASURE' and ( g.status = 'REJECTED' or g.status = 'VALIDATED') ")
     Visite getVisiteWithMesuare(Visite visite);
+
+    @Query(value="select v from Visite v where v.createdDate >= current_date ")
+    List<Visite> visitsOfTheDay();
+
+    @Query("select v from Visite v where v.createdDate >= ?1 AND v.createdDate BETWEEN ?1 And ?2")
+    List<Visite> visiteByDate(LocalDateTime d, LocalDateTime f);
 
 
 

@@ -27,7 +27,7 @@ public class PosaleService {
          psr.findAll().forEach(
                  posales -> {
                      posales.setStatus(false);
-                     psr.save(posales);
+                     //psr.save(posales);
                  }
          );
 

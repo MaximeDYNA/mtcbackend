@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,9 +28,11 @@ public class Formule extends JournalData {
     private String description;
 
     @OneToMany(mappedBy = "formule")
+    @JsonIgnore
     private Set<Mesure> mesures;
 
     @OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Seuil> seuils;
 
     public Formule() {

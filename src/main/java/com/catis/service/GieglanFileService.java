@@ -95,4 +95,11 @@ public class GieglanFileService {
                 .findByCategorieTestLibelleAndInspection_Visite_IdVisite(libelle, idVisite, PageRequest.of(0,1, Sort.by("id").ascending()));
         return gieglanfiles;
     }
+
+    public List<GieglanFile> findActiveByInspection(Long inspectionId){
+        List<GieglanFile> gieglanfiles = gieglanFileRepository
+                .findByInspection_IdInspectionAndActiveStatusTrue(inspectionId);
+        return gieglanfiles;
+    }
+
 }

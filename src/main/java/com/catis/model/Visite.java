@@ -102,6 +102,7 @@ public class Visite extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
+
     public boolean isContreVisite() {
         return contreVisite;
     }

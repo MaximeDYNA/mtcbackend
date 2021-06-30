@@ -1,16 +1,13 @@
 package com.catis.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import com.catis.objectTemporaire.ChildKanbanDTO;
-import com.catis.objectTemporaire.ModelForSelectDTO;
-import com.catis.objectTemporaire.OrganisationDTO;
-import com.catis.objectTemporaire.UserDTO;
+import com.catis.model.Visite;
+import com.catis.objectTemporaire.*;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -31,6 +28,7 @@ public class OrganisationService {
 
     @Autowired
     private OrganisationRepository organisationRepository;
+
 
     public List<Organisation> findAllOrganisation() {
         List<Organisation> organisations = new ArrayList<>();
@@ -162,5 +160,8 @@ public class OrganisationService {
     public Organisation findByOrganisationId(Long id) {
         return organisationRepository.findById(id).get();
     }
+
+
+
 
 }

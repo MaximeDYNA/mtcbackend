@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,6 +38,7 @@ public class Seuil extends JournalData {
     private boolean decision;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
+    @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
     @ManyToOne

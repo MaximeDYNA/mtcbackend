@@ -24,7 +24,18 @@ public class Listview {
     private String client;
     private String date;
     private String statut;
+    private Organisation organisation;
     private int statutVisite;
+    private Long idVisite;
+    private boolean contreVisite;
+    private LocalDateTime dateDebut;
+    private LocalDateTime dateFin;
+    private boolean encours = true;
+    private Caissier caissier;
+    private Inspection inspection;
+    private VerbalProcess process;
+    private CarteGrise carteGrise;
+    private Control control;
     private List<GieglanFileIcon> measures = new ArrayList<>();
 
     @JsonIgnore
@@ -51,6 +62,18 @@ public class Listview {
         this.gieglanFileService = gieglanFileService;
         this.catSer = catSer;
         this.measures = new ArrayList<>();
+        this.organisation = v.getOrganisation();
+        this.idVisite = id;
+        this.contreVisite = v.isContreVisite();
+        this.dateDebut = v.getDateDebut();
+        this.dateFin = v.getDateFin();
+        this.encours = v.isEncours();
+        this.caissier = v.getCaissier();
+        this.inspection = v.getInspection();
+        this.process =v.getProcess();
+        this.carteGrise=v.getCarteGrise();
+        this.control =v.getControl();
+
         manageColor();
     }
 
@@ -363,4 +386,91 @@ public class Listview {
         return Objects.hash(id, categorie, type, reference, chassis, client, date, statut, statutVisite, measures, visiteService, gieglanFileService, catSer);
     }
 
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+
+    public Long getIdVisite() {
+        return idVisite;
+    }
+
+    public void setIdVisite(Long idVisite) {
+        this.idVisite = idVisite;
+    }
+
+    public boolean isContreVisite() {
+        return contreVisite;
+    }
+
+    public void setContreVisite(boolean contreVisite) {
+        this.contreVisite = contreVisite;
+    }
+
+    public LocalDateTime getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(LocalDateTime dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public LocalDateTime getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(LocalDateTime dateFin) {
+        this.dateFin = dateFin;
+    }
+
+    public boolean isEncours() {
+        return encours;
+    }
+
+    public void setEncours(boolean encours) {
+        this.encours = encours;
+    }
+
+    public Caissier getCaissier() {
+        return caissier;
+    }
+
+    public void setCaissier(Caissier caissier) {
+        this.caissier = caissier;
+    }
+
+    public Inspection getInspection() {
+        return inspection;
+    }
+
+    public void setInspection(Inspection inspection) {
+        this.inspection = inspection;
+    }
+
+    public VerbalProcess getProcess() {
+        return process;
+    }
+
+    public void setProcess(VerbalProcess process) {
+        this.process = process;
+    }
+
+    public CarteGrise getCarteGrise() {
+        return carteGrise;
+    }
+
+    public void setCarteGrise(CarteGrise carteGrise) {
+        this.carteGrise = carteGrise;
+    }
+
+    public Control getControl() {
+        return control;
+    }
+
+    public void setControl(Control control) {
+        this.control = control;
+    }
 }

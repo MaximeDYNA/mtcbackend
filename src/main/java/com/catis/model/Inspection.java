@@ -52,6 +52,8 @@ public class Inspection extends JournalData {
 
     private String position;
 
+    private Long visiteIdReseted;
+
     @ManyToOne
     private Controleur controleur;
 
@@ -65,7 +67,7 @@ public class Inspection extends JournalData {
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles =new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Lexique> lexiques;
 
@@ -224,4 +226,11 @@ public class Inspection extends JournalData {
         this.gieglanFiles = gieglanFiles;
     }
 
+    public Long getVisiteIdReseted() {
+        return visiteIdReseted;
+    }
+
+    public void setVisiteIdReseted(Long visiteIdReseted) {
+        this.visiteIdReseted = visiteIdReseted;
+    }
 }

@@ -72,6 +72,7 @@ public class ControleurController {
             pro.setCreatedDate(p.getPartenaire().getCreatedDate());
             pro.setCni(p.getPartenaire().getCni());
             pro.setAgremment(p.getAgremment());
+            pro.setLogin(p.getUtilisateur().getLogin());
             pro.setPartenaireId(p.getPartenaire().getPartenaireId());
             ps.add(pro);
         }
