@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrganisationTopDTO {
     private Organisation organisation;
-    private Double value;
-    private Double pourcentage;
+    private int value;
+    private int pourcentage;
 
 
 }

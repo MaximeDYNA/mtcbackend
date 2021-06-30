@@ -108,7 +108,11 @@ public class VenteService {
         List<Double> caWeek=new ArrayList<>();
         List<Vente> ventes;
         for(int i=0;i<7;i++){
-            ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i),LocalDateTime.now());
+            if(i==0)
+                ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i),LocalDateTime.now());
+            else
+                ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i-1),LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i));
+
             caWeek.add(0,getCA(ventes));
 
         }

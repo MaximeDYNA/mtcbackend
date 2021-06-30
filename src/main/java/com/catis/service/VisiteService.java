@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,10 @@ import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.*;
 import com.catis.objectTemporaire.OrganisationTopDTO;
 import com.catis.repository.faileTest;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +44,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Service
 public class VisiteService {
+    @PersistenceContext
+    private EntityManager em;
     @Autowired
     private VisiteRepository visiteRepository;
     @Autowired
@@ -312,11 +322,11 @@ public class VisiteService {
         visiteRepository.visiteByDate(d,f).forEach(visites::add);
         return visites;
     }
-    public Double getOrganisationOccurence(Organisation o, List<Visite> visites){
-        Double i = 0.0;
+    public int getOrganisationOccurence(Organisation o, List<Visite> visites){
+        int i = 0;
         for(Visite v : visites){
             if(o.getOrganisationId() == v.getOrganisation().getOrganisationId())
-                i++;
+                i ++;
         }
         return i;
     }
@@ -324,10 +334,8 @@ public class VisiteService {
         List<Organisation> orgs = os.findAllChildForSelect();
         List<Visite> visiteDay = visiteBydate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(0),LocalDateTime.now());
         List<Visite> visiteDayBefore = visiteBydate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(2),LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(1));
-        Double visiteDayOrganisation =0.0;
-        Double visiteDayBeforOrganisation =0.0;
-
-        List<Visite> visites = getVisitsListOfTheDay();
+        int visiteDayOrganisation;
+        int visiteDayBeforOrganisation ;
         List<OrganisationTopDTO> org = new ArrayList<>();
         OrganisationTopDTO o;
         for(Organisation or : orgs){
@@ -335,15 +343,31 @@ public class VisiteService {
             visiteDayOrganisation = getOrganisationOccurence(or,visiteDay);
             visiteDayBeforOrganisation = getOrganisationOccurence(or,visiteDayBefore);
             o.setOrganisation(or);
-            o.setValue(visiteDay.size() == 0 ? 0 : visiteDayOrganisation * 100 /Double.valueOf(visiteDay.size()));
-            o.setPourcentage((visiteDay.size() == 0 ? 0 : visiteDayOrganisation * 100 /Double.valueOf(visiteDay.size())) - (visiteDayBefore.size() == 0 ? 0 : visiteDayBeforOrganisation * 100 /Double.valueOf(visiteDayBefore.size())));
+            o.setValue( Math.round(visiteDay.size() == 0 ? 0 : visiteDayOrganisation * 100 /visiteDay.size()));
+            o.setPourcentage(pourcentageComparator(visiteDayBeforOrganisation, visiteDayOrganisation));
             org.add(o);
         }
-        Comparator<OrganisationTopDTO> compareByValue = (OrganisationTopDTO o1, OrganisationTopDTO o2) -> o1.getValue().compareTo(o2.getValue());
 
-        org.stream().sorted(compareByValue).collect(Collectors.toList());
-
+        Collections.sort(org, Comparator.comparing(OrganisationTopDTO::getValue).reversed());
         return org;
+    }
+    public int pourcentageComparator(int i, int j){
+        if(i==0)
+            return j*100;
+        return Math.round((j-i) *100/i);
+
+
+    }
+
+    public void getRev(){
+        AuditReader auditReader = AuditReaderFactory.get(em);
+
+        AuditQuery query = auditReader.createQuery()
+                .forRevisionsOfEntity(Visite.class, true, true);
+        List<Object> o
+                = query
+                .getResultList();
+        System.out.println(ToStringBuilder.reflectionToString(o));
     }
     @Async
     @TransactionalEventListener
@@ -353,4 +377,6 @@ public class VisiteService {
         System.out.println("Visite test ---------"+ visite.getIdVisite());
         VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat, ps);
     }
+
+
 }

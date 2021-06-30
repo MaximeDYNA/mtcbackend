@@ -70,16 +70,16 @@ public class HoldController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/deletehold")
     public ResponseEntity<Object> supprimerOnglet(@RequestBody HoldData holdData) throws ParseException {
 
-        try {
+
             LOGGER.trace("suppression de l'onglet " + holdData.getNumber() + " demandé...");
             holdService.deleteHoldByNumber(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.activatePosale(holdService.maxNumber(scs.findSessionCaisseById(holdData.getSessionCaisseId())), holdData.getSessionCaisseId());
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet supprimé", null);
-        } catch (Exception e) {
+        /*try {} catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
                     "Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
-        }
+        }*/
 
 
     }
