@@ -35,6 +35,7 @@ public class Visite extends JournalData {
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;
     private int statut;
+    private int isConform;
 
     @ManyToOne
     private Organisation organisation;
@@ -214,6 +215,14 @@ public class Visite extends JournalData {
             return "erreur";
         }
 
+    }
+
+    public int getIsConform() {
+        return isConform;
+    }
+
+    public void setIsConform(int isConform) {
+        this.isConform = isConform;
     }
 
     public String typeRender() {

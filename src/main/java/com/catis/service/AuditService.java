@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuditService {
     @Autowired
     private AuditRepository at;
-    AuditRevisionEntity a;
-    Session session;
+
     public void getAllRevision(){
         List<AuditRevisionEntity> as = new ArrayList<>();
         at.findAll().forEach(as::add);
@@ -37,6 +37,12 @@ public class AuditService {
 
         }
 
+    }
+    public AuditRevisionEntity findById(Long id){
+        Optional<AuditRevisionEntity> are = at.findById(id);
+        if(are.isPresent())
+            return are.get();
+        return null;
     }
 
 }

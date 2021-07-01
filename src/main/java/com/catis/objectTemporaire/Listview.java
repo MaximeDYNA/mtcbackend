@@ -36,6 +36,7 @@ public class Listview {
     private VerbalProcess process;
     private CarteGrise carteGrise;
     private Control control;
+    private int isConform;
     private List<GieglanFileIcon> measures = new ArrayList<>();
 
     @JsonIgnore
@@ -73,6 +74,7 @@ public class Listview {
         this.process =v.getProcess();
         this.carteGrise=v.getCarteGrise();
         this.control =v.getControl();
+        this.isConform = v.getIsConform();
 
         manageColor();
     }
@@ -472,5 +474,13 @@ public class Listview {
 
     public void setControl(Control control) {
         this.control = control;
+    }
+
+    public int getIsConform() {
+        return isConform;
+    }
+
+    public void setIsConform(int isConform) {
+        this.isConform = isConform;
     }
 }

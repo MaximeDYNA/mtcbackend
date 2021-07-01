@@ -25,6 +25,7 @@ import com.catis.model.Inspection;
 import com.catis.model.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
 import com.catis.objectTemporaire.SignatureDTO;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,6 +52,7 @@ public class InspectionController {
     @Autowired
     private Environment env;
 
+
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
     @PostMapping(value = "/api/v1/inspections")
@@ -68,7 +70,10 @@ public class InspectionController {
         visiteService.commencerInspection(inspectionReceived.getVisiteId());
 
         inspection = inspectionService.addInspection(inspection);
-        this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
+
+
+
+        //this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
 				
 				/*String[] result = "this is a test".split("\\s");
 			     for (int x=0; x<result.length; x++)
