@@ -73,7 +73,7 @@ public class InspectionController {
 
 
 
-        //this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
+        this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
 				
 				/*String[] result = "this is a test".split("\\s");
 			     for (int x=0; x<result.length; x++)
