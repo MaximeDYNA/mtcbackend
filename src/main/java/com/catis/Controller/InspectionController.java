@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
@@ -56,6 +57,7 @@ public class InspectionController {
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
     @PostMapping(value = "/api/v1/inspections")
+    @Transactional
     public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws IOException {
 
 
