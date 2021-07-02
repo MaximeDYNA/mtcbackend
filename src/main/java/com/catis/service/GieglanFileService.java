@@ -30,6 +30,7 @@ public class GieglanFileService {
 
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
 
+        Set<GieglanFile> files = new HashSet<>();
         this.carteGrise = carteGrise;
         GieglanFile file = new GieglanFile();
         file.setActiveStatus(true);
@@ -41,6 +42,8 @@ public class GieglanFileService {
         file.setFileCreatedAt(new Date());
         this.creategieglanforCardGrise(file);
         file.setValeurTests(this.codeGieglans);
+        files.add(file);
+        inspection.setGieglanFiles(files);
         this.gieglanFileRepository.save(file);
     }
 
