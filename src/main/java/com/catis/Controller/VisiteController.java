@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 
 
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -57,6 +59,7 @@ public class VisiteController {
     @Autowired
     private VisiteRepository visiteRepo;
 
+    @Autowired FindRapportListService rapportListService;
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
@@ -449,5 +452,24 @@ public class VisiteController {
                                         ZoneId
                                                 .systemDefault())
                         .toInstant());
+    }
+
+    @PostMapping("/api/v1/visite/conformity/{Id}")
+    public Object checkCconformity(
+        @PathVariable Long Id,
+        @RequestBody rapportMDto rapportMDto
+    ) throws Exception {
+        String endPoint = environment.getProperty("endpointCheckConformity");
+        HttpEntity<rapportMDto> request = new HttpEntity<>(rapportMDto);
+        ResponseEntity<String> response = (new RestTemplate())
+            .postForEntity(endPoint+"/"+Id, request, String.class);
+
+        return response;
+    }
+
+    @GetMapping("/api/v1/filenames")
+    public List<String> listRapportsFiles() {
+
+        return rapportListService.FilenameListInFolder();
     }
 }
