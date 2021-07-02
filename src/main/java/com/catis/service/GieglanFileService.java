@@ -23,6 +23,8 @@ public class GieglanFileService {
 
     private CarteGrise carteGrise;
 
+    private Set<ValeurTest> codeGieglans = new HashSet<>();
+
     @Autowired
     private GieglanFileRepository gieglanFileRepository;
 
@@ -38,16 +40,16 @@ public class GieglanFileService {
         file.setInspection(inspection);
         file.setOrganisation(inspection.getOrganisation());
         file.setFileCreatedAt(new Date());
-        file.setValeurTests(creategieglanforCardGrise(file));
+        this.creategieglanforCardGrise(file);
+        file.setValeurTests(this.codeGieglans);
         files.add(file);
         inspection.setGieglanFiles(files);
         this.gieglanFileRepository.save(file);
     }
 
-    private Set<ValeurTest> creategieglanforCardGrise(GieglanFile file) {
+    private void creategieglanforCardGrise(GieglanFile file) {
 
         HashMap<String, String> codeCgrises = new HashMap<>();
-        Set<ValeurTest> codeGieglans = new HashSet<>();
         codeCgrises.put("0200", this.carteGrise.getNumImmatriculation());
         codeCgrises.put("0202", this.carteGrise.getVehicule().getChassis());
         codeCgrises.put("0208", "");
@@ -70,11 +72,9 @@ public class GieglanFileService {
                 valeurTest.setValeur(value);
                 valeurTest.setCrc(crc);
                 valeurTest.setStatus(StatusType.VALIDATED);
-                codeGieglans.add(valeurTest);
+                this.codeGieglans.add(valeurTest);
             }
         });
-
-        return codeGieglans;
     }
 
     /**

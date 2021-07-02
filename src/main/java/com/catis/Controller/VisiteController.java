@@ -1,12 +1,9 @@
 package com.catis.Controller;
 
 import java.io.*;
-import java.time.Duration;
+import java.time.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -61,7 +58,6 @@ public class VisiteController {
     @Autowired
     private OrganisationService os;
 
-    @Autowired FindRapportListService rapportListService;
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
@@ -544,23 +540,4 @@ public class VisiteController {
 
     }
 
-
-    /*@PostMapping("/api/v1/visite/conformity/{Id}")
-    public Object checkCconformity(
-        @PathVariable Long Id,
-        @RequestBody rapportMDto rapportMDto
-    ) throws Exception {
-        String endPoint = environment.getProperty("endpointCheckConformity");
-        HttpEntity<rapportMDto> request = new HttpEntity<>(rapportMDto);
-        ResponseEntity<String> response = (new RestTemplate())
-            .postForEntity(endPoint+"/"+Id, request, String.class);
-
-        return response;
-    }*/
-
-    @GetMapping("/api/v1/filenames")
-    public List<String> listRapportsFiles() {
-
-        return rapportListService.FilenameListInFolder();
-    }
 }
