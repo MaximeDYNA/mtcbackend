@@ -18,6 +18,7 @@ import com.catis.model.Inspection;
 import com.catis.model.ValeurTest;
 
 @Service("GieglanService")
+@Transactional
 public class GieglanFileService {
 
     private CarteGrise carteGrise;
@@ -27,9 +28,9 @@ public class GieglanFileService {
     @Autowired
     private GieglanFileRepository gieglanFileRepository;
 
-    @Transactional
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
 
+        Set<GieglanFile> files = new HashSet<>();
         this.carteGrise = carteGrise;
         GieglanFile file = new GieglanFile();
         file.setActiveStatus(true);
@@ -41,6 +42,8 @@ public class GieglanFileService {
         file.setFileCreatedAt(new Date());
         this.creategieglanforCardGrise(file);
         file.setValeurTests(this.codeGieglans);
+        files.add(file);
+        inspection.setGieglanFiles(files);
         this.gieglanFileRepository.save(file);
     }
 

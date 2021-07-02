@@ -111,7 +111,7 @@ public class VenteService {
             if(i==0)
                 ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i),LocalDateTime.now());
             else
-                ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i-1),LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i));
+                ventes = venteRepository.ventebyDate(LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i),LocalDateTime.now().toLocalDate().atStartOfDay().minusDays(i-1));
 
             caWeek.add(0,getCA(ventes));
 
