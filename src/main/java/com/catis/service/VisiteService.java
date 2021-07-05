@@ -12,13 +12,12 @@ import com.catis.model.*;
 import com.catis.objectTemporaire.DaschBoardLogDTO;
 import com.catis.objectTemporaire.OrganisationTopDTO;
 
+import com.catis.objectTemporaire.Revision;
 import com.catis.repository.faileTest;
 import com.sun.mail.imap.protocol.ID;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.DefaultRevisionEntity;
-import org.hibernate.envers.RevisionEntity;
+import org.hibernate.annotations.Entity;
+import org.hibernate.envers.*;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.history.Revision;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
@@ -49,7 +47,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -367,37 +364,32 @@ public class VisiteService {
 
     }
 
-    /*public void getRev() throws NoSuchFieldException, IllegalAccessException {
+    public void getRev() throws NoSuchFieldException, IllegalAccessException {
         AuditReader auditReader = AuditReaderFactory.get(em);
         DaschBoardLogDTO simpleLog = new DaschBoardLogDTO();
-        List<Revision<, Long>> returnedRevisions = new ArrayList<>();
+        // returnedRevisions = new ArrayList<>();
         AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Energie.class, false, true);
-        query.getResultList().forEach(returnedEntity -> returnedRevisions.add(returnedEntity));
-        return returnedRevisions;
-
-        AuditQuery query = auditReader.createQuery()
-                .forRevisionsOfEntity(Energie.class, false, true);
-
-        List a
-                =  query
-                .getResultList()
-                ;
+        List a =  query.getResultList();
+        int j =0;
+        DefaultRevisionEntity r1;
+        RevisionType r2;
+        AuditRevisionEntity audit;
         Map<String,Object> map = new HashMap<String, Object>();
         for(Object i : a){
+            Object[] objArray = (Object[]) i;
+            r1 = (DefaultRevisionEntity)  objArray[1];
+            r2 = (RevisionType) objArray[2];
+            audit = auditService.findById(Integer.valueOf(r1.getId()));
+            System.out.println("objArray "+r1.getId());
+            simpleLog.setAction(r2.name());
+            simpleLog.setAuthor(audit.getUser());
+            simpleLog.setEntity("Energie");
+            simpleLog.setDate(r1.getRevisionDate());
 
+            System.out.println(ToStringBuilder.reflectionToString(simpleLog));
 
-            //auditService.findById(Long.valueOf(i.getId()));
-            //map = ObjectUtils.getFieldNamesAndValues(i,false);
-
-
-            //System.out.println("ResultList "+ToStringBuilder.reflectionToString(i));
-
-            //System.out.println("id "+id);
-            //System.out.println(i.getUser());
-            //[Ljava.lang.Object;@6670060b[{com.catis.model.Energie@22a15e81,DefaultRevisionEntity(id = 244, revisionDate = 8 juin 2021 16:53:21),ADD}]
         }
-        //;
-    }*/
+    }
     @Async
     @TransactionalEventListener
     public void dispatchVisite(VisiteCreatedEvent event) {

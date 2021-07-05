@@ -26,7 +26,7 @@ public class DashboardController {
     @GetMapping("/business")
     public ResponseEntity<Object> getBusinessData() throws IllegalAccessException, NoSuchFieldException {
         //as.getAllRevision();
-       // vs.getRev();
+       vs.getRev();
         DashboardData dashboardData = new DashboardData();
 
         dashboardData.setVisitNumber(
