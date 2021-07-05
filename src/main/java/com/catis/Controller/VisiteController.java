@@ -454,6 +454,7 @@ public class VisiteController {
                         .toInstant());
     }
 
+    /*
     @PostMapping("/api/v1/visite/conformity/{Id}")
     public Object checkCconformity(
         @PathVariable Long Id,
@@ -466,11 +467,14 @@ public class VisiteController {
 
         return response;
     }
+    */
 
     @GetMapping("/api/v1/filenames")
-    public List<String> listRapportsFiles() {
+    public ResponseEntity<Object> listRapportsFiles() {
 
-        return rapportListService.FilenameListInFolder();
+        List<String> filenames = rapportListService.FilenameListInFolder();
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", filenames);
     }
 
 
