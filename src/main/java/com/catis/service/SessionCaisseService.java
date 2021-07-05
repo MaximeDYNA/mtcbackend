@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.SessionCaisse;
 import com.catis.repository.SessionCaisseRepository;
 
 @Service

@@ -2,8 +2,6 @@ package com.catis.objectTemporaire;
 
 import java.util.List;
 
-import com.catis.model.Lexique;
-
 public class LexiqueReceived {
 
     private Long id;

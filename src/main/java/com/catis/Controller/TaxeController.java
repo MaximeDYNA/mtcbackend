@@ -1,21 +1,19 @@
 package com.catis.Controller;
 
-import com.catis.model.Organisation;
-import com.catis.model.Taxe;
-import com.catis.model.TaxeProduit;
+import com.catis.model.entity.Organisation;
+import com.catis.model.entity.Taxe;
+import com.catis.model.entity.TaxeProduit;
 import com.catis.objectTemporaire.ObjectForSelect;
 import com.catis.objectTemporaire.TaxePOJO;
 import com.catis.service.OrganisationService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
 import com.catis.service.TaxeService;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

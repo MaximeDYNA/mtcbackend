@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.DetailVente;
+import com.catis.model.entity.DetailVente;
 
 public interface DetailVenteRepository extends CrudRepository<DetailVente, String> {
 

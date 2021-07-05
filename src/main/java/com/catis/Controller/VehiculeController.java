@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Vehicule;
+import com.catis.model.entity.Vehicule;
 import com.catis.service.VehiculeService;
 
 @RestController

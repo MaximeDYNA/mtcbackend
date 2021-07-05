@@ -9,8 +9,8 @@ import com.catis.Controller.VisiteController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Inspection;
-import com.catis.model.Visite;
+import com.catis.model.entity.Inspection;
+import com.catis.model.entity.Visite;
 import com.catis.repository.InspectionRepository;
 
 @Service

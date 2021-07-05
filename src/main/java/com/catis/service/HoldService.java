@@ -5,13 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.SessionCaisse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.catis.model.Hold;
-import com.catis.model.Posales;
+import com.catis.model.entity.Hold;
+import com.catis.model.entity.Posales;
 import com.catis.repository.HoldRepository;
 import com.catis.repository.PosaleRepository;
 

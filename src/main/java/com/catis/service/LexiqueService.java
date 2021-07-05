@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Lexique;
+import com.catis.model.entity.Lexique;
 import com.catis.repository.LexiqueRepository;
 
 @Service

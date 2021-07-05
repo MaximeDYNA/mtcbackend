@@ -2,8 +2,6 @@ package com.catis.objectTemporaire;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.catis.model.Produit;
-
 public class ProduitView {
 
     private Long produitId;

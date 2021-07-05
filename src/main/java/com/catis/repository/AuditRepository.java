@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.AuditRevisionEntity;
+import com.catis.model.configuration.AuditRevisionEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

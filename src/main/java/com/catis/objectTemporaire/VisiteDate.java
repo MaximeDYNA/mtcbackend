@@ -1,9 +1,7 @@
 package com.catis.objectTemporaire;
 
-import com.catis.model.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.catis.model.entity.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

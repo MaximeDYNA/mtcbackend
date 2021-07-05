@@ -1,10 +1,9 @@
 package com.catis.Controller;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.Organisation;
-import com.catis.model.Utilisateur;
+import com.catis.model.entity.Organisation;
+import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.ChildKanbanDTO;
-import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserData;
 import com.catis.objectTemporaire.UserKeycloak;
 import com.catis.service.KeycloakService;

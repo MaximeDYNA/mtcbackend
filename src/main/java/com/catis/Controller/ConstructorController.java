@@ -1,7 +1,7 @@
 package com.catis.Controller;
 
-import com.catis.model.Constructor;
-import com.catis.model.Organisation;
+import com.catis.model.entity.Constructor;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.ConstructorPOJO;
 import com.catis.repository.ConstructorRepository;
 import com.catis.service.OrganisationService;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/v1/admin/constructors")

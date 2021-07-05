@@ -6,19 +6,16 @@ import java.util.List;
 import java.util.Optional;
 
 
-import com.catis.model.Caissier;
-import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.model.entity.Caissier;
 import com.catis.repository.CaissierRepository;
 //import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
-import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Hold;
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.Hold;
+import com.catis.model.entity.SessionCaisse;
 import com.catis.objectTemporaire.CloseSessionData;
 import com.catis.objectTemporaire.OpenData;
 import com.catis.service.HoldService;

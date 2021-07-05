@@ -3,7 +3,6 @@ package com.catis.service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +12,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.DetailVente;
-import com.catis.model.Vente;
+import com.catis.model.entity.DetailVente;
+import com.catis.model.entity.Vente;
 import com.catis.objectTemporaire.DetailDTO;
 import com.catis.objectTemporaire.OpCaisseDTO;
 import com.catis.repository.VenteRepository;

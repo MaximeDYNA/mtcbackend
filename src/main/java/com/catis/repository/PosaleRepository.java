@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Posales;
+import com.catis.model.entity.Posales;
 
 public interface PosaleRepository extends CrudRepository<Posales, Long> {
 

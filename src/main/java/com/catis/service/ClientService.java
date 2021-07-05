@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Client;
+import com.catis.model.entity.Client;
 import com.catis.repository.ClientRepository;
 
 @Service

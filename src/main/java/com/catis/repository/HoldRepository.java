@@ -2,11 +2,11 @@ package com.catis.repository;
 
 import java.util.List;
 
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.SessionCaisse;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Hold;
+import com.catis.model.entity.Hold;
 
 public interface HoldRepository extends CrudRepository<Hold, Long> {
 

@@ -3,12 +3,11 @@ package com.catis.objectTemporaire;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
-import com.catis.model.*;
+
+import com.catis.model.entity.*;
 import com.catis.service.CategorieTestVehiculeService;
 import com.catis.service.GieglanFileService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.catis.service.VisiteService;
 import org.springframework.stereotype.Service;

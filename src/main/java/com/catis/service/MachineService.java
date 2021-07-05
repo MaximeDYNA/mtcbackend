@@ -1,6 +1,6 @@
 package com.catis.service;
 
-import com.catis.model.Machine;
+import com.catis.model.entity.Machine;
 import com.catis.repository.MachineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

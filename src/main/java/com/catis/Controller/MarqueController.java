@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.MarqueVehicule;
+import com.catis.model.entity.MarqueVehicule;
 import com.catis.service.MarqueService;
 
 import java.util.ArrayList;

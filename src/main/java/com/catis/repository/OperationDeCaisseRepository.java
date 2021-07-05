@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.OperationCaisse;
+import com.catis.model.entity.OperationCaisse;
 
 public interface OperationDeCaisseRepository extends CrudRepository<OperationCaisse, String> {
 

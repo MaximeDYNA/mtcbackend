@@ -1,6 +1,5 @@
 package com.catis.objectTemporaire;
 
-import com.catis.model.Organisation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

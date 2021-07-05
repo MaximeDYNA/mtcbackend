@@ -3,7 +3,7 @@ package com.catis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Classification;
+import com.catis.model.entity.Classification;
 import com.catis.repository.ClassificationRepository;
 
 import java.util.Optional;

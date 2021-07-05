@@ -1,12 +1,7 @@
 package com.catis.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.catis.model.Visite;
 import com.catis.objectTemporaire.*;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
@@ -18,7 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Organisation;
+import com.catis.model.entity.Organisation;
 import com.catis.repository.OrganisationRepository;
 
 import javax.servlet.http.HttpServletRequest;

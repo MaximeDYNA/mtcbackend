@@ -1,6 +1,6 @@
 package com.catis.Event;
 
-import com.catis.model.Visite;
+import com.catis.model.entity.Visite;
 
 public class VisiteCreatedEvent {
 

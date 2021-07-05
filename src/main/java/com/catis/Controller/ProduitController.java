@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.CarteGrise;
-import com.catis.model.Posales;
-import com.catis.model.Produit;
-import com.catis.model.Taxe;
-import com.catis.model.TaxeProduit;
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.Posales;
+import com.catis.model.entity.Produit;
+import com.catis.model.entity.Taxe;
+import com.catis.model.entity.TaxeProduit;
 import com.catis.repository.FilesStorageService;
 import com.catis.service.CarteGriseService;
 import com.catis.service.CategorieProduitService;

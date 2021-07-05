@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Vehicule;
+import com.catis.model.entity.Vehicule;
 
 public interface VehiculeRepository extends CrudRepository<Vehicule, Long> {
 

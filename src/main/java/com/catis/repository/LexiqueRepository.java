@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Lexique;
+import com.catis.model.entity.Lexique;
 
 public interface LexiqueRepository extends CrudRepository<Lexique, Long> {
 

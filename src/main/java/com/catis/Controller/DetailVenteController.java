@@ -1,7 +1,5 @@
 package com.catis.Controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.catis.model.DetailVente;
+import com.catis.model.entity.DetailVente;
 import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.VenteService;

@@ -3,14 +3,14 @@ package com.catis.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.catis.model.Control;
-import com.catis.model.Produit;
+import com.catis.model.entity.Control;
+import com.catis.model.entity.Produit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Visite;
+import com.catis.model.entity.Visite;
 import org.springframework.stereotype.Repository;
 
 @Repository

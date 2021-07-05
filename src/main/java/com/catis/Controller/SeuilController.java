@@ -1,9 +1,9 @@
 package com.catis.Controller;
 
-import com.catis.model.Formule;
-import com.catis.model.Lexique;
-import com.catis.model.Organisation;
-import com.catis.model.Seuil;
+import com.catis.model.entity.Formule;
+import com.catis.model.entity.Lexique;
+import com.catis.model.entity.Organisation;
+import com.catis.model.entity.Seuil;
 import com.catis.objectTemporaire.SeuilPOJO;
 import com.catis.repository.FormuleRepository;
 import com.catis.repository.SeuilRepository;

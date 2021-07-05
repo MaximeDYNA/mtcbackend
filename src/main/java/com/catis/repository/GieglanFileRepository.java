@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.GieglanFile;
+import com.catis.model.entity.GieglanFile;
 
 public interface GieglanFileRepository extends CrudRepository<GieglanFile, Long> {
 

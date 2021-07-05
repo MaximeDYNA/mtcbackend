@@ -9,11 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.VersionLexique;
+import com.catis.model.entity.VersionLexique;
 import com.catis.objectTemporaire.VersionLexiqueDTO;
 import com.catis.service.VersionLexiqueService;
 

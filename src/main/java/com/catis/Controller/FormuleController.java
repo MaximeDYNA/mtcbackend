@@ -1,7 +1,7 @@
 package com.catis.Controller;
 
-import com.catis.model.Formule;
-import com.catis.model.Organisation;
+import com.catis.model.entity.Formule;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.FormulePOJO;
 import com.catis.repository.FormuleRepository;
 import com.catis.service.OrganisationService;

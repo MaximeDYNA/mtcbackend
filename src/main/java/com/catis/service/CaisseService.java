@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Caisse;
+import com.catis.model.entity.Caisse;
 import com.catis.repository.CaisseRepository;
 
 @Service

@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.DetailVente;
-import com.catis.model.Vente;
+import com.catis.model.entity.DetailVente;
+import com.catis.model.entity.Vente;
 import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.VenteService;

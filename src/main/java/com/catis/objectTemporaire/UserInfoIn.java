@@ -2,7 +2,6 @@ package com.catis.objectTemporaire;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.catis.model.Organisation;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
@@ -11,17 +10,13 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.IDToken;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import com.catis.model.Controleur;
+import com.catis.model.entity.Controleur;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.security.Principal;
-import java.util.Map;
 import java.util.Optional;
 
 

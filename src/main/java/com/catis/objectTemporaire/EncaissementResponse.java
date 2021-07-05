@@ -1,12 +1,10 @@
 package com.catis.objectTemporaire;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import com.catis.model.DetailVente;
-import com.catis.model.OperationCaisse;
+import com.catis.model.entity.DetailVente;
+import com.catis.model.entity.OperationCaisse;
 
-import pl.allegro.finance.tradukisto.MoneyConverters;
 import pl.allegro.finance.tradukisto.ValueConverters;
 
 public class EncaissementResponse {

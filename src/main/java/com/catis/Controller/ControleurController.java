@@ -2,9 +2,8 @@ package com.catis.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.catis.model.Organisation;
-import com.catis.model.Partenaire;
-import com.catis.model.ProprietaireVehicule;
+import com.catis.model.entity.Organisation;
+import com.catis.model.entity.Partenaire;
 import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.objectTemporaire.ProprietairePOJO;
 import com.catis.service.OrganisationService;
@@ -20,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Controleur;
+import com.catis.model.entity.Controleur;
 import com.catis.objectTemporaire.UserDTO;
 import com.catis.service.ControleurService;
 

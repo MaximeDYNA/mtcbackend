@@ -5,8 +5,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.catis.model.CarteGrise;
-import com.catis.model.Produit;
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.Produit;
 import com.catis.repository.CarteGriseRepository;
 import com.catis.repository.ProduitRepository;
 

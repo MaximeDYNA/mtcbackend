@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.ConstructorModel;
+import com.catis.model.entity.ConstructorModel;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

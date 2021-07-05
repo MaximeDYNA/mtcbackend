@@ -35,7 +35,12 @@
             <version>4.13</version>
             <scope>test</scope>
         </dependency>
-
+        <!--to get class in a package -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-pdf</artifactId>

@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.Ligne;
+import com.catis.model.entity.Ligne;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

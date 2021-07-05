@@ -1,10 +1,6 @@
 package com.catis.objectTemporaire;
 
-import java.util.Date;
-import java.util.List;
-
-import com.catis.model.Client;
-import com.catis.model.Partenaire;
+import com.catis.model.entity.Partenaire;
 
 public class ClientPartenaire {
     private long clientId;

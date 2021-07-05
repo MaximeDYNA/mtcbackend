@@ -6,8 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import com.catis.model.Organisation;
-import org.hibernate.envers.Audited;
+import com.catis.model.entity.Organisation;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;

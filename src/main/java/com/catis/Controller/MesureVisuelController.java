@@ -9,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Inspection;
-import com.catis.model.Lexique;
-import com.catis.model.MesureVisuel;
-import com.catis.model.DefectResponse;
+import com.catis.model.entity.Inspection;
+import com.catis.model.entity.Lexique;
+import com.catis.objectTemporaire.DefectResponse;
 import com.catis.repository.InspectionRepository;
 import com.catis.repository.LexiqueRepository;
 import com.catis.service.MesureVisuelService;

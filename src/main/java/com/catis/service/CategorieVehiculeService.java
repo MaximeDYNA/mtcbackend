@@ -3,7 +3,7 @@ package com.catis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.CategorieVehicule;
+import com.catis.model.entity.CategorieVehicule;
 import com.catis.repository.CategorieVehiculeRepo;
 
 @Service

@@ -1,6 +1,6 @@
 package com.catis.service;
 
-import com.catis.model.Caissier;
+import com.catis.model.entity.Caissier;
 import com.catis.repository.CaissierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

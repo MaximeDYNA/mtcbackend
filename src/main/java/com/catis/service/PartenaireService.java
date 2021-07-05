@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.catis.model.Partenaire;
+import com.catis.model.entity.Partenaire;
 import com.catis.repository.PartenaireRepository;
 
 @Service

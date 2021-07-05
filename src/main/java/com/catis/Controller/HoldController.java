@@ -4,13 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.SessionCaisse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.model.Hold;
+import com.catis.model.entity.Hold;
 import com.catis.objectTemporaire.HoldData;
-import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.SessionCaisseService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 
 @RestController
