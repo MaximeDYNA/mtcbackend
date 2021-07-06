@@ -1,4 +1,4 @@
-package com.catis.model.entity;
+package com.catis.model.control;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.Visite;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -43,6 +46,7 @@ public class Control extends JournalData {
     @OneToMany(mappedBy = "control", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Visite> visites = new ArrayList<>();
+
 
     public enum StatusType {
         INITIALIZED, REJECTED, VALIDATED

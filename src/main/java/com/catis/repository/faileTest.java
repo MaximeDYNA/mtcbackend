@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.entity.Control;
+import com.catis.model.control.Control;
 import com.catis.model.entity.Visite;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
