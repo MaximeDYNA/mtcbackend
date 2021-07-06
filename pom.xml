@@ -37,9 +37,9 @@
         </dependency>
         <!--to get class in a package -->
         <dependency>
-            <groupId>io.github.classgraph</groupId>
-            <artifactId>classgraph</artifactId>
-            <version>4.8.109</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>

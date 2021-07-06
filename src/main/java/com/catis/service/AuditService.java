@@ -7,7 +7,6 @@ import com.catis.objectTemporaire.IdentifierUtil;
 import com.catis.repository.AuditRepository;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
-import io.github.classgraph.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -15,6 +14,7 @@ import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -28,6 +28,8 @@ public class AuditService {
     private AuditRepository at;
     @PersistenceContext
     private EntityManager em;
+    @Autowired
+    Environment env;
 
     public void getAllRevision(){
         List<AuditRevisionEntity> as = new ArrayList<>();
@@ -91,12 +93,12 @@ public class AuditService {
         return logs;
     }
     public Set<Class<?>> getModelClasses() throws IOException {
-        /*final Set<Class<?>> modelClasses = new HashSet<>();
+        final Set<Class<?>> modelClasses = new HashSet<>();
 
         final ClassLoader loader = Thread.currentThread()
                 .getContextClassLoader();
         final ClassPath classpath = ClassPath.from(loader);
-        final String packageName = "com.catis.model.entity";
+        final String packageName = env.getProperty("entity.package.name");
         final ImmutableSet<ClassPath.ClassInfo> checkstyleClasses = classpath
                 .getTopLevelClassesRecursive(packageName);
 
@@ -105,23 +107,9 @@ public class AuditService {
             modelClasses.add(loadedClass);
 
         }
-        return modelClasses;*/
-        String pkg = "com.catis.model.entity";
-        String routeAnnotation = pkg + ".Route";
-        Set<Class<?>> classes = new HashSet<>();
-        try (ScanResult scanResult =
-                     new ClassGraph()
-                             .verbose()               // Log to stderr
-                             .enableAllInfo()         // Scan classes, methods, fields, annotations
-                             .acceptPackages(pkg)     // Scan com.xyz and subpackages (omit to scan all packages)
-                             .scan()) {               // Start the scan
-            for (ClassInfo routeClassInfo : scanResult.getClassesWithAnnotation(routeAnnotation)) {
-                Class clazz = routeClassInfo.getClass();
-                classes.add(clazz);
-                System.out.println("nom de l'entity "+clazz.getSimpleName());
-            }
-        }
-        return classes;
+        return modelClasses;
+
+
     }
 
 }
