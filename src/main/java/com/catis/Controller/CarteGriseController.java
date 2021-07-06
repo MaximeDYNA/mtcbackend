@@ -17,9 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.CarteGrise;
-import com.catis.model.Vehicule;
-import com.catis.model.Visite;
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.Vehicule;
+import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.CarteGriseReceived;
 
 @RestController

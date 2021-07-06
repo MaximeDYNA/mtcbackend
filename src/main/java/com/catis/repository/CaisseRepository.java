@@ -2,7 +2,7 @@ package com.catis.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Caisse;
+import com.catis.model.entity.Caisse;
 
 import java.util.List;
 

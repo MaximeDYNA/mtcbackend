@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Taxe;
-import com.catis.model.TaxeProduit;
+import com.catis.model.entity.TaxeProduit;
 
 public interface TaxeProduitRepository extends CrudRepository<TaxeProduit, Long> {
 

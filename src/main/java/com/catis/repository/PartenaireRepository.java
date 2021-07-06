@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Partenaire;
+import com.catis.model.entity.Partenaire;
 
 public interface PartenaireRepository extends CrudRepository<Partenaire, Long> {
     List<Partenaire> findByNomStartsWithIgnoreCase(String nom);

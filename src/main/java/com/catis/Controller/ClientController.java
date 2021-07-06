@@ -1,6 +1,5 @@
 package com.catis.Controller;
 
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,9 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import com.catis.model.Organisation;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.ClientDTO;
 import com.catis.objectTemporaire.ClientPOJO;
 import org.slf4j.Logger;
@@ -22,17 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.Client;
-import com.catis.model.Partenaire;
-import com.catis.model.Produit;
+import com.catis.model.entity.Client;
+import com.catis.model.entity.Partenaire;
 import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.ClientService;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 @RestController
 @CrossOrigin

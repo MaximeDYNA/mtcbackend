@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.SessionCaisse;
+import com.catis.model.entity.SessionCaisse;
 
 public interface SessionCaisseRepository extends CrudRepository<SessionCaisse, String> {
 

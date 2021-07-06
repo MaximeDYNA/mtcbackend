@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Produit;
+import com.catis.model.entity.Produit;
 
 public interface ProduitRepository extends CrudRepository<Produit, Long> {
 

@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.Seuil;
+import com.catis.model.entity.Seuil;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

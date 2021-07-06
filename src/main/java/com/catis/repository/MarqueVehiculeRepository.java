@@ -2,7 +2,7 @@ package com.catis.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.MarqueVehicule;
+import com.catis.model.entity.MarqueVehicule;
 
 import java.util.List;
 

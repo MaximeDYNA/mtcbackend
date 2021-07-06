@@ -9,13 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.CarteGrise;
-import com.catis.model.GieglanFile;
-import com.catis.model.GieglanFile.FileType;
-import com.catis.model.GieglanFile.StatusType;
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.GieglanFile;
+import com.catis.model.entity.GieglanFile.FileType;
+import com.catis.model.entity.GieglanFile.StatusType;
 import com.catis.repository.GieglanFileRepository;
-import com.catis.model.Inspection;
-import com.catis.model.ValeurTest;
+import com.catis.model.entity.Inspection;
+import com.catis.model.entity.ValeurTest;
 
 @Service("GieglanService")
 @Transactional

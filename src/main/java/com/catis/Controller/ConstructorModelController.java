@@ -1,9 +1,8 @@
 package com.catis.Controller;
 
-import com.catis.model.Constructor;
-import com.catis.model.ConstructorModel;
-import com.catis.model.Organisation;
-import com.catis.objectTemporaire.ConstructorPOJO;
+import com.catis.model.entity.Constructor;
+import com.catis.model.entity.ConstructorModel;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.ContructorModelPOJO;
 import com.catis.repository.ConstructorModelRepo;
 import com.catis.repository.ConstructorRepository;

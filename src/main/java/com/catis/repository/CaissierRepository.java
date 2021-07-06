@@ -1,6 +1,6 @@
 package com.catis.repository;
 
-import com.catis.model.Caissier;
+import com.catis.model.entity.Caissier;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -15,8 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Organisation;
-import com.catis.service.OrganisationService;
+import com.catis.model.entity.Organisation;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
 package com.catis.repository;
 
-import com.catis.model.Inspection;
+import com.catis.model.entity.Inspection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.MesureVisuel;
+import com.catis.model.entity.MesureVisuel;
 
 import java.util.List;
 

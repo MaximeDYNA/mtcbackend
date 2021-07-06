@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.Controller.message.Message;
-import com.catis.model.OperationCaisse;
+import com.catis.model.entity.OperationCaisse;
 import com.catis.objectTemporaire.OpCaisseDTO;
 import com.catis.objectTemporaire.RecapDTO;
 import com.catis.service.OperationCaisseService;

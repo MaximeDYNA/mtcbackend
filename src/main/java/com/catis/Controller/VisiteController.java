@@ -9,14 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
-import com.catis.model.*;
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.MesureVisuelRepository;
 import com.catis.repository.RapportDeVisiteRepo;
 import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
-import com.lowagie.text.DocumentException;
-import org.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +25,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,10 +34,6 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxProcessor;
-import reactor.core.publisher.FluxSink;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,6 +51,7 @@ public class VisiteController {
     @Autowired
     private OrganisationService os;
 
+    @Autowired FindRapportListService rapportListService;
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
@@ -115,8 +109,8 @@ public class VisiteController {
     }
     @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
     public static void  dispatchEdit(Visite visite, VisiteService vs,
-                                    GieglanFileService gieglanFileService,
-                                    CategorieTestVehiculeService catSer, ProduitService ps)  {
+                                     GieglanFileService gieglanFileService,
+                                     CategorieTestVehiculeService catSer, ProduitService ps)  {
 
         for(SseEmitter emitter:emitters){
             try{
@@ -451,6 +445,29 @@ public class VisiteController {
                                         ZoneId
                                                 .systemDefault())
                         .toInstant());
+    }
+
+    /*
+    @PostMapping("/api/v1/visite/conformity/{Id}")
+    public Object checkCconformity(
+        @PathVariable Long Id,
+        @RequestBody rapportMDto rapportMDto
+    ) throws Exception {
+        String endPoint = environment.getProperty("endpointCheckConformity");
+        HttpEntity<rapportMDto> request = new HttpEntity<>(rapportMDto);
+        ResponseEntity<String> response = (new RestTemplate())
+            .postForEntity(endPoint+"/"+Id, request, String.class);
+
+        return response;
+    }
+    */
+
+    @GetMapping("/api/v1/filenames")
+    public ResponseEntity<Object> listRapportsFiles() {
+
+        List<String> filenames = rapportListService.FilenameListInFolder();
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", filenames);
     }
 
 

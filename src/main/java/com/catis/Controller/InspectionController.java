@@ -1,7 +1,6 @@
 package com.catis.Controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -22,11 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.Inspection;
-import com.catis.model.Visite;
+import com.catis.model.entity.Inspection;
+import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
 import com.catis.objectTemporaire.SignatureDTO;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 

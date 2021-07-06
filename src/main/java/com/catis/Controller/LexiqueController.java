@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.Classification;
-import com.catis.model.Client;
-import com.catis.model.Lexique;
-import com.catis.model.VersionLexique;
+import com.catis.model.entity.Client;
+import com.catis.model.entity.Lexique;
+import com.catis.model.entity.VersionLexique;
 import com.catis.objectTemporaire.LexiqueChildDTO;
 import com.catis.objectTemporaire.LexiqueDTO;
 import com.catis.objectTemporaire.LexiquePOJO;

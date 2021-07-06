@@ -2,14 +2,13 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.catis.model.DefectResponse;
-import com.catis.model.Inspection;
+import com.catis.objectTemporaire.DefectResponse;
+import com.catis.model.entity.Inspection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.MesureVisuel;
+import com.catis.model.entity.MesureVisuel;
 import com.catis.repository.MesureVisuelRepository;
 
 @Service

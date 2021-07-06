@@ -6,20 +6,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.catis.model.Organisation;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.Client;
-import com.catis.model.Contact;
-import com.catis.model.Partenaire;
+import com.catis.model.entity.Contact;
+import com.catis.model.entity.Partenaire;
 import com.catis.service.ContactService;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;

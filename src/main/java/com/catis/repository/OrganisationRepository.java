@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Organisation;
+import com.catis.model.entity.Organisation;
 
 import java.util.List;
 

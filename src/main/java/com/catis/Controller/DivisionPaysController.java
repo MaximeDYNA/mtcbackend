@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catis.model.DivisionPays;
+import com.catis.model.entity.DivisionPays;
 import com.catis.service.DivisionPaysService;
 
 @RestController

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.Energie;
+import com.catis.model.entity.Energie;
 import com.catis.service.EnergieService;
 
 import java.util.ArrayList;

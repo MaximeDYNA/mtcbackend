@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.DefaultRevisionEntity;
+import org.hibernate.envers.RevisionType;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Revision {
     private Long id;
-    private LocalDateTime revisionDate;
-    private String operation;
+    private DefaultRevisionEntity defaultRevisionEntity;
+    private RevisionType revisionType;
+
 }

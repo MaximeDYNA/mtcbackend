@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Vente;
+import com.catis.model.entity.Vente;
 
 public interface VenteRepository extends CrudRepository<Vente, Long> {
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Inspection;
+import com.catis.model.entity.Inspection;
 
 public interface InspectionRepository extends CrudRepository<Inspection, Long> {
 

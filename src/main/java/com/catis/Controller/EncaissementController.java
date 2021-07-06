@@ -1,12 +1,11 @@
 package com.catis.Controller;
 
-import com.catis.model.*;
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +19,9 @@ import com.catis.Controller.exception.ContactVideException;
 import com.catis.Controller.exception.VisiteEnCoursException;
 import com.catis.objectTemporaire.Encaissement;
 import com.catis.objectTemporaire.EncaissementResponse;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

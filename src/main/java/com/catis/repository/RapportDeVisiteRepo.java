@@ -2,12 +2,11 @@ package com.catis.repository;
 
 import java.util.List;
 
-import com.catis.model.Control;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.catis.model.RapportDeVisite;
-import com.catis.model.Visite;
+import com.catis.model.entity.RapportDeVisite;
+import com.catis.model.entity.Visite;
 
 public interface RapportDeVisiteRepo extends JpaRepository<RapportDeVisite, Long> {
 

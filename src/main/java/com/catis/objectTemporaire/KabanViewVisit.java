@@ -2,7 +2,7 @@ package com.catis.objectTemporaire;
 
 import java.util.List;
 
-import com.catis.model.Visite;
+import com.catis.model.entity.Visite;
 
 public class KabanViewVisit {
 

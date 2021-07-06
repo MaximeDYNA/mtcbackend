@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.catis.model.Taxe;
-import com.catis.model.TaxeProduit;
+import com.catis.model.entity.Taxe;
+import com.catis.model.entity.TaxeProduit;
 import com.catis.repository.TaxeProduitRepository;
 import com.catis.repository.TaxeRepository;
 

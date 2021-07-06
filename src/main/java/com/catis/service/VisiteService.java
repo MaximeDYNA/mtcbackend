@@ -5,58 +5,32 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import com.catis.Controller.configuration.ObjectUtils;
 
 import com.catis.Event.VisiteCreatedEvent;
-import com.catis.model.*;
-import com.catis.objectTemporaire.DaschBoardLogDTO;
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.OrganisationTopDTO;
 
-import com.catis.repository.faileTest;
-import com.sun.mail.imap.protocol.ID;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.DefaultRevisionEntity;
-import org.hibernate.envers.RevisionEntity;
-import org.hibernate.envers.query.AuditEntity;
-import org.hibernate.envers.query.AuditQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.history.Revision;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.catis.Controller.ApiResponseHandler;
 import com.catis.Controller.VisiteController;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.Control.StatusType;
-import com.catis.objectTemporaire.Listview;
+import com.catis.model.entity.Control.StatusType;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxProcessor;
-import reactor.core.publisher.FluxSink;
-
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Service
 public class VisiteService {
-    @PersistenceContext
-    private EntityManager em;
+
     @Autowired
     private VisiteRepository visiteRepository;
     @Autowired
@@ -367,37 +341,7 @@ public class VisiteService {
 
     }
 
-    /*public void getRev() throws NoSuchFieldException, IllegalAccessException {
-        AuditReader auditReader = AuditReaderFactory.get(em);
-        DaschBoardLogDTO simpleLog = new DaschBoardLogDTO();
-        List<Revision<, Long>> returnedRevisions = new ArrayList<>();
-        AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(Energie.class, false, true);
-        query.getResultList().forEach(returnedEntity -> returnedRevisions.add(returnedEntity));
-        return returnedRevisions;
 
-        AuditQuery query = auditReader.createQuery()
-                .forRevisionsOfEntity(Energie.class, false, true);
-
-        List a
-                =  query
-                .getResultList()
-                ;
-        Map<String,Object> map = new HashMap<String, Object>();
-        for(Object i : a){
-
-
-            //auditService.findById(Long.valueOf(i.getId()));
-            //map = ObjectUtils.getFieldNamesAndValues(i,false);
-
-
-            //System.out.println("ResultList "+ToStringBuilder.reflectionToString(i));
-
-            //System.out.println("id "+id);
-            //System.out.println(i.getUser());
-            //[Ljava.lang.Object;@6670060b[{com.catis.model.Energie@22a15e81,DefaultRevisionEntity(id = 244, revisionDate = 8 juin 2021 16:53:21),ADD}]
-        }
-        //;
-    }*/
     @Async
     @TransactionalEventListener
     public void dispatchVisite(VisiteCreatedEvent event) {

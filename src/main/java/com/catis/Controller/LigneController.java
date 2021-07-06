@@ -3,7 +3,7 @@ package com.catis.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.catis.model.Organisation;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.LignePOJO;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.CarteGrise;
-import com.catis.model.Ligne;
+import com.catis.model.entity.CarteGrise;
+import com.catis.model.entity.Ligne;
 import com.catis.objectTemporaire.VehiculeByLineDTO;
 import com.catis.service.CarteGriseService;
 import com.catis.service.InspectionService;

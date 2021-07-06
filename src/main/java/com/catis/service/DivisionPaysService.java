@@ -6,8 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.DivisionPays;
-import com.catis.model.Pays;
+import com.catis.model.entity.DivisionPays;
 import com.catis.repository.DivisionPaysRepository;
 
 @Service

@@ -6,8 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.catis.model.Ligne;
-import com.catis.repository.InspectionRepository;
+import com.catis.model.entity.Ligne;
 import com.catis.repository.LigneRepository;
 
 @Service

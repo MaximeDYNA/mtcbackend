@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.catis.model.DetailVente;
+import com.catis.model.entity.DetailVente;
 import com.catis.repository.DetailVenteRepository;
 
 @Service

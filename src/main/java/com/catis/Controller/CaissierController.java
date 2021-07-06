@@ -1,23 +1,19 @@
 package com.catis.Controller;
 
 import com.catis.Controller.message.Message;
-import com.catis.model.*;
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.CaissierDTO;
 import com.catis.objectTemporaire.CaissierPOJO;
 import com.catis.service.CaisseService;
 import com.catis.service.CaissierService;
 import com.catis.service.OrganisationService;
 import com.catis.service.UtilisateurService;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @RestController

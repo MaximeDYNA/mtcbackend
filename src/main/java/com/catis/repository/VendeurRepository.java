@@ -1,10 +1,8 @@
 package com.catis.repository;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
-import com.catis.model.Vendeur;
+import com.catis.model.entity.Vendeur;
 
 public interface VendeurRepository extends CrudRepository<Vendeur, Long> {
 

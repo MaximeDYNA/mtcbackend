@@ -1,26 +1,20 @@
 package com.catis.Controller.pdfhandler;
 
 import java.io.*;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.catis.model.*;
-import com.catis.objectTemporaire.*;
+import com.catis.model.entity.Visite;
 import com.catis.repository.MesureVisuelRepository;
-import com.lowagie.text.pdf.codec.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import static com.itextpdf.text.pdf.BaseFont.EMBEDDED;
-import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
 
 import com.catis.Controller.configuration.CryptoUtil;
 import com.catis.Controller.configuration.QRCodeGenerator;
@@ -41,18 +33,9 @@ import com.catis.service.PdfService;
 import com.catis.service.TaxeService;
 import com.catis.service.VenteService;
 import com.catis.service.VisiteService;
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.lowagie.text.DocumentException;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.w3c.tidy.Tidy;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
 @RestController

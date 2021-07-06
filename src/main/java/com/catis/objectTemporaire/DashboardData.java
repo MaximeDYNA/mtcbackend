@@ -17,4 +17,5 @@ public class DashboardData {
     private double tax;
     private List<Double> caGraph;
     private List<OrganisationTopDTO> organisationTopDTOS;
+    private List<DaschBoardLogDTO> daschBoardLogDTOS;
 }
