@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.Event.VisiteCreatedEvent;
+import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.OrganisationTopDTO;
 
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.catis.Controller.VisiteController;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.entity.Control.StatusType;
+import com.catis.model.control.Control.StatusType;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
 

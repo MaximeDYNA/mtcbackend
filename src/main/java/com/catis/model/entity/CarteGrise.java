@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.catis.model.control.Control;
 import com.catis.objectTemporaire.CarteGrisePOJO;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;

@@ -1,12 +1,14 @@
-package com.catis.model.entity;
+package com.catis.model.control;
 
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.*;
 
+import com.catis.model.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -57,6 +59,7 @@ public class GieglanFile extends JournalData {
     @ManyToOne
     @JsonIgnore
     private CategorieTest categorieTest;
+
 
     public enum FileType {
         MEASURE, MACHINE, CARD_REGISTRATION

@@ -12,10 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.catis.model.control.GieglanFile;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.catis.model.entity.GieglanFile.StatusType;
+import com.catis.model.control.GieglanFile.StatusType;
 import com.catis.model.configuration.JournalData;
 
 @Entity

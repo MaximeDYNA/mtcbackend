@@ -3,6 +3,7 @@ package com.catis.model.entity;
 import javax.persistence.*;
 
 import com.catis.model.configuration.JournalData;
+import com.catis.model.control.GieglanFile;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

@@ -1,5 +1,6 @@
 package com.catis.objectTemporaire;
 
+import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 
 import java.time.LocalDateTime;

@@ -100,12 +100,13 @@ public class AuditService {
         final ClassPath classpath = ClassPath.from(loader);
         final String packageName = env.getProperty("entity.package.name");
         final ImmutableSet<ClassPath.ClassInfo> checkstyleClasses = classpath
-                .getTopLevelClassesRecursive(packageName);
+                            .getAllClasses();
+        //.getTopLevelClassesRecursive(packageName);
 
         for (ClassPath.ClassInfo clazz : checkstyleClasses) {
-            final Class<?> loadedClass = clazz.load();
-            modelClasses.add(loadedClass);
-
+            //final Class<?> loadedClass = clazz.load();
+            if(clazz.getPackageName().equals(packageName))
+                modelClasses.add(clazz.load());
         }
         return modelClasses;
 

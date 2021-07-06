@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import com.catis.model.control.Control;
+import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.service.CategorieTestVehiculeService;
 import com.catis.service.GieglanFileService;

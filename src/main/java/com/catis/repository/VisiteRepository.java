@@ -3,7 +3,7 @@ package com.catis.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.catis.model.entity.Control;
+import com.catis.model.control.Control;
 import com.catis.model.entity.Produit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
