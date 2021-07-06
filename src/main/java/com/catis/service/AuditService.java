@@ -78,7 +78,7 @@ public class AuditService {
             simpleLog.setEntity(clazz.getSimpleName());
             simpleLog.setDate(r1.getRevisionDate());
             d = (Long) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e);
-            System.out.println("Id présumé "+em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e));
+            System.out.println("Id présumé a"+em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e));
             simpleLog.setEntityId(d);
             System.out.println("id's "+d);
 
