@@ -32,6 +32,7 @@ public class DashboardController {
         List<DaschBoardLogDTO> daschBoardLogDTOList = new ArrayList<>();
         List<DaschBoardLogDTO> daschBoardLogDTOListTrunqued = new ArrayList<>();
         for(Class<?> c : as.getModelClasses()){
+            System.out.println("Entity class "+ c.getName());
             daschBoardLogDTOList.addAll(as.getRev(c));
         }
         Collections.sort(daschBoardLogDTOList, Comparator.comparing(DaschBoardLogDTO::getDate).reversed());

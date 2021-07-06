@@ -63,7 +63,7 @@ public class AuditService {
         AuditRevisionEntity audit;
 
         Class<?> theClass = Class.forName(clazz.getName());
-
+        System.out.println("Get revisions...");
 
         for(Object i : a){
             Object[] objArray = (Object[]) i;
