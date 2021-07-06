@@ -35,8 +35,10 @@ public class DashboardController {
             daschBoardLogDTOList.addAll(as.getRev(c));
         }
         Collections.sort(daschBoardLogDTOList, Comparator.comparing(DaschBoardLogDTO::getDate).reversed());
-        daschBoardLogDTOListTrunqued = daschBoardLogDTOList.subList(0, 20);
-
+        if(daschBoardLogDTOList.size() > 21)
+            daschBoardLogDTOListTrunqued = daschBoardLogDTOList.subList(0, 20);
+        else
+            daschBoardLogDTOListTrunqued = daschBoardLogDTOList;
         DashboardData dashboardData = new DashboardData();
 
         dashboardData.setDaschBoardLogDTOS(
