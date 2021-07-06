@@ -39,7 +39,7 @@ public class DashboardController {
         if(daschBoardLogDTOList.size() > 21)
             daschBoardLogDTOListTrunqued = daschBoardLogDTOList.subList(0, 20);
         else
-            daschBoardLogDTOListTrunqued = daschBoardLogDTOList;
+            daschBoardLogDTOListTrunqued.addAll(daschBoardLogDTOList) ;
         DashboardData dashboardData = new DashboardData();
 
         dashboardData.setDaschBoardLogDTOS(
