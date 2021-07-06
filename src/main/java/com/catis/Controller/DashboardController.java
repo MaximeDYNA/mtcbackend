@@ -32,8 +32,6 @@ public class DashboardController {
         List<DaschBoardLogDTO> daschBoardLogDTOList = new ArrayList<>();
         List<DaschBoardLogDTO> daschBoardLogDTOListTrunqued = new ArrayList<>();
         System.out.println("API business...");
-        System.out.println("Nombre de classes dans le package "+as.getModelClasses().size());
-
         for(Class<?> c : as.getModelClasses()){
             System.out.println("Entity class "+ c.getName());
             daschBoardLogDTOList.addAll(as.getRev(c));

@@ -7,6 +7,7 @@ import com.catis.objectTemporaire.IdentifierUtil;
 import com.catis.repository.AuditRepository;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
+import io.github.classgraph.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -90,7 +91,7 @@ public class AuditService {
         return logs;
     }
     public Set<Class<?>> getModelClasses() throws IOException {
-        final Set<Class<?>> modelClasses = new HashSet<>();
+        /*final Set<Class<?>> modelClasses = new HashSet<>();
 
         final ClassLoader loader = Thread.currentThread()
                 .getContextClassLoader();
@@ -104,7 +105,23 @@ public class AuditService {
             modelClasses.add(loadedClass);
 
         }
-        return modelClasses;
+        return modelClasses;*/
+        String pkg = "com.catis.model.entity";
+        String routeAnnotation = pkg + ".Route";
+        Set<Class<?>> classes = new HashSet<>();
+        try (ScanResult scanResult =
+                     new ClassGraph()
+                             .verbose()               // Log to stderr
+                             .enableAllInfo()         // Scan classes, methods, fields, annotations
+                             .acceptPackages(pkg)     // Scan com.xyz and subpackages (omit to scan all packages)
+                             .scan()) {               // Start the scan
+            for (ClassInfo routeClassInfo : scanResult.getClassesWithAnnotation(routeAnnotation)) {
+                Class clazz = routeClassInfo.getClass();
+                classes.add(clazz);
+                System.out.println("nom de l'entity "+clazz.getSimpleName());
+            }
+        }
+        return classes;
     }
 
 }
