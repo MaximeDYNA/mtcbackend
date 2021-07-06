@@ -28,18 +28,12 @@
             <artifactId>commons-io</artifactId>
             <version>2.8.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
-        </dependency>
+
         <!--to get class in a package -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>14.0.1</version>
+            <version>20.0</version>
         </dependency>
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
