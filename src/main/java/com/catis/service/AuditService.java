@@ -16,10 +16,19 @@ import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.SystemPropertyUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -138,6 +147,44 @@ public class AuditService {
             // handle the exception
         }
         return null;
+    }
+    public List<Class> findMyTypes(String basePackage) throws IOException, ClassNotFoundException
+    {
+        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+        MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+
+        List<Class> candidates = new ArrayList<Class>();
+        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+                resolveBasePackage(basePackage) + "/" + "**/*.class";
+        Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
+        for (Resource resource : resources) {
+
+            if (resource.isReadable()) {
+                MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                candidates.add(Class.forName(metadataReader.getClassMetadata().getClassName()));
+                /*if (isCandidate(metadataReader)) {
+
+                }*/
+            }
+        }
+        return candidates;
+    }
+
+    private String resolveBasePackage(String basePackage) {
+        return ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(basePackage));
+    }
+
+    private boolean isCandidate(MetadataReader metadataReader) throws ClassNotFoundException
+    {
+        try {
+            Class c = Class.forName(metadataReader.getClassMetadata().getClassName());
+            if (c.getAnnotation(XmlRootElement.class) != null) {
+                return true;
+            }
+        }
+        catch(Throwable e){
+        }
+        return false;
     }
 
 }
