@@ -19,8 +19,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AuditService {
@@ -92,7 +96,17 @@ public class AuditService {
         }
         return logs;
     }
-    public Set<Class<?>> getModelClasses() throws IOException {
+    public Set<Class> getModelClasses() throws IOException {
+
+        String packageName = env.getProperty("entity.package.name");
+        InputStream stream = ClassLoader.getSystemClassLoader()
+                .getResourceAsStream(packageName.replaceAll("[.]", "/"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        return reader.lines()
+            .filter(line -> line.endsWith(".class"))
+            .map(line -> getClass(line, packageName))
+            .collect(Collectors.toSet());
+        /*
         final Set<Class<?>> modelClasses = new HashSet<>();
 
         final ClassLoader loader = Thread.currentThread()
@@ -108,9 +122,21 @@ public class AuditService {
             if(clazz.getPackageName().equals(packageName))
                 modelClasses.add(clazz.load());
         }
-        return modelClasses;
+        return modelClasses;*/
 
+    }
 
+    private Class getClass(String className, String packageName) {
+        try {
+            System.err.println(Class.forName(packageName + "."
+                + className.substring(0, className.lastIndexOf('.'))));
+
+            return Class.forName(packageName + "."
+                    + className.substring(0, className.lastIndexOf('.')));
+        } catch (ClassNotFoundException e) {
+            // handle the exception
+        }
+        return null;
     }
 
 }
