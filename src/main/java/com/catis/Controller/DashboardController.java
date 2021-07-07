@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @RestController
@@ -27,12 +28,12 @@ public class DashboardController {
     private AuditService as;
 
     @GetMapping("/business")
-    public ResponseEntity<Object> getBusinessData() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException {
+    public ResponseEntity<Object> getBusinessData() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException, URISyntaxException {
         //as.getAllRevision();
         List<DaschBoardLogDTO> daschBoardLogDTOList = new ArrayList<>();
         List<DaschBoardLogDTO> daschBoardLogDTOListTrunqued = new ArrayList<>();
         System.out.println("API business...");
-        for(Class<?> c : as.getModelClasses()){
+        for(Class c : as.getModelClasses()){
             System.out.println("Entity class "+ c.getName());
             daschBoardLogDTOList.addAll(as.getRev(c));
         }
