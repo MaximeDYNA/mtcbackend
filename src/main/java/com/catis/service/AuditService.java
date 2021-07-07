@@ -2,6 +2,7 @@ package com.catis.service;
 
 import com.catis.model.configuration.AuditRevisionEntity;
 
+import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.DaschBoardLogDTO;
 import com.catis.objectTemporaire.IdentifierUtil;
 import com.catis.repository.AuditRepository;
@@ -19,10 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -96,12 +95,13 @@ public class AuditService {
         }
         return logs;
     }
-    public Set<Class> getModelClasses() throws IOException {
+    public Set<Class> getModelClasses() throws IOException, URISyntaxException {
 
         String packageName = env.getProperty("entity.package.name");
         InputStream stream = ClassLoader.getSystemClassLoader()
-                .getResourceAsStream(packageName);
-        System.err.println("packageName value "+packageName);
+                .getResourceAsStream(packageName.replaceAll("[.]","/"));
+        System.err.println("Entity path "+ new File(Visite.class.getProtectionDomain().getCodeSource().getLocation()
+                .toURI()).getPath());
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         return reader.lines()
             .filter(line -> line.endsWith(".class"))
