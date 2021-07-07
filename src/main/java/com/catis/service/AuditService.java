@@ -101,7 +101,7 @@ public class AuditService {
         String packageName = env.getProperty("entity.package.name");
         InputStream stream = ClassLoader.getSystemClassLoader()
                 .getResourceAsStream(packageName.replaceAll("[.]", "/"));
-        System.err.println("stream value "+ToStringBuilder.reflectionToString(stream));
+        System.err.println("packageName value "+packageName.replaceAll("[.]", "/"));
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         return reader.lines()
             .filter(line -> line.endsWith(".class"))
