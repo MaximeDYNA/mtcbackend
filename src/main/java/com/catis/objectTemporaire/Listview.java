@@ -39,6 +39,7 @@ public class Listview {
     private Control control;
     private int isConform;
     private List<GieglanFileIcon> measures = new ArrayList<>();
+    private List<CategorieTest> testAttendus = new ArrayList<>();
 
     @JsonIgnore
     private VisiteService visiteService;
@@ -77,6 +78,7 @@ public class Listview {
         this.control =v.getControl();
         this.isConform = v.getIsConform();
 
+
         manageColor();
     }
 
@@ -95,7 +97,8 @@ public class Listview {
                     gfi = new GieglanFileIcon();
                     gfi.setExtension(g.getCategorieTest().getLibelle());
                     gfi.setIcon(g.getCategorieTest().getIcon());
-                   this.measures.add(replaceIconIfNecessary(gfi, this.id));
+                    this.testAttendus.add(g.getCategorieTest());
+                    this.measures.add(replaceIconIfNecessary(gfi, this.id));
                 }
         } else {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
@@ -113,6 +116,7 @@ public class Listview {
                 gfi = new GieglanFileIcon();
                 gfi.setExtension(c.getCategorieTest().getLibelle());
                 gfi.setIcon(c.getCategorieTest().getIcon());
+                this.testAttendus.add(c.getCategorieTest());
                 categorieTests.add(gfi);
             }
             /*visite
@@ -483,5 +487,13 @@ public class Listview {
 
     public void setIsConform(int isConform) {
         this.isConform = isConform;
+    }
+
+    public List<CategorieTest> getTestAttendus() {
+        return testAttendus;
+    }
+
+    public void setTestAttendus(List<CategorieTest> testAttendus) {
+        this.testAttendus = testAttendus;
     }
 }
