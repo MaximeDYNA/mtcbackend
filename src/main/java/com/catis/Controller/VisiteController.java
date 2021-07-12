@@ -22,12 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -447,7 +449,6 @@ public class VisiteController {
                         .toInstant());
     }
 
-    /*
     @PostMapping("/api/v1/visite/conformity/{Id}")
     public Object checkCconformity(
         @PathVariable Long Id,
@@ -460,7 +461,7 @@ public class VisiteController {
 
         return response;
     }
-    */
+
 
     @GetMapping("/api/v1/filenames")
     public ResponseEntity<Object> listRapportsFiles() {
