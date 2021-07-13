@@ -7,6 +7,7 @@ import com.catis.objectTemporaire.Intervenant_fraudeTypePOJO;
 import com.catis.repository.FraudeTypeRepository;
 import com.catis.repository.IntervenantFraudeRepository;
 import com.catis.repository.Intervenant_fraudeTypeRepository;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class ScoringController {
 
     @PostMapping("/fraudes/intervenants")
     public ResponseEntity<Object> setIntervenantFraud(@RequestBody Intervenant_fraudeTypePOJO intervenant_fraudeType){
-
+        System.out.println("Received data "+ ToStringBuilder.reflectionToString(intervenant_fraudeType));
         Intervenant_fraudeType t = new Intervenant_fraudeType();
         Optional<FraudeType> ift = fraudeTypeRepository.findByCodeAndActiveStatusTrue(intervenant_fraudeType.getFraudeType());
         Optional<IntervenantFraude> ifr = intervenantFraudeRepository.findById(Long.valueOf(intervenant_fraudeType.getIntervenantFraude().getId()));
