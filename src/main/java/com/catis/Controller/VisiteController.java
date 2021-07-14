@@ -472,6 +472,19 @@ public class VisiteController {
     }
 
 
+
+
+    @PostMapping("/api/v1/visite/{id}/status/{status}")
+    public ResponseEntity<Object> editStatus(@PathVariable Long id, @PathVariable int status) {
+
+        Visite v = visiteService.findById(id);
+        v.setStatut(status);
+        v = visiteService.add(v);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", v);
+    }
+
+
     /****Administration****/
 
     @GetMapping(value = "/api/v1/admin/visites")

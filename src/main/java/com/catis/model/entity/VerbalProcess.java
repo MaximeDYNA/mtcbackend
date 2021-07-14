@@ -32,7 +32,6 @@ public class VerbalProcess extends JournalData {
     private boolean status;
 
     @OneToOne
-
     private Visite visite;
 
     @OneToMany(mappedBy = "verbalProcess")

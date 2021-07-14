@@ -3,6 +3,7 @@ package com.catis.Controller;
 import com.catis.model.entity.FraudeType;
 import com.catis.model.entity.IntervenantFraude;
 import com.catis.model.entity.Intervenant_fraudeType;
+import com.catis.objectTemporaire.FraudePOJO;
 import com.catis.objectTemporaire.Intervenant_fraudeTypePOJO;
 import com.catis.repository.FraudeTypeRepository;
 import com.catis.repository.IntervenantFraudeRepository;
@@ -57,6 +58,24 @@ public class ScoringController {
             catsSelect.add(cat);
         }
         return ApiResponseHandler.generateResponse(HttpStatus.OK,true,"OK", catsSelect);
+    }
+
+    @PostMapping("/fraudes")
+    public ResponseEntity<Object> savefraude(@RequestBody FraudePOJO fraudePOJO){
+        FraudeType fraude = new FraudeType();
+        fraude.setCode(fraudePOJO.getCode());
+        fraude.setDescription(fraudePOJO.getDescription());
+        fraude = fraudeTypeRepository.save(fraude);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,true,"OK", fraude);
+    }
+
+    @DeleteMapping("/fraudes/{id}")
+    public ResponseEntity<Object> deleteFraude(@PathVariable Long id) {
+
+            fraudeTypeRepository.deleteById(id);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", null );
     }
 
     @GetMapping("/fraudes/{id}/intervenants")
