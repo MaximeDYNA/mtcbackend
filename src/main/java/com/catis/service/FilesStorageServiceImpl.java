@@ -18,7 +18,7 @@ import com.catis.repository.FilesStorageService;
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
-    private final Path root = Paths.get("/images");
+    private final Path root = Paths.get(System.getProperty("user.home")+"/rapport");
 
     @Override
     public void init() {

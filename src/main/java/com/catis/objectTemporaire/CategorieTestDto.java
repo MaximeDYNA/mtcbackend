@@ -9,4 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class rapportMDto { private String name; }
+public class CategorieTestDto {
+
+    private int id_test;
+    private String filename;
+}

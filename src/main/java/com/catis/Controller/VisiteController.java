@@ -11,6 +11,7 @@ import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
+import com.catis.repository.FilesStorageService;
 import com.catis.repository.MesureVisuelRepository;
 import com.catis.repository.RapportDeVisiteRepo;
 import com.catis.repository.VisiteRepository;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -74,6 +76,10 @@ public class VisiteController {
     private VenteService venteService;
     @Autowired
     private TaxeService taxeService;
+
+    @Autowired
+    FilesStorageService storageService;
+
     @Autowired
     private VisiteService vs;
     @Autowired
@@ -449,26 +455,30 @@ public class VisiteController {
                         .toInstant());
     }
 
-    @PostMapping("/api/v1/visite/conformity/{Id}")
+    @PostMapping(path = "/api/v1/visite/conformity/{Id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object checkCconformity(
         @PathVariable Long Id,
-        @RequestBody rapportMDto rapportMDto
-    ) throws Exception {
-        String endPoint = environment.getProperty("endpointCheckConformity");
-        HttpEntity<rapportMDto> request = new HttpEntity<>(rapportMDto);
-        ResponseEntity<String> response = (new RestTemplate())
-            .postForEntity(endPoint+"/"+Id, request, String.class);
+        @RequestParam("files") MultipartFile[] files,
+        @RequestParam("data") DataRapportDto dataRapportDto
+    ) {
+        try {
+            List<String> fileNames = new ArrayList<>();
+            Arrays.asList(files).stream().forEach(file -> {
+                storageService.save(file);
+                fileNames.add(file.getOriginalFilename());
+            });
 
-        return response;
-    }
-
-
-    @GetMapping("/api/v1/filenames")
-    public ResponseEntity<Object> listRapportsFiles() {
-
-        List<String> filenames = rapportListService.FilenameListInFolder();
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", filenames);
+            String endPoint = environment.getProperty("endpointCheckConformity");
+            HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
+            ResponseEntity<String> response = (new RestTemplate()).postForEntity(
+                endPoint+"/"+Id,
+                request,
+                String.class
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+        }
     }
 
 
