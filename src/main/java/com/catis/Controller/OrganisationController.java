@@ -63,7 +63,7 @@ public class OrganisationController {
         }
     }*/
     
-    @GetMapping("/api/v1/organisations/{id}")
+    @GetMapping("/api/v1/admin/organisations/{id}")
     public ResponseEntity<Object> getOrganisation(@PathVariable Long id){
 
         Organisation organisation = os.findOrganisationById(id);
@@ -75,7 +75,7 @@ public class OrganisationController {
                     false, Message.AddKO + "assurances", null);
         }*/
     }
-    @DeleteMapping("/api/v1/organisations/{id}")
+    @DeleteMapping("/api/v1/admin/organisations/{id}")
     public ResponseEntity<Object> deleteOrganisation(@PathVariable Long id){
 
         os.deleteById(id);
@@ -87,7 +87,7 @@ public class OrganisationController {
                     false, Message.AddKO + "assurances", null);
         }*/
     }
-    @GetMapping(value="/api/v1/organisations", params = { "page", "size" })
+    @GetMapping(value="/api/v1/admin/organisations", params = { "page", "size" })
     public ResponseEntity<Object> findPaginated(@RequestParam("page") int page,
                                                 @RequestParam("size") int size) throws Exception {
 
@@ -117,7 +117,7 @@ public class OrganisationController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "OK", collModel);
     }
-    @GetMapping("/api/v1/organisations/kanban")
+    @GetMapping("/api/v1/admin/organisations/kanban")
     public ResponseEntity<Object> listforKanbanView(){
         try {
 
@@ -136,7 +136,7 @@ public class OrganisationController {
         }
 
     }
-    @GetMapping("/api/v1/organisations/graphview")
+    @GetMapping("/api/v1/admin/organisations/graphview")
     public ResponseEntity<Object> listforGraphView() {
         try {
             List<Organisation> parents = os.findAllForSelect();
@@ -158,7 +158,7 @@ public class OrganisationController {
         }
 
     }
-    @GetMapping("/api/v1/organisation/select")
+    @GetMapping("/api/v1/admin/organisation/select")
     public ResponseEntity<Object> findAllForSelect(){
         try {
             List<Organisation> results = os.findAllForSelect();
@@ -177,7 +177,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
-    @GetMapping("/api/v1/organisation/child/select")
+    @GetMapping("/api/v1/admin/organisation/child/select")
     public ResponseEntity<Object> findAllChildForSelect(){
         try {
             List<Organisation> results = os.findAllChildForSelect();
@@ -196,7 +196,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
-    @GetMapping("/api/v1/organisations/parents")
+    @GetMapping("/api/v1/admin/organisations/parents")
     public ResponseEntity<Object> findParent(){
         try {
             List<Organisation> results = os.findAllForSelect();
@@ -211,7 +211,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
-    @PostMapping ("/api/v1/organisations")
+    @PostMapping ("/api/v1/admin/organisations")
     public ResponseEntity<Object> enregistrer(@RequestBody OrganisationPOJO organisationPOJO){
         try {
             Organisation organisation = new Organisation();

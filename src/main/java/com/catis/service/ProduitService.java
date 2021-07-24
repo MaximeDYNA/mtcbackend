@@ -112,5 +112,9 @@ public class ProduitService {
                 .size();
         return occurrence;
     }
+    public Produit findByName(String name){
+       Produit p = produitRepository.findByLibelleIgnoreCase(name);
+       return p;
+    }
 
 }

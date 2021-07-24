@@ -22,7 +22,7 @@ public class JobController {
     @Autowired
     private CategorieTestVehiculeService catSer;
 
-    @GetMapping("/api/v1/visite/maj/{id}")
+    @GetMapping("/api/v1/job/visite/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
         try {
             VisiteController.dispatchEdit(vs.findById(id),

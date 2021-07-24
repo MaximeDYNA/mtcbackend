@@ -119,7 +119,7 @@ public class VendeurController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/search/vendeurs/{keyword}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/vendeurs/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
         LOGGER.trace("Recherche vendeurs...");
         List<ClientPartenaire> clientPartenaires = new ArrayList<>();

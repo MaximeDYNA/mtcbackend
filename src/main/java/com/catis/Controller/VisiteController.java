@@ -455,12 +455,14 @@ public class VisiteController {
                         .toInstant());
     }
 
-    @PostMapping(path = "/api/v1/visite/conformity/{Id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/api/v1/visite/conformity/{Id}", consumes = {"multipart/form-data"})
     public Object checkCconformity(
         @PathVariable Long Id,
         @RequestParam("files") MultipartFile[] files,
-        @RequestParam("data") DataRapportDto dataRapportDto
+        @RequestPart("data") DataRapportDto dataRapportDto
     ) {
+        System.out.println("upload filees");
+        System.out.println(files);
         try {
             List<String> fileNames = new ArrayList<>();
             Arrays.asList(files).stream().forEach(file -> {
@@ -468,14 +470,15 @@ public class VisiteController {
                 fileNames.add(file.getOriginalFilename());
             });
 
-            String endPoint = environment.getProperty("endpointCheckConformity");
+            return ResponseEntity.status(HttpStatus.OK).body(fileNames);
+            /*String endPoint = environment.getProperty("endpointCheckConformity");
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
                 endPoint+"/"+Id,
                 request,
                 String.class
-            );
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            );*/
+            //return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }

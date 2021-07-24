@@ -29,6 +29,8 @@ public class ProprietaireVehicule extends JournalData {
     @JsonIgnore
     private Set<CarteGrise> cartegrises;
 
+    private double score;
+
     private String description;
 
     public ProprietaireVehicule() {
@@ -76,6 +78,11 @@ public class ProprietaireVehicule extends JournalData {
         this.cartegrises = cartegrises;
     }
 
+    public double getScore() {
+        return score;
+    }
 
-
+    public void setScore(double score) {
+        this.score = score;
+    }
 }

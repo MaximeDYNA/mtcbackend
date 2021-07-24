@@ -23,7 +23,7 @@ public class VersionController {
     @Autowired
     private VersionLexiqueService vls;
 
-    @GetMapping("/api/v1/versionlists")
+    @GetMapping("/api/v1/admin/versionlists")
     public ResponseEntity<Object> versionList() {
 
         List<VersionLexiqueDTO> versionLexiqueDTOs = new ArrayList<>();
@@ -43,7 +43,7 @@ public class VersionController {
 
     }
 
-    @GetMapping("/api/v1/versionlists/{id}")
+    @GetMapping("/api/v1/admin/versionlists/{id}")
     public ResponseEntity<Object> getVersion(@PathVariable Long id) {
 
         VersionLexiqueDTO versionLexiqueDTO = new VersionLexiqueDTO();

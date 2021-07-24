@@ -31,7 +31,7 @@ public class CaisseController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CaisseController.class);
 
-    @RequestMapping("/api/v1/caisses")
+    @RequestMapping("/api/v1/admin/caisses")
     public ResponseEntity<Object> afficherLesCaisses() {
 
         List<Caisse> caisses = caisseService.findAllCaisse();
@@ -39,7 +39,7 @@ public class CaisseController {
                 caisses);
 
     }
-    @GetMapping("/api/v1/caisses/select")
+    @GetMapping("/api/v1/admin/caisses/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 
         List<Caisse> caisses = caisseService.findAllCaisse();
@@ -60,7 +60,7 @@ public class CaisseController {
     }
 
 
-    @PostMapping("/api/v1/caisses")
+    @PostMapping("/api/v1/admin/caisses")
     public ResponseEntity<Object> save(@RequestBody CaissePOJO caissePOJO) {
 
         Caisse caisse = new Caisse();
@@ -76,7 +76,7 @@ public class CaisseController {
 
     }
 
-    @DeleteMapping("/api/v1/caisses/{id}")
+    @DeleteMapping("/api/v1/admin/caisses/{id}")
     public ResponseEntity<Object> delete (@PathVariable Long id) {
 
         caisseService.deleteCaisseById(id);
@@ -84,10 +84,7 @@ public class CaisseController {
                 null);
 
     }
-    @RequestMapping(method = RequestMethod.POST, value = "/caisses")
-    public void creerUneCaisse(@RequestBody Caisse caisse) {
-        caisseService.addCaisse(caisse);
-    }
+
 	/*@GetMapping(value="/userconnected")
     public ResponseEntity<Object> getTasks()
     {

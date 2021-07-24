@@ -111,14 +111,14 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/api/v1/**").permitAll()
+                /*.antMatchers("/**").permitAll()
+                .antMatchers("/api/v1/caisse**").permitAll()
                 //.antMatchers("/visites**").permitAll()
                 .antMatchers("/pdf-resources**").permitAll()
                 .antMatchers("/download-pdf**").permitAll()
                 .antMatchers("/images/**").permitAll()
 
-                .antMatchers("/uploaded/signatures/**").permitAll()
+                .antMatchers("/uploaded/signatures/**").permitAll()*/
                 //.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
                 .anyRequest().permitAll();
 
