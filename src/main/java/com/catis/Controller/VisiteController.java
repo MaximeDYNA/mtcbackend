@@ -100,8 +100,8 @@ public class VisiteController {
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
 
-    @CrossOrigin
-    @GetMapping(value="/api/v1/subscribe",consumes = MediaType.ALL_VALUE)
+
+    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter  subscribe(){
 
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -115,7 +115,7 @@ public class VisiteController {
 
         return emitter;
     }
-    @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
+    @GetMapping(value="/api/v1/all/dispatchedit",consumes = MediaType.ALL_VALUE)
     public static void  dispatchEdit(Visite visite, VisiteService vs,
                                      GieglanFileService gieglanFileService,
                                      CategorieTestVehiculeService catSer, ProduitService ps)  {
@@ -156,7 +156,7 @@ public class VisiteController {
         }
     }
 
-    @GetMapping(value = "/api/v1/visitesencours")
+    @GetMapping(value = "/api/v1/all/visitesencours")
     public ResponseEntity<Object> listDesVisitesEncours() {
 
         log.info("Liste des visites en cours");
@@ -248,7 +248,7 @@ public class VisiteController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visite/listview")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/all/visite/listview")
     public ResponseEntity<Object> listforlistView() {
 
         log.info("list view visit");
@@ -284,7 +284,7 @@ public class VisiteController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visite/listview/{statutCode}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/all/visite/listview/{statutCode}")
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
 
         log.info("list view visit");
@@ -461,12 +461,12 @@ public class VisiteController {
         @RequestParam("files") MultipartFile[] files,
         @RequestPart("data") DataRapportDto dataRapportDto
     ) {
-        System.out.println("upload filees");
-        System.out.println(files);
+        //System.out.println(dataRapportDto);
         try {
             List<String> fileNames = new ArrayList<>();
             Arrays.asList(files).stream().forEach(file -> {
                 storageService.save(file);
+                System.out.println("upload filees");
                 fileNames.add(file.getOriginalFilename());
             });
 

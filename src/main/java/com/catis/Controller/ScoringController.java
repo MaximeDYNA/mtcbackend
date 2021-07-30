@@ -120,7 +120,7 @@ public class ScoringController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK,true,"OK", null);
     }
-    @RequestMapping(method=RequestMethod.POST, value="api/v1/fraudes")
+    @RequestMapping(method=RequestMethod.POST, value="/public/fraudes")
     public ResponseEntity<Object> isThereAfraud(@RequestBody FraudeJobPOJO fraudeJobPOJO) throws Exception {
         Optional<FraudeType> fraudeType = fraudeTypeRepository.findByCodeAndActiveStatusTrue(fraudeJobPOJO.getCode());
         Set<Intervenant_fraudeType> intervenant_fraudeTypes;

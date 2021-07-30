@@ -7,6 +7,7 @@ import java.util.Date;
 import com.catis.model.entity.Message;
 import com.catis.model.entity.SessionCaisse;
 import com.catis.repository.MessageRepository;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +126,7 @@ public class HoldController {
 
 
         LOGGER.trace("rafraichissement de l'onglet");
+        System.out.println("Hold data ..."+ ToStringBuilder.reflectionToString(holdData));
         ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id " + holdData.getSessionCaisseId(), null);
 			 /*	try {} 

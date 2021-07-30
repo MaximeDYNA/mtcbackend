@@ -62,7 +62,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
      * <p>
      * Use properties in application.properties instead of keycloak.json
      **/
-
+    //demande à keycloak d'utiliser la configuration springboot (application.properties au lieu de keycloak.json)
     @Bean
     @Primary
     public KeycloakConfigResolver keycloakConfigResolver(KeycloakSpringBootProperties properties) {

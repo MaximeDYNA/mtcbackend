@@ -140,7 +140,7 @@ public class PosaleController {
 
         LOGGER.trace("supression de " + posaleData.getReference() + " du panier");
         try {
-            if (!posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).isEmpty())
+            if (posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).size()!=0)
                 posaleService.deletePosalesByReference(posaleData.getReference(), posaleData.getSessionCaisseId());
             else
                 throw new ProduitNonDisponibleException();
