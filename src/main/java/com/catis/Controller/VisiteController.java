@@ -476,7 +476,7 @@ public class VisiteController {
             String endPoint = environment.getProperty("endpoint.check-conformity");
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
-                endPoint+"/"+Id,
+                endPoint+Id,
                 request,
                 String.class
             );
