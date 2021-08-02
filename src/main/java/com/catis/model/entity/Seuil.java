@@ -1,15 +1,9 @@
 package com.catis.model.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
@@ -46,6 +40,9 @@ public class Seuil extends JournalData {
 
     @ManyToOne
     private Formule formule;
+
+    @ManyToMany(mappedBy = "seuils")
+    private Set<Produit> produits = new HashSet<>();
 
     public Seuil() {
 
