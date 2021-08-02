@@ -17,6 +17,7 @@ import com.catis.repository.RapportDeVisiteRepo;
 import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -459,10 +460,14 @@ public class VisiteController {
     public Object checkCconformity(
         @PathVariable Long Id,
         @RequestParam("files") MultipartFile[] files,
-        @RequestParam("data") DataRapportDto dataRapportDto
+        @RequestParam("data") String data
     ) {
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DataRapportDto dataRapportDto = objectMapper.readValue(data, DataRapportDto.class);
+
             List<String> fileNames = new ArrayList<>();
+
             Arrays.asList(files).stream().forEach(file -> {
                 storageService.save(file);
                 fileNames.add(file.getOriginalFilename());
@@ -475,6 +480,7 @@ public class VisiteController {
                 request,
                 String.class
             );
+
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
