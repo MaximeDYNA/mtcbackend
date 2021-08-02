@@ -473,7 +473,7 @@ public class VisiteController {
                 fileNames.add(file.getOriginalFilename());
             });
 
-            String endPoint = environment.getProperty("endpointCheckConformity");
+            String endPoint = environment.getProperty("endpoint.check-conformity");
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
                 endPoint+"/"+Id,
