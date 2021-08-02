@@ -17,6 +17,7 @@ import com.catis.repository.RapportDeVisiteRepo;
 import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -275,8 +276,8 @@ public class VisiteController {
 
         }
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-			
-			
+
+
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
@@ -295,7 +296,7 @@ public class VisiteController {
                 }
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-		
+
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
@@ -455,30 +456,32 @@ public class VisiteController {
                         .toInstant());
     }
 
-    @PostMapping(value = "/api/v1/visite/conformity/{Id}", consumes = {"multipart/form-data"})
+    @PostMapping(path = "/api/v1/visite/conformity/{Id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object checkCconformity(
-        @PathVariable Long Id,
-        @RequestParam("files") MultipartFile[] files,
-        @RequestPart("data") DataRapportDto dataRapportDto
+            @PathVariable Long Id,
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("data") String data
     ) {
-        //System.out.println(dataRapportDto);
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DataRapportDto dataRapportDto = objectMapper.readValue(data, DataRapportDto.class);
+
             List<String> fileNames = new ArrayList<>();
+
             Arrays.asList(files).stream().forEach(file -> {
                 storageService.save(file);
-                System.out.println("upload filees");
                 fileNames.add(file.getOriginalFilename());
             });
 
-            return ResponseEntity.status(HttpStatus.OK).body(fileNames);
-            /*String endPoint = environment.getProperty("endpointCheckConformity");
+            String endPoint = environment.getProperty("endpoint.check-conformity");
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
-                endPoint+"/"+Id,
-                request,
-                String.class
-            );*/
-            //return ResponseEntity.status(HttpStatus.OK).body(response);
+                    endPoint+Id,
+                    request,
+                    String.class
+            );
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
