@@ -38,7 +38,7 @@ public class Visite extends JournalData {
     private int statut;
     private int isConform;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Organisation organisation;
 
     @Column(columnDefinition = "bit default 1")
@@ -55,7 +55,7 @@ public class Visite extends JournalData {
     @JsonIgnore
     private VerbalProcess process;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private CarteGrise carteGrise;
 
     @ManyToOne(cascade = CascadeType.ALL)

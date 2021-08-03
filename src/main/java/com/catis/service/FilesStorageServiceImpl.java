@@ -1,10 +1,12 @@
 package com.catis.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
@@ -18,12 +20,12 @@ import com.catis.repository.FilesStorageService;
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
-    private final Path root = Paths.get("/images");
+    private final Path root = Paths.get(System.getProperty("user.home")+ File.separator+"upload");
 
     @Override
     public void init() {
         try {
-            Files.createDirectory(root);
+            Files.createDirectories(root);
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
@@ -32,7 +34,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public void save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }

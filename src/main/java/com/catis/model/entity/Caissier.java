@@ -24,6 +24,8 @@ public class Caissier extends JournalData {
 
     private String codeCaissier;
 
+    private String nom;
+
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Partenaire partenaire;
@@ -109,5 +111,11 @@ public class Caissier extends JournalData {
         this.sessionCaisses = sessionCaisses;
     }
 
+    public String getNom() {
+        return nom;
+    }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }

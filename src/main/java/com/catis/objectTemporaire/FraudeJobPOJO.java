@@ -9,4 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class rapportMDto { private String name; }
+public class FraudeJobPOJO {
+    private boolean isFraud;
+    private String code;
+    private Long visiteId;
+}

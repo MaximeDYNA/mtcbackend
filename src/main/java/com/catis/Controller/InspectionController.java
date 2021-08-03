@@ -54,7 +54,7 @@ public class InspectionController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
-    @PostMapping(value = "/api/v1/inspections")
+    @PostMapping(value = "/api/v1/controleur/inspections")
     @Transactional
     public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws IOException {
 
@@ -86,7 +86,7 @@ public class InspectionController {
 
     }
 
-    @RequestMapping(value = "/api/v1/upload/signature", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/controleur/upload/signature", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws IOException {
 
 
@@ -130,7 +130,7 @@ public class InspectionController {
 
     }
 
-    @DeleteMapping("/api/v1/inspections/{id}")
+    @DeleteMapping("/api/v1/admin/inspections/{id}")
     public ResponseEntity<Object> deleteInspection(@PathVariable Long id) {
 
 

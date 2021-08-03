@@ -32,6 +32,7 @@ public class Organisation {
     private String tel1;
     private String tel2;
     private boolean parent;
+    private double score;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -951,5 +952,13 @@ public class Organisation {
 
     public void setParent(boolean parent) {
         this.parent = parent;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }

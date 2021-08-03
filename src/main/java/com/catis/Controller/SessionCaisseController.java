@@ -47,7 +47,7 @@ public class SessionCaisseController {
 
    // private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
-    @RequestMapping(value = "/api/v1/sessioncaisseexist/{userId}")
+    @RequestMapping(value = "/api/v1/caisse/sessioncaisseexist/{userId}")
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable String userId) {
         SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
         if (c != null) {
@@ -75,7 +75,7 @@ public class SessionCaisseController {
 
     }
 
-    @PostMapping("/api/v1/ouverturecaisse")
+    @PostMapping("/api/v1/caisse/ouverturecaisse")
     public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
         //MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
         // System.out.println(MDC.get("user"));
@@ -125,7 +125,7 @@ public class SessionCaisseController {
         return sessionCaisseService.findSessionCaisseById(0);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/fermerSessionCaisse")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/fermerSessionCaisse")
     public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData) throws IOException {
 
        // LOGGER.info("Fermeture session caisse...");

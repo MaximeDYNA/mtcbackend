@@ -42,8 +42,7 @@ public class VersionLexique extends JournalData {
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 
-    @OneToOne(mappedBy = "visite")
-    private VerbalProcess process;
+
 
     public VersionLexique() {
 
@@ -51,14 +50,14 @@ public class VersionLexique extends JournalData {
     }
 
     public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
-                          List<RapportDeVisite> rapportDeVisites, VerbalProcess process) {
+                          List<RapportDeVisite> rapportDeVisites) {
 
         this.id = id;
         this.libelle = libelle;
         this.date = date;
         this.lexiques = lexiques;
         this.rapportDeVisites = rapportDeVisites;
-        this.process = process;
+
     }
 
     public Long getId() {
@@ -101,13 +100,6 @@ public class VersionLexique extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-    public VerbalProcess getProcess() {
-        return process;
-    }
-
-    public void setProcess(VerbalProcess process) {
-        this.process = process;
-    }
 
     public String getVersion() {
         return version;

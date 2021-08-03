@@ -20,6 +20,9 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler(env.getProperty("signature.server.path")+"*")
                 .addResourceLocations(env.getProperty("signature.disk.load"))
         ;
+        registry.addResourceHandler(env.getProperty("static.image.path")+"*")
+                .addResourceLocations(env.getProperty("static.image.disk.load"))
+        ;
         registry.addResourceHandler("/pv/*")
                 .addResourceLocations(env.getProperty("pv.resource.path"))
         ;

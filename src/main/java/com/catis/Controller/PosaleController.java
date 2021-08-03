@@ -4,7 +4,9 @@ package com.catis.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
+import com.catis.repository.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,6 @@ import com.catis.Controller.exception.DecaissementExistantException;
 import com.catis.Controller.exception.InformationIncompleteException;
 import com.catis.Controller.exception.ProduitNonDisponibleException;
 import com.catis.Controller.exception.VisiteEnCoursException;
-import com.catis.model.entity.Hold;
-import com.catis.model.entity.Posales;
-import com.catis.model.entity.Taxe;
-import com.catis.model.entity.TaxeProduit;
 import com.catis.service.HoldService;
 import com.catis.service.PosaleService;
 import com.catis.service.ProduitService;
@@ -49,19 +47,21 @@ public class PosaleController {
     private TaxeProduitService tps;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    private MessageRepository msgRepo;
 
     private static Logger LOGGER = LoggerFactory.getLogger(PosaleController.class);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/posales")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/posales")
     public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData) {
 
         try {
             LOGGER.trace("Ajout d'un produit dans un onglet");
+            Message msg;
+
             if (posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId())) {
                 throw new DecaissementExistantException();
-
             }
-
 
             Hold hold = hs.findByHoldId(posaleData.getHoldId());
             Posales posale = new Posales();
@@ -82,29 +82,34 @@ public class PosaleController {
                 taxes.add(tp.getTaxe());
             }
             card.setTaxe(taxes);
-
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", card);
+            msg = msgRepo.findByCode("PS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, card);
         } catch (DataIntegrityViolationException integrity) {
             LOGGER.error("Duplicata de champ unique");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "uniq_matricule"
+            Message msg = msgRepo.findByCode("PS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg
                     , null);
         } catch (DecaissementExistantException integrity) {
             LOGGER.error("Décaissement exitant");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "exists_dec"
+            Message msg = msgRepo.findByCode("PS004");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg
                     , null);
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
-                    + "bien vouloir le signaler à l'équipe CATIS", null);
+            Message msg = msgRepo.findByCode("PS003");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/posaleslist")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/posaleslist")
     public ResponseEntity<Object> listPosales(@RequestBody HoldData holdData) {
         try {
-            if (!holdData.isValid())
-                throw new InformationIncompleteException("Bien vouloir envoyer toutes les informations de l'onglet");
+            Message msg;
+            if (!holdData.isValid()){
+                msg = msgRepo.findByCode("HL000");
+                throw new InformationIncompleteException(msg.getCode());
+            }
+
             LOGGER.trace("liste des produits de l'onglet " + holdData.getSessionCaisseId());
             Card card;
             List<Card> cards = new ArrayList<>();
@@ -120,32 +125,35 @@ public class PosaleController {
                 taxes = new ArrayList<>();
                 cards.add(card);
             }
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cards);
+            msg = msgRepo.findByCode("HL005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, cards);
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
-                    + "bien vouloir le signaler à l'équipe CATIS", null);
+            Message msg = msgRepo.findByCode("HL004");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/deleteposale")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/deleteposale")
     public ResponseEntity<Object> deletePosales(@RequestBody PosaleDataForDelete posaleData) {
 
         LOGGER.trace("supression de " + posaleData.getReference() + " du panier");
         try {
-            if (!posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).isEmpty())
+            if (posaleService.findByReferenceSessionCaisse(posaleData.getReference(), posaleData.getSessionCaisseId()).size()!=0)
                 posaleService.deletePosalesByReference(posaleData.getReference(), posaleData.getSessionCaisseId());
             else
                 throw new ProduitNonDisponibleException();
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "supprimé avec succès", null);
+            Message msg =msgRepo.findByCode("PS006");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, null);
         } catch (ProduitNonDisponibleException p) {
-            LOGGER.error("Le produit n'est disponible dans le panier");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Le produit n'est plus disponible dans le panier", null);
+            LOGGER.error("Le produit n'est plus disponible dans le panier");
+            Message msg =msgRepo.findByCode("PS005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         } catch (Exception e) {
-            LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
-                    + "bien vouloir le signaler à l'équipe CATIS", null);
+            LOGGER.error("Suppression du produit dans le panier réussi");
+            Message msg =msgRepo.findByCode("PS007");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
@@ -160,7 +168,7 @@ public class PosaleController {
             Hold hold = hs.findByHoldId(posaleData.getHoldId());
             Posales posale = new Posales();
             posale.setHold(hold);
-            posale.setProduit(produitService.findById(1L));
+            posale.setProduit(produitService.findByLibelle("dec"));
             posale.setReference(posaleData.getReference());
             posale.setStatus(true);
             posale.setSessionCaisse(hold.getSessionCaisse());
@@ -170,14 +178,16 @@ public class PosaleController {
                 posaleService.deletePosalesByReference(posaleData.getReference(), posaleData.getSessionCaisseId());
             else
                 throw new ProduitNonDisponibleException();
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "supprimé avec succès", null);
+            Message msg =msgRepo.findByCode("DC001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, null);
         } catch (ProduitNonDisponibleException p) {
             LOGGER.error("Le produit n'est disponible dans le panier");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Le produit n'est plus disponible dans le panier", null);
+            Message msg =msgRepo.findByCode("PS005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenu"
-                    + "bien vouloir le signaler à l'équipe CATIS", null);
+            Message msg =msgRepo.findByCode("DC002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
