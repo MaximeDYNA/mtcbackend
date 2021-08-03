@@ -11,12 +11,10 @@ import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
-import com.catis.repository.FilesStorageService;
-import com.catis.repository.MesureVisuelRepository;
-import com.catis.repository.RapportDeVisiteRepo;
-import com.catis.repository.VisiteRepository;
+import com.catis.repository.*;
 import com.catis.service.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -55,6 +54,9 @@ public class VisiteController {
     private CaissierService caissierService;
     @Autowired
     private OrganisationService os;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired FindRapportListService rapportListService;
 
@@ -461,11 +463,11 @@ public class VisiteController {
             @PathVariable Long Id,
             @RequestParam("files") MultipartFile[] files,
             @RequestParam("data") String data
-    ) {
-        try {
+    )  throws JsonProcessingException {
+        //try {
             ObjectMapper objectMapper = new ObjectMapper();
             DataRapportDto dataRapportDto = objectMapper.readValue(data, DataRapportDto.class);
-
+            System.out.println("integer" + Id);
             List<String> fileNames = new ArrayList<>();
 
             Arrays.asList(files).stream().forEach(file -> {
@@ -481,10 +483,16 @@ public class VisiteController {
                     String.class
             );
 
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", dataRapportDto);
+
+
+        /*} catch (HttpStatusCodeException e) {
+            System.out.println("integer" + e.);
+            return ApiResponseHandler.generateResponse(e.getStatusCode(), true, "", "");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
-        }
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "une erreur interne est survenue", "");
+
+        }*/
     }
 
 

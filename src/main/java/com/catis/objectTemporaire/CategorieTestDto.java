@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategorieTestDto {
 
-    private int id_test;
+    private int idTest;
     private String filename;
 }
