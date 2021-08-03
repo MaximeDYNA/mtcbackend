@@ -32,6 +32,7 @@ public class Vehicule extends JournalData {
     private int poidsVide;
     private int chargeUtile; // charge utile
     private int cylindre; // cm3
+    private double score;
 
     @ManyToOne
     private MarqueVehicule marqueVehicule;
@@ -189,4 +190,11 @@ public class Vehicule extends JournalData {
         this.chargeUtile = chargeUtile;
     }
 
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
 }

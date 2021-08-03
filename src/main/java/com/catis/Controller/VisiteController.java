@@ -11,12 +11,10 @@ import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
-import com.catis.repository.FilesStorageService;
-import com.catis.repository.MesureVisuelRepository;
-import com.catis.repository.RapportDeVisiteRepo;
-import com.catis.repository.VisiteRepository;
+import com.catis.repository.*;
 import com.catis.service.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -55,6 +54,9 @@ public class VisiteController {
     private CaissierService caissierService;
     @Autowired
     private OrganisationService os;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired FindRapportListService rapportListService;
 
@@ -101,8 +103,8 @@ public class VisiteController {
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
 
-    @CrossOrigin
-    @GetMapping(value="/api/v1/subscribe",consumes = MediaType.ALL_VALUE)
+
+    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter  subscribe(){
 
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -116,7 +118,7 @@ public class VisiteController {
 
         return emitter;
     }
-    @GetMapping(value="/api/v1/dispatchedit",consumes = MediaType.ALL_VALUE)
+    @GetMapping(value="/api/v1/all/dispatchedit",consumes = MediaType.ALL_VALUE)
     public static void  dispatchEdit(Visite visite, VisiteService vs,
                                      GieglanFileService gieglanFileService,
                                      CategorieTestVehiculeService catSer, ProduitService ps)  {
@@ -157,7 +159,7 @@ public class VisiteController {
         }
     }
 
-    @GetMapping(value = "/api/v1/visitesencours")
+    @GetMapping(value = "/api/v1/all/visitesencours")
     public ResponseEntity<Object> listDesVisitesEncours() {
 
         log.info("Liste des visites en cours");
@@ -249,7 +251,7 @@ public class VisiteController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visite/listview")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/all/visite/listview")
     public ResponseEntity<Object> listforlistView() {
 
         log.info("list view visit");
@@ -276,8 +278,8 @@ public class VisiteController {
 
         }
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-			
-			
+
+
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
@@ -285,7 +287,7 @@ public class VisiteController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visite/listview/{statutCode}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/all/visite/listview/{statutCode}")
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
 
         log.info("list view visit");
@@ -296,7 +298,7 @@ public class VisiteController {
                 }
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-		
+
 		/*try {} catch (Exception e) {
 			log.error("Erreur lors de l'affichage de la liste des visite en cours");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage en mode liste des visites encours", null);
@@ -458,14 +460,14 @@ public class VisiteController {
 
     @PostMapping(path = "/api/v1/visite/conformity/{Id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object checkCconformity(
-        @PathVariable Long Id,
-        @RequestParam("files") MultipartFile[] files,
-        @RequestParam("data") String data
-    ) {
-        try {
+            @PathVariable Long Id,
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("data") String data
+    )  throws JsonProcessingException {
+        //try {
             ObjectMapper objectMapper = new ObjectMapper();
             DataRapportDto dataRapportDto = objectMapper.readValue(data, DataRapportDto.class);
-
+            System.out.println("integer" + Id);
             List<String> fileNames = new ArrayList<>();
 
             Arrays.asList(files).stream().forEach(file -> {
@@ -476,15 +478,21 @@ public class VisiteController {
             String endPoint = environment.getProperty("endpoint.check-conformity");
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
-                endPoint+Id,
-                request,
-                String.class
+                    endPoint+Id,
+                    request,
+                    String.class
             );
 
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", dataRapportDto);
+
+
+        /*} catch (HttpStatusCodeException e) {
+            System.out.println("integer" + e.);
+            return ApiResponseHandler.generateResponse(e.getStatusCode(), true, "", "");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
-        }
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "une erreur interne est survenue", "");
+
+        }*/
     }
 
 

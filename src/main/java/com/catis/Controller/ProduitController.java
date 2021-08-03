@@ -63,11 +63,10 @@ public class ProduitController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produitService.findProduitWithoutContreVisite());
     }
 
-    @PostMapping("/api/v1/produits")
+    @PostMapping("/api/v1/admin/produits")
     public ResponseEntity<Object> addProduit(@RequestBody ProduitPOJO produitPOJO) throws Exception {
 
         LOGGER.trace("liste des produits...");
-
         Produit produit = new Produit();
         produit.setLibelle(produitPOJO.getLibelle());
         produit.setDescription(produitPOJO.getDescription());
@@ -85,20 +84,12 @@ public class ProduitController {
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
 		    }*/
 
-
     }
     @DeleteMapping("/api/v1/produits/{id}")
     public ResponseEntity<Object> addProduit(@PathVariable Long id) throws Exception {
 
             produitService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null );
-
-		   /* try {}
-		    catch (Exception e) {
-		    	LOGGER.error("Erreur lors de l'ajout d'un produit");
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
-		    }*/
-
 
     }
 
@@ -113,7 +104,7 @@ public class ProduitController {
     }
 
 
-    @RequestMapping(value = "/api/v1/produits/reference/{imCha}")
+    @RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
     public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) throws VisiteEnCoursException {
         try {
                 if(imCha.equalsIgnoreCase(null))
@@ -266,7 +257,7 @@ public class ProduitController {
         }
 
     }
-    @PostMapping("/api/v1/admin/produits")
+    /*@PostMapping("/api/v1/admin/produits")
     public ResponseEntity<Object> addProduitAdmin(
             @RequestParam("libelle") String libelle,
             @RequestParam("description") String description,
@@ -290,10 +281,10 @@ public class ProduitController {
 		    catch (Exception e) {
 		    	LOGGER.error("Erreur lors de l'ajout d'un produit");
 				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur lors de l'ajout d'un produit", null);
-		    }*/
+		    }
 
 
-    }
+    }*/
     /*@GetMapping("/api/v1/admin/produits/graphview")
     public ResponseEntity<Object> listforGraphView() {
         try {

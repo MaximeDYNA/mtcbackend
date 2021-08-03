@@ -35,7 +35,7 @@ public class VehiculeController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(VehiculeController.class);
 
-    @GetMapping("/api/v1/vehicules")
+    @GetMapping("/api/v1/cg/vehicules")
     public ResponseEntity<Object> vehiculeList() {
         try {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"

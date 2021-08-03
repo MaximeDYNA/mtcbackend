@@ -63,7 +63,7 @@ public class MesureVisuelController {
     }
 
 
-    @PostMapping("/api/v1/signature")
+    @PostMapping("/api/v1/controleur/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 
            // System.out.println(defectResponse.toString());

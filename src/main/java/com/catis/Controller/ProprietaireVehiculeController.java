@@ -40,7 +40,7 @@ public class ProprietaireVehiculeController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
-    @GetMapping("/api/v1/proprietaires")
+    @GetMapping("/api/v1/cg/proprietaires")
     public ResponseEntity<Object> proprioList() {
         try {
             LOGGER.trace("List des propriétaires des vehicules...");
@@ -52,7 +52,7 @@ public class ProprietaireVehiculeController {
         }
     }
 
-    @PostMapping("/api/v1/proprietaires")
+    @PostMapping("/api/v1/cg/proprietaires")
     public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
             LOGGER.trace("Ajout d'un propriétaire...");

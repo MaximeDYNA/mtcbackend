@@ -95,7 +95,7 @@ public class CarteGriseController {
     }
 
 
-    @GetMapping("/api/v1/search/last/{imCha}")
+    @GetMapping("/api/v1/cg/search/last/{imCha}")
     public ResponseEntity<Object> searchLast(@PathVariable String imCha) {
         LOGGER.trace("Recherche carte grise...");
 
@@ -107,7 +107,7 @@ public class CarteGriseController {
 
     }
 
-    @GetMapping("/api/v1/cartegrises")
+    @GetMapping("/api/v1/cg/cartegrises")
     public ResponseEntity<Object> findAll() {
         LOGGER.trace("Recherche carte grise...");
         try {
@@ -119,7 +119,7 @@ public class CarteGriseController {
         }
     }
 
-    @PostMapping("/api/v1/cartegrise")
+    @PostMapping("/api/v1/cg/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
 

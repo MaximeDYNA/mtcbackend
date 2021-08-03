@@ -48,7 +48,7 @@ public class CategorieProduitController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 
-    @RequestMapping("/api/v1/categorieproduits/{categorieId}/listesproduits")
+    @RequestMapping("/api/v1/caisse/categorieproduits/{categorieId}/listesproduits")
     public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException {
         try {
             List<ProduitEtTaxe> pets = new ArrayList<>();
@@ -76,7 +76,7 @@ public class CategorieProduitController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/catproducts")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/catproducts")
     public ResponseEntity<Object> categorieProduits() {
         try {
             LOGGER.trace("Liste des catégories");
@@ -143,7 +143,7 @@ public class CategorieProduitController {
 
     }
     /***admin**/
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/categorieproduits")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/categorieproduits")
     public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieproduitProduitPOJO categorieProduit) {
 
             LOGGER.trace("Ajout d'une catégorie");

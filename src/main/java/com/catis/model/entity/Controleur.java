@@ -21,7 +21,7 @@ public class Controleur extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idControleur;
     private String agremment;
-    private int score=0;
+    private double score=0;
 
     @OneToOne(optional = true) // id utilisateur optionel
     private Utilisateur utilisateur;
@@ -68,11 +68,11 @@ public class Controleur extends JournalData {
         this.agremment = agremment;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 

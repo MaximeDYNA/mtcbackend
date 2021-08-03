@@ -83,7 +83,7 @@ public class UserInfo {
 
             KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
             AccessToken accessToken = kp.getKeycloakSecurityContext().getToken();
-            user.setId(accessToken.getId());
+            user.setId(accessToken.getSubject());
             user.setNom(accessToken.getName());
             user.setPrenom(accessToken.getNickName());
             user.setLogin(accessToken.getPreferredUsername());
@@ -129,7 +129,6 @@ public class UserInfo {
         user.setPrenom(userResource.toRepresentation().getFirstName());
         user.setLogin(userResource.toRepresentation().getLastName());
         user.setEmail(userResource.toRepresentation().getEmail());
-
         user.setRoles(userResource.toRepresentation().getClientRoles().keySet());
         return user;
 

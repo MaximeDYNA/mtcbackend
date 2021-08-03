@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.catis.model.entity.Message;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.*;
+import com.catis.repository.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,42 +37,55 @@ public class ContactController {
     @Autowired
     private OrganisationService os;
     @Autowired
+    private MessageRepository msgRepo;
+    @Autowired
     HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/contacts")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/contacts")
     public ResponseEntity<Object> addContact(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
-        LOGGER.trace("Ajout d'un contact...");
 
-        Contact contact = new Contact();
-        Partenaire partenaire = new Partenaire();
-        partenaire.setCni(clientPartenaire.getCni());
+        try{
+            LOGGER.trace("Ajout d'un contact...");
+
+            Contact contact = new Contact();
+            Partenaire partenaire = new Partenaire();
+            partenaire.setCni(clientPartenaire.getCni());
 
 
-        if (clientPartenaire.getDateNaiss() != null) {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss());
-            partenaire.setDateNaiss(date);
-        } else
-            partenaire.setDateNaiss(null);
+            if (clientPartenaire.getDateNaiss() != null) {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientPartenaire.getDateNaiss());
+                partenaire.setDateNaiss(date);
+            } else
+                partenaire.setDateNaiss(null);
 
-        Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
-        partenaire.setEmail(clientPartenaire.getEmail());
-        partenaire.setTelephone(clientPartenaire.getTelephone());
-        partenaire.setNom(clientPartenaire.getNom());
+            Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
+            partenaire.setEmail(clientPartenaire.getEmail());
+            partenaire.setTelephone(clientPartenaire.getTelephone());
+            partenaire.setNom(clientPartenaire.getNom());
 
-        partenaire.setPrenom(clientPartenaire.getPrenom());
-        partenaire.setPassport(clientPartenaire.getPassport());
-        partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
-        partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-        partenaire.setOrganisation(os.findByOrganisationId(orgId));
-        partenaire.setContact(contact);
-        contact.setPartenaire(partenaire);
-        contact.setDescription(clientPartenaire.getVariants());
-        contactService.addContact(contact);
-        LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", contact);
+            partenaire.setPrenom(clientPartenaire.getPrenom());
+            partenaire.setPassport(clientPartenaire.getPassport());
+            partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
+            partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
+            partenaire.setOrganisation(os.findByOrganisationId(orgId));
+            partenaire.setContact(contact);
+            contact.setPartenaire(partenaire);
+            contact.setDescription(clientPartenaire.getVariants());
+            contactService.addContact(contact);
+            LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
+            Message message = msgRepo.findByCode("CT001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, message, contact);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Message message = msgRepo.findByCode("CT002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, message, null);
+
+        }
+
 		/*try {}
 		catch (DataIntegrityViolationException integrity) {
 			LOGGER.error("Duplicata de champ unique");
@@ -83,7 +98,7 @@ public class ContactController {
 		}	*/
     }
 
-    @RequestMapping(value = "/api/v1/contacts")
+    @RequestMapping(value = "/api/v1/caisse/contacts")
     private ResponseEntity<Object> getContacts() {
         LOGGER.trace("liste des Contacts...");
 
@@ -185,7 +200,7 @@ public class ContactController {
 
     }*/
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/search/contacts/{keyword}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/contacts/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
         LOGGER.trace("Recherche contacts...");
         try {
