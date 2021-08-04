@@ -1,9 +1,11 @@
 package com.catis.Controller;
 
+import com.catis.model.entity.Controleur;
 import com.catis.model.entity.FraudeType;
 import com.catis.model.entity.Intervenant_fraudeType;
 import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.FraudeJobPOJO;
+import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.repository.FraudeTypeRepository;
 import com.catis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +31,38 @@ public class JobController {
     private GieglanFileService gieglanFileService;
     @Autowired
     private CategorieTestVehiculeService catSer;
+    @Autowired
+    private ControleurService controleurService;
+
+    @GetMapping(value = "/public/controleurs/{organisationId}")
+    public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable Long organisationId) {
+
+        List<Controleur> controleurs = controleurService.findAllByOrganisation(organisationId);
+        List<ProprietaireDTO> ps = new ArrayList<>();
+        ProprietaireDTO pro;
+        for(Controleur p : controleurs){
+            pro = new ProprietaireDTO();
+            pro.setIdControleur(p.getIdControleur());
+            pro.setNom(p.getPartenaire().getNom());
+            pro.setPrenom(p.getPartenaire().getPrenom());
+            pro.setDateNaiss(p.getPartenaire().getDateNaiss());
+            pro.setEmail(p.getPartenaire().getEmail());
+            pro.setLieuDeNaiss(p.getPartenaire().getLieuDeNaiss());
+            pro.setOrganisation(p.getOrganisation());
+            pro.setPassport(p.getPartenaire().getPassport());
+            pro.setPermiDeConduire(p.getPartenaire().getPermiDeConduire());
+            pro.setTelephone(p.getPartenaire().getTelephone());
+            pro.setCreatedDate(p.getPartenaire().getCreatedDate());
+            pro.setCni(p.getPartenaire().getCni());
+            pro.setAgremment(p.getAgremment());
+            pro.setLogin(p.getUtilisateur().getLogin());
+            pro.setPartenaireId(p.getPartenaire().getPartenaireId());
+            ps.add(pro);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ps);
+
+    }
     @RequestMapping(method=RequestMethod.POST, value="/public/fraudes")
     public ResponseEntity<Object> isThereAfraud(@RequestBody FraudeJobPOJO fraudeJobPOJO) throws Exception {
         if(fraudeJobPOJO.getCode() == null){

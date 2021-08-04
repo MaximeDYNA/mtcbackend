@@ -50,35 +50,7 @@ public class ControleurController {
 
     }
 
-    @GetMapping(value = "/api/v1/controleurs/{organisationId}")
-    public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable Long organisationId) {
 
-        List<Controleur> controleurs = controleurService.findAllByOrganisation(organisationId);
-        List<ProprietaireDTO> ps = new ArrayList<>();
-        ProprietaireDTO pro;
-        for(Controleur p : controleurs){
-            pro = new ProprietaireDTO();
-            pro.setIdControleur(p.getIdControleur());
-            pro.setNom(p.getPartenaire().getNom());
-            pro.setPrenom(p.getPartenaire().getPrenom());
-            pro.setDateNaiss(p.getPartenaire().getDateNaiss());
-            pro.setEmail(p.getPartenaire().getEmail());
-            pro.setLieuDeNaiss(p.getPartenaire().getLieuDeNaiss());
-            pro.setOrganisation(p.getOrganisation());
-            pro.setPassport(p.getPartenaire().getPassport());
-            pro.setPermiDeConduire(p.getPartenaire().getPermiDeConduire());
-            pro.setTelephone(p.getPartenaire().getTelephone());
-            pro.setCreatedDate(p.getPartenaire().getCreatedDate());
-            pro.setCni(p.getPartenaire().getCni());
-            pro.setAgremment(p.getAgremment());
-            pro.setLogin(p.getUtilisateur().getLogin());
-            pro.setPartenaireId(p.getPartenaire().getPartenaireId());
-            ps.add(pro);
-        }
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ps);
-
-    }
 
     @GetMapping(value = "/api/v1/controleurinfo/{id}")
     public ResponseEntity<Object> getInfosControleur(@PathVariable Long id) {
