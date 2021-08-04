@@ -54,6 +54,7 @@ public class GieglanFile extends JournalData {
     private Set<RapportDeVisite> rapportDeVisites;
 
     @OneToOne(mappedBy = "gieglanFile", cascade = CascadeType.ALL)
+    @JsonIgnore
     private MesureVisuel mesureVisuel;
 
     @ManyToOne
