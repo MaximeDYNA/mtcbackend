@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.catis.model.entity.Organisation;
-import com.catis.objectTemporaire.ClientDTO;
-import com.catis.objectTemporaire.ClientPOJO;
+import com.catis.objectTemporaire.*;
 import com.catis.repository.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import com.catis.Controller.message.Message;
 import com.catis.model.entity.Client;
 import com.catis.model.entity.Partenaire;
-import com.catis.objectTemporaire.ClientPartenaire;
 import com.catis.service.ClientService;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -39,11 +40,13 @@ public class ClientController {
     private MessageRepository msgRepo;
     @Autowired
     private OrganisationService os;
+    @Autowired
+    HttpServletRequest request;
     private static Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/clients")
     public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
-        try {
+
             LOGGER.trace("Ajout d'un client...");
             Client client = new Client();
             Partenaire partenaire = new Partenaire();
@@ -63,7 +66,8 @@ public class ClientController {
             partenaire.setPassport(clientPartenaire.getPassport());
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-            partenaire.setOrganisation(os.findByOrganisationId(1L));
+            UserDTO u = UserInfoIn.getUserInfo(request);
+            partenaire.setOrganisation(os.findByOrganisationId(Long.valueOf(u.getOrganisanionId())));
             client.setPartenaire(partenaireService.addPartenaire(partenaire));
             client.setDescription(clientPartenaire.getVariants());
             clientService.addCustomer(client);
@@ -71,7 +75,7 @@ public class ClientController {
             com.catis.model.entity.Message message = msgRepo.findByCode("CL001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, message ,client );
 
-        } catch (DataIntegrityViolationException integrity) {
+       /* try {} catch (DataIntegrityViolationException integrity) {
             LOGGER.error("Duplicata de champ unique");
             com.catis.model.entity.Message message = msgRepo.findByCode("CL002");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message
@@ -80,7 +84,7 @@ public class ClientController {
             LOGGER.trace("Une erreur est survenu lors de l'ajout d'un client");
             com.catis.model.entity.Message message = msgRepo.findByCode("CL002");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message, null);
-        }
+        }*/
 
 
     }
