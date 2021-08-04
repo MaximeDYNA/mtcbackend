@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.catis.model.configuration.JournalData;
 import com.catis.model.control.GieglanFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,6 +38,7 @@ public class MesureVisuel extends JournalData {
     private Long gieglanFileDeleted;
 
     @OneToOne
+    @JsonIgnore
     private GieglanFile gieglanFile;
 
     public MesureVisuel(Long idMesureVisuel, String heureDebut, String heureFin, String dateControl, String plateNumber,
