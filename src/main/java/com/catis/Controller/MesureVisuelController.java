@@ -68,9 +68,9 @@ public class MesureVisuelController {
 
            // System.out.println(defectResponse.toString());
 
-            //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
+        //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
 
        /* try { } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
