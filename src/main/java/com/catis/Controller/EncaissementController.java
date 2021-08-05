@@ -75,6 +75,9 @@ public class EncaissementController {
     @Transactional
     public ResponseEntity<Object> enregistrerEncaissement(@RequestBody Encaissement encaissement)
             throws ContactVideException, VisiteEnCoursException {
+        Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
+        Organisation organisation = os.findByOrganisationId(
+                Long.valueOf(orgId));
         try {
             OperationCaisse op = new OperationCaisse();
             Vente vente = new Vente();
@@ -123,7 +126,7 @@ public class EncaissementController {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
                     //carteGrise.setProduit(produit);
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), 1L);
+                            encaissement.getMontantEncaisse(), orgId);
                 } else {
                     produit.setProduit_id(posale.getProduit().getProduitId());
                     if (encaissement.getClientId() != 0)
@@ -134,8 +137,9 @@ public class EncaissementController {
                                 pvs.addContactToProprietaire(contactService.findById(encaissement.getContactId())));
                     carteGrise.setNumImmatriculation(posale.getReference());
                     carteGrise.setProduit(produit);
+                    carteGrise.setOrganisation(organisation);
                     visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()));
+                            encaissement.getMontantEncaisse(), orgId);
 
                 }
                 /*-----------------Visite-----------------*/
@@ -143,7 +147,9 @@ public class EncaissementController {
                 /*----------------------------------------*/
 
                 /*------------------------------------------*/
+
                 vente.setVisite(visite);
+                vente.setOrganisation(organisation);
                 vente = venteService.addVente(vente);
                 /*------------------------------------------*/
                 detailVente.setProduit(produit);
@@ -154,6 +160,7 @@ public class EncaissementController {
 
                 detailVente.setPrix(produit.getPrix() + produit.getPrix() * taxedetail / 100);
                 detailVente.setVente(vente);
+                detailVente.setOrganisation(organisation);
                 detailVente.setReference(posale.getReference());
                 dvs.addVente(detailVente);
 
@@ -161,9 +168,7 @@ public class EncaissementController {
 
             /* ---------Opération de caisse------------ */
             op.setMontant(encaissement.getMontantEncaisse());
-            op.setOrganisation(os.findByOrganisationId(
-                    Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()))
-            );
+            op.setOrganisation(organisation);
             op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
