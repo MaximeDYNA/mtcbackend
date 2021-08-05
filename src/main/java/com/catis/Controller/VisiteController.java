@@ -337,7 +337,7 @@ public class VisiteController {
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
         VisiteController.dispatchEdit(visite,
                 vs, gieglanFileService, catSer, ps);
-            return "/pv/"+visiteId+".pdf";
+            return "/public/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
             return "<h1> Erreur lors l'impression du PV </h1>";
