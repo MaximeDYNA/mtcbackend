@@ -77,8 +77,7 @@ public class MesureVisuelController {
         inspection.setVisibleToTab(false);
         inspectionRepo.save(inspection);
 
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m );
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m);
 
         //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
 
