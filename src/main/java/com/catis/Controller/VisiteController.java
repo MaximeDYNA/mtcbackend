@@ -337,7 +337,7 @@ public class VisiteController {
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
         VisiteController.dispatchEdit(visite,
                 vs, gieglanFileService, catSer, ps);
-            return "/pv/"+visiteId+".pdf";
+            return "/public/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
             return "<h1> Erreur lors l'impression du PV </h1>";
@@ -582,6 +582,17 @@ public class VisiteController {
     public ResponseEntity<Object> getOneVisite(@PathVariable Long id) {
 
         Visite visite = vs.findById(id);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
+
+    }
+
+    @DeleteMapping(value = "/api/v1/admin/visites/{id}")
+    public ResponseEntity<Object> delVisite(@PathVariable Long id) {
+
+        Visite visite = vs.findById(id);
+        visite.setStatut(0);
+        visiteService.add(visite);
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
 
