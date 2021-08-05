@@ -90,7 +90,7 @@ public class pdfController {
     @GetMapping("/api/v1/visites/imprimer/{id}")
     public void generatePdfFromHtml(@PathVariable Long id) throws Exception { }
 
-    @GetMapping("/visites/qrcode/{id}")
+    @GetMapping("/public/visites/qrcode/{id}")
     public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
         Visite v = visiteService.findById(id);
         System.out.println("qrcode en cours de fabrication...");
