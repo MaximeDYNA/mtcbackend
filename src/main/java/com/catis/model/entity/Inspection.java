@@ -42,6 +42,8 @@ public class Inspection extends JournalData {
 
     private Date dateFin;
 
+    private boolean visibleToTab = true;
+
     private String signature; // chemin image signature du controleur
 
     @ManyToOne
@@ -235,5 +237,13 @@ public class Inspection extends JournalData {
 
     public void setVisiteIdReseted(Long visiteIdReseted) {
         this.visiteIdReseted = visiteIdReseted;
+    }
+
+    public boolean isVisibleToTab() {
+        return visibleToTab;
+    }
+
+    public void setVisibleToTab(boolean visibleToTab) {
+        this.visibleToTab = visibleToTab;
     }
 }
