@@ -586,6 +586,17 @@ public class VisiteController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
 
     }
+
+    @DeleteMapping(value = "/api/v1/admin/visites/{id}")
+    public ResponseEntity<Object> delVisite(@PathVariable Long id) {
+
+        Visite visite = vs.findById(id);
+        visite.setStatut(0);
+        visiteService.add(visite);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);
+
+    }
     @GetMapping(value = "/api/v1/admin/visites/today")
     public ResponseEntity<Object> getTodayVisite() {
 
