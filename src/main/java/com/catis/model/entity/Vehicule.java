@@ -60,6 +60,7 @@ public class Vehicule extends JournalData {
         this.chargeUtile = cgr.getChargeUtile();
         this.cylindre = cgr.getCylindre();
 
+
     }
 
     public Vehicule(Long vehiculeId, String typeVehicule, String carrosserie, int placeAssise, String chassis,
