@@ -23,7 +23,7 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler(env.getProperty("static.image.path")+"*")
                 .addResourceLocations(env.getProperty("static.image.disk.load"))
         ;
-        registry.addResourceHandler("/pv/*")
+        registry.addResourceHandler("/public/pv/*")
                 .addResourceLocations(env.getProperty("pv.resource.path"))
         ;
 
