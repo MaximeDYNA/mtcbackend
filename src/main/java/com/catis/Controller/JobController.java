@@ -59,10 +59,9 @@ public class JobController {
             pro.setPartenaireId(p.getPartenaire().getPartenaireId());
             ps.add(pro);
         }
-
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ps);
-
     }
+
     @RequestMapping(method=RequestMethod.POST, value="/public/fraudes")
     public ResponseEntity<Object> isThereAfraud(@RequestBody FraudeJobPOJO fraudeJobPOJO) throws Exception {
         if(fraudeJobPOJO.getCode() == null){
@@ -130,11 +129,7 @@ public class JobController {
                         // setscore in table controleur
                         visite.getOrganisation().setScore(score);
                         break;
-
-
                 }
-
-
 
             }
             visite = vs.add(visite);
@@ -144,12 +139,6 @@ public class JobController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, "Erreur", null);
-
-
-
-
-
-
     }
 
     @GetMapping("/public/maj/{id}")
@@ -158,10 +147,10 @@ public class JobController {
             VisiteController.dispatchEdit(vs.findById(id),
                     vs, gieglanFileService, catSer, ps);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
-
         }
         catch (Exception e) {
             System.out.println("Erreur survenur lors de la notification du Job");
         }
     }
+
 }
