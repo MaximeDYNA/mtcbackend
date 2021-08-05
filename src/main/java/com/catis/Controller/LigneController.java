@@ -73,6 +73,7 @@ public class LigneController {
 
 
             LOGGER.trace("liste des vehicules par ligne");
+
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             VehiculeByLineDTO v;
             for (CarteGrise cg : cgService.findByLigne(id)) {
