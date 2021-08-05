@@ -2,6 +2,7 @@ package com.catis.Controller;
 
 import java.util.Optional;
 
+import com.catis.model.entity.MesureVisuel;
 import com.catis.service.InspectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +70,7 @@ public class MesureVisuelController {
     @PostMapping("/api/v1/controleur/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 
+        MesureVisuel m = mesurevisuelservice.addSignatureToMesureVisuel(defectResponse);
            // invisible for tab after validation
 
         Inspection inspection = inspectionService.findInspectionById(defectResponse.getIdinspection());
@@ -76,7 +78,7 @@ public class MesureVisuelController {
         inspectionRepo.save(inspection);
 
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m );
 
         //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
 
