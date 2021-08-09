@@ -136,6 +136,7 @@ public class VisiteController {
                     emitter.send(SseEmitter.event().name("edit_visit").data(l));
                 }
 
+
             }catch(IOException e){
                 System.out.println("---SSE ERROR---");
                 emitters.remove(emitter);

@@ -144,12 +144,13 @@ public class CarteGriseController {
         carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
         vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
-        carteGrise.setVehicule(vs.addVehicule(vehicule));
+        carteGrise.setVehicule(vehicule);
 
         visite.setStatut(1);
-        visiteService.modifierVisite(visite);
+        visite = visiteService.modifierVisite(visite);
+        //carteGrise = cgs.updateCarteGrise(carteGrise);
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.updateCarteGrise(carteGrise));
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", visite.getCarteGrise() );
 			/*try {} 
 		catch(Exception e){ 
 			
