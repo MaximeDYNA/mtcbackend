@@ -97,7 +97,7 @@ public class Listview {
                     gfi = new GieglanFileIcon();
                     gfi.setExtension(g.getCategorieTest().getLibelle());
                     gfi.setIcon(g.getCategorieTest().getIcon());
-                    this.testAttendus.add(g.getCategorieTest().);
+                    this.testAttendus.add(g.getCategorieTest());
                     this.measures.add(replaceIconIfNecessary(gfi, this.id));
                 }
         } else {
