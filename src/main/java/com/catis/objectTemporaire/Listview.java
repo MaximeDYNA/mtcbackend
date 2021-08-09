@@ -33,10 +33,10 @@ public class Listview {
     private LocalDateTime dateFin;
     private boolean encours = true;
     private Caissier caissier;
-    private Inspection inspection;
+    private Long inspection;
     private VerbalProcess process;
     private CarteGrise carteGrise;
-    private Control control;
+    //private Control control;
     private int isConform;
     private List<GieglanFileIcon> measures = new ArrayList<>();
     private List<CategorieTest> testAttendus = new ArrayList<>();
@@ -72,10 +72,10 @@ public class Listview {
         this.dateFin = v.getDateFin();
         this.encours = v.isEncours();
         this.caissier = v.getCaissier();
-        this.inspection = v.getInspection();
+        this.inspection = v.getInspection() == null ? null : v.getInspection().getIdInspection();
         this.process =v.getProcess();
         this.carteGrise=v.getCarteGrise();
-        this.control =v.getControl();
+        //this.control =v.getControl();
         this.isConform = v.getIsConform();
 
 
@@ -449,11 +449,11 @@ public class Listview {
         this.caissier = caissier;
     }
 
-    public Inspection getInspection() {
+    public Long getInspection() {
         return inspection;
     }
 
-    public void setInspection(Inspection inspection) {
+    public void setInspection(Long inspection) {
         this.inspection = inspection;
     }
 
@@ -471,14 +471,6 @@ public class Listview {
 
     public void setCarteGrise(CarteGrise carteGrise) {
         this.carteGrise = carteGrise;
-    }
-
-    public Control getControl() {
-        return control;
-    }
-
-    public void setControl(Control control) {
-        this.control = control;
     }
 
     public int getIsConform() {
