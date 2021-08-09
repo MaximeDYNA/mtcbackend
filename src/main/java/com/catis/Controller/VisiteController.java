@@ -401,7 +401,6 @@ public class VisiteController {
                     "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
                         null : rapport.getSeuil().getLexique().getClassification().getCode()))
                     minorDefault.add(rapport.getSeuil().getLexique());
-
             });
 
             visite.get().getInspection().getLexiques().forEach(lexique -> {
