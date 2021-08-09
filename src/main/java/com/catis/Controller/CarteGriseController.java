@@ -144,8 +144,9 @@ public class CarteGriseController {
         carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
         vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
-        carteGrise.setVehicule(vehicule);
 
+        carteGrise.setVehicule(vehicule);
+        visite.setCarteGrise(carteGrise);
         visite.setStatut(1);
         visite = visiteService.modifierVisite(visite);
         //carteGrise = cgs.updateCarteGrise(carteGrise);
