@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.catis.model.control.GieglanFile;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_inspection")
 @Audited
+@SQLDelete(sql = "UPDATE t_inspection SET active_status=false WHERE idInspection=?")
 public class Inspection extends JournalData {
 
     @Id
@@ -39,6 +41,8 @@ public class Inspection extends JournalData {
     private Date dateDebut;
 
     private Date dateFin;
+
+    private boolean visibleToTab = true;
 
     private String signature; // chemin image signature du controleur
 
@@ -55,7 +59,7 @@ public class Inspection extends JournalData {
 
     private Long visiteIdReseted;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Controleur controleur;
 
     @ManyToOne
@@ -233,5 +237,13 @@ public class Inspection extends JournalData {
 
     public void setVisiteIdReseted(Long visiteIdReseted) {
         this.visiteIdReseted = visiteIdReseted;
+    }
+
+    public boolean isVisibleToTab() {
+        return visibleToTab;
+    }
+
+    public void setVisibleToTab(boolean visibleToTab) {
+        this.visibleToTab = visibleToTab;
     }
 }

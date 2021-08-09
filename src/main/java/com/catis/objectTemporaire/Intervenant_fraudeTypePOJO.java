@@ -13,11 +13,11 @@ public class Intervenant_fraudeTypePOJO {
 
     private Long id;
 
-    private double appreciation = 0.0;
+    private String appreciation;
 
-    private double depreciation = 0.0;
+    private String depreciation;
 
-    private String fraudeType;
+    private ObjectForSelect fraudeType;
 
     private ObjectForSelect intervenantFraude;
 }

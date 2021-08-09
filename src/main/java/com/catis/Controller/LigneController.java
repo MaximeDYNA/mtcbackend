@@ -41,7 +41,7 @@ public class LigneController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
 
-    @PostMapping(value = "/api/v1/lignes")
+    @PostMapping(value = "/api/v1/controleur/lignes")
     public ResponseEntity<Object> ajouterInspection(@RequestBody Ligne ligne) {
 
 
@@ -55,12 +55,11 @@ public class LigneController {
 
     }
 
-    @GetMapping(value = "/api/v1/lignes")
+    @GetMapping(value = "/api/v1/controleur/lignes")
     public ResponseEntity<Object> ligneList() {
 
         try {
             LOGGER.trace("liste des lignes");
-
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
         } catch (Exception e) {
@@ -74,6 +73,7 @@ public class LigneController {
 
 
             LOGGER.trace("liste des vehicules par ligne");
+
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             VehiculeByLineDTO v;
             for (CarteGrise cg : cgService.findByLigne(id)) {

@@ -4,7 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.catis.model.entity.Message;
 import com.catis.model.entity.SessionCaisse;
+import com.catis.repository.MessageRepository;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +37,12 @@ public class HoldController {
     private SessionCaisseService scs;
     @Autowired
     private PosaleService ps;
+    @Autowired
+    private MessageRepository msgRepo;
 
     private static Logger LOGGER = LoggerFactory.getLogger(HoldController.class);
 
-    @RequestMapping(value = "/api/v1/newhold/{sessionCaisseId}")
+    @RequestMapping(value = "/api/v1/caisse/newhold/{sessionCaisseId}")
     public ResponseEntity<Object> ajouterOnglet(@PathVariable Long sessionCaisseId) throws ParseException {
 
         try {
@@ -52,51 +57,55 @@ public class HoldController {
             hold.setTime(date);
             hold = holdService.addHold(hold);
             ps.activatePosale(hold.getNumber(), hold.getSessionCaisse().getSessionCaisseId());
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", hold);
+            Message msg = msgRepo.findByCode("HL001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, hold);
         } catch (java.lang.NullPointerException nul) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Session Id invalide, "
-                    + "veuillez vous reconnecter", null);
+            Message msg = msgRepo.findByCode("SS003");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu"
-                    + "bien vouloir le signaler à l'équipe CATIS", null);
+            Message msg = msgRepo.findByCode("HL002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
         }
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/deletehold")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/deletehold")
     public ResponseEntity<Object> supprimerOnglet(@RequestBody HoldData holdData) throws ParseException {
-
-
+        try {
             LOGGER.trace("suppression de l'onglet " + holdData.getNumber() + " demandé...");
             holdService.deleteHoldByNumber(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
             ps.activatePosale(holdService.maxNumber(scs.findSessionCaisseById(holdData.getSessionCaisseId())), holdData.getSessionCaisseId());
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet supprimé", null);
-        /*try {} catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
-                    "Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
-        }*/
+            Message msg = msgRepo.findByCode("HL003");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("HL006");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false,
+                    msg, null);
+        }
 
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/selecthold")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/selecthold")
     public ResponseEntity<Object> selectionnerOnglet(@RequestBody HoldData holdData) throws ParseException {
 
         try {
             LOGGER.trace("sélection de l'onglet " + holdData.getNumber() + " demandé...");
             ps.activatePosale(holdData.getNumber(), holdData.getSessionCaisseId());
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "sélection de l'onglet " + holdData.getNumber() + " demandé...", holdService.findByNumberSessionCaisse(holdData.getNumber(), holdData.getSessionCaisseId()));
+            Message msg = msgRepo.findByCode("HL007");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, holdService.findByNumberSessionCaisse(holdData.getNumber(), holdData.getSessionCaisseId()));
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
-                    "Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
+            Message msg = msgRepo.findByCode("HL008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false,
+                    msg, null);
         }
 
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/holdlist/{sessionCaisseId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/holdlist/{sessionCaisseId}")
     public ResponseEntity<Object> sessionsHold(@PathVariable Long sessionCaisseId) {
 
         try {
@@ -111,12 +120,13 @@ public class HoldController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/hold/refresh")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/hold/refresh")
 
     public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
 
 
         LOGGER.trace("rafraichissement de l'onglet");
+        System.out.println("Hold data ..."+ ToStringBuilder.reflectionToString(holdData));
         ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id " + holdData.getSessionCaisseId(), null);
 			 /*	try {} 

@@ -2,6 +2,8 @@ package com.catis.Controller;
 
 import java.util.Optional;
 
+import com.catis.model.entity.MesureVisuel;
+import com.catis.service.InspectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class MesureVisuelController {
     private LexiqueRepository lexiqueRepository;
     @Autowired
     private MesureVisuelService mesurevisuelservice;
+    @Autowired
+    private InspectionService inspectionService;
 
     public MesureVisuelController(InspectionRepository inspectionRepo,
                                   LexiqueRepository lexiqueRepository, MesureVisuelService mesurevisuelservice) {
@@ -63,14 +67,19 @@ public class MesureVisuelController {
     }
 
 
-    @PostMapping("/api/v1/signature")
+    @PostMapping("/api/v1/controleur/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 
-           // System.out.println(defectResponse.toString());
+        MesureVisuel m = mesurevisuelservice.addSignatureToMesureVisuel(defectResponse);
+           // invisible for tab after validation
 
-            //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mesurevisuelservice.addSignatureToMesureVisuel(defectResponse));
+        Inspection inspection = inspectionService.findInspectionById(defectResponse.getIdinspection());
+        inspection.setVisibleToTab(false);
+        inspectionRepo.save(inspection);
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", m);
+
+        //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", "Ok 100%");
 
        /* try { } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);

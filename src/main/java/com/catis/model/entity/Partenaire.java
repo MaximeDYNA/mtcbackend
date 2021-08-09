@@ -140,11 +140,11 @@ public class Partenaire extends JournalData {
         this.proprietaireVehicule = proprietaireVehicule;
     }
 
-    public long getPartenaireId() {
+    public Long getPartenaireId() {
         return partenaireId;
     }
 
-    public void setPartenaireId(long id) {
+    public void setPartenaireId(Long id) {
         this.partenaireId = id;
     }
 

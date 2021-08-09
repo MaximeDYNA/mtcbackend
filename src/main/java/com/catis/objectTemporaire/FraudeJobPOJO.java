@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategorieTestDto {
-
-    private int idTest;
-    private String filename;
+public class FraudeJobPOJO {
+    private boolean isFraud;
+    private String code;
+    private Long visiteId;
 }

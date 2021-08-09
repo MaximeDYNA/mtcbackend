@@ -52,7 +52,7 @@ public class LexiqueController {
     }
 
 
-    @PostMapping(value = "/api/v1/lexique")
+    @PostMapping(value = "/api/v1/admin/lexique")
     @Transactional
     public ResponseEntity<Object> ajouterLexique(@RequestBody LexiqueReceived lexique) {
         /**Version lexique***/
@@ -97,7 +97,7 @@ public class LexiqueController {
     }
 
 
-    @GetMapping(value = "/api/v1/lexiques/{id}")
+    @GetMapping(value = "/api/v1/admin/lexiques/{id}")
     public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id) {
 
         LexiqueReceived lr = new LexiqueReceived();
@@ -126,7 +126,7 @@ public class LexiqueController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
     }
 
-    @GetMapping(value = "/api/v1/lexiques/read/{id}")
+    @GetMapping(value = "/api/v1/all/lexiques/read/{id}")
     public ResponseEntity<Object> readLexiques(@PathVariable Long id) {
 
         LexiqueDTO lexiqueDTO;

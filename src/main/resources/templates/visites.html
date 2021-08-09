@@ -91,7 +91,7 @@
                             </span>
                         </td>
                         <td style="width:35%;padding: 0px">
-                            <img alt="QRcode" th:src="@{'http://localhost:8080/visites/qrcode/' +${v.idVisite}}" style="float: right;
+                            <img alt="QRcode" th:src="@{'http://localhost:8080/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
                                                                                                                    display: block;
                                                                                                                   width: 20%;
                                                                                                                     padding: 0px"/>
@@ -136,7 +136,7 @@
                         DMC / Date of first use :
                     </span>
                         <span style="color: gray;"
-                              th:utext="${#dates.format(v.carteGrise.vehicule.getDateMiseEnCirculation(), 'dd/MM/yyyy')}"></span>
+                              th:utext="${#dates.format(v.carteGrise.vehicule.getPremiereMiseEnCirculation(), 'dd/MM/yyyy')}"></span>
                         <br/>
                         <span class="text-left font-weight-bold">
                     Kilométrage / Milaege :

@@ -62,7 +62,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
      * <p>
      * Use properties in application.properties instead of keycloak.json
      **/
-
+    //demande à keycloak d'utiliser la configuration springboot (application.properties au lieu de keycloak.json)
     @Bean
     @Primary
     public KeycloakConfigResolver keycloakConfigResolver(KeycloakSpringBootProperties properties) {
@@ -111,14 +111,14 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/api/v1/**").permitAll()
+                /*.antMatchers("/**").permitAll()
+                .antMatchers("/api/v1/caisse**").permitAll()
                 //.antMatchers("/visites**").permitAll()
                 .antMatchers("/pdf-resources**").permitAll()
                 .antMatchers("/download-pdf**").permitAll()
                 .antMatchers("/images/**").permitAll()
 
-                .antMatchers("/uploaded/signatures/**").permitAll()
+                .antMatchers("/uploaded/signatures/**").permitAll()*/
                 //.antMatchers("/api/v1/catproducts*").hasRole("CAISSIER")
                 .anyRequest().permitAll();
 

@@ -33,10 +33,10 @@ public class Intervenant_fraudeType extends JournalData {
 
     private double depreciation = 0.0;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private FraudeType fraudeType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private IntervenantFraude intervenantFraude;
 
 }

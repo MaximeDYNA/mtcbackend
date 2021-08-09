@@ -14,9 +14,9 @@ public interface InspectionRepository extends CrudRepository<Inspection, Long> {
     List<Inspection> findByVisite_StatutAndLigne_IdLigne(int statut, Long idLigne);
 
     @Query("select i from Inspection i inner join i.visite v " +
-            "where i.ligne.idLigne = ?2 and v.statut = ?1 " +
+            "where i.ligne.idLigne = ?2 and v.statut = ?1 and i.visibleToTab = true " +
             "group by i.idInspection")
-    List<Inspection> inspectionbyligne(int statut, Long idLigne);
+    List<Inspection> inspectionbyligneAndVisibleToTabTrue(int statut, Long idLigne);
 
     List<Inspection> findByVisite_CarteGrise_numImmatriculationOrVisite_CarteGrise_Vehicule_Chassis(String ima, String chassis);
 

@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/caissiers")
+@RequestMapping("api/v1/admin/caissiers")
 public class CaissierController {
 
     @Autowired

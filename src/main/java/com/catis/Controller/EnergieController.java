@@ -30,7 +30,7 @@ public class EnergieController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
 
-    @GetMapping("/api/v1/energies")
+    @GetMapping("/api/v1/cg/energies")
     public ResponseEntity<Object> energieList() {
         try {
 
