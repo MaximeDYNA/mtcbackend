@@ -43,6 +43,7 @@ public class CategorieTest extends JournalData {
     private Set<CategorieTestVehicule> categorieTestVehicules;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categorieTest")
+    @JsonIgnore
     private Set<GieglanFile> gieglanFiles;
 
     public Long getIdCategorieTest() {
