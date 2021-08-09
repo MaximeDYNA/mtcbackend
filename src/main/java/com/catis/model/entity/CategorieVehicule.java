@@ -21,6 +21,9 @@ public class CategorieVehicule extends JournalData {
 
     private String type;
 
+    @OneToMany(mappedBy = "categorieVehicule")
+    private Set<Ligne> lignes;
+
     @OneToMany(mappedBy = "categorieVehicule", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CategorieTestVehicule> categorieTestVehicules;
@@ -90,5 +93,13 @@ public class CategorieVehicule extends JournalData {
 
     public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
         this.categorieTestVehicules = categorieTestVehicules;
+    }
+
+    public Set<Ligne> getLignes() {
+        return lignes;
+    }
+
+    public void setLignes(Set<Ligne> lignes) {
+        this.lignes = lignes;
     }
 }
