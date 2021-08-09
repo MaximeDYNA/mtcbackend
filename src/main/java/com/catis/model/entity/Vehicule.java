@@ -49,7 +49,6 @@ public class Vehicule extends JournalData {
     public Vehicule(CarteGriseReceived cgr) {
 
         this.typeVehicule = cgr.getTypeVehicule();
-        this.vehiculeId = cgr.getVehiculeId();
         this.carrosserie = cgr.getCarrosserie();
         this.placeAssise = cgr.getPlaces();
         this.chassis = cgr.getChassis();
