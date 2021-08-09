@@ -56,7 +56,7 @@ public class InspectionController {
 
     @PostMapping(value = "/api/v1/controleur/inspections")
     @Transactional
-    public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws IOException {
+    public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws Exception {
 
 
         LOGGER.trace("Nouvelle inpection...");
@@ -66,6 +66,8 @@ public class InspectionController {
         inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
         inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
         Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
+        if(visite.getInspection() != null)
+            throw new Exception("Une inspection est déjà en cours pour cette visite");
         inspection.setVisite(visite);
         visiteService.commencerInspection(inspectionReceived.getVisiteId());
 
