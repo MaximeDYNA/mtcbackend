@@ -22,6 +22,7 @@ public class CategorieVehicule extends JournalData {
     private String type;
 
     @OneToMany(mappedBy = "categorieVehicule")
+    @JsonIgnore
     private Set<Ligne> lignes;
 
     @OneToMany(mappedBy = "categorieVehicule", fetch = FetchType.EAGER)
