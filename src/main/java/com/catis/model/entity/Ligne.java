@@ -2,14 +2,7 @@ package com.catis.model.entity;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
@@ -31,7 +24,8 @@ public class Ligne extends JournalData {
     private String description;
     private String nom;
 
-
+    @ManyToOne
+    private CategorieVehicule categorieVehicule;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne")
     @JsonIgnore
@@ -96,5 +90,13 @@ public class Ligne extends JournalData {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public CategorieVehicule getCategorieVehicule() {
+        return categorieVehicule;
+    }
+
+    public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
+        this.categorieVehicule = categorieVehicule;
     }
 }
