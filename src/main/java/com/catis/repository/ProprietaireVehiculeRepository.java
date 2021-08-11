@@ -12,4 +12,6 @@ public interface ProprietaireVehiculeRepository extends CrudRepository<Proprieta
 
     List<ProprietaireVehicule> findByActiveStatusTrue();
 
+    List<ProprietaireVehicule> findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCase(String nom);
+
 }

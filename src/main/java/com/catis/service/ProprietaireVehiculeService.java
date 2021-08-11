@@ -27,6 +27,12 @@ public class ProprietaireVehiculeService {
         return proprietaires;
     }
 
+    public List<ProprietaireVehicule> searchProprio(String nom) {
+        List<ProprietaireVehicule> proprietaires = new ArrayList<>();
+        pvr.findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCase(nom).forEach(proprietaires::add);
+        return proprietaires;
+    }
+
     public ProprietaireVehicule addProprietaire(ProprietaireVehicule p) {
         return pvr.save(p);
     }

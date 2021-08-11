@@ -57,7 +57,7 @@ public class VehiculeController {
         }
     }
 
-    @GetMapping("/api/v1/search/vehicules/{chassis}")
+    @GetMapping("/api/v1/all/search/vehicules/{chassis}")
     public ResponseEntity<Object> searchVehicule(@PathVariable String chassis) {
         try {
 
