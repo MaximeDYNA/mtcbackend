@@ -40,7 +40,7 @@ public class ProprietaireVehiculeController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
-    @GetMapping("/api/v1/all/proprietaires/{nom}")
+    @GetMapping("/api/v1/all/search/proprietaires/{nom}")
     public ResponseEntity<Object> proprioList(@PathVariable String nom) {
         try {
 
