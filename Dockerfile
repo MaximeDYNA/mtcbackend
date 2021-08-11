@@ -1,4 +1,5 @@
 FROM openjdk:8-jdk-alpine
+WORKDIR /usr/app
 VOLUME /opt
 WORKDIR /usr/app
 COPY ./target/mtc-* ./

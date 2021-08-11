@@ -136,6 +136,7 @@ public class VisiteController {
                     emitter.send(SseEmitter.event().name("edit_visit").data(l));
                 }
 
+
             }catch(IOException e){
                 System.out.println("---SSE ERROR---");
                 emitters.remove(emitter);
@@ -403,7 +404,6 @@ public class VisiteController {
                     "mineure".equalsIgnoreCase(rapport.getSeuil().getLexique().getClassification()==null ?
                         null : rapport.getSeuil().getLexique().getClassification().getCode()))
                     minorDefault.add(rapport.getSeuil().getLexique());
-
             });
 
             visite.get().getInspection().getLexiques().forEach(lexique -> {

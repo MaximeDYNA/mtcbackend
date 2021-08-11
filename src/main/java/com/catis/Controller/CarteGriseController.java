@@ -41,6 +41,8 @@ public class CarteGriseController {
     private EnergieService energieService;
     @Autowired
     private OrganisationService os;
+    @Autowired
+    private VehiculeService vehiculeService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
 
@@ -123,33 +125,34 @@ public class CarteGriseController {
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
 
-        System.out.println("......" + carteGriseR.getVisiteId());
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
-
+        Vehicule vehicule;
         //initialise le vehicule avec les éléments reçus par la vue
 
-        Vehicule vehicule = new Vehicule(carteGriseR);
-
-        //set modifie l'energie du vehicule
-
-        vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+        if(carteGriseR.getVehiculeId() == null){
+            vehicule = new Vehicule(carteGriseR);
+            vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+            vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
+        }
+        else
+            vehicule = vehiculeService.findById(carteGriseR.getVehiculeId());
 
         // retrouve l'objet visite en bd
-
         Visite visite = visiteService.findById(carteGriseR.getVisiteId());
 
-        //recupère l'id de la cg
-
+        //récupère l'id de la cg
         carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
         carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
-        vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
-        carteGrise.setVehicule(vs.addVehicule(vehicule));
+        carteGrise.setVehicule(vehicule);
 
+        visite.setCarteGrise(carteGrise);
         visite.setStatut(1);
-        visiteService.modifierVisite(visite);
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.updateCarteGrise(carteGrise));
+        visite = visiteService.modifierVisite(visite);
+        //carteGrise = cgs.updateCarteGrise(carteGrise);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", visite.getCarteGrise() );
 			/*try {} 
 		catch(Exception e){ 
 			
