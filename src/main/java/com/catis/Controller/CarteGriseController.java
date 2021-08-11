@@ -128,6 +128,7 @@ public class CarteGriseController {
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
         Vehicule vehicule;
         //initialise le vehicule avec les éléments reçus par la vue
+
         if(carteGriseR.getVehiculeId() == null){
             vehicule = new Vehicule(carteGriseR);
             vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
@@ -147,6 +148,7 @@ public class CarteGriseController {
 
         visite.setCarteGrise(carteGrise);
         visite.setStatut(1);
+
         visite = visiteService.modifierVisite(visite);
         //carteGrise = cgs.updateCarteGrise(carteGrise);
 

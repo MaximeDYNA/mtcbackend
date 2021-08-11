@@ -67,7 +67,7 @@ public class GieglanFile extends JournalData {
     }
 
     public enum StatusType {
-        INITIALIZED, REJECTED, VALIDATED
+        INITIALIZED, REJECTED, VALIDATED, NOT_DEFINED
     }
 
     public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
