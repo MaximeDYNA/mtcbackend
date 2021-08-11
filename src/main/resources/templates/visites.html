@@ -295,8 +295,8 @@
                                         </tr>
                                         <tr>
                                             <td style="border-left: none ; border-bottom: none ;"></td>
-                                            <td align="center" style="color: gray;" th:utext="${#numbers.formatInteger(r0401, 1)+' mm/m'}"></td>
-                                            <td align="center" style="color: gray;" th:utext="${#numbers.formatInteger(r0402, 1)+' mm/m'}"></td>
+                                            <td align="center" style="color: gray;" th:utext="${r0401 + ' mm/m'}"></td>
+                                            <td align="center" style="color: gray;" th:utext="${r0402 + ' mm/m'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
@@ -308,7 +308,7 @@
                                             <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 5px;">
                                                 Opacité<br/>Opacity
                                             </td>
-                                            <td align="center" style="color: gray;" th:utext="${ typeVehicule ? #strings.replace(r0509, '.0', '')+' m-1' : #strings.replace(r0538, '.0', '')+' m-1'}"></td>
+                                            <td align="center" style="color: gray;" th:utext="${ typeVehicule ? #strings.replace(r0538, '.0', '')+' m-1' : #strings.replace(r0509, '.0', '')+' m-1'}"></td>
                                         </tr>
                                     </table>
                                     <br/>
