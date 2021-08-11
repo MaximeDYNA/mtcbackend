@@ -40,14 +40,15 @@ public class ProprietaireVehiculeController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
-    @GetMapping("/api/v1/cg/proprietaires")
-    public ResponseEntity<Object> proprioList() {
+    @GetMapping("/api/v1/all/proprietaires/{nom}")
+    public ResponseEntity<Object> proprioList(@PathVariable String nom) {
         try {
+
             LOGGER.trace("List des propriétaires des vehicules...");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-                    , proprietaireVehiculeadresseService.findAll());
+                    , proprietaireVehiculeadresseService.searchProprio(nom));
         } catch (Exception e) {
-            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des proprietaire");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
         }
     }
