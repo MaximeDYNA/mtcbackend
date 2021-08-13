@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.catis.model.control.Control;
 import com.catis.model.entity.Produit;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
@@ -31,7 +32,13 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 
-    List<Visite> findByEncoursTrueOrderByCreatedDateDesc();
+    Page<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
+
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+
+    List<Visite> findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+
+    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
 
     List<Visite> findByEncoursTrueAndStatut(int status, Sort sort);
 
