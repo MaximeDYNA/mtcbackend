@@ -215,12 +215,17 @@ public class VisiteService {
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
                 .isEmpty();
     }
+    public List<Visite> enCoursVisitList(Long orgId) {
+        List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
 
+        return visiteEnCours;
+    }
     public Page<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
         Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
 
         return visiteEnCours;
     }
+
     public List<Visite> enCoursVisitListForContext(Long orgId) {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
 

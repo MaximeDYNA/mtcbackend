@@ -174,24 +174,19 @@ public class VisiteController {
 
         log.info("Liste des visites en cours");
 
-        Page<Visite> resultPage = vs.enCoursVisitList(SessionData.getOrganisationId(request), PageRequest.of(page, size));
-        if(resultPage.getContent().size()==0)
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "vide", null);
+        Page<Visite> resultPage = vs.enCoursVisitList(SessionData.getOrganisationId(request), PageRequest.of(page, size));//PageRequest.of(page, size)
 
-        System.out.println("page result " + ToStringBuilder.reflectionToString(resultPage.getContent()));
-        if (page > resultPage.getTotalPages()) {
-            throw new Exception("Diminuer le nombre de page dans les paramètres de votre requête");
-        }
         List<Listview> listVisit = new ArrayList<>();
-        resultPage.getContent().forEach(visite -> {
+        resultPage.forEach(visite -> {
             listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
         });
 
         //convert list to page for applying hatoas
-        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(0, listVisit.size()), listVisit.size());
+        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), listVisit.size());
+        //Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size), size);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
-        System.out.println("listview "+result.getNextLink());
+
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
     }

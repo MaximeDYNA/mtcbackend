@@ -34,6 +34,8 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
 
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+
     List<Visite> findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
 
     List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
