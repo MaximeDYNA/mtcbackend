@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import com.catis.Controller.configuration.SessionData;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -8,6 +9,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,11 +21,13 @@ public class PdfService {
     private static final String PDF_RESOURCES = "/pdf-resources/";
     private VisiteService visiteService;
     private SpringTemplateEngine templateEngine;
+    private HttpServletRequest request;
 
     @Autowired
-    public PdfService(VisiteService visiteService, SpringTemplateEngine templateEngine) {
+    public PdfService(VisiteService visiteService, SpringTemplateEngine templateEngine, HttpServletRequest request) {
         this.visiteService = visiteService;
         this.templateEngine = templateEngine;
+        this.request = request;
     }
 
     public File generatePdf() throws IOException, DocumentException {
@@ -47,7 +51,7 @@ public class PdfService {
 
     private Context getContext() {
         Context context = new Context();
-        context.setVariable("visites", visiteService.enCoursVisitList());
+        context.setVariable("visites", visiteService.enCoursVisitListForContext(SessionData.getOrganisationId(request)));
         return context;
     }
 

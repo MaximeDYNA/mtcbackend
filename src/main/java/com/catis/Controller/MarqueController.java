@@ -28,7 +28,7 @@ public class MarqueController {
     private OrganisationService os;
     private static Logger LOGGER = LoggerFactory.getLogger(MarqueController.class);
 
-    @GetMapping("/api/v1/cg/marques")
+    @GetMapping("/api/v1/all/search/marques")
     public ResponseEntity<Object> listMarque() {
         LOGGER.trace("List des marques...");
         try {
