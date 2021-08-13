@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -213,10 +215,25 @@ public class VisiteService {
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
                 .isEmpty();
     }
+    public List<Visite> enCoursVisitList(Long orgId) {
+        List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
 
-    public List<Visite> enCoursVisitList() {
+        return visiteEnCours;
+    }
+    public Page<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
+        Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
+
+        return visiteEnCours;
+    }
+
+    public List<Visite> enCoursVisitListForContext(Long orgId) {
+        List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
+
+        return visiteEnCours;
+    }
+    public List<Visite> AllVisitList(Long orgId) {
         List<Visite> visiteEnCours = new ArrayList<>();
-        visiteRepository.findByEncoursTrueOrderByCreatedDateDesc().forEach(visiteEnCours::add);
+        visiteRepository.findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId).forEach(visiteEnCours::add);
         return visiteEnCours;
     }
 

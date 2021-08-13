@@ -6,7 +6,9 @@ import java.time.*;
 import java.util.Date;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
+import com.catis.Controller.configuration.SessionData;
 import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
@@ -16,12 +18,16 @@ import com.catis.service.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,6 +46,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.ListView;
 
 @RestController
 @CrossOrigin
@@ -96,6 +103,8 @@ public class VisiteController {
     private CategorieTestVehiculeService catSer;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private PagedResourcesAssembler<Listview> pagedResourcesAssembler;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -160,13 +169,33 @@ public class VisiteController {
         }
     }
 
-    @GetMapping(value = "/api/v1/all/visitesencours")
-    public ResponseEntity<Object> listDesVisitesEncours() {
+    @GetMapping(value = "/api/v1/all/visitesencours", params = { "page", "size" })
+    public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
+                                                        @RequestParam("size") int size) throws Exception {
+        log.info("Liste des visites en cours");
+        Page<Visite> resultPage = vs.enCoursVisitList(SessionData.getOrganisationId(request), PageRequest.of(page, size));//PageRequest.of(page, size)
+        List<Listview> listVisit = new ArrayList<>();
+        resultPage.forEach(visite -> {
+            listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+        });
+
+        //convert list to page for applying hatoas
+        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), listVisit.size());
+        //Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size), size);
+        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+                .toModel(pages);
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
+
+    }
+
+    @GetMapping(value = "/api/v1/all/visites")
+    public ResponseEntity<Object> getAllAcitveViset() {
 
         log.info("Liste des visites en cours");
         List<Listview> listVisit = new ArrayList<>();
-        vs.enCoursVisitList().forEach( visite -> {
-           listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
+        vs.AllVisitList(SessionData.getOrganisationId(request)).forEach(visite -> {
+            listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
         });
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
 
