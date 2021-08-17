@@ -172,11 +172,8 @@ public class VisiteController {
     @GetMapping(value = "/api/v1/all/visitesencours", params = { "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
                                                         @RequestParam("size") int size) throws Exception {
-
         log.info("Liste des visites en cours");
-
         Page<Visite> resultPage = vs.enCoursVisitList(SessionData.getOrganisationId(request), PageRequest.of(page, size));//PageRequest.of(page, size)
-
         List<Listview> listVisit = new ArrayList<>();
         resultPage.forEach(visite -> {
             listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
