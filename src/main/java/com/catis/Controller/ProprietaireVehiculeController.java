@@ -43,10 +43,20 @@ public class ProprietaireVehiculeController {
     @GetMapping("/api/v1/all/search/proprietaires/{nom}")
     public ResponseEntity<Object> proprioList(@PathVariable String nom) {
         try {
-
             LOGGER.trace("List des propriétaires des vehicules...");
+            List<Map<String,Object>> maps = new ArrayList<>();
+            List<ProprietaireVehicule> proprietaireVehicules = new ArrayList<>();
+            proprietaireVehiculeadresseService.searchProprio(nom).forEach(proprietaireVehicules::add);
+            Map proprio;
+            for(ProprietaireVehicule p : proprietaireVehicules){
+                proprio = new HashMap();
+                proprio.put("id", p.getProprietaireVehiculeId());
+                proprio.put("first_name", p.getPartenaire().getPrenom() == null ? "": p.getPartenaire().getPrenom() );
+                proprio.put("last_name", p.getPartenaire().getNom());
+                maps.add(proprio);
+            }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-                    , proprietaireVehiculeadresseService.searchProprio(nom));
+                    ,maps );
         } catch (Exception e) {
             LOGGER.error("Une erreur est survenu lors de l'accès à la liste des proprietaire");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
