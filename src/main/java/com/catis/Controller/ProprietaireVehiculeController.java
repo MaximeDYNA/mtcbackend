@@ -51,8 +51,8 @@ public class ProprietaireVehiculeController {
             for(ProprietaireVehicule p : proprietaireVehicules){
                 proprio = new HashMap();
                 proprio.put("id", p.getProprietaireVehiculeId());
-                proprio.put("first_name", p.getPartenaire().getPrenom() == null ? "": p.getPartenaire().getPrenom() );
-                proprio.put("last_name", p.getPartenaire().getNom());
+                proprio.put("prenom", p.getPartenaire().getPrenom() == null ? "": p.getPartenaire().getPrenom() );
+                proprio.put("nom", p.getPartenaire().getNom());
                 maps.add(proprio);
             }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
