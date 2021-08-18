@@ -4,9 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.catis.model.entity.Organisation;
 import com.catis.model.entity.Partenaire;
+import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.objectTemporaire.ProprietairePOJO;
 import com.catis.service.OrganisationService;
+import com.catis.service.UtilisateurService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.admin.client.Keycloak;
@@ -39,6 +41,8 @@ public class ControleurController {
     private static String realm = "mtckeycloak";
     @Autowired
     private OrganisationService os;
+    @Autowired
+    private UtilisateurService us;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
@@ -118,12 +122,14 @@ public class ControleurController {
                     proprietairePOJO.getDateNaiss();
             Organisation organisation = proprietairePOJO.getOrganisationId()==null
                     ? null : os.findByOrganisationId(proprietairePOJO.getOrganisationId().getId());
+            Utilisateur user = us.findUtilisateurById(proprietairePOJO.getUser().getId());
 
             Partenaire partenaire = new Partenaire(proprietairePOJO);
             partenaire.setOrganisation(organisation);
             partenaire.setDateNaiss(date);
             controleur.setPartenaire(partenaire);
             controleur.setOrganisation(organisation);
+            controleur.setUtilisateur(user);
             controleur.setIdControleur(proprietairePOJO.getIdControleur());
 
             controleur = controleurService.addControleur(controleur);
