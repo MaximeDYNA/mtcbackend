@@ -190,15 +190,26 @@ public class VisiteController {
 
     }
 
-    @GetMapping(value = "/api/v1/all/visites")
-    public ResponseEntity<Object> getAllAcitveViset() {
+    @GetMapping(value = "/api/v1/all/visitesended", params = { "page", "size" })
+    public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
+                                                    @RequestParam("size") int size) {
 
-        log.info("Liste des visites en cours");
+        Long orgId = SessionData.getOrganisationId(request);
+
+        Page<Visite> resultPage = vs.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
-        vs.AllVisitList(SessionData.getOrganisationId(request)).forEach(visite -> {
+
+        log.info("Liste des visites terminées");
+        resultPage.forEach(visite -> {
             listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
         });
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
+
+        //convert list to page for applying hatoas
+        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), vs.endedVisitList(orgId).size());
+        //Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size), size);
+        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
     }
 
