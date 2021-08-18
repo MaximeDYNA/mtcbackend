@@ -173,14 +173,15 @@ public class VisiteController {
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
                                                         @RequestParam("size") int size) throws Exception {
         log.info("Liste des visites en cours");
-        Page<Visite> resultPage = vs.enCoursVisitList(SessionData.getOrganisationId(request), PageRequest.of(page, size));//PageRequest.of(page, size)
+        Long orgId = SessionData.getOrganisationId(request);
+        Page<Visite> resultPage = vs.enCoursVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
         resultPage.forEach(visite -> {
             listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
         });
 
         //convert list to page for applying hatoas
-        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), listVisit.size());
+        Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), vs.enCoursVisitList(orgId).size());
         //Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size), size);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
