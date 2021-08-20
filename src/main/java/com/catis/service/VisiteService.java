@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.control.Control;
 import com.catis.model.entity.*;
+import com.catis.objectTemporaire.KanBanSimpleData;
 import com.catis.objectTemporaire.OrganisationTopDTO;
 
 import org.slf4j.Logger;
@@ -266,6 +267,19 @@ public class VisiteService {
         return visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
     }
 
+    public List<KanBanSimpleData> listParStatusForkanban(int status) {
+        List<Visite> visites = visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
+        List<KanBanSimpleData> kanBanSimpleDatas = new ArrayList<>();
+
+        KanBanSimpleData kanBanSimpleData;
+        for (Visite visite : visites){
+            kanBanSimpleData = new KanBanSimpleData();
+            kanBanSimpleData.setContreVisite(visite.isContreVisite());
+            kanBanSimpleData.setRef(visite.getCarteGrise().getNumImmatriculation());
+            kanBanSimpleDatas.add(kanBanSimpleData);
+        }
+        return kanBanSimpleDatas;
+    }
     public void commencerInspection(Long visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
