@@ -460,7 +460,7 @@ public class VisiteController {
                     minorDefault.add(lexique);
             });
 
-            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), request, environment);
+            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), environment);
 
             ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
             templateResolver.setSuffix(".html");
