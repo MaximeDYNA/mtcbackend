@@ -46,7 +46,7 @@ public class CategorieProduitController {
     private OrganisationService os;
 
 
-    private static Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
+    private Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 
     @RequestMapping("/api/v1/caisse/categorieproduits/{categorieId}/listesproduits")
     public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException {
@@ -114,7 +114,7 @@ public class CategorieProduitController {
 
     //***Admin***//
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/catproducts")
+    @GetMapping("/api/v1/admin/catproducts")
     public List<CategorieProduit> catproduct() {
         try {
             LOGGER.trace("Liste des catégories");
@@ -125,7 +125,7 @@ public class CategorieProduitController {
         }
 
     }
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/catproducts/forselect")
+    @GetMapping("/api/v1/admin/catproducts/forselect")
     public List<CatProductForSelectDTO> catProductForSelectDTOS() {
         try {
             LOGGER.trace("Liste des catégories");

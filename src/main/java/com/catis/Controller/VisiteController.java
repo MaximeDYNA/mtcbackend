@@ -357,7 +357,13 @@ public class VisiteController {
             f.mkdirs();
 
         String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
+
+        File fileExistTest = new File(outputFolder);
+        if(fileExistTest.exists())
+            return outputFolder;
+
         OutputStream outputStream = new FileOutputStream(outputFolder);
+
 
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(parseThymeleafTemplate(visiteId));
@@ -368,10 +374,10 @@ public class VisiteController {
 
             Visite visite = vs.findById(visiteId);
             if(visite.getProcess().isStatus()){
-                visite.setStatut(6);
+                visite.setStatut(8);
             }
             else{
-                visite.setStatut(5);
+                visite.setStatut(7);
                 visite.setEncours(false);
             }
 

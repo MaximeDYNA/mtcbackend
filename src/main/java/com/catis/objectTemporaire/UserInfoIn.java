@@ -22,12 +22,7 @@ import java.util.Optional;
 
 public class UserInfoIn {
 
-    @Autowired
-    private Environment env;
-
-    public static UserDTO getInfosControleur(Controleur controleur, HttpServletRequest request, Environment env) {
-
-        KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    public static UserDTO getInfosControleur(Controleur controleur, Environment env) {
         Keycloak keycloak = KeycloakBuilder
                 .builder()
                 .clientId(env.getProperty("admin.keycloak"))
@@ -132,7 +127,7 @@ public class UserInfoIn {
 
             KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
             AccessToken accessToken = kp.getKeycloakSecurityContext().getToken();
-            user.setId(accessToken.getId());
+            user.setId(accessToken.getSubject());
             user.setNom(accessToken.getName());
             user.setPrenom(accessToken.getNickName());
             user.setLogin(accessToken.getPreferredUsername());

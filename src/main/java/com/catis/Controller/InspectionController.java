@@ -3,9 +3,14 @@ package com.catis.Controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.invoke.WrongMethodTypeException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.catis.Controller.exception.WrongConfigurationException;
+import com.catis.model.entity.Utilisateur;
+import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
 import org.apache.commons.codec.binary.Base64;
@@ -40,6 +45,8 @@ public class InspectionController {
     private LigneService ligneService;
     @Autowired
     private ControleurService controleurService;
+    @Autowired
+    private UtilisateurService utilisateurService;
     @Autowired
     private ProduitService produitService;
     @Autowired
@@ -88,32 +95,43 @@ public class InspectionController {
 
     }
 
-    @RequestMapping(value = "/api/v1/controleur/upload/signature", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws IOException {
+    @PostMapping(value = "/api/v1/controleur/upload/signature")
+    public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws Exception {
 
+            String diskPathToSignature = env.getProperty("signature.disk.path");
 
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
-            File f= new File(env.getProperty("signature.disk.path"));
-            if(!f.exists())
-                f.mkdirs();
+            if(diskPathToSignature == null)
+                throw new WrongConfigurationException("Fill signature.disk.path in application property");
+            File f= new File(diskPathToSignature );
 
-            String filePath = env.getProperty("signature.disk.path") + signatureDTO.getVisiteId() + ".png";
+                if(!f.exists())
+                    f.mkdirs();
 
+
+            String filePath = diskPathToSignature + signatureDTO.getVisiteId() + ".png";
+
+            OutputStream stream = null;
             Path path = Paths.get(filePath);
-            System.out.println("*******************" + filePath);
+            try {
+                stream = new FileOutputStream(path.toString());
+                stream.write(decoded);
+            }
+            catch (Exception e){
+                LOGGER.error("Error when creating signature");
+            }finally {
+                stream.close();
+            }
 
-            FileOutputStream fos = new FileOutputStream(path.toString());
-            fos.write(decoded);
-            fos.close();
 
-            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId() + ".png");
+
+            UserDTO userDTO = UserInfoIn.getUserInfo(request);
+            Utilisateur u =utilisateurService.findUtilisateurByKeycloakId(userDTO.getId());
+            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId() + ".png", u.getControleur());
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", inspection);
 
-          /*  try {} catch (Exception e) {
-            e.printStackTrace();
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Failed", null);
-        }*/
+
 
     }
 

@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.exception.ContactVideException;
 import com.catis.Controller.exception.VisiteEnCoursException;
@@ -71,13 +67,12 @@ public class EncaissementController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(EncaissementController.class);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/encaissements")
+    @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
-    public ResponseEntity<Object> enregistrerEncaissement(@RequestBody Encaissement encaissement)
-            throws ContactVideException, VisiteEnCoursException {
+    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement)
+             {
         Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
-        Organisation organisation = os.findByOrganisationId(
-                Long.valueOf(orgId));
+        Organisation organisation = os.findByOrganisationId(orgId);
         try {
             OperationCaisse op = new OperationCaisse();
             Vente vente = new Vente();
@@ -85,7 +80,7 @@ public class EncaissementController {
             DetailVente detailVente;
             Produit produit;
             CarteGrise carteGrise;
-            Vehicule vehicule;
+
             double taxedetail;
             /* ---------client------------ */
             vente.setClient(encaissement.getClientId() == 0 ? null :
@@ -117,14 +112,13 @@ public class EncaissementController {
             Visite visite;
             for (Posales posale : posaleService.findActivePosale()) {
                 detailVente = new DetailVente();
-                produit = new Produit();
-                vehicule = new Vehicule();
+
+
                 produit = produitService.findById(posale.getProduit().getProduitId());
                 carteGrise = new CarteGrise();
 
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
-                    //carteGrise.setProduit(produit);
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
                             encaissement.getMontantEncaisse(), orgId);
                 } else {
