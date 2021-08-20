@@ -110,7 +110,7 @@ public class EncaissementController {
             vente.setNumFacture(venteService.genererNumFacture());
             /* -------------------------- */
             Visite visite;
-            for (Posales posale : posaleService.findActivePosale()) {
+            for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 detailVente = new DetailVente();
 
 

@@ -54,8 +54,8 @@ public class PosaleService {
         return psr.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
-    public List<Posales> findActivePosale() {
-        return psr.findByStatusTrue();
+    public List<Posales> findActivePosaleBySessionId(Long sessionId) {
+        return psr.findByStatusTrueAndSessionCaisse_SessionCaisseId(sessionId);
     }
 
     public Posales addPosales(Posales posales) {

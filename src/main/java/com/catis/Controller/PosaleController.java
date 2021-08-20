@@ -95,7 +95,7 @@ public class PosaleController {
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg
                     , null);
         } catch (Exception e) {
-            LOGGER.error("Erreur lors de l'ajout d'un produit dans l'onglet");
+            LOGGER.error("Erreur lors de l'ajout d'un produit dans le panier");
             Message msg = msgRepo.findByCode("PS003");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
