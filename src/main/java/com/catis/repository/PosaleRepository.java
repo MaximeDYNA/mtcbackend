@@ -13,6 +13,7 @@ public interface PosaleRepository extends CrudRepository<Posales, Long> {
     List<Posales> findByHold_Number(Long number);
 
     List<Posales> findByStatusTrue();
+    List<Posales> findByStatusTrueAndSessionCaisse_SessionCaisseId(Long sessionCaisseId);
 
     void deleteBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
 
