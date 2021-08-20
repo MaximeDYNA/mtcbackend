@@ -23,7 +23,7 @@ import java.util.Set;
 public class JobController {
     @Autowired
     private FraudeTypeRepository fraudeTypeRepository;
-
+    @Autowired
     private VisiteService vs;
     @Autowired
     private ProduitService ps;

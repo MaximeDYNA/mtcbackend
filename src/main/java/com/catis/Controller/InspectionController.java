@@ -49,7 +49,7 @@ public class InspectionController {
     private UtilisateurService utilisateurService;
     @Autowired
     private ProduitService produitService;
-
+    @Autowired
     private VisiteService visiteService;
     @Autowired
     private GieglanFileService gieglanFileService;

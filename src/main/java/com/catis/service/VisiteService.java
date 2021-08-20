@@ -269,7 +269,7 @@ public class VisiteService {
 
     public List<KanBanSimpleData> listParStatusForkanban(int status) {
         List<Visite> visites = visiteRepository.findByEncoursTrueAndStatut(status, Sort.by(Sort.Direction.DESC, "dateDebut"));
-        List<KanBanSimpleData> kanBanSimpleDatas = Collections.EMPTY_LIST;
+        List<KanBanSimpleData> kanBanSimpleDatas = new ArrayList<>();
 
         KanBanSimpleData kanBanSimpleData;
         for (Visite visite : visites){

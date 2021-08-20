@@ -69,7 +69,7 @@ public class VisiteController {
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
-
+    @Autowired
     private VisiteService visiteService;
 
     @Autowired
@@ -89,7 +89,7 @@ public class VisiteController {
     @Autowired
     FilesStorageService storageService;
 
-
+    @Autowired
     private VisiteService vs;
 
     @Autowired
@@ -240,7 +240,7 @@ public class VisiteController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/visit/kanbanview")
     public ResponseEntity<Object> listforKabanView() {
-        try {
+
                 log.info("kaban view visit");
                 List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
                 List<KanBanSimpleData> majs = vs.listParStatusForkanban(0);
@@ -266,12 +266,12 @@ public class VisiteController {
                 kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
                 kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
-        } catch (Exception e) {
+        /*try { } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
                     + " de la liste des visi"
                     + "te en cours", null);
-        }
+        }*/
 
     }
 

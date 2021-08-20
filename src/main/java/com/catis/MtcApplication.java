@@ -25,10 +25,6 @@ public class MtcApplication implements CommandLineRunner {
 
     @Autowired
     private Environment env;
-    @Bean
-    VisiteService getVisiteService(){
-        return new VisiteService();
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(MtcApplication.class, args);

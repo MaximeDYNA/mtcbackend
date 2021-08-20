@@ -50,7 +50,7 @@ public class pdfController {
 
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
-
+    @Autowired
     private VisiteService visiteService;
 
     @Autowired

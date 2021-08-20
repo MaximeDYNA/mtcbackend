@@ -37,7 +37,7 @@ public class PosaleController {
 
     @Autowired
     private PosaleService posaleService;
-
+    @Autowired
     private VisiteService visiteService;
     @Autowired
     private HoldService hs;
