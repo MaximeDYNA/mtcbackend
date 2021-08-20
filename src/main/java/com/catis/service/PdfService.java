@@ -24,8 +24,7 @@ public class PdfService {
     private HttpServletRequest request;
 
     @Autowired
-    public PdfService(VisiteService visiteService, SpringTemplateEngine templateEngine, HttpServletRequest request) {
-        this.visiteService = visiteService;
+    public PdfService(SpringTemplateEngine templateEngine, HttpServletRequest request) {
         this.templateEngine = templateEngine;
         this.request = request;
     }

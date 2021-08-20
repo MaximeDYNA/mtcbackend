@@ -52,7 +52,7 @@ public class EncaissementController {
     private DetailVenteService detailVenteService;
     @Autowired
     private PosaleService posaleService;
-    @Autowired
+
     private VisiteService visiteService;
     @Autowired
     private ProprietaireVehiculeService pvs;

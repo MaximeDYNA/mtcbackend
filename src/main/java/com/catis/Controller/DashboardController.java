@@ -20,7 +20,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/admin/dashboard")
 public class DashboardController {
-    @Autowired
+
     private VisiteService vs;
     @Autowired
     private VenteService venteService;

@@ -20,7 +20,6 @@ public class InspectionService {
     @Autowired
     private InspectionRepository inspectionR;
 
-    @Autowired
     private VisiteService visiteService;
     @Autowired
     private ProduitService ps;

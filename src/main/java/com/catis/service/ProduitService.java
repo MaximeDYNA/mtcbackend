@@ -18,7 +18,7 @@ public class ProduitService {
     private ProduitRepository produitRepository;
     @Autowired
     private CarteGriseRepository cgr;
-    @Autowired
+
     private VisiteService visiteService;
     @Autowired
     org.springframework.core.env.Environment env;

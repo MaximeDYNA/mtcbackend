@@ -1,12 +1,14 @@
 package com.catis;
 
 import com.catis.repository.FilesStorageService;
+import com.catis.service.VisiteService;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +25,10 @@ public class MtcApplication implements CommandLineRunner {
 
     @Autowired
     private Environment env;
+    @Bean
+    VisiteService getVisiteService(){
+        return new VisiteService();
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(MtcApplication.class, args);

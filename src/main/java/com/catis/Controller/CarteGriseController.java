@@ -35,7 +35,7 @@ public class CarteGriseController {
     private ProduitService ps;
     @Autowired
     private VehiculeService vs;
-    @Autowired
+
     private VisiteService visiteService;
     @Autowired
     private EnergieService energieService;

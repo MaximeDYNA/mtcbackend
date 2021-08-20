@@ -40,7 +40,7 @@ public class ProduitController {
     private ProduitService produitService;
     @Autowired
     private CarteGriseService cgs;
-    @Autowired
+
     private VisiteService visiteService;
     @Autowired
     private PosaleService posaleService;

@@ -70,7 +70,6 @@ public class VisiteController {
     @Autowired
     PdfGenaratorUtil pdfGenaratorUtil;
 
-    @Autowired
     private VisiteService visiteService;
 
     @Autowired
@@ -90,8 +89,9 @@ public class VisiteController {
     @Autowired
     FilesStorageService storageService;
 
-    @Autowired
+
     private VisiteService vs;
+
     @Autowired
     private ProduitService ps;
 
@@ -243,16 +243,28 @@ public class VisiteController {
         try {
                 log.info("kaban view visit");
                 List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
-                kabanViewVisits.add(new KabanViewVisit("maj", vs.listParStatus(0), vs.listParStatus(0).size()));
-                kabanViewVisits.add(new KabanViewVisit("A inspecter", vs.listParStatus(1), vs.listParStatus(1).size()));
-                kabanViewVisits.add(new KabanViewVisit("En cours test", vs.listParStatus(2), vs.listParStatus(2).size()));
-                kabanViewVisits.add(new KabanViewVisit("A signer", vs.listParStatus(3), vs.listParStatus(3).size()));
-                kabanViewVisits.add(new KabanViewVisit("A imprimer", vs.listParStatus(4), vs.listParStatus(4).size()));
-                kabanViewVisits.add(new KabanViewVisit("A enregister", vs.listParStatus(5), vs.listParStatus(5).size()));
-                kabanViewVisits.add(new KabanViewVisit("A certifier", vs.listParStatus(6), vs.listParStatus(6).size()));
-                kabanViewVisits.add(new KabanViewVisit("Accepté", vs.listParStatus(7), vs.listParStatus(7).size()));
-                kabanViewVisits.add(new KabanViewVisit("Refusé", vs.listParStatus(8), vs.listParStatus(8).size()));
-                kabanViewVisits.add(new KabanViewVisit("A approuver", vs.listParStatus(9), vs.listParStatus(9).size()));
+                List<KanBanSimpleData> majs = vs.listParStatusForkanban(0);
+                List<KanBanSimpleData> inspects = vs.listParStatusForkanban(1);
+                List<KanBanSimpleData> tests = vs.listParStatusForkanban(2);
+                List<KanBanSimpleData> toSign = vs.listParStatusForkanban(3);
+                List<KanBanSimpleData> confirms = vs.listParStatusForkanban(4);
+                List<KanBanSimpleData> unconforms = vs.listParStatusForkanban(5);
+                List<KanBanSimpleData> prints = vs.listParStatusForkanban(6);
+                List<KanBanSimpleData> refused = vs.listParStatusForkanban(7);
+                List<KanBanSimpleData> certifies = vs.listParStatusForkanban(8);
+                List<KanBanSimpleData> accepted = vs.listParStatusForkanban(9);
+                List<KanBanSimpleData> approuve = vs.listParStatusForkanban(10);
+                kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
+                kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
+                kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
+                kabanViewVisits.add(new KabanViewVisit("A signer", toSign, toSign.size()));
+                kabanViewVisits.add(new KabanViewVisit("En Attente conformité",  confirms, confirms.size()));
+                kabanViewVisits.add(new KabanViewVisit("Non conforme", unconforms, unconforms.size()));
+                kabanViewVisits.add(new KabanViewVisit("A imprimer", prints, prints.size()));
+                kabanViewVisits.add(new KabanViewVisit("Refusés", refused, refused.size()));
+                kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
+                kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
+                kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
         } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");

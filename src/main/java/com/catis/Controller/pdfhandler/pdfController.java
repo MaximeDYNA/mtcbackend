@@ -68,10 +68,10 @@ public class pdfController {
     private TaxeService taxeService;
 
     @Autowired
-    public pdfController(VisiteService visiteService, PdfService pdfService,
+    public pdfController( PdfService pdfService,
                          InspectionService inspection, VenteService venteService, TaxeService taxProduitService) {
         super();
-        this.visiteService = visiteService;
+
         this.pdfService = pdfService;
         this.inspectionService = inspection;
         this.venteService = venteService;
