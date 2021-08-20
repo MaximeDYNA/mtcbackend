@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.catis.Controller.VisiteController;
+import com.catis.model.entity.Controleur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,13 +56,14 @@ public class InspectionService {
         return inspection;
     }
 
-    public Inspection setSignature(Long id, String signature) throws IOException {
+    public Inspection setSignature(Long id, String signature, Controleur controleur) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);
         Inspection inspection = findInspectionByVisite(id);
         inspection.setSignature(signature);
         Visite visite = visiteService.findById(id);
         visite.setStatut(4);
+        inspection.setControleur(controleur);
         inspection.setVisite(visiteService.add(visite));
         inspection = inspectionR.save(inspection);
 

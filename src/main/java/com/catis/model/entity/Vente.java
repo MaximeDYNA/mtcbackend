@@ -3,16 +3,7 @@ package com.catis.model.entity;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
@@ -51,7 +42,7 @@ public class Vente extends JournalData {
     @JsonIgnore
     private Set<OperationCaisse> operationCaisse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente", cascade = CascadeType.ALL)
     private Set<DetailVente> detailventes;
 
     private String numFacture;
