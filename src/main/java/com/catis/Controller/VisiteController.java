@@ -172,7 +172,7 @@ public class VisiteController {
     @GetMapping(value = "/api/v1/all/visitesencours", params = { "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
                                                         @RequestParam("size") int size) throws Exception {
-        log.info("Liste des visites en cours");
+        log.info("Liste des visites en cours ---");
         Long orgId = SessionData.getOrganisationId(request);
         Page<Visite> resultPage = vs.enCoursVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
@@ -370,9 +370,9 @@ public class VisiteController {
 
         String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
 
-        File fileExistTest = new File(outputFolder);
+        /*File fileExistTest = new File(outputFolder);
         if(fileExistTest.exists())
-            return outputFolder;
+            return "/public/pv/"+visiteId+".pdf";*/
 
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
