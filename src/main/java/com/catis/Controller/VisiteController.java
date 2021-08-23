@@ -1,14 +1,22 @@
 package com.catis.Controller;
 
+import java.awt.*;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.AttributedString;
 import java.time.*;
 
 import java.util.Date;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import com.catis.Controller.configuration.SessionData;
+import com.catis.Controller.pdfhandler.MediaReplacedElementFactory;
 import com.catis.Controller.pdfhandler.PdfGenaratorUtil;
 import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
@@ -45,6 +53,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.ListView;
 
@@ -377,7 +386,10 @@ public class VisiteController {
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
 
+        createWatermark(visiteService.findById(visiteId).getProcess().getReference());
+
         ITextRenderer renderer = new ITextRenderer();
+        renderer.getSharedContext().setReplacedElementFactory(new MediaReplacedElementFactory(renderer.getSharedContext().getReplacedElementFactory()));
         renderer.setDocumentFromString(parseThymeleafTemplate(visiteId));
         renderer.layout();
         renderer.createPDF(outputStream);
@@ -505,6 +517,70 @@ public class VisiteController {
 
         return null;
 
+    }
+
+    public void createWatermark(String ref){
+        StringBuilder bld = new StringBuilder();
+        for (int i = 0; i < 3500; ++i) {
+            if(i % 25 == 0)
+                bld.append(ref + "\n\n\n\n");
+            else
+                bld.append(ref + " ");
+        }
+        ref =  bld.toString();
+
+        BufferedImage img = new BufferedImage(595, 842, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = img.createGraphics();
+
+        AffineTransform affineTransform = new AffineTransform();
+        g2d.setTransform(affineTransform);
+        g2d.rotate(-Math.PI/4);
+        Font font = new Font("Arial", Font.PLAIN, 8);
+        g2d.setFont(font);
+        g2d.setColor(Color.YELLOW);
+        drawParagraph(g2d, ref, 1000);
+
+
+
+
+
+        FontMetrics fm = g2d.getFontMetrics();
+        int width = fm.stringWidth(ref);
+        int height = fm.getHeight();
+
+
+
+
+        //g2d.drawString(ref, 0, 0);
+
+        g2d.dispose();
+        try {
+            ImageIO.write(img, "png", new File("watermark.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    void drawParagraph(Graphics2D g, String paragraph, float width) {
+        LineBreakMeasurer linebreaker = new LineBreakMeasurer(new AttributedString(paragraph)
+                .getIterator(), g.getFontRenderContext());
+
+
+
+        int y = 0;
+        while (linebreaker.getPosition() < paragraph.length()) {
+            TextLayout textLayout = linebreaker.nextLayout(width);
+
+            y += textLayout.getAscent();
+            y += textLayout.getAscent();
+            y += textLayout.getAscent();
+
+            textLayout.draw(g, -585, y);
+            y += textLayout.getDescent() + textLayout.getLeading();
+            y += textLayout.getDescent() + textLayout.getLeading();
+            y += textLayout.getDescent() + textLayout.getLeading();
+        }
     }
 
     public Date convert(LocalDateTime dateToConvert) {
