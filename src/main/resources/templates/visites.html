@@ -609,18 +609,22 @@
 
 <div style="page-break-after: always;"></div>
 
+<div id="logo" class="media" data-src="watermark.png" style="z-index: 1; position: absolute; width: 715px; height: 880px"></div>
 <div align="center" style="height:100%">
     <table cellspacing="10" style="margin-top: 200px; margin-bottom: 300px">
         <tr>
             <td align="center" colspan="2">
-                <h3> Véhicule immatriculé /
-                    Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
-                </h3>
+                <div style="z-index: 2">
+                    <h3> Véhicule immatriculé /
+                        Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
+                    </h3>
+                </div>
+
             </td>
         </tr>
         <tr>
             <td>
-                <div>
+                <div style="z-index: 0">
                     <img th:src="${mesurevisuel != null ? (mesurevisuel.image1  != null ? 'data:image/png;base64,'+mesurevisuel.image1: '') : ''}"
                          style="height: 250px; width: 320px;"/>
                 </div>
@@ -640,11 +644,12 @@
             </td>
         </tr>
     </table>
-    <div id="watermark" style="transform: rotate(45deg);">
+
+    <!--div id="watermark" style="transform: rotate(45deg);">
         <p th:if="${v.process.reference} != null">
             <span th:each="i: ${#numbers.sequence(0, 133)}" th:text="${v.process.reference}+'. '"></span>
         </p>
-    </div>
+    </div-->
 
 </div>
 <footer style="font-size: 10px; color: gray; font-family: 'Lucida Console'">
