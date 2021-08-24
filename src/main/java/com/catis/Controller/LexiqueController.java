@@ -65,17 +65,15 @@ public class LexiqueController {
         vl = versionLexiqueService.add(vl);
 
         /********------******/
-        List<Lexique> lexiques = new ArrayList<>();
-        Lexique lexiq;
 
         for (LexiquePOJO l : lexique.getRows()) {
-            lexiq = new Lexique();
-            System.out.println(l.getCode());
-            lexiq.setId(l.getId() == null ? null : l.getId());
+            Lexique lexiq = new Lexique();
+            //lexiq.setId(l.getId() == null ? null : l.getId());
 
             lexiq.setClassification(cS.findById(l.getClassificationId()) == null ? null :
                     (cS.findById(l.getClassificationId()).isPresent() ? cS.findById(l.getClassificationId()).get() : null ));
             lexiq.setCode(l.getCode().replace("\"", ""));
+            lexiq = lexiqueService.editLexiqueByCode(lexiq);
             lexiq.setLibelle(l.getLibelle());
 
             lexiq.setParent(lexiqueService.findByCode(l.getParent() == null ? l.getParent() : l.getParent().replace("\"", "")));
@@ -85,8 +83,6 @@ public class LexiqueController {
                 lexiq.setHaschild(false);
             lexiq.setVersionLexique(vl);
             lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-
-            //System.out.println("Nom :"+ lexique.getId());
             lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId())));
             lexiqueService.add(lexiq);
         }
@@ -101,11 +97,10 @@ public class LexiqueController {
     public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id) {
 
         LexiqueReceived lr = new LexiqueReceived();
-        List<Long> ids;
         List<LexiquePOJO> list = new ArrayList<>();
-        LexiquePOJO pojo;
+
         for (Lexique l : lexiqueService.findByVersionLexique(id)) {
-            pojo = new LexiquePOJO();
+            LexiquePOJO pojo = new LexiquePOJO();
             pojo.setId(l.getId());
             pojo.setCode(l.getCode());
             pojo.setLibelle(l.getLibelle());
@@ -113,7 +108,7 @@ public class LexiqueController {
             pojo.setVisual(l.getVisuel().toString());
             pojo.setHaschild(l.getHaschild().toString());
             pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
-            ids = new ArrayList<>();
+            List<Long> ids = new ArrayList<>();
             for (Client i : l.getClients()) {
                 ids.add(i.getClientId());
             }
@@ -172,4 +167,6 @@ public class LexiqueController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, "OK", catsSelect);
     }
+
+
 }
