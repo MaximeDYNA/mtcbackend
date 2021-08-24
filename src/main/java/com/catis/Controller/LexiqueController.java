@@ -73,6 +73,7 @@ public class LexiqueController {
             lexiq.setClassification(cS.findById(l.getClassificationId()) == null ? null :
                     (cS.findById(l.getClassificationId()).isPresent() ? cS.findById(l.getClassificationId()).get() : null ));
             lexiq.setCode(l.getCode().replace("\"", ""));
+            System.out.println("le code est le suivant :" + lexiq.getCode());
             lexiq = lexiqueService.editLexiqueByCode(lexiq);
             lexiq.setLibelle(l.getLibelle());
 
