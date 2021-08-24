@@ -191,10 +191,11 @@ public class VisiteController {
 
         //convert list to page for applying hatoas
         Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), vs.enCoursVisitList(orgId).size());
-        //Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size), size);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
-
+        orgId = null;
+        resultPage=null;
+        pages=null;
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
     }
@@ -274,6 +275,7 @@ public class VisiteController {
                 kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
                 kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
                 kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
+                approuve = accepted = certifies = refused = prints = unconforms = confirms = majs = inspects = tests = toSign = null;
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
         /*try { } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
@@ -409,6 +411,7 @@ public class VisiteController {
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
         VisiteController.dispatchEdit(visite,
                 vs, gieglanFileService, catSer, ps);
+        f = null;
             return "/public/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
             log.error("Erreur lors de l'impression du PV");
@@ -529,17 +532,20 @@ public class VisiteController {
         }
         ref =  bld.toString();
 
-        BufferedImage img = new BufferedImage(595, 842, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(895, 1142, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = img.createGraphics();
 
         AffineTransform affineTransform = new AffineTransform();
         g2d.setTransform(affineTransform);
         g2d.rotate(-Math.PI/4);
-        Font font = new Font("Arial", Font.PLAIN, 8);
-        g2d.setFont(font);
+        Font font = new Font("Arial", Font.PLAIN, 5);
+
         g2d.setColor(Color.YELLOW);
-        drawParagraph(g2d, ref, 1000);
+
+
+        drawParagraph(g2d, ref, 1500);
+        g2d.setFont(font);
 
 
 
@@ -576,7 +582,7 @@ public class VisiteController {
             y += textLayout.getAscent();
             y += textLayout.getAscent();
 
-            textLayout.draw(g, -585, y);
+            textLayout.draw(g, -785, y);
             y += textLayout.getDescent() + textLayout.getLeading();
             y += textLayout.getDescent() + textLayout.getLeading();
             y += textLayout.getDescent() + textLayout.getLeading();

@@ -176,6 +176,7 @@ public class EncaissementController {
 
             EncaissementResponse e = new EncaissementResponse(op,
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
+            op = null;
             Message msg = msgRepo.findByCode("EN001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
         } catch (Exception e) {
