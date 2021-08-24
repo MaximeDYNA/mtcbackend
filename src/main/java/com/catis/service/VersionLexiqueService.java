@@ -22,6 +22,9 @@ public class VersionLexiqueService {
     public VersionLexique findById(Long id) {
         return versionLexiqueRepo.findById(id).get();
     }
+    public VersionLexique findByName(String name) {
+        return versionLexiqueRepo.findByLibelle(name);
+    }
 
     public List<VersionLexique> findAll() {
         List<VersionLexique> versionLexiques = new ArrayList<>();
