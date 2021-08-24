@@ -83,7 +83,9 @@ public class LexiqueController {
                 lexiq.setHaschild(false);
             lexiq.setVersionLexique(vl);
             lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-            lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId())));
+            if(l.getClassificationId() != null){
+                lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId())));
+            }
             lexiqueService.add(lexiq);
         }
         vl = versionLexiqueService.findById(vl.getId());
