@@ -184,15 +184,20 @@ public class VisiteController {
         log.info("Liste des visites en cours ---");
         Long orgId = SessionData.getOrganisationId(request);
         Page<Visite> resultPage = vs.enCoursVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
+        log.info("après la requete utilisant le service visite que récupère la page ---"+page);
         List<Listview> listVisit = new ArrayList<>();
         resultPage.forEach(visite -> {
+            log.info("construction de la listview ---"+visite.getIdVisite());
+
             listVisit.add(buildListView(visite, vs, gieglanFileService,catSer, ps));
         });
 
         //convert list to page for applying hatoas
+        log.info("------------Avant le hatoas ");
         Page<Listview> pages = new PageImpl<Listview>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), vs.enCoursVisitList(orgId).size());
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
+        log.info("**************après le hatoas ");
         orgId = null;
         resultPage=null;
         pages=null;
