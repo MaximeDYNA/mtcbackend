@@ -322,7 +322,7 @@ public class VisiteController {
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
         for (Visite visite : vs.listParStatus(0)) {
-            Listview lv = new Listview(visite.getIdVisite(), vs,gieglanFileService,catSer);
+            Listview lv = new Listview(visite, vs,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                     .getNumImmatriculation()));
 
@@ -435,9 +435,8 @@ public class VisiteController {
     public static Listview buildListView(Visite visite, VisiteService vs,
                                  GieglanFileService gieglanFileService,
                                  CategorieTestVehiculeService catSer, ProduitService ps ){
-        Listview v = new Listview(visite.getIdVisite(), vs, gieglanFileService,catSer);
-        v.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                .getNumImmatriculation()));
+        Listview v = new Listview(visite, vs, gieglanFileService,catSer);
+        v.setCategorie(visite.getCarteGrise().getProduit());
 
         if (visite.getCarteGrise().getProprietaireVehicule()
                 .getPartenaire()
