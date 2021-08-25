@@ -192,15 +192,17 @@
             <td style=" width: 50%; border: 1px solid black;" rowspan="2">
                 <div th:style="${v.process.status} ? 'width:90%; height: 610px; padding: 4px;' : 'width:90%; height: 500px; padding: 4px; '">
                     <div th:if="${#lists.size(majorDefault)} != 0">
-                        <h6 class="font-weight-bold">
-                            <p>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
-                                DEFECTS SUBJECT TO COUNTER INSPECTION</p>
-                        </h6>
-                        <ol class="text-left font-weight-bold">
-                            <li th:each="lexique : ${majorDefault}">
-                                <span style="color: gray;" th:text="${lexique.libelle}"></span>
-                            </li>
-                        </ol>
+                        <div style="font-weight: bold; font-size: 14px;">
+                            <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
+                                DEFECTS SUBJECT TO COUNTER INSPECTION</span>
+                        </div>
+                        <div style="height:100px; text-overflow: ellipsis;">
+                            <ol class="text-left font-weight-bold">
+                                <li th:each="lexique : ${majorDefault}">
+                                    <span style="color: gray;" th:text="${lexique.libelle}"></span>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                     <div th:if="${#lists.size(minorDefault)} != 0">
                         <h6 class="font-weight-bold">
