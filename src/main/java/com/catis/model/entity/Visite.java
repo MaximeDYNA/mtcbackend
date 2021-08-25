@@ -47,7 +47,7 @@ public class Visite extends JournalData {
     @ManyToOne
     private Caissier caissier;
 
-    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Inspection inspection;
 
