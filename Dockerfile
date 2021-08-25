@@ -1,5 +1,4 @@
 FROM openjdk:8-jdk-alpine
-RUN apk add --update ttf-dejavu && rm -rf /var/cache/apk/*
 WORKDIR /usr/app
 VOLUME /opt
 WORKDIR /usr/app
