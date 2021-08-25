@@ -209,11 +209,13 @@
                             <p>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p>
                         </h6>
-                        <ol class="text-left font-weight-bold">
-                            <li th:each="lexique : ${minorDefault}">
-                                <span style="color: gray;" th:text="${lexique.libelle}"> </span>
-                            </li>
-                        </ol>
+                        <div style="height:100px; text-overflow: ellipsis;">
+                            <ol class="text-left font-weight-bold">
+                                <li th:each="lexique : ${minorDefault}">
+                                    <span style="color: gray;" th:text="${lexique.libelle}"> </span>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                     <span>	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
                     <h2

@@ -212,7 +212,7 @@ public class VisiteService {
     }
 
     public boolean visiteEncours(String imCha, Long organisationId) {
-        return !visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(imCha, imCha, organisationId)
+        return !visiteRepository.findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(imCha, imCha, organisationId)
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
                 .isEmpty();
     }
