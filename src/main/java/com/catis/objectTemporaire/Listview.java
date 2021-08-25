@@ -36,6 +36,8 @@ public class Listview {
     private Long inspection;
     private VerbalProcess process;
     private CarteGrise carteGrise;
+    @JsonIgnore
+    private Visite vis;
     //private Control control;
     private int isConform;
     private List<GieglanFileIcon> measures = new ArrayList<>();
@@ -52,10 +54,10 @@ public class Listview {
 
 
     }
-    public Listview(Long id, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
+    public Listview(Visite v, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         super();
-        this.id = id;
-        Visite v = visiteService.findById(id);
+        this.id = v.getIdVisite();
+        this.vis=v;
         this.statut="";
         this.statutVisite = v.getStatut();
         this.chassis = (v.getCarteGrise().getVehicule()==null
@@ -84,17 +86,16 @@ public class Listview {
 
 
     public void manageColor() {
-        Visite visite = visiteService.findById(this.id);
 
-        if (visite.isContreVisite()) {
 
-            Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(visite);
+        if (this.vis.isContreVisite()) {
 
-            GieglanFileIcon gfi;
+            Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
+
             for(GieglanFile g: visiteWithMissedTests
                     .getInspection().getGieglanFiles()){
 
-                    gfi = new GieglanFileIcon();
+                GieglanFileIcon gfi = new GieglanFileIcon();
                     gfi.setExtension(g.getCategorieTest().getLibelle());
                     gfi.setIcon(g.getCategorieTest().getIcon());
                     this.testAttendus.add(g.getCategorieTest());
@@ -102,9 +103,9 @@ public class Listview {
                 }
         } else {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
-            GieglanFileIcon gfi;
 
-            Set<CategorieTestVehicule> integersSet = new LinkedHashSet<CategorieTestVehicule>(visite
+
+            Set<CategorieTestVehicule> integersSet = new LinkedHashSet<CategorieTestVehicule>(this.vis
                     .getCarteGrise()
                     .getProduit()
                     .getCategorieVehicule()
@@ -113,22 +114,12 @@ public class Listview {
             list.sort((CategorieTestVehicule s1, CategorieTestVehicule s2)->s1.getId().compareTo(s2.getId()));
 
             for(CategorieTestVehicule c : list ){
-                gfi = new GieglanFileIcon();
+                GieglanFileIcon gfi = new GieglanFileIcon();
                 gfi.setExtension(c.getCategorieTest().getLibelle());
                 gfi.setIcon(c.getCategorieTest().getIcon());
                 this.testAttendus.add(c.getCategorieTest());
                 categorieTests.add(gfi);
             }
-            /*visite
-                    .getCarteGrise()
-                    .getProduit()
-                    .getCategorieVehicule()
-                    .getCategorieTestVehicules()
-                    .forEach(
-                    categorieTestVehicule -> {
-                        categorieTests.se;
-                    }
-            );*/
             categorieTests.forEach(categorieTest -> {
                 this.measures.add(replaceIconIfNecessary(categorieTest, this.id));
             });
