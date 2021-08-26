@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import com.catis.Controller.configuration.SessionData;
@@ -53,6 +56,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.ListView;
@@ -120,12 +124,31 @@ public class VisiteController {
 
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
+    private static Logger LOGGER = LoggerFactory.getLogger(VisiteController.class);
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    @PostConstruct
+    public void init() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            executor.shutdown();
+            try {
+                executor.awaitTermination(1, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                LOGGER.error(e.toString());
+            }
+        }));
+    }
 
 
     @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter  subscribe(){
 
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        emitter.onCompletion(() -> LOGGER.info("SseEmitter is completed"));
+
+        emitter.onTimeout(() -> LOGGER.info("SseEmitter is timed out"));
+
+        emitter.onError((ex) -> LOGGER.info("SseEmitter got error:", ex));
         try{
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
@@ -136,30 +159,43 @@ public class VisiteController {
 
         return emitter;
     }
+    private static void sleep(int seconds, SseEmitter sseEmitter) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            sseEmitter.completeWithError(e);
+        }
+    }
     @GetMapping(value="/api/v1/all/dispatchedit",consumes = MediaType.ALL_VALUE)
     public static void  dispatchEdit(Visite visite, VisiteService vs,
                                      GieglanFileService gieglanFileService,
                                      CategorieTestVehiculeService catSer, ProduitService ps)  {
+        executor.execute(() -> {
+            for(SseEmitter emitter:emitters){
+                try{
+                    System.out.println("-----sse----");
+                    if(visite.getStatut()==1){
+                        emitter.send(SseEmitter.event().name("edit_visit").data(
+                                buildListView(visite, vs, gieglanFileService,catSer, ps)));
+                        sleep(1, emitter);
+                        emitter.send(SseEmitter.event().name("controleur_visit").data(visite));
+                    }
+                    else{
+                        Listview l = buildListView(visite, vs, gieglanFileService,catSer, ps);
+                        emitter.send(SseEmitter.event().name("edit_visit").data(l));
+                    }
 
-        for(SseEmitter emitter:emitters){
-            try{
-                System.out.println("-----sse----");
-                if(visite.getStatut()==1){
-                    emitter.send(SseEmitter.event().name("edit_visit").data(
-                            buildListView(visite, vs, gieglanFileService,catSer, ps)));
-                    emitter.send(SseEmitter.event().name("controleur_visit").data(visite));
+
+                }catch(IOException e){
+                    System.out.println("---SSE ERROR---");
+                    emitters.remove(emitter);
+                    emitter.completeWithError(e);
                 }
-                else{
-                    Listview l = buildListView(visite, vs, gieglanFileService,catSer, ps);
-                    emitter.send(SseEmitter.event().name("edit_visit").data(l));
-                }
-
-
-            }catch(IOException e){
-                System.out.println("---SSE ERROR---");
-                emitters.remove(emitter);
+                emitter.complete();
             }
-        }
+        });
+
     }
 
     //dispatching all event
