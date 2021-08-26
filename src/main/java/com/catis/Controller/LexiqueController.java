@@ -114,7 +114,7 @@ public class LexiqueController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
     }
 
-    @GetMapping(value = "/api/v1/all/lexiques/read")
+    @PostMapping(value = "/api/v1/all/lexiques/read")
     public ResponseEntity<Object> readLexiques(@RequestBody LexiqueAndCategorieDTO lexiqueAndCategorieDTO) {
 
         LexiqueChildDTO lexiqueChildDTO;
