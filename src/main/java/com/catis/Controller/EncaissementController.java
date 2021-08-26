@@ -85,12 +85,21 @@ public class EncaissementController {
 
             double taxedetail;
             /* ---------client------------ */
-            partenaire.setNom(encaissement.getNomclient());
-            partenaire.setTelephone(encaissement.getNumeroclient());
-            Client client =new Client();
-            client.setPartenaire(partenaire);
-            vente.setClient(encaissement.getClientId() == 0 ? client :
-                    clientService.findCustomerById(encaissement.getClientId()));
+            if(encaissement.getClientId()==0){
+                if(encaissement.getNomclient().equals("")){
+                    vente.setClient(null);
+                }
+                else{
+                    partenaire.setNom(encaissement.getNomclient());
+                    partenaire.setTelephone(encaissement.getNumeroclient());
+                    Client client =new Client();
+                    client.setPartenaire(partenaire);
+                    vente.setClient(client);
+                }
+
+            }
+            else
+                vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
             /*------------------------------*/
 
 
