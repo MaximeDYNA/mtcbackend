@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.catis.service.VisiteService;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class Listview {
 
     private Long id;
