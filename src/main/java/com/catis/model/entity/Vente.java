@@ -24,13 +24,13 @@ public class Vente extends JournalData {
     private double montantTotal;
     private double montantHT;
     private int statut;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Client client;
 
     @ManyToOne
     private Vendeur vendeur;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Contact contact;
 
     @OneToOne
