@@ -75,10 +75,6 @@ public class EncaissementController {
 
             OperationCaisse op = new OperationCaisse();
             Vente vente = new Vente();
-
-            DetailVente detailVente;
-            Produit produit;
-            CarteGrise carteGrise;
             Partenaire partenaire = new Partenaire();
             Partenaire partenaire2 = new Partenaire();
 
@@ -95,7 +91,6 @@ public class EncaissementController {
                     client.setPartenaire(partenaire);
                     vente.setClient(client);
                 }
-
             }
             else
                 vente.setClient(clientService.findCustomerById(encaissement.getClientId()));
@@ -118,18 +113,14 @@ public class EncaissementController {
             /* ---------vente------------ */
             vente.setMontantTotal(encaissement.getMontantTotal());
             vente.setMontantHT(encaissement.getMontantHT());
-            /* -------------------------- */
-
-            /* ---------vente------------ */
             vente.setNumFacture(venteService.genererNumFacture());
             /* -------------------------- */
             Visite visite;
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
-                detailVente = new DetailVente();
+                DetailVente detailVente = new DetailVente();
 
-
-                produit = produitService.findById(posale.getProduit().getProduitId());
-                carteGrise = new CarteGrise();
+                Produit produit = produitService.findById(posale.getProduit().getProduitId());
+                CarteGrise carteGrise = new CarteGrise();
 
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
@@ -140,9 +131,19 @@ public class EncaissementController {
                     if (encaissement.getClientId() != 0)
                         carteGrise.setProprietaireVehicule(
                                 pvs.addClientToProprietaire(clientService.findCustomerById(encaissement.getClientId())));
-                    else
-                        carteGrise.setProprietaireVehicule(
-                                pvs.addContactToProprietaire(contactService.findById(encaissement.getContactId())));
+                    else{
+                        if(encaissement.getContactId() == 0){
+                            ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
+                            proprietaireVehicule.setPartenaire(contact.getPartenaire());
+                            carteGrise.setProprietaireVehicule(proprietaireVehicule);
+                        }
+                        else{
+                            carteGrise.setProprietaireVehicule(
+                                    pvs.addContactToProprietaire(contactService.findById(encaissement.getContactId())));
+                        }
+
+                    }
+
                     carteGrise.setNumImmatriculation(posale.getReference());
                     carteGrise.setProduit(produit);
                     carteGrise.setOrganisation(organisation);
