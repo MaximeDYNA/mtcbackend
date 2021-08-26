@@ -81,6 +81,7 @@ public class EncaissementController {
             Produit produit;
             CarteGrise carteGrise;
             Partenaire partenaire = new Partenaire();
+            Partenaire partenaire2 = new Partenaire();
 
             double taxedetail;
             /* ---------client------------ */
@@ -94,10 +95,10 @@ public class EncaissementController {
 
 
             /* ---------Contact------------ */
-            partenaire.setNom(encaissement.getNomcontacts());
-            partenaire.setTelephone(encaissement.getNumerocontacts());
+            partenaire2.setNom(encaissement.getNomcontacts());
+            partenaire2.setTelephone(encaissement.getNumerocontacts());
             Contact contact =new Contact();
-            contact.setPartenaire(partenaire);
+            contact.setPartenaire(partenaire2);
 
             vente.setContact(encaissement.getContactId() == 0 ? contact : contactService.findById(encaissement.getContactId()));
             /*------------------------------*/
