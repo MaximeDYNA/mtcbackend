@@ -35,6 +35,10 @@ public class LexiqueService {
         return lexiqueRepository.findByVersionLexique_id(versionLexiqueId);
     }
 
+    public List<Lexique> findByVersionLexiqueAndCategorie(Long versionLexiqueId, Long categorie) {
+        return lexiqueRepository.findByVersionLexique_idAndCategorieVehicule_Id(versionLexiqueId, categorie);
+    }
+
     public Lexique editLexiqueByCode(Lexique lexique){
         Lexique lexique1 = lexiqueRepository.findByCode(lexique.getCode());
         if(lexique1 !=null){

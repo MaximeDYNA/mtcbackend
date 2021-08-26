@@ -75,9 +75,8 @@ public class LigneController {
             LOGGER.trace("liste des vehicules par ligne");
 
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
-            VehiculeByLineDTO v;
             for (CarteGrise cg : cgService.findByLigne(id)) {
-                v = new VehiculeByLineDTO();
+                VehiculeByLineDTO v = new VehiculeByLineDTO();
                 v.setCarteGriseId(cg.getCarteGriseId());
 
                 v.setIdInspection(inspectionService.findLastByRef(cg.getNumImmatriculation() == null ?

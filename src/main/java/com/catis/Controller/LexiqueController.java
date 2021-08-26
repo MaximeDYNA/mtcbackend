@@ -5,25 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.catis.objectTemporaire.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.catis.Controller.message.Message;
 import com.catis.model.entity.Client;
 import com.catis.model.entity.Lexique;
 import com.catis.model.entity.VersionLexique;
-import com.catis.objectTemporaire.LexiqueChildDTO;
-import com.catis.objectTemporaire.LexiqueDTO;
-import com.catis.objectTemporaire.LexiquePOJO;
-import com.catis.objectTemporaire.LexiqueReceived;
 import com.catis.service.CategorieVehiculeService;
 import com.catis.service.ClassificationService;
 import com.catis.service.ClientService;
@@ -122,21 +114,19 @@ public class LexiqueController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Lexique", list);
     }
 
-    @GetMapping(value = "/api/v1/all/lexiques/read/{id}")
-    public ResponseEntity<Object> readLexiques(@PathVariable Long id) {
+    @GetMapping(value = "/api/v1/all/lexiques/read")
+    public ResponseEntity<Object> readLexiques(@RequestBody LexiqueAndCategorieDTO lexiqueAndCategorieDTO) {
 
-        LexiqueDTO lexiqueDTO;
         LexiqueChildDTO lexiqueChildDTO;
         List<LexiqueDTO> parents = new ArrayList<>();
-        List<LexiqueChildDTO> children;
 
-        for (Lexique l : lexiqueService.findByVersionLexique(id)) {
+        for (Lexique l : lexiqueService.findByVersionLexiqueAndCategorie(lexiqueAndCategorieDTO.getVersion(), lexiqueAndCategorieDTO.type)) {
             //le code recupère uniquement les parents et leurs enfants
             if (l.getParent() == null) {
-                lexiqueDTO = new LexiqueDTO();
+                LexiqueDTO lexiqueDTO = new LexiqueDTO();
                 lexiqueDTO.setId(l.getId());
                 lexiqueDTO.setName(l.getCode() + " :" + l.getLibelle());
-                children = new ArrayList<>();
+                List<LexiqueChildDTO>  children = new ArrayList<>();
                 for (Lexique child : l.getChilds()) {
                     lexiqueChildDTO = new LexiqueChildDTO();
                     lexiqueChildDTO.setId(child.getId());
