@@ -181,13 +181,13 @@ public class EncaissementController {
             op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
-            /* -------------------------- */
+            /* --------------------------
             if (op.getMontant() > 0) {
                 if (encaissement.getContactId() != 0)
                     ocs.addOperationCaisse(op);
                 else
                     throw new ContactVideException("Erreur : Veuillez renseigner le contact");
-            }
+            }*/
 
             EncaissementResponse e = new EncaissementResponse(op,
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
