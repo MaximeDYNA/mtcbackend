@@ -69,11 +69,10 @@ public class EncaissementController {
 
     @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
-    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement)
-             {
+    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
         Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
         Organisation organisation = os.findByOrganisationId(orgId);
-        try {
+
             OperationCaisse op = new OperationCaisse();
             Vente vente = new Vente();
 
@@ -194,10 +193,10 @@ public class EncaissementController {
             op = null;
             Message msg = msgRepo.findByCode("EN001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-        } catch (Exception e) {
+           /*      try { } catch (Exception e) {
             Message msg = msgRepo.findByCode("EN002");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-        }
+        }*/
 
 
     }
