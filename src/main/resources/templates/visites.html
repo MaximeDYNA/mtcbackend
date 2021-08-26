@@ -192,12 +192,11 @@
             <td style=" width: 50%; border: 1px solid black;" rowspan="2">
                 <div th:style="${v.process.status} ? 'width:90%; height: 610px; padding: 4px' : 'width:90%; height: 470px; padding: 4px'">
                     <div th:if="${#lists.size(majorDefault)} != 0">
-                        <div style="font-weight: bold; font-size: 14px;">
+                        <div style="font-weight: bold; font-size: 10px;
+                                height:70px; text-overflow: ellipsis;">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
-                        </div>
-                        <div style="height:70px; text-overflow: ellipsis;">
-                            <ol class="text-left font-weight-bold">
+                            <ol>
                                 <li th:each="lexique : ${majorDefault}">
                                     <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                 </li>
@@ -205,11 +204,10 @@
                         </div>
                     </div>
                     <div th:if="${#lists.size(minorDefault)} != 0">
-                        <h6 class="font-weight-bold">
-                            <p>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
-                                DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p>
-                        </h6>
-                        <div style="height:70px; text-overflow: ellipsis;">
+                        <div style="font-weight: bold; font-size: 10px;
+                                height:70px; text-overflow: ellipsis;">
+                            <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
+                                DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
                                 <li th:each="lexique : ${minorDefault}">
                                     <span style="color: gray;" th:text="${lexique.libelle}"> </span>
@@ -543,7 +541,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr valign="top">
             <td style="border-bottom: none; border-left: none; border-right: none">
                 <div class="container">
                     <div class="row">
