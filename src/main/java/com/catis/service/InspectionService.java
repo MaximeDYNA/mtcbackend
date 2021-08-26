@@ -66,7 +66,7 @@ public class InspectionService {
         inspection.setVisite(visiteService.add(visite));
         inspection = inspectionR.save(inspection);
 
-        VisiteController.dispatchEdit(visite, visiteService, gieglanFileService, cat, ps);
+        //VisiteController.dispatchEdit(visite, visiteService, gieglanFileService, cat, ps);
         return inspection;
 
     }
