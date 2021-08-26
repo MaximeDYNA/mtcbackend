@@ -80,21 +80,26 @@ public class EncaissementController {
             DetailVente detailVente;
             Produit produit;
             CarteGrise carteGrise;
+            Partenaire partenaire = new Partenaire();
 
             double taxedetail;
             /* ---------client------------ */
-            vente.setClient(encaissement.getClientId() == 0 ? null :
+            partenaire.setNom(encaissement.getNomclient());
+            partenaire.setTelephone(encaissement.getNumeroclient());
+            Client client =new Client();
+            client.setPartenaire(partenaire);
+            vente.setClient(encaissement.getClientId() == 0 ? client :
                     clientService.findCustomerById(encaissement.getClientId()));
             /*------------------------------*/
 
-            /* ---------Vendeur------------ */
-
-            vente.setVendeur(encaissement.getVendeurId() == 0 ? null :
-                    vendeurService.findVendeurById(encaissement.getVendeurId()));
-            /*------------------------------*/
 
             /* ---------Contact------------ */
-            vente.setContact(encaissement.getContactId() == 0 ? null : contactService.findById(encaissement.getContactId()));
+            partenaire.setNom(encaissement.getNomcontacts());
+            partenaire.setTelephone(encaissement.getNumerocontacts());
+            Contact contact =new Contact();
+            contact.setPartenaire(partenaire);
+
+            vente.setContact(encaissement.getContactId() == 0 ? contact : contactService.findById(encaissement.getContactId()));
             /*------------------------------*/
 
             /* ---------Session Caisse------------ */

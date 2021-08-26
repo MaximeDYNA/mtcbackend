@@ -47,7 +47,7 @@ public class KeycloakService {
         UserResource userResource;
         String userRole;
 
-        ClientRepresentation clientRepresentation = keycloak.realm(realm).clients() //
+        ClientRepresentation clientRepresentation = keycloak.realm(realm).clients()
                 .findByClientId(env.getProperty("keycloak.resource")).get(0);
 
 

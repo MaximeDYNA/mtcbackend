@@ -12,6 +12,10 @@ public class Encaissement {
     private double montantEncaisse;
     private double montantHT;
     private String numeroTicket;
+    private String nomclient;
+    private String numeroclient;
+    private String nomcontacts;
+    private String numerocontacts;
     private long sessionCaisseId;
     private String lang;
     private List<ProduitVue> produitVue;
@@ -130,5 +134,35 @@ public class Encaissement {
         this.lang = lang;
     }
 
+    public String getNomclient() {
+        return nomclient;
+    }
 
+    public void setNomclient(String nomclient) {
+        this.nomclient = nomclient;
+    }
+
+    public String getNumeroclient() {
+        return numeroclient;
+    }
+
+    public void setNumeroclient(String numeroclient) {
+        this.numeroclient = numeroclient;
+    }
+
+    public String getNomcontacts() {
+        return nomcontacts;
+    }
+
+    public void setNomcontacts(String nomcontacts) {
+        this.nomcontacts = nomcontacts;
+    }
+
+    public String getNumerocontacts() {
+        return numerocontacts;
+    }
+
+    public void setNumerocontacts(String numerocontacts) {
+        this.numerocontacts = numerocontacts;
+    }
 }
