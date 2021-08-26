@@ -122,7 +122,7 @@ public class VisiteController {
 
 
 
-    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter  subscribe(){
 
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -160,7 +160,7 @@ public class VisiteController {
                 emitters.remove(emitter);
             }
         }
-    }*/
+    }
 
     //dispatching all event
     @PostMapping(value = "/api/v1/dispatchevent")
@@ -414,8 +414,8 @@ public class VisiteController {
 
             visite = vs.add(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        /*VisiteController.dispatchEdit(visite,
-                vs, gieglanFileService, catSer, ps);*/
+        VisiteController.dispatchEdit(visite,
+                vs, gieglanFileService, catSer, ps);
         f = null;
             return "/public/pv/"+visiteId+".pdf";
         /*try {} catch (Exception e) {
