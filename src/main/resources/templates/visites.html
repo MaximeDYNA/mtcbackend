@@ -190,13 +190,13 @@
         </tr>
         <tr>
             <td style=" width: 50%; border: 1px solid black;" rowspan="2">
-                <div th:style="${v.process.status} ? 'width:90%; height: 610px; padding: 4px;' : 'width:90%; height: 470px; padding: 4px; '">
+                <div th:style="${v.process.status} ? 'width:90%; height: 610px;' : 'width:90%; height: 470px;'">
                     <div th:if="${#lists.size(majorDefault)} != 0">
-                        <div style="font-weight: bold; font-size: 14px;">
+                        <div style="background-color: red; font-weight: bold; font-size: 14px;">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                         </div>
-                        <div style="height:100px; text-overflow: ellipsis;">
+                        <div style="height:70px; text-overflow: ellipsis;">
                             <ol class="text-left font-weight-bold">
                                 <li th:each="lexique : ${majorDefault}">
                                     <span style="color: gray;" th:text="${lexique.libelle}"></span>
@@ -209,7 +209,7 @@
                             <p>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</p>
                         </h6>
-                        <div style="height:100px; text-overflow: ellipsis;">
+                        <div style="height:70px; text-overflow: ellipsis;">
                             <ol class="text-left font-weight-bold">
                                 <li th:each="lexique : ${minorDefault}">
                                     <span style="color: gray;" th:text="${lexique.libelle}"> </span>
