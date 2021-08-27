@@ -29,6 +29,7 @@ import com.catis.model.control.Control.StatusType;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -221,6 +222,7 @@ public class VisiteService {
 
         return visiteEnCours;
     }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Page<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
         Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
 
