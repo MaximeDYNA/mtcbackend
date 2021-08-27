@@ -229,21 +229,16 @@ public class VisiteService {
         return visiteEnCours;
     }
     public Page<Visite> endedVisitList(Long orgId, Pageable pageable){
-
         Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
-
         return visiteEnCours;
     }
 
     public List<Visite> endedVisitList(Long orgId){
-
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
-
         return visiteEnCours;
     }
     public List<Visite> enCoursVisitListForContext(Long orgId) {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
-
         return visiteEnCours;
     }
     public List<Visite> AllVisitList(Long orgId) {
@@ -260,9 +255,7 @@ public class VisiteService {
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
         VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
-
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-
     }
 
     public List<Visite> listParStatus(int status) {
