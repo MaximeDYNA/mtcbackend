@@ -91,7 +91,7 @@ public class Listview {
         if (this.vis.isContreVisite()) {
 
             Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
-
+            System.out.println("Missed tests size :"+visiteWithMissedTests.getInspection().getGieglanFiles().size());
             for(GieglanFile g: visiteWithMissedTests
                     .getInspection().getGieglanFiles()){
 
