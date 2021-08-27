@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.transaction.Transactional;
 
+import com.catis.model.entity.Visite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -75,6 +76,10 @@ public class GieglanFileService {
         });
 
         return codeGieglans;
+    }
+
+    public List<GieglanFile> getGieglanFileFailed(Visite v) {
+        return gieglanFileRepository.getGieglanFileFailed(v.getControl(), v);
     }
 
     /**
