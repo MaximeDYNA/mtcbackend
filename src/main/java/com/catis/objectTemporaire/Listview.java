@@ -96,10 +96,12 @@ public class Listview {
                     .getInspection().getGieglanFiles()){
 
                 GieglanFileIcon gfi = new GieglanFileIcon();
-                    gfi.setExtension(g.getCategorieTest().getLibelle());
-                    gfi.setIcon(g.getCategorieTest().getIcon());
-                    this.testAttendus.add(g.getCategorieTest());
-                    this.measures.add(replaceIconIfNecessary(gfi, this.id));
+                    if(g.getType()!=GieglanFile.FileType.CARD_REGISTRATION){
+                        gfi.setExtension(g.getCategorieTest().getLibelle());
+                        gfi.setIcon(g.getCategorieTest().getIcon());
+                        this.testAttendus.add(g.getCategorieTest());
+                        this.measures.add(replaceIconIfNecessary(gfi, this.id));
+                    }
                 }
         } else {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
