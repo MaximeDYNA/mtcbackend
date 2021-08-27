@@ -90,10 +90,11 @@ public class Listview {
 
         if (this.vis.isContreVisite()) {
 
-            Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
-            System.out.println("visite id: "+visiteWithMissedTests.getIdVisite()+ "    Missed tests size :"+visiteWithMissedTests.getInspection().getGieglanFiles().size());
-            for(GieglanFile g: visiteWithMissedTests
-                    .getInspection().getGieglanFiles()){
+            //Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
+            List<GieglanFile> files = gieglanFileService.getGieglanFileFailed(vis);
+            System.out.println("Missed tests size : "+files.size());
+
+            for(GieglanFile g: files){
 
                 GieglanFileIcon gfi = new GieglanFileIcon();
                     if(g.getType()!=GieglanFile.FileType.CARD_REGISTRATION){
