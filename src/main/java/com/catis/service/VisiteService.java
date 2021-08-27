@@ -75,7 +75,7 @@ public class VisiteService {
     public List<Visite> findbyProduit(Produit produit){
         return visiteRepository.findByActiveStatusTrueAndCarteGriseProduit(produit);
     }
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public Visite visiteWithLastMissedTests(Visite visite){
         List <Visite> v = visiteRepository
             .getBeforeLastVisite(visite.getControl(), visite, PageRequest.of(0,1));
