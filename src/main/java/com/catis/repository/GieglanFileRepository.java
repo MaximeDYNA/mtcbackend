@@ -19,7 +19,7 @@ public interface GieglanFileRepository extends CrudRepository<GieglanFile, Long>
 
     @Query(value = "select g from GieglanFile g join g.inspection i "
             + "join i.visite v where v.control = ?1  and v <> ?2 "
-            + "and f.isAccept = 0 and f.type = 'MEASURE' and f.status = 'VALIDATED' "
+            + "and g.isAccept = 0 and g.type = 'MEASURE' and g.status = 'VALIDATED' "
             + "order by v.idVisite desc"
     )
     List<GieglanFile> getGieglanFileFailed(Control control, Visite visite);
