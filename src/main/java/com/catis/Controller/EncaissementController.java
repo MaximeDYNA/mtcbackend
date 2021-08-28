@@ -116,6 +116,8 @@ public class EncaissementController {
             vente.setNumFacture(venteService.genererNumFacture());
             /* -------------------------- */
             Visite visite;
+            ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
+            proprietaireVehicule.setPartenaire(contact.getPartenaire());
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 DetailVente detailVente = new DetailVente();
 
@@ -133,8 +135,7 @@ public class EncaissementController {
                                 pvs.addClientToProprietaire(clientService.findCustomerById(encaissement.getClientId())));
                     else{
                         if(encaissement.getContactId() == 0){
-                            ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
-                            proprietaireVehicule.setPartenaire(contact.getPartenaire());
+
                             carteGrise.setProprietaireVehicule(proprietaireVehicule);
                         }
                         else{
