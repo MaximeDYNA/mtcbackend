@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class OpenAlprService {
 
-
+    @Autowired
     private WebClient.Builder webClient;
 
 
