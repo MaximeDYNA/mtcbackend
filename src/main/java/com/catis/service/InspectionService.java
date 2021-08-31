@@ -3,6 +3,7 @@ package com.catis.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.catis.Controller.VisiteController;
@@ -59,14 +60,14 @@ public class InspectionService {
 
         System.out.println("id visite " + id + " signature " + signature);
         Inspection inspection = findInspectionByVisite(id);
+        inspection.setDateFin(new Date());
         inspection.setSignature(signature);
-        Visite visite = visiteService.findById(id);
-        visite.setStatut(4);
+        inspection.getVisite().setStatut(4);
         inspection.setControleur(controleur);
-        inspection.setVisite(visiteService.add(visite));
+
         inspection = inspectionR.save(inspection);
 
-        VisiteController.dispatchEdit(visite, visiteService, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat, ps);
         return inspection;
 
     }

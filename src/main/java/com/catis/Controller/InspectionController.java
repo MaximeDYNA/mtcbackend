@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.lang.invoke.WrongMethodTypeException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.catis.Controller.exception.WrongConfigurationException;
 import com.catis.model.entity.Utilisateur;
@@ -67,16 +69,18 @@ public class InspectionController {
 
 
         LOGGER.trace("Nouvelle inpection...");
+
         Inspection inspection = new Inspection(inspectionReceived);
         inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
         inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
         inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
         inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
+        inspection.setDateDebut(new Date());
         Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
         if(visite.getInspection() != null)
             throw new Exception("Une inspection est déjà en cours pour cette visite");
         inspection.setVisite(visite);
-        visiteService.commencerInspection(inspectionReceived.getVisiteId());
+        visiteService.commencerInspection(visite);
 
         inspection = inspectionService.addInspection(inspection);
 
@@ -127,7 +131,10 @@ public class InspectionController {
 
             UserDTO userDTO = UserInfoIn.getUserInfo(request);
             Utilisateur u =utilisateurService.findUtilisateurByKeycloakId(userDTO.getId());
-            Inspection inspection = inspectionService.setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId() + ".png", u.getControleur());
+
+            Inspection inspection = inspectionService
+                    .setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId()
+                            + ".png", u.getControleur());
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", inspection);
 

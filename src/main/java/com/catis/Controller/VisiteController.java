@@ -47,6 +47,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -71,6 +72,8 @@ public class VisiteController {
     @Autowired
     private OrganisationService os;
 
+    @Autowired
+    private OpenAlprService openAlprService;
     @Autowired
     MessageRepository messageRepository;
 
@@ -603,16 +606,15 @@ public class VisiteController {
                         .toInstant());
     }
 
-    @PostMapping(path = "/api/v1/visite/conformity/{Id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/api/v1/visite/conformity/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object checkCconformity(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestParam("files") MultipartFile[] files,
             @RequestParam("data") String data
     )  throws JsonProcessingException {
         //try {
             ObjectMapper objectMapper = new ObjectMapper();
             DataRapportDto dataRapportDto = objectMapper.readValue(data, DataRapportDto.class);
-            System.out.println("integer" + Id);
             List<String> fileNames = new ArrayList<>();
 
             Arrays.asList(files).stream().forEach(file -> {
@@ -621,12 +623,23 @@ public class VisiteController {
             });
 
             String endPoint = environment.getProperty("endpoint.check-conformity");
+
             HttpEntity<DataRapportDto> request = new HttpEntity<>(dataRapportDto);
+
             ResponseEntity<String> response = (new RestTemplate()).postForEntity(
-                    endPoint+Id,
+                    endPoint+id,
                     request,
                     String.class
             );
+            //Openaplr to know if the car is in the center
+            String uri = environment.getProperty("endpoint.openalpr") ;
+            String api_key = environment.getProperty("endpoint.openalpr.api.key") ;
+            Visite visite = visiteService.findById(id);
+            visite.getInspection().setDistancePercentage(
+                    openAlprService.getPresenceConfidence(uri,api_key,visite.getInspection())
+            );
+            visiteService.add(visite);
+
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", dataRapportDto);
 

@@ -275,9 +275,8 @@ public class VisiteService {
         }
         return kanBanSimpleDatas;
     }
-    public void commencerInspection(Long visiteId) throws IOException {
-        Visite visite = new Visite();
-        visite = visiteRepository.findById(visiteId).get();
+    public void commencerInspection(Visite visite) throws IOException {
+
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);

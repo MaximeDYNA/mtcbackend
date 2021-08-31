@@ -59,6 +59,8 @@ public class Inspection extends JournalData {
 
     private Long visiteIdReseted;
 
+    private double distancePercentage;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Controleur controleur;
 
@@ -245,5 +247,13 @@ public class Inspection extends JournalData {
 
     public void setVisibleToTab(boolean visibleToTab) {
         this.visibleToTab = visibleToTab;
+    }
+
+    public double getDistancePercentage() {
+        return distancePercentage;
+    }
+
+    public void setDistancePercentage(double distancePercentage) {
+        this.distancePercentage = distancePercentage;
     }
 }
