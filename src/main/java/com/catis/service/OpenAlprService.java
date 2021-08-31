@@ -30,6 +30,11 @@ public class OpenAlprService {
         System.err.println(builder.toUriString());
 
         RestTemplate restTemplate = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        restTemplate.setMessageConverters(messageConverters);
 
         ResponseEntity<List<OpenAlprResponseDTO>> response =
                 restTemplate.exchange(builder.toUriString(),
@@ -37,7 +42,7 @@ public class OpenAlprService {
                         });
 
         List<OpenAlprResponseDTO> cars = response.getBody();
-        
+
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), cars);
     }
 
