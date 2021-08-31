@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.Resource;
 
@@ -19,6 +20,12 @@ import javax.annotation.Resource;
 @SpringBootApplication
 @EnableAsync
 public class MtcApplication implements CommandLineRunner {
+
+
+    @Bean
+    public WebClient.Builder getwebClientBuilder(){
+        return WebClient.builder();
+    }
 
     @Resource
     FilesStorageService storageService;

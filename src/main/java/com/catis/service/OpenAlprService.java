@@ -3,18 +3,25 @@ package com.catis.service;
 import com.catis.model.entity.Inspection;
 import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 
 @Service
 public class OpenAlprService {
+
+
+    private WebClient.Builder webClient;
+
 
     public double getPresenceConfidence(String openalpruri, String apiKey, Inspection inspection){
         Calendar cal = Calendar.getInstance();
@@ -29,21 +36,16 @@ public class OpenAlprService {
 
         System.err.println(builder.toUriString());
 
-        RestTemplate restTemplate = new RestTemplate();
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
-        messageConverters.add(converter);
-        restTemplate.setMessageConverters(messageConverters);
+        Mono<List<OpenAlprResponseDTO>> response = webClient.build().get()
+                .uri(builder.toUriString())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<OpenAlprResponseDTO>>() {});
+        List<OpenAlprResponseDTO> openAlprResponseDTOS = response.block();
 
-        ResponseEntity<List<OpenAlprResponseDTO>> response =
-                restTemplate.exchange(builder.toUriString(),
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<OpenAlprResponseDTO>>() {
-                        });
 
-        List<OpenAlprResponseDTO> cars = response.getBody();
 
-        return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), cars);
+        return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
     }
 
     public double calculateMatchingPercentage(String ref, List<OpenAlprResponseDTO> cars){
