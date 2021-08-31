@@ -28,6 +28,7 @@ public class OpenAlprService {
                 .queryParam("start", oneHourBack )
                 .queryParam("end", inspection.getDateFin());
 
+        System.err.println(builder.toUriString());
         OpenAlprResponseList response = (new RestTemplate()).getForObject(
                 builder.toUriString(),
                 OpenAlprResponseList.class);
