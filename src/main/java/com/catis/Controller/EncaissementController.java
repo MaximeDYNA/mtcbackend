@@ -182,17 +182,12 @@ public class EncaissementController {
             op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
-            /* --------------------------
-            if (op.getMontant() > 0) {
-                if (encaissement.getContactId() != 0)
-                    ocs.addOperationCaisse(op);
-                else
-                    throw new ContactVideException("Erreur : Veuillez renseigner le contact");
-            }*/
+            op = ocs.addOperationCaisse(op);
+
 
             EncaissementResponse e = new EncaissementResponse(op,
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
-            op = null;
+
             Message msg = msgRepo.findByCode("EN001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
            /*      try { } catch (Exception e) {
