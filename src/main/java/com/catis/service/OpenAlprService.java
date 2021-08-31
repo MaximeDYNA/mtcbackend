@@ -30,9 +30,9 @@ public class OpenAlprService {
         System.err.println(builder.toUriString());
 
         RestTemplate restTemplate = new RestTemplate();
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
         messageConverters.add(converter);
         restTemplate.setMessageConverters(messageConverters);
 
