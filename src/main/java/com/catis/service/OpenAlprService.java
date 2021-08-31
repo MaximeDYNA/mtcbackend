@@ -38,7 +38,8 @@ public class OpenAlprService {
 
         Mono<List<OpenAlprResponseDTO>> response = webClient.build().get()
                 .uri(builder.toUriString())
-                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.ALL)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<OpenAlprResponseDTO>>() {});
         List<OpenAlprResponseDTO> openAlprResponseDTOS = response.block();
