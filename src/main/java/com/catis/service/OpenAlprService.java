@@ -5,14 +5,15 @@ import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OpenAlprService {
@@ -29,7 +30,18 @@ public class OpenAlprService {
                 .queryParam("end", inspection.getDateFin());
 
         System.err.println(builder.toUriString());
-        OpenAlprResponseList response = (new RestTemplate()).getForObject(
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+//Add the Jackson Message converter
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+
+// Note: here we are making this converter to process any kind of response,
+// not only application/*json, which is the default behaviour
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setMessageConverters(messageConverters);
+        OpenAlprResponseList response = restTemplate.getForObject(
                 builder.toUriString(),
                 OpenAlprResponseList.class);
 
