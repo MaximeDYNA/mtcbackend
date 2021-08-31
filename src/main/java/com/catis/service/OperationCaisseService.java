@@ -18,8 +18,8 @@ public class OperationCaisseService {
     @Autowired
     private OperationDeCaisseRepository operationCaisseRepository;
 
-    public void addOperationCaisse(OperationCaisse op) {
-        operationCaisseRepository.save(op);
+    public OperationCaisse addOperationCaisse(OperationCaisse op) {
+        return operationCaisseRepository.save(op);
     }
 
     public List<OperationCaisse> encaissementList(int type) {
