@@ -3,10 +3,8 @@ package com.catis.service;
 import com.catis.model.entity.Inspection;
 import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -31,21 +29,15 @@ public class OpenAlprService {
 
         System.err.println(builder.toUriString());
 
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-//Add the Jackson Message converter
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-
-// Note: here we are making this converter to process any kind of response,
-// not only application/*json, which is the default behaviour
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
-        messageConverters.add(converter);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setMessageConverters(messageConverters);
-        OpenAlprResponseList response = restTemplate.getForObject(
-                builder.toUriString(),
-                OpenAlprResponseList.class);
 
-        List<OpenAlprResponseDTO> cars = response.getOpenAlprResponseDTOList();
+        ResponseEntity<List<OpenAlprResponseDTO>> response =
+                restTemplate.exchange(builder.toUriString(),
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<OpenAlprResponseDTO>>() {
+                        });
+
+        List<OpenAlprResponseDTO> cars = response.getBody();
+        
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), cars);
     }
 
