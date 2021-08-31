@@ -23,7 +23,7 @@ public class MtcApplication implements CommandLineRunner {
 
 
     @Bean
-    public WebClient.Builder getwebClientBuilder(){
+    public WebClient.Builder webClientBuilder(){
         return WebClient.builder();
     }
 
