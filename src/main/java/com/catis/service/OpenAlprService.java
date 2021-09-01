@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -31,10 +32,14 @@ public class OpenAlprService {
         cal.add(Calendar.HOUR, -1);
         Date oneHourBack = cal.getTime();
 
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(openalpruri)
                 .queryParam("api_key", apiKey)
-                .queryParam("start", oneHourBack )
-                .queryParam("end", inspection.getDateFin());
+                .queryParam("start", sdf.format(oneHourBack))
+                .queryParam("end", sdf.format(inspection.getDateFin()));
 
         System.err.println(builder.toUriString());
 
