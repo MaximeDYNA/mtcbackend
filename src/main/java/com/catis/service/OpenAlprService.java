@@ -43,18 +43,18 @@ public class OpenAlprService {
 
         System.err.println(builder.toUriString());
 
-        Mono<String> response = webClient.build().get()
+        Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
                 .uri(builder.toUriString())
                 //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
                 .accept(MediaType.ALL)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
-                .bodyToMono(String.class);
+                .bodyToMono(OpenAlprResponseDTO[].class);
         System.out.println("--------------->"+ToStringBuilder.reflectionToString(response.block()));
-       // OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
+        OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
-        return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), null);
+        return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
     }
     private Mono<Throwable> handleErrors(ClientResponse response ){
         System.err.println("HTTP ERROR "+ response.statusCode());
