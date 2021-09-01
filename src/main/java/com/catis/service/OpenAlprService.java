@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -42,10 +43,17 @@ public class OpenAlprService {
                 //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
                 .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
+    }
+    private Mono<Throwable> handleErrors(ClientResponse response ){
+        return response.bodyToMono(String.class).flatMap(body -> {
+            System.err.println("HTTP ERROR "+ response.statusCode());
+            return Mono.error(new Exception());
+        });
     }
 
     public double calculateMatchingPercentage(String ref, OpenAlprResponseDTO[] cars){
