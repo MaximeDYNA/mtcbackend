@@ -51,7 +51,7 @@ public class OpenAlprService {
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
-        System.out.println(ToStringBuilder.reflectionToString(response));
+        System.out.println("--------------->"+ToStringBuilder.reflectionToString(response.block()));
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
