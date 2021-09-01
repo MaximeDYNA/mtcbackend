@@ -3,6 +3,7 @@ package com.catis.service;
 import com.catis.model.entity.Inspection;
 import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -38,9 +39,11 @@ public class OpenAlprService {
 
         Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
                 .uri(builder.toUriString())
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.ALL)
                 .retrieve()
-                .bodyToMono(OpenAlprResponseDTO[].class);
+                .bodyToMono(OpenAlprResponseDTO[].class)
+                .log();
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
