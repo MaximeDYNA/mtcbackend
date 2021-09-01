@@ -36,20 +36,17 @@ public class OpenAlprService {
 
         System.err.println(builder.toUriString());
 
-        Mono<List<OpenAlprResponseDTO>> response = webClient.build().get()
+        Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
                 .uri(builder.toUriString())
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.ALL)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<OpenAlprResponseDTO>>() {});
-        List<OpenAlprResponseDTO> openAlprResponseDTOS = response.block();
-
-
+                .bodyToMono(OpenAlprResponseDTO[].class);
+        OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
     }
 
-    public double calculateMatchingPercentage(String ref, List<OpenAlprResponseDTO> cars){
+    public double calculateMatchingPercentage(String ref, OpenAlprResponseDTO[] cars){
         double max =0;
         String lastSixDigits;
         if(ref.length() > 10){
