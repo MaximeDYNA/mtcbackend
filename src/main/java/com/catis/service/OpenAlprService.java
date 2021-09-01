@@ -41,10 +41,8 @@ public class OpenAlprService {
                 .uri(builder.toUriString())
                 //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
-                .accept(MediaType.ALL)
                 .retrieve()
-                .bodyToMono(OpenAlprResponseDTO[].class)
-                .log();
+                .bodyToMono(OpenAlprResponseDTO[].class);
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
