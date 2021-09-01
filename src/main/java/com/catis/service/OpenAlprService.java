@@ -51,7 +51,7 @@ public class OpenAlprService {
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
-        System.out.println("--------------->"+"Response length ***"+response.block().length);
+
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
@@ -75,9 +75,10 @@ public class OpenAlprService {
             lastSixDigits = ref;
         }
         for(OpenAlprResponseDTO openAlprResponseDTO : cars){
+            System.out.println("--------------->"+"plate in last hour: "+openAlprResponseDTO.getFields().getBest_plate());
             int distance = levenshteinDistance(lastSixDigits, openAlprResponseDTO.getFields().getBest_plate());
             int bigger = Math.max(lastSixDigits.length(), openAlprResponseDTO.getFields().getBest_plate().length());
-            if(max < (bigger - distance) / bigger){
+            if(max < (double)((bigger - distance)*100 / bigger)){
                 max = (bigger - distance)*100 / bigger;
                 System.out.println("---->"+max+" *****");
             }

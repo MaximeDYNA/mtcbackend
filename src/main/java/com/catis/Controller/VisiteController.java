@@ -606,6 +606,19 @@ public class VisiteController {
                         .toInstant());
     }
 
+    /*@PostMapping(path = "/public/test/{id}")
+    public void test(@PathVariable Long id){
+
+        String uri = environment.getProperty("endpoint.openalpr") ;
+        String api_key = environment.getProperty("endpoint.openalpr.api.key") ;
+        Visite visite = visiteService.findById(id);
+        double result = openAlprService.getPresenceConfidence(uri,api_key,visite.getInspection());
+        visite.getInspection().setDistancePercentage(
+                result
+        );
+        visiteService.add(visite);
+    }*/
+
     @PostMapping(path = "/api/v1/visite/conformity/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Object checkCconformity(
             @PathVariable Long id,
