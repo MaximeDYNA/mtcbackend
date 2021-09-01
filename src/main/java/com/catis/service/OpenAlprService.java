@@ -3,6 +3,7 @@ package com.catis.service;
 import com.catis.model.entity.Inspection;
 import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -50,6 +51,7 @@ public class OpenAlprService {
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
+        System.out.println(ToStringBuilder.reflectionToString(response));
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
 
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
