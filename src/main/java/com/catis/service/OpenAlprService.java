@@ -39,9 +39,9 @@ public class OpenAlprService {
 
         Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
                 .uri(builder.toUriString())
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
-                //.accept(MediaType.ALL)
+                .accept(MediaType.ALL)
                 .retrieve()
                 .bodyToMono(OpenAlprResponseDTO[].class)
                 .log();
