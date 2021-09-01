@@ -33,8 +33,7 @@ public class OpenAlprService {
         Date oneHourBack = cal.getTime();
 
         SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(openalpruri)
                 .queryParam("api_key", apiKey)
@@ -47,6 +46,7 @@ public class OpenAlprService {
                 .uri(builder.toUriString())
                 //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
+                .accept(MediaType.ALL)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
@@ -55,6 +55,7 @@ public class OpenAlprService {
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
     }
     private Mono<Throwable> handleErrors(ClientResponse response ){
+        System.err.println("HTTP ERROR "+ response.statusCode());
         return response.bodyToMono(String.class).flatMap(body -> {
             System.err.println("HTTP ERROR "+ response.statusCode());
             return Mono.error(new Exception());
