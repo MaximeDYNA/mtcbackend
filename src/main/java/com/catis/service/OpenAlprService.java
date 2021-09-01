@@ -78,7 +78,7 @@ public class OpenAlprService {
             int distance = levenshteinDistance(lastSixDigits, openAlprResponseDTO.getFields().getBest_plate());
             int bigger = Math.max(lastSixDigits.length(), openAlprResponseDTO.getFields().getBest_plate().length());
             if(max < (bigger - distance) / bigger){
-                max = (bigger - distance) / bigger;
+                max = (bigger - distance)*100 / bigger;
             }
         }
         return max;
