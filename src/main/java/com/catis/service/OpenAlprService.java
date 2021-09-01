@@ -40,6 +40,7 @@ public class OpenAlprService {
         Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
                 .uri(builder.toUriString())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.HOST, "135.125.244.28:8086")
                 .accept(MediaType.ALL)
                 .retrieve()
                 .bodyToMono(OpenAlprResponseDTO[].class)
