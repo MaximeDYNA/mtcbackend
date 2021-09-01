@@ -79,6 +79,7 @@ public class OpenAlprService {
             int bigger = Math.max(lastSixDigits.length(), openAlprResponseDTO.getFields().getBest_plate().length());
             if(max < (bigger - distance) / bigger){
                 max = (bigger - distance)*100 / bigger;
+                System.out.println("---->"+max+" *****");
             }
         }
         return max;
