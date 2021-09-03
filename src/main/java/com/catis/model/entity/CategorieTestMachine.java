@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -69,4 +70,33 @@ public class CategorieTestMachine extends JournalData {
         this.machine = machine;
     }
 
+    public Set<Pattern> getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(Set<Pattern> patterns) {
+        this.patterns = patterns;
+    }
+
+    public RapportMachine getRapportMachine() {
+        return rapportMachine;
+    }
+
+    public void setRapportMachine(RapportMachine rapportMachine) {
+        this.rapportMachine = rapportMachine;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategorieTestMachine)) return false;
+        CategorieTestMachine that = (CategorieTestMachine) o;
+        return Objects.equals(getIdCategorieTestMachine(), that.getIdCategorieTestMachine());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getIdCategorieTestMachine());
+    }
 }

@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -47,6 +48,17 @@ public class CategorieTestProduit extends JournalData {
     @JsonIgnore
     private Set<Mesure> mesures;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategorieTestProduit)) return false;
+        CategorieTestProduit that = (CategorieTestProduit) o;
+        return Objects.equals(getId(), that.getId());
+    }
 
+    @Override
+    public int hashCode() {
 
+        return Objects.hash(getId());
+    }
 }

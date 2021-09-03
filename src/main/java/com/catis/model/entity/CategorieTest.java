@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -119,4 +120,17 @@ public class CategorieTest extends JournalData {
         // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategorieTest)) return false;
+        CategorieTest that = (CategorieTest) o;
+        return Objects.equals(getIdCategorieTest(), that.getIdCategorieTest());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getIdCategorieTest());
+    }
 }

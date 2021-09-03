@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -101,6 +102,17 @@ public class Controleur extends JournalData {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Controleur)) return false;
+        Controleur that = (Controleur) o;
+        return Objects.equals(getIdControleur(), that.getIdControleur());
+    }
 
+    @Override
+    public int hashCode() {
 
+        return Objects.hash(getIdControleur());
+    }
 }

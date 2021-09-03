@@ -1,6 +1,7 @@
 package com.catis.model.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -71,5 +72,17 @@ public class Produit extends JournalData {
     private Set<Seuil> seuils = new HashSet<>();
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Produit)) return false;
+        Produit produit = (Produit) o;
+        return Objects.equals(getProduitId(), produit.getProduitId());
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getProduitId());
+    }
 }

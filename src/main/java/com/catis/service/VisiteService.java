@@ -79,40 +79,7 @@ public class VisiteService {
         return null;
     }
 
-    /*public Flux<ServerSentEvent<ResponseEntity<Object>>> refreshVisiteAfterAdd() {
 
-        log.info("Liste des visites en cours");
-        List<Listview> listVisit = new ArrayList<>();
-        for (Visite visite : enCoursVisitList()) {
-            Listview lv = new Listview(visite.getIdVisite());
-            lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                    .getNumImmatriculation()));
-
-            if (venteService.findByVisite(visite.getIdVisite())
-                    == null)
-                lv.setClient(null);
-            else
-                lv.setClient(venteService.findByVisite(visite.getIdVisite())
-                        .getClient()
-                        .getPartenaire()
-                        .getNom());
-            lv.setDate(visite.getDateDebut());
-            lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-            lv.setStatut(visite.statutRender(visite.getStatut()));
-            lv.setType(visite.typeRender());
-            listVisit.add(lv);
-
-
-        }
-        //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-        ResponseEntity<Object> o = ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
-        return processor
-                .map(sequence -> ServerSentEvent.<ResponseEntity<Object>>builder()
-                        .event("new_visit")
-                        .data(o)
-                        .build());
-
-    }*/
 
     public Visite add(Visite visite) {
         return visiteRepository.save(visite);

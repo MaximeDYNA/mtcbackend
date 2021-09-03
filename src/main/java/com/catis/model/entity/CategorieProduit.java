@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -77,4 +78,18 @@ public class CategorieProduit extends JournalData {
         this.produits = produits;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategorieProduit)) return false;
+        CategorieProduit that = (CategorieProduit) o;
+        return Objects.equals(getCategorieProduitId(), that.getCategorieProduitId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCategorieProduitId());
+    }
 }

@@ -14,6 +14,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
+import java.util.Objects;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_detailvente")
@@ -82,5 +84,19 @@ public class DetailVente extends JournalData {
 
     public void setPrix(double prix) {
         this.prix = prix;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DetailVente)) return false;
+        DetailVente that = (DetailVente) o;
+        return getIdDetailVente() == that.getIdDetailVente();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getIdDetailVente());
     }
 }
