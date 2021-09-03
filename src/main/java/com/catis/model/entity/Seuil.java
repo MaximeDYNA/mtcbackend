@@ -42,6 +42,7 @@ public class Seuil extends JournalData {
     private Formule formule;
 
     @ManyToMany(mappedBy = "seuils")
+    @JsonIgnore
     private Set<Produit> produits = new HashSet<>();
 
     public Seuil() {

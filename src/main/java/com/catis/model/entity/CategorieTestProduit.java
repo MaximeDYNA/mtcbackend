@@ -44,6 +44,7 @@ public class CategorieTestProduit extends JournalData {
     private Produit produit;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Mesure> mesures;
 
 

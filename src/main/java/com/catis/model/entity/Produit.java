@@ -67,6 +67,7 @@ public class Produit extends JournalData {
     private CategorieVehicule categorieVehicule;
 
     @ManyToMany
+    @JsonIgnore
     private Set<Seuil> seuils = new HashSet<>();
 
 
