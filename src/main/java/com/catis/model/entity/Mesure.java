@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,8 +42,10 @@ public class Mesure extends JournalData {
     private Formule formule;
 
     @ManyToMany(mappedBy = "mesures")
+    @JsonIgnore
     private Set<CategorieTestProduit> categorieTestProduits;
 
     @OneToMany(mappedBy = "mesure")
+    @JsonIgnore
     private List<ValeurTest> valeurTests = new ArrayList<>();
 }
