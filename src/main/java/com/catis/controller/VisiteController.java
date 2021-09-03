@@ -689,4 +689,34 @@ public class VisiteController {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VisiteController)) return false;
+        VisiteController that = (VisiteController) o;
+        return Objects.equals(environment, that.environment) &&
+                Objects.equals(request, that.request) &&
+                Objects.equals(visiteRepo, that.visiteRepo) &&
+                Objects.equals(openAlprService, that.openAlprService) &&
+                Objects.equals(messageRepository, that.messageRepository) &&
+                Objects.equals(rapportListService, that.rapportListService) &&
+                Objects.equals(pdfGenaratorUtil, that.pdfGenaratorUtil) &&
+                Objects.equals(visiteService, that.visiteService) &&
+                Objects.equals(rapportDeVisiteRepo, that.rapportDeVisiteRepo) &&
+                Objects.equals(mesureVisuelRepository, that.mesureVisuelRepository) &&
+                Objects.equals(venteService, that.venteService) &&
+                Objects.equals(taxeService, that.taxeService) &&
+                Objects.equals(storageService, that.storageService) &&
+                Objects.equals(ps, that.ps) &&
+                Objects.equals(gieglanFileService, that.gieglanFileService) &&
+                Objects.equals(catSer, that.catSer) &&
+                Objects.equals(applicationEventPublisher, that.applicationEventPublisher) &&
+                Objects.equals(pagedResourcesAssembler, that.pagedResourcesAssembler);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(environment, request, visiteRepo, openAlprService, messageRepository, rapportListService, pdfGenaratorUtil, visiteService, rapportDeVisiteRepo, mesureVisuelRepository, venteService, taxeService, storageService, ps, gieglanFileService, catSer, applicationEventPublisher, pagedResourcesAssembler);
+    }
 }
