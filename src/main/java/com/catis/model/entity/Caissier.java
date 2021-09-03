@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -117,5 +118,19 @@ public class Caissier extends JournalData {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Caissier)) return false;
+        Caissier caissier = (Caissier) o;
+        return Objects.equals(getCaissierId(), caissier.getCaissierId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCaissierId(), getCodeCaissier(), getNom(), getPartenaire(), getCaisse(), getUser(), getSessionCaisses());
     }
 }

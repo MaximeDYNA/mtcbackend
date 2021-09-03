@@ -1,6 +1,7 @@
 package com.catis.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -142,7 +143,7 @@ public class Organisation {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
-    private Set<CategorieTestVehicule> categorieTestVehicules;
+    private Set<CategorieTestProduit> categorieTestVehicules;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
@@ -730,11 +731,11 @@ public class Organisation {
         this.categorieTestMachines = categorieTestMachines;
     }
 
-    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+    public Set<CategorieTestProduit> getCategorieTestVehicules() {
         return categorieTestVehicules;
     }
 
-    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+    public void setCategorieTestVehicules(Set<CategorieTestProduit> categorieTestVehicules) {
         this.categorieTestVehicules = categorieTestVehicules;
     }
 
@@ -960,5 +961,19 @@ public class Organisation {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Organisation)) return false;
+        Organisation that = (Organisation) o;
+        return Objects.equals(getOrganisationId(), that.getOrganisationId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getOrganisationId(), getName(), getNom(), getAdress(), getTel1(), getTel2(), isParent(), getScore(), getModelVehicule(), getCaissier(), getControleur(), getLexiques(), getPatterns(), getPays(), getPosales(), getProduits(), getProprietaireVehicules(), getRapportDeVisites(), getRapportMachines(), getSessionCaisses(), getSeuils(), getStatutCodes(), getTaxes(), getTaxeProduits(), getDetailVentes(), getDivisionPays(), getEnergies(), getFormules(), getGieglanFiles(), getHolds(), getCategorieTestMachine(), getLigne(), getInspection(), getCategorieTestMachines(), getCategorieTestVehicules(), getCategorieVehicules(), getClassifications(), getClients(), getConstructors(), getConstructorModels(), getControls(), getCategorieProduits(), getCategorieTests(), getMachine(), getAdresse(), getMesure(), getVisite(), getMesureVisuels(), getOperationCaisses(), getModeleVehicules(), getValeurTests(), getPartenaires(), getCarteGrises(), getLigneMachine(), getMarqueVehicules(), getVehicules(), getProprietaireVehicule(), getUtilisateurs(), getChildOrganisations(), getVentes(), getVerbalProcesses(), getVersionLexiques(), getVisites(), getParentOrganisation(), getCaisses(), getVendeurs(), getCreatedDate(), getModifiedDate(), isActiveStatus(), getCreatedBy(), getModifiedBy(), getPatente(), getStatutJurique(), getNumeroDeContribuable(), getLang(), getRegion(), getDevise());
     }
 }

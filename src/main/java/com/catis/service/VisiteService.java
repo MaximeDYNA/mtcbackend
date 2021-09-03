@@ -23,8 +23,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.catis.Controller.VisiteController;
-import com.catis.Controller.exception.VisiteEnCoursException;
+import com.catis.controller.VisiteController;
+import com.catis.controller.exception.VisiteEnCoursException;
 import com.catis.model.control.Control.StatusType;
 import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
@@ -201,14 +201,14 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
         return v;
     }
 
@@ -254,7 +254,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
@@ -280,7 +280,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
 
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
@@ -386,7 +386,7 @@ public class VisiteService {
 
         Visite visite = event.getVisite();
         System.out.println("Visite test ---------"+ visite.getIdVisite());
-        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat, ps);
+        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat);
     }
 
 

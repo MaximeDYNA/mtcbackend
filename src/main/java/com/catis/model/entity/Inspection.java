@@ -1,9 +1,6 @@
 package com.catis.model.entity;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -255,5 +252,19 @@ public class Inspection extends JournalData {
 
     public void setDistancePercentage(double distancePercentage) {
         this.distancePercentage = distancePercentage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Inspection)) return false;
+        Inspection that = (Inspection) o;
+        return Objects.equals(getIdInspection(), that.getIdInspection());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getIdInspection(), getDateDebut(), getDateFin(), isVisibleToTab(), getSignature(), getProduit(), getKilometrage(), getChassis(), getEssieux(), getPosition(), getVisiteIdReseted(), getDistancePercentage(), getControleur(), getLigne(), getVisite(), getGieglanFiles(), getLexiques());
     }
 }

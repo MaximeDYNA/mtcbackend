@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import com.catis.model.control.Control;
 import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.service.CategorieTestVehiculeService;
@@ -12,7 +11,6 @@ import com.catis.service.GieglanFileService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.catis.service.VisiteService;
-import org.springframework.stereotype.Service;
 
 
 public class Listview {
@@ -50,10 +48,7 @@ public class Listview {
     @JsonIgnore
     private CategorieTestVehiculeService catSer;
 
-    public Listview() {
 
-
-    }
     public Listview(Visite v, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         super();
         this.id = v.getIdVisite();
@@ -108,15 +103,14 @@ public class Listview {
             List<GieglanFileIcon> categorieTests = new ArrayList<>();
 
 
-            Set<CategorieTestVehicule> integersSet = new LinkedHashSet<CategorieTestVehicule>(this.vis
+            Set<CategorieTestProduit> integersSet = new LinkedHashSet<CategorieTestProduit>(this.vis
                     .getCarteGrise()
                     .getProduit()
-                    .getCategorieVehicule()
-                    .getCategorieTestVehicules());
-            List<CategorieTestVehicule> list = new ArrayList<CategorieTestVehicule>(integersSet);
-            list.sort((CategorieTestVehicule s1, CategorieTestVehicule s2)->s1.getId().compareTo(s2.getId()));
+                    .getCategorieTestProduits());
+            List<CategorieTestProduit> list = new ArrayList<CategorieTestProduit>(integersSet);
+            list.sort((CategorieTestProduit s1, CategorieTestProduit s2)->s1.getId().compareTo(s2.getId()));
 
-            for(CategorieTestVehicule c : list ){
+            for(CategorieTestProduit c : list ){
                 GieglanFileIcon gfi = new GieglanFileIcon();
                 gfi.setExtension(c.getCategorieTest().getLibelle());
                 gfi.setIcon(c.getCategorieTest().getIcon());
@@ -137,7 +131,6 @@ public class Listview {
                         switch (categorieTest.getExtension()){
                             case "F":
                                 categorieTest.setIcon("<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
-                                //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
                                 break;
                             case "R":
                                 categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp");

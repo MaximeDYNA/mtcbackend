@@ -118,7 +118,7 @@
         </tr>
         <tr style="margin-top:0px; padding-top: 0px;">
             <td style="width: 50%;  border: 1px solid black;  ">
-                <div style="width:90%; height: 105px; padding: 4px">
+                <div style="width:90%; height: 105px; padding: 4px; text-overflow: ellipsis">
                         <span>
                         Immatriculation/ reg. Number:
                     </span>
@@ -155,7 +155,7 @@
                        Propriétaire / Owner:
                     </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
-                                                    v.carteGrise.proprietaireVehicule.partenaire.prenom}"></span><br/>
+                                                    v.carteGrise.proprietaireVehicule.partenaire.prenom == null? '': v.carteGrise.proprietaireVehicule.partenaire.prenom}"></span><br/>
 
 
                 </div>
