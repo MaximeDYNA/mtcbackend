@@ -47,13 +47,13 @@ public class VisiteService {
 
     @Autowired
     private GieglanFileService gieglanFileService;
-    
+
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
 
-    private static Logger log = LoggerFactory.getLogger(VisiteController.class);
+    private static Logger log = LoggerFactory.getLogger(VisiteService.class);
 
     public List<Visite> findActiveVI(){
         return visiteRepository.findByActiveStatusTrueAndContreVisiteFalse();
