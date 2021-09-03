@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -84,5 +85,19 @@ public class ProprietaireVehicule extends JournalData {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProprietaireVehicule)) return false;
+        ProprietaireVehicule that = (ProprietaireVehicule) o;
+        return Objects.equals(getProprietaireVehiculeId(), that.getProprietaireVehiculeId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getProprietaireVehiculeId());
     }
 }

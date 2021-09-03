@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Objects;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caisse")
@@ -71,5 +73,19 @@ public class Caisse extends JournalData {
 
     public void setLibelle(String libelle) {
         this.libelle = libelle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Caisse)) return false;
+        Caisse caisse = (Caisse) o;
+        return Objects.equals(caisseId, caisse.caisseId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(caisseId);
     }
 }

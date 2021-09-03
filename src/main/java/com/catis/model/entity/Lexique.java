@@ -1,6 +1,7 @@
 package com.catis.model.entity;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -199,5 +200,17 @@ public class Lexique extends JournalData {
         this.classification = classification;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lexique)) return false;
+        Lexique lexique = (Lexique) o;
+        return Objects.equals(getId(), lexique.getId());
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
+    }
 }
