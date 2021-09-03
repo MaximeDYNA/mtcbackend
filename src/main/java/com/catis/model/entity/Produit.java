@@ -5,6 +5,10 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_produit SET active_status=false WHERE produit_id=?")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter @Setter
 public class Produit extends JournalData {
 
     @Id
@@ -33,6 +40,9 @@ public class Produit extends JournalData {
 
     private String img;
 
+    @OneToMany(mappedBy = "produit")
+    @JsonIgnore
+    private Set<CategorieTestProduit> categorieTestProduits = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "produit")
     @JsonIgnore
@@ -59,122 +69,6 @@ public class Produit extends JournalData {
     @ManyToMany
     private Set<Seuil> seuils = new HashSet<>();
 
-    public CategorieVehicule getCategorieVehicule() {
-        return categorieVehicule;
-    }
 
-    public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
-        this.categorieVehicule = categorieVehicule;
-    }
-
-    public Produit() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Produit(Long produitId, String libelle, String description, double prix, int delaiValidite, String img,
-                   Set<DetailVente> detailVente, Set<CarteGrise> carteGrise, Set<TaxeProduit> taxeProduit,
-                   Set<Posales> posales, CategorieProduit categorieProduit) {
-
-        this.produitId = produitId;
-        this.libelle = libelle;
-        this.description = description;
-        this.prix = prix;
-        this.delaiValidite = delaiValidite;
-        this.img = img;
-        this.detailVente = detailVente;
-        this.carteGrise = carteGrise;
-        this.taxeProduit = taxeProduit;
-        this.posales = posales;
-        this.categorieProduit = categorieProduit;
-    }
-
-    public Long getProduitId() {
-        return produitId;
-    }
-
-    public void setProduit_id(Long produitId) {
-        this.produitId = produitId;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public int getDelaiValidite() {
-        return delaiValidite;
-    }
-
-    public void setDelaiValidite(int delaiValidite) {
-        this.delaiValidite = delaiValidite;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public Set<DetailVente> getDetailVente() {
-        return detailVente;
-    }
-
-    public void setDetailVente(Set<DetailVente> detailVente) {
-        this.detailVente = detailVente;
-    }
-
-    public Set<CarteGrise> getCarteGrise() {
-        return carteGrise;
-    }
-
-    public void setCarteGrise(Set<CarteGrise> carteGrise) {
-        this.carteGrise = carteGrise;
-    }
-
-    public Set<TaxeProduit> getTaxeProduit() {
-        return taxeProduit;
-    }
-
-    public void setTaxeProduit(Set<TaxeProduit> taxeProduit) {
-        this.taxeProduit = taxeProduit;
-    }
-
-    public Set<Posales> getPosales() {
-        return posales;
-    }
-
-    public void setPosales(Set<Posales> posales) {
-        this.posales = posales;
-    }
-
-    public CategorieProduit getCategorieProduit() {
-        return categorieProduit;
-    }
-
-    public void setCategorieProduit(CategorieProduit categorieProduit) {
-        this.categorieProduit = categorieProduit;
-    }
 
 }

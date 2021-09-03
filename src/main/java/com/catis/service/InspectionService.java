@@ -6,13 +6,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.catis.Controller.VisiteController;
+import com.catis.controller.VisiteController;
 import com.catis.model.entity.Controleur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Inspection;
-import com.catis.model.entity.Visite;
 import com.catis.repository.InspectionRepository;
 
 @Service
@@ -67,7 +66,7 @@ public class InspectionService {
 
         inspection = inspectionR.save(inspection);
 
-        VisiteController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat, ps);
+        VisiteController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat);
         return inspection;
 
     }

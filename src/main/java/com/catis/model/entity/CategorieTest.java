@@ -40,7 +40,7 @@ public class CategorieTest extends JournalData {
 
     @OneToMany(mappedBy = "categorieTest")
     @JsonIgnore
-    private Set<CategorieTestVehicule> categorieTestVehicules;
+    private Set<CategorieTestProduit> categorieTestVehicules;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categorieTest")
     @JsonIgnore
@@ -86,11 +86,11 @@ public class CategorieTest extends JournalData {
         this.categorieTestMachines = categorieTestMachines;
     }
 
-    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
+    public Set<CategorieTestProduit> getCategorieTestVehicules() {
         return categorieTestVehicules;
     }
 
-    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
+    public void setCategorieTestVehicules(Set<CategorieTestProduit> categorieTestVehicules) {
         this.categorieTestVehicules = categorieTestVehicules;
     }
 
@@ -104,7 +104,7 @@ public class CategorieTest extends JournalData {
     }
 
     public CategorieTest(Long idCategorieTest, String libelle, String description,
-                         Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestVehicule> categorieTestVehicules,
+                         Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestProduit> categorieTestVehicules,
                          Set<GieglanFile> gieglanFiles) {
         super();
         this.idCategorieTest = idCategorieTest;

@@ -14,6 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,6 +27,8 @@ import com.catis.model.configuration.JournalData;
 @Table(name = "t_mesure")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Mesure extends JournalData {
 
     @Id
@@ -31,73 +37,12 @@ public class Mesure extends JournalData {
     private String code;
     private String description;
 
-
     @ManyToOne
     private Formule formule;
 
     @ManyToMany(mappedBy = "mesures")
-    private Set<CategorieTestVehicule> categorieTestVehicules;
+    private Set<CategorieTestProduit> categorieTestProduits;
 
     @OneToMany(mappedBy = "mesure")
     private List<ValeurTest> valeurTests = new ArrayList<>();
-
-    public Mesure() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Long getIdMesure() {
-        return idMesure;
-    }
-
-    public void setIdMesure(Long idMesure) {
-        this.idMesure = idMesure;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-    public Formule getFormule() {
-        return formule;
-    }
-
-    public void setFormule(Formule formule) {
-        this.formule = formule;
-    }
-
-
-
-    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
-        return categorieTestVehicules;
-    }
-
-    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
-        this.categorieTestVehicules = categorieTestVehicules;
-    }
-
-    public Mesure(Long idMesure, String code, String description,
-                  Formule formule, Set<CategorieTestVehicule> categorieTestVehicules) {
-        super();
-        this.idMesure = idMesure;
-        this.code = code;
-        this.description = description;
-
-        this.formule = formule;
-        this.categorieTestVehicules = categorieTestVehicules;
-    }
-
 }

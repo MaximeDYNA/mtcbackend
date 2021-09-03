@@ -1,6 +1,7 @@
 package com.catis.model.entity;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -307,4 +308,19 @@ public class CarteGrise extends JournalData {
         this.controls = controls;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CarteGrise)) return false;
+        CarteGrise that = (CarteGrise) o;
+        return Double.compare(that.getMontantPaye(), getMontantPaye()) == 0 &&
+                isVehiculeGage() == that.isVehiculeGage() &&
+                Objects.equals(getCarteGriseId(), that.getCarteGriseId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCarteGriseId(), getNumImmatriculation(), getPreImmatriculation(), getDateDebutValid(), getDateFinValid(), getSsdt_id(), getCommune(), getMontantPaye(), isVehiculeGage(), getGenreVehicule(), getEnregistrement(), getDateDelivrance(), getLieuDedelivrance(), getCentre_ssdt(), getProprietaireVehicule(), getVehicule(), getProduit(), getVisites(), getControls());
+    }
 }

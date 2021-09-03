@@ -1,9 +1,8 @@
 package com.catis.service;
 
-import com.catis.Controller.configuration.SessionData;
+import com.catis.controller.configuration.SessionData;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;

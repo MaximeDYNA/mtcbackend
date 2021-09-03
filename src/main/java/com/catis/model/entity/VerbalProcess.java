@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -108,4 +109,17 @@ public class VerbalProcess extends JournalData {
         this.visite = visite;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VerbalProcess)) return false;
+        VerbalProcess that = (VerbalProcess) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getReference(), getSignature(), isStatus(), getVisite(), getRapportDeVisites());
+    }
 }

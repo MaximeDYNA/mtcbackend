@@ -25,10 +25,6 @@ public class CategorieVehicule extends JournalData {
     @JsonIgnore
     private Set<Ligne> lignes;
 
-    @OneToMany(mappedBy = "categorieVehicule", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<CategorieTestVehicule> categorieTestVehicules;
-
     @OneToMany(mappedBy = "categorieVehicule")
     @JsonIgnore
     private Set<Lexique> lexique;
@@ -64,12 +60,11 @@ public class CategorieVehicule extends JournalData {
     }
 
 
-    public CategorieVehicule(Long id, String type, Set<CategorieTestVehicule> categorieTestVehicules,
+    public CategorieVehicule(Long id, String type, Set<CategorieTestProduit> categorieTestVehicules,
                              Set<Lexique> lexique, Set<Produit> produits) {
         super();
         this.id = id;
         this.type = type;
-        this.categorieTestVehicules = categorieTestVehicules;
         this.lexique = lexique;
         this.produits = produits;
     }
@@ -88,13 +83,6 @@ public class CategorieVehicule extends JournalData {
         this.lexique = lexique;
     }
 
-    public Set<CategorieTestVehicule> getCategorieTestVehicules() {
-        return categorieTestVehicules;
-    }
-
-    public void setCategorieTestVehicules(Set<CategorieTestVehicule> categorieTestVehicules) {
-        this.categorieTestVehicules = categorieTestVehicules;
-    }
 
     public Set<Ligne> getLignes() {
         return lignes;
