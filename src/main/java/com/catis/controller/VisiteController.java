@@ -94,7 +94,7 @@ public class VisiteController {
     private CategorieTestVehiculeService catSer;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    
+
     @Autowired
     private PagedResourcesAssembler<Listview> pagedResourcesAssembler;
 
