@@ -155,24 +155,24 @@
                        Propriétaire / Owner:
                     </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
-                                                    v.carteGrise.proprietaireVehicule.partenaire.prenom == null? '': v.carteGrise.proprietaireVehicule.partenaire.prenom}"></span><br/>
+                                                    (v.carteGrise.proprietaireVehicule.partenaire.prenom == null? '': v.carteGrise.proprietaireVehicule.partenaire.prenom)}"></span><br/>
 
 
                 </div>
             </td>
             <td style="width: 50%; border: 1px solid black;">
-                <div style="width:90%; height: 105px; padding: 4px">
+                <div style="width:100%; height: 105px; padding: 4px; text-overflow: ellipsis">
                     <span>
                         Client/ Customer:
                     </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
-                                                        v.carteGrise.proprietaireVehicule.partenaire.prenom}">
+                                                        (v.carteGrise.proprietaireVehicule.partenaire.prenom == null? '': v.carteGrise.proprietaireVehicule.partenaire.prenom)}">
                     </span><br/>
                         <span class="text-left font-weight-bold">
                         Adresse / Address:
                     </span>
                         <span th:utext="${v.carteGrise.commune}"></span><br/>
-                        <span style="margin-left: 150px; color: gray;" th:utext="${v.carteGrise.commune}"></span><br/>
+                        <span style="margin-left: 150px; color: gray;" th:utext="${v.carteGrise.commune == null ? v.carteGrise.proprietaireVehicule.partenaire.telephone : v.carteGrise.commune }"></span><br/>
                         <span class="text-left font-weight-bold">
                             Montant payé HT / Amount ex.VAT :
                         </span>
@@ -183,7 +183,7 @@
                         </span> <span th:utext="${tp.valeur+' %'}" style="color: gray;"></span><br/>
                         <span class="text-left font-weight-bold">
                             Montant payé TTC / Amount inc. VAT:
-                        </span><span style="color: gray;"
+                        </span><span style="font-size: 9px; color: gray;"
                              th:utext="${#numbers.formatDecimal((v.carteGrise.produit.prix + (v.carteGrise.produit.prix * tp.valeur)/100), 0, 'WHITESPACE', 0, 'POINT')+' F CFA' }"></span><br/>
                 </div>
             </td>

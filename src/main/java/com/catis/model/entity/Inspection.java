@@ -58,6 +58,8 @@ public class Inspection extends JournalData {
 
     private double distancePercentage;
 
+    private String bestPlate;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Controleur controleur;
 
@@ -252,6 +254,14 @@ public class Inspection extends JournalData {
 
     public void setDistancePercentage(double distancePercentage) {
         this.distancePercentage = distancePercentage;
+    }
+
+    public String getBestPlate() {
+        return bestPlate;
+    }
+
+    public void setBestPlate(String bestPlate) {
+        this.bestPlate = bestPlate;
     }
 
     @Override
