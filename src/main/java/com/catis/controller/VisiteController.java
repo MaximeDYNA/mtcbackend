@@ -366,6 +366,7 @@ public class VisiteController {
             Visite visite = visiteService.findById(visiteId);
             if(visite.getProcess().isStatus()){
                 visite.setStatut(8);
+                visite.setEncours(false);
             }
             else{
                 visite.setStatut(7);
@@ -579,9 +580,11 @@ public class VisiteController {
             String uri = environment.getProperty("endpoint.openalpr") ;
             String apiKey = environment.getProperty("endpoint.openalpr.api.key") ;
             Visite visite = visiteService.findById(id);
+            BestPlate bestPlate = openAlprService.getPresenceConfidence(uri,apiKey,visite.getInspection());
             visite.getInspection().setDistancePercentage(
-                    openAlprService.getPresenceConfidence(uri,apiKey,visite.getInspection())
+                    bestPlate.getRate()
             );
+            visite.getInspection().setBestPlate(bestPlate.getPlate());
             visiteService.add(visite);
 
 

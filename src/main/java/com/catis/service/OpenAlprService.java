@@ -1,6 +1,7 @@
 package com.catis.service;
 
 import com.catis.model.entity.Inspection;
+import com.catis.objectTemporaire.BestPlate;
 import com.catis.objectTemporaire.OpenAlprResponseDTO;
 import com.catis.objectTemporaire.OpenAlprResponseList;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,7 +28,7 @@ public class OpenAlprService {
     private WebClient.Builder webClient;
 
 
-    public double getPresenceConfidence(String openalpruri, String apiKey, Inspection inspection){
+    public BestPlate getPresenceConfidence(String openalpruri, String apiKey, Inspection inspection){
         Calendar cal = Calendar.getInstance();
         cal.setTime(inspection.getDateFin());
         cal.add(Calendar.HOUR, -1);
@@ -64,8 +65,9 @@ public class OpenAlprService {
         });
     }
 
-    public double calculateMatchingPercentage(String ref, OpenAlprResponseDTO[] cars){
+    public BestPlate calculateMatchingPercentage(String ref, OpenAlprResponseDTO[] cars){
         double max =0;
+        String plate ="*******";
         String lastSixDigits;
         if(ref.length() > 10){
             lastSixDigits = ref.substring(ref.length() - 6);
@@ -80,10 +82,11 @@ public class OpenAlprService {
             int bigger = Math.max(lastSixDigits.length(), openAlprResponseDTO.getFields().getBest_plate().length());
             if(max < (double)((bigger - distance)*100 / bigger)){
                 max = (bigger - distance)*100 / bigger;
-                System.out.println("---->"+max+" *****");
+                plate = openAlprResponseDTO.getFields().getBest_plate();
             }
         }
-        return max;
+        BestPlate bestPlate = new BestPlate(plate, max);
+        return bestPlate;
     }
     public int levenshteinDistance (String s1, String s2) {
         s1 = s1.toLowerCase();
