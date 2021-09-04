@@ -168,9 +168,11 @@ public class VisiteController {
         Long orgId = SessionData.getOrganisationId(request);
         Page<Visite> resultPage = visiteService.enCoursVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
-        resultPage.forEach(visite ->
-            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
-        );
+        resultPage.forEach(visite ->{
+            log.info("visite construction start "+ visite.getIdVisite());
+            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer));
+            log.info("visite construction end "+ visite.getIdVisite());
+        });
 
         //convert list to page for applying hatoas
         log.info("------------Avant le hatoas ");
