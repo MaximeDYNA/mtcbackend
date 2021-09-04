@@ -417,7 +417,7 @@ public class Listview {
         this.inspection = inspection;
     }
 
- 
+
 
     public CarteGrise getCarteGrise() {
         return carteGrise;
