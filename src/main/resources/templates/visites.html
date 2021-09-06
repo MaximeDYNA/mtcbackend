@@ -112,7 +112,7 @@
                             <span class="text-left font-weight-bold">
                         Catégorie / Category:
                     </span>
-                    <span style="color: gray;" th:utext="${v.carteGrise.produit.description}"></span> <br/><br/>
+                    <span style="color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span> <br/><br/>
                 </div>
             </td>
         </tr>
@@ -150,7 +150,7 @@
                         <span class="text-left font-weight-bold">
                          Affectation / Usage :
                     </span>
-                        <span style="color: gray;" th:utext="${v.carteGrise.centre_ssdt}"></span> <br/>
+                        <span style="color: gray;" th:utext="${v.carteGrise.getGenreVehicule()==null?'':v.carteGrise.getGenreVehicule()}"></span> <br/>
                         <span class="text-left font-weight-bold">
                        Propriétaire / Owner:
                     </span>
@@ -587,6 +587,13 @@
                                                 <div style="font-weight: bold">
                                                     <p style="font-size: 7px;">Année / Year</p>
                                                 </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" colspan="2">
+                                               <div th:if="${v.process.status}">
+                                                   <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(v.control.getValidityAt(), 'dd/MM/yyyy')}"></span> </p>
+                                               </div>
                                             </td>
                                         </tr>
                                     </table>
