@@ -83,9 +83,7 @@ public class Listview {
     public void manageColor() {
         if(this.vis.getStatut()==2){
             if (this.vis.isContreVisite()) {
-                //Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
                 List<GieglanFile> files = gieglanFileService.getGieglanFileFailed(vis);
-                System.out.println("Missed tests size : "+files.size());
 
                 for(GieglanFile g: files){
 
@@ -148,7 +146,7 @@ public class Listview {
                                 break;
                         }
                     }
-                    if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
+                    else if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
                         switch (categorieTest.getExtension()){
                             case "F":
                                 categorieTest.setIcon("<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
@@ -172,12 +170,11 @@ public class Listview {
                         }
 
                     }
-                    if(g.getStatus().equals(GieglanFile.StatusType.REJECTED)){
+                    else{
                         switch (categorieTest.getExtension()){
                             case "F":
                                 categorieTest.setIcon("<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp");
-                                //categorieTest.setIcon("<span class=\"badge badge-success\"><i class=\"i-Pause\"></i></span>&nbsp");
-                                break;
+                                 break;
                             case "R":
                                 categorieTest.setIcon("<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp");
                                 break;
