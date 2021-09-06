@@ -238,17 +238,5 @@ public class Visite extends JournalData {
             return "VTP";
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Visite)) return false;
-        Visite visite = (Visite) o;
-        return Objects.equals(getIdVisite(), visite.getIdVisite());
-    }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getIdVisite(), isContreVisite(), getDateDebut(), getDateFin(), getStatut(), getIsConform(), getOrganisation(), isEncours(), getCaissier(), getInspection(), getProcess(), getCarteGrise(), getControl(), getRapportDeVisites());
-    }
 }

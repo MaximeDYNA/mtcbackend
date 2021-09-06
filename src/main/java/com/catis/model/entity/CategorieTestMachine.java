@@ -94,9 +94,4 @@ public class CategorieTestMachine extends JournalData {
         return Objects.equals(getIdCategorieTestMachine(), that.getIdCategorieTestMachine());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getIdCategorieTestMachine());
-    }
 }

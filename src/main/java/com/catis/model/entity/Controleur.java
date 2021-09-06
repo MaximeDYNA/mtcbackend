@@ -110,9 +110,4 @@ public class Controleur extends JournalData {
         return Objects.equals(getIdControleur(), that.getIdControleur());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getIdControleur());
-    }
 }
