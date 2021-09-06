@@ -76,7 +76,6 @@ public class Listview {
         //this.control =v.getControl();
         this.isConform = v.getIsConform();
 
-
         manageColor();
     }
 
