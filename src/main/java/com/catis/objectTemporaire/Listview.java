@@ -82,17 +82,15 @@ public class Listview {
 
 
     public void manageColor() {
+        if(this.vis.getStatut()==3){
+            if (this.vis.isContreVisite()) {
+                //Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
+                List<GieglanFile> files = gieglanFileService.getGieglanFileFailed(vis);
+                System.out.println("Missed tests size : "+files.size());
 
+                for(GieglanFile g: files){
 
-        if (this.vis.isContreVisite()) {
-
-            //Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
-            List<GieglanFile> files = gieglanFileService.getGieglanFileFailed(vis);
-            System.out.println("Missed tests size : "+files.size());
-
-            for(GieglanFile g: files){
-
-                GieglanFileIcon gfi = new GieglanFileIcon();
+                    GieglanFileIcon gfi = new GieglanFileIcon();
                     if(g.getType()!=GieglanFile.FileType.CARD_REGISTRATION){
                         gfi.setExtension(g.getCategorieTest().getLibelle());
                         gfi.setIcon(g.getCategorieTest().getIcon());
@@ -100,28 +98,29 @@ public class Listview {
                         this.measures.add(replaceIconIfNecessary(gfi, this.id));
                     }
                 }
-        } else {
-            List<GieglanFileIcon> categorieTests = new ArrayList<>();
+            } else {
+                List<GieglanFileIcon> categorieTests = new ArrayList<>();
 
 
-            Set<CategorieTestProduit> integersSet = new LinkedHashSet<CategorieTestProduit>(this.vis
-                    .getCarteGrise()
-                    .getProduit()
-                    .getCategorieTestProduits());
-            List<CategorieTestProduit> list = new ArrayList<CategorieTestProduit>(integersSet);
-            list.sort((CategorieTestProduit s1, CategorieTestProduit s2)->s1.getId().compareTo(s2.getId()));
+                Set<CategorieTestProduit> integersSet = new LinkedHashSet<CategorieTestProduit>(this.vis
+                        .getCarteGrise()
+                        .getProduit()
+                        .getCategorieTestProduits());
+                List<CategorieTestProduit> list = new ArrayList<CategorieTestProduit>(integersSet);
+                list.sort((CategorieTestProduit s1, CategorieTestProduit s2)->s1.getId().compareTo(s2.getId()));
 
-            for(CategorieTestProduit c : list ){
-                GieglanFileIcon gfi = new GieglanFileIcon();
-                gfi.setExtension(c.getCategorieTest().getLibelle());
-                gfi.setIcon(c.getCategorieTest().getIcon());
-                this.testAttendus.add(c.getCategorieTest());
-                categorieTests.add(gfi);
+                for(CategorieTestProduit c : list ){
+                    GieglanFileIcon gfi = new GieglanFileIcon();
+                    gfi.setExtension(c.getCategorieTest().getLibelle());
+                    gfi.setIcon(c.getCategorieTest().getIcon());
+                    this.testAttendus.add(c.getCategorieTest());
+                    categorieTests.add(gfi);
+                }
+                categorieTests.forEach(categorieTest -> {
+                    this.measures.add(replaceIconIfNecessary(categorieTest, this.id));
+                });
+
             }
-            categorieTests.forEach(categorieTest -> {
-                this.measures.add(replaceIconIfNecessary(categorieTest, this.id));
-            });
-
         }
     }
 
@@ -267,20 +266,15 @@ public class Listview {
                 this.statut = "<span class=\"badge badge-warning\">" + statut + "</span>";
                 break;
             case "En cours test":
-
                 this.statut = "";
                 int b = 0;
                 for (GieglanFileIcon cat : measures) {
                     b++;
                     this.statut += cat.getIcon();
-//				  if(b%3==0) {
-//					  this.statut+="<br/>";
-//				  }
                 }
                 break;
             case "A signer":
-                Visite visite = visiteService.findById(this.id);
-                if(visite.getProcess().isStatus())
+                if(this.vis.getProcess().isStatus())
                     this.statut = "<span class=\"badge badge-info\"> ACCEPTE " + statut + "</span>";
                 else
                     this.statut = "<span class=\"badge badge-info\"> REFUSE " + statut + "</span>";
