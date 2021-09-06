@@ -82,7 +82,7 @@ public class Listview {
 
 
     public void manageColor() {
-        if(this.vis.getStatut()==3){
+        if(this.vis.getStatut()==2){
             if (this.vis.isContreVisite()) {
                 //Visite visiteWithMissedTests = visiteService.visiteWithLastMissedTests(this.vis);
                 List<GieglanFile> files = gieglanFileService.getGieglanFileFailed(vis);
