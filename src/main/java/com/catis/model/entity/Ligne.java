@@ -109,9 +109,5 @@ public class Ligne extends JournalData {
         return Objects.equals(getIdLigne(), ligne.getIdLigne());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getIdLigne());
-    }
 }

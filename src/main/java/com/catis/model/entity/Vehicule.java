@@ -207,9 +207,4 @@ public class Vehicule extends JournalData {
         return Objects.equals(getVehiculeId(), vehicule.getVehiculeId());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getVehiculeId());
-    }
 }

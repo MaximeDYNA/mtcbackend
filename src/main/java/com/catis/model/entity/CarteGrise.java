@@ -326,9 +326,5 @@ public class CarteGrise extends JournalData {
                 Objects.equals(getCarteGriseId(), that.getCarteGriseId());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getCarteGriseId(), getNumImmatriculation(), getPreImmatriculation(), getDateDebutValid(), getDateFinValid(), getSsdt_id(), getCommune(), getMontantPaye(), isVehiculeGage(), getGenreVehicule(), getEnregistrement(), getDateDelivrance(), getLieuDedelivrance(), getCentre_ssdt(), getProprietaireVehicule(), getVehicule(), getProduit(), getVisites(), getControls());
-    }
 }

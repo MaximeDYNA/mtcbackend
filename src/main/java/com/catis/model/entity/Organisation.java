@@ -971,9 +971,5 @@ public class Organisation {
         return Objects.equals(getOrganisationId(), that.getOrganisationId());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getOrganisationId(), getName(), getNom(), getAdress(), getTel1(), getTel2(), isParent(), getScore(), getModelVehicule(), getCaissier(), getControleur(), getLexiques(), getPatterns(), getPays(), getPosales(), getProduits(), getProprietaireVehicules(), getRapportDeVisites(), getRapportMachines(), getSessionCaisses(), getSeuils(), getStatutCodes(), getTaxes(), getTaxeProduits(), getDetailVentes(), getDivisionPays(), getEnergies(), getFormules(), getGieglanFiles(), getHolds(), getCategorieTestMachine(), getLigne(), getInspection(), getCategorieTestMachines(), getCategorieTestVehicules(), getCategorieVehicules(), getClassifications(), getClients(), getConstructors(), getConstructorModels(), getControls(), getCategorieProduits(), getCategorieTests(), getMachine(), getAdresse(), getMesure(), getVisite(), getMesureVisuels(), getOperationCaisses(), getModeleVehicules(), getValeurTests(), getPartenaires(), getCarteGrises(), getLigneMachine(), getMarqueVehicules(), getVehicules(), getProprietaireVehicule(), getUtilisateurs(), getChildOrganisations(), getVentes(), getVerbalProcesses(), getVersionLexiques(), getVisites(), getParentOrganisation(), getCaisses(), getVendeurs(), getCreatedDate(), getModifiedDate(), isActiveStatus(), getCreatedBy(), getModifiedBy(), getPatente(), getStatutJurique(), getNumeroDeContribuable(), getLang(), getRegion(), getDevise());
-    }
 }

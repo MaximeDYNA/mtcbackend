@@ -188,9 +188,4 @@ public class Vente extends JournalData {
         return Objects.equals(getIdVente(), vente.getIdVente());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getIdVente());
-    }
 }

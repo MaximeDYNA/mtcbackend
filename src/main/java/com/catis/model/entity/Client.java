@@ -91,9 +91,5 @@ public class Client extends JournalData {
         return Objects.equals(getClientId(), client.getClientId());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getClientId());
-    }
 }

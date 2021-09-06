@@ -128,9 +128,5 @@ public class Caissier extends JournalData {
         return Objects.equals(getCaissierId(), caissier.getCaissierId());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getCaissierId(), getCodeCaissier(), getNom(), getPartenaire(), getCaisse(), getUser(), getSessionCaisses());
-    }
 }

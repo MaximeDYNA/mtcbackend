@@ -117,9 +117,5 @@ public class VerbalProcess extends JournalData {
         return Objects.equals(getId(), that.getId());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getId(), getReference(), getSignature(), isStatus(), getVisite(), getRapportDeVisites());
-    }
 }

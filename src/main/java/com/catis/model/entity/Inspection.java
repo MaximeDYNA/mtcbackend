@@ -272,9 +272,5 @@ public class Inspection extends JournalData {
         return Objects.equals(getIdInspection(), that.getIdInspection());
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getIdInspection(), getDateDebut(), getDateFin(), isVisibleToTab(), getSignature(), getProduit(), getKilometrage(), getChassis(), getEssieux(), getPosition(), getVisiteIdReseted(), getDistancePercentage(), getControleur(), getLigne(), getVisite(), getGieglanFiles(), getLexiques());
-    }
 }

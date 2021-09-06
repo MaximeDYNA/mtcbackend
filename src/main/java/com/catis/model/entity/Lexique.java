@@ -208,9 +208,4 @@ public class Lexique extends JournalData {
         return Objects.equals(getId(), lexique.getId());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getId());
-    }
 }

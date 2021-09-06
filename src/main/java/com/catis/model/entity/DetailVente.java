@@ -94,9 +94,5 @@ public class DetailVente extends JournalData {
         return getIdDetailVente() == that.getIdDetailVente();
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(getIdDetailVente());
-    }
 }

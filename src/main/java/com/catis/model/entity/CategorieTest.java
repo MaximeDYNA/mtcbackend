@@ -128,9 +128,4 @@ public class CategorieTest extends JournalData {
         return Objects.equals(getIdCategorieTest(), that.getIdCategorieTest());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getIdCategorieTest());
-    }
 }

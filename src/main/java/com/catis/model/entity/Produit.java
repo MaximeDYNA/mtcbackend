@@ -80,9 +80,4 @@ public class Produit extends JournalData {
         return Objects.equals(getProduitId(), produit.getProduitId());
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getProduitId());
-    }
 }

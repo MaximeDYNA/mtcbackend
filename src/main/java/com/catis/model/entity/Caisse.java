@@ -83,9 +83,4 @@ public class Caisse extends JournalData {
         return Objects.equals(caisseId, caisse.caisseId);
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(caisseId);
-    }
 }
