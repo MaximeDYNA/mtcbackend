@@ -40,7 +40,7 @@ public class CarteGrise extends JournalData {
     private boolean vehiculeGage; // véhicule gagé
     private String genreVehicule;
     private String enregistrement;
-
+    private String type;
     private Date dateDelivrance;
     private String lieuDedelivrance;// lieu de délivrance
     private String centre_ssdt;
@@ -306,6 +306,14 @@ public class CarteGrise extends JournalData {
 
     public void setControls(Set<Control> controls) {
         this.controls = controls;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

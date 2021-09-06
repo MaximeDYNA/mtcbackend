@@ -76,7 +76,7 @@
         </tr>
     </table>
 
-    <table cellspacing="8" cellpadding="1" th:style="${v.process.status} ? 'margin-top: 75px; width: 100%; ' : ' width: 100%; '">
+    <table cellspacing="8" cellpadding="1" th:style="${v.process.status} ? 'margin-top: 75px; width: 100%; word-wrap: break-word; ' : ' width: 100%; word-wrap: break-word; '">
         <tr>
             <td  style="width:50%;">
                 <div>
@@ -112,23 +112,29 @@
                             <span class="text-left font-weight-bold">
                         Catégorie / Category:
                     </span>
-                    <span style="color: gray;" th:utext="${v.carteGrise.produit.description}"></span> <br/><br/>
+                    <span style="color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span> <br/><br/>
                 </div>
             </td>
         </tr>
         <tr style="margin-top:0px; padding-top: 0px;">
             <td style="width: 50%;  border: 1px solid black;  ">
-                <div style="width:90%; height: 105px; padding: 4px; text-overflow: ellipsis">
+                <div style="width:100%; height: 105px; padding: 4px; overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;">
                         <span>
-                        Immatriculation/ reg. Number:
-                    </span>
+                            Immatriculation/ reg. Number:
+                        </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.numImmatriculation}"></span> <br/>
                         <span class="text-left font-weight-bold">
-                        Marque / Brand:
-                    </span>
+                            Marque / Brand:
+                        </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.vehicule.marqueVehicule.libelle}"></span> <br/>
                         <span class="text-left font-weight-bold">
-                        N° chassis / Chassis N° :
+                            Type / Model:
+                        </span>
+                        <span style="color: gray;" th:utext="${v.carteGrise.type}"></span> <br/>
+                        <span class="text-left font-weight-bold">
+                            N° chassis / Chassis N° :
                         </span>
                         <span style="color: gray;" th:utext="${v.carteGrise.vehicule.chassis}"></span> <br/>
                         <span class="text-left font-weight-bold">
@@ -150,7 +156,7 @@
                         <span class="text-left font-weight-bold">
                          Affectation / Usage :
                     </span>
-                        <span style="color: gray;" th:utext="${v.carteGrise.centre_ssdt}"></span> <br/>
+                        <span style="color: gray;" th:utext="${v.carteGrise.getGenreVehicule()==null?'':v.carteGrise.getGenreVehicule()}"></span> <br/>
                         <span class="text-left font-weight-bold">
                        Propriétaire / Owner:
                     </span>
@@ -161,7 +167,7 @@
                 </div>
             </td>
             <td style="width: 50%; border: 1px solid black;">
-                <div style="width:100%; height: 105px; padding: 4px; text-overflow: ellipsis">
+                <div style="width:100%; height: 105px; padding: 4px;">
                     <span>
                         Client/ Customer:
                     </span>
@@ -193,7 +199,7 @@
                 <div th:style="${v.process.status} ? 'width:90%; height: 610px; padding: 4px' : 'width:90%; height: 470px; padding: 4px'">
                     <div th:if="${#lists.size(majorDefault)} != 0">
                         <div style="font-weight: bold; font-size: 10px;
-                                height:70px; text-overflow: ellipsis;">
+                                height:70px;">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
@@ -205,7 +211,7 @@
                     </div>
                     <div th:if="${#lists.size(minorDefault)} != 0">
                         <div style="font-weight: bold; font-size: 10px;
-                                height:70px; text-overflow: ellipsis;">
+                                height:70px;">
                             <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
@@ -587,6 +593,13 @@
                                                 <div style="font-weight: bold">
                                                     <p style="font-size: 7px;">Année / Year</p>
                                                 </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" colspan="2">
+                                               <div th:if="${v.process.status}">
+                                                   <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(v.control.getValidityAt(), 'dd/MM/yyyy')}"></span> </p>
+                                               </div>
                                             </td>
                                         </tr>
                                     </table>
