@@ -90,7 +90,8 @@
                             <span style="color: gray; font-size: 10px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
                             </span>
                         </td>
-                        <td valign="bottom" style="width:30%;padding: 0px">
+                        <td valign="bottom" style="width:30%;padding: 0px;">
+                            <br/>
                             <img alt="QRcode" th:src="@{'http://localhost:8080/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
                                                                                                                    display: block;
                                                                                                                   width: 20%;
@@ -99,10 +100,10 @@
                     </tr>
                 </table>
             </td>
-            <td style="width:50%;">
+            <td valign="bottom" style="width:50%; padding: 0px; background-color: red; bottom:0;">
                 <table  cellpadding="0" cellspacing="0" style="width:100%;">
-                    <tr>
-                        <td valign="bottom">
+                    <tr >
+                        <td >
                             <span >
                                 Type de contrôle / Control type :
                             </span>
@@ -110,7 +111,7 @@
                             <span>
                                 Catégorie / Category:
                             </span>
-                            <span style="font-size: 10px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span> <br/><br/>
+                            <span style="font-size: 10px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span>
                         </td>
                     </tr>
                 </table>
@@ -164,7 +165,7 @@
 
                 </div>
             </td>
-            <td style="width: 50%; border: 1px solid black;">
+            <td valign="top" style="width: 50%; border: 1px solid black;">
                 <div style="width:100%; height: 105px; padding: 4px; vertical-align: top;">
                     <span>
                         Client/ Customer:
@@ -596,7 +597,7 @@
                                         <tr>
                                             <td align="center" colspan="3">
                                                <div th:if="${v.process.status}">
-                                                   <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
+                                                   <p style="font-size: 7px; font-weight: bold">valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
                                             </td>
                                         </tr>
