@@ -87,7 +87,7 @@
                             <span>
                                 Date du contrôle / Date of control :
                             </span>
-                            <span style="color: gray; font-size: 10px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
+                            <span style="color: gray; font-size: 11px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
                             </span>
                         </td>
                         <td valign="bottom" style="width:30%;padding: 0px;">
@@ -112,7 +112,7 @@
                             <span>
                                 Catégorie / Category:
                             </span>
-                            <span style="font-size: 10px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span>
+                            <span style="font-size: 11px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span>
                         </td>
                     </tr>
                 </table>
@@ -294,7 +294,7 @@
                                         <br/>
                                         <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                             <tr>
-                                                <td style="height: 13px; width:27%; border : solid thin; font-size: 12px;  padding: 4px">
+                                                <td style="height: 13px; width:28%; border : solid thin; font-size: 12px;  padding: 4px">
                                                     <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">RIPAGE / SHIFT.</span>
                                                 </td>
                                                 <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
@@ -398,21 +398,21 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:195px;">
                                                     <table style="height:100%; width:100%">
                                                         <tr>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule}">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center" th:if="${ typeVehicule}">
                                                                 <span th:utext="${ #numbers.formatInteger(r0430,1)+' daN'}"></span><br/>
                                                                 <span th:utext="${ #numbers.formatInteger(r0421,1)+' kg' }"></span>
                                                             </td>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule }">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center" th:if="${!typeVehicule }">
                                                                 <span th:utext="${ #numbers.formatInteger(r1121,1)+' daN'}"></span>
                                                             </td>
                                                             <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
                                                                 th:utext="${ typeVehicule ? #numbers.formatInteger(r0434, 1)+' %' : #numbers.formatInteger(r1125,1)+' %'}">
                                                             </td>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule}">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center" th:if="${ typeVehicule}">
                                                                 <span th:utext="${#numbers.formatInteger(r0431,1)+' daN'}"></span><br/>
                                                                 <span th:utext="${#numbers.formatInteger(r0420,1)+' kg'}"></span>
                                                             </td>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule }">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center" th:if="${!typeVehicule }">
                                                                 <span th:utext="${ #numbers.formatInteger(r1120,1)+' daN'}"></span>
                                                             </td>
                                                         </tr>
@@ -428,21 +428,21 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                      <table style="height:100%; width:100%">
                                                          <tr>
-                                                             <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule }">
+                                                             <td  style="font-size: 8px; width: 35%; text-align: center" th:if="${ typeVehicule }">
                                                                  <span th:utext="${ #numbers.formatInteger(r0438,1)+' daN'}"></span><br/>
                                                                  <span th:utext="${ #numbers.formatInteger(r0424, 1)+' kg'}"></span>
                                                              </td>
-                                                             <td  style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule}">
+                                                             <td  style="font-size: 8px; width: 35%; text-align: center" th:if="${!typeVehicule}">
                                                                  <span th:utext="${ #numbers.formatInteger(r1221,1)+' daN'}"></span>
                                                              </td>
                                                              <td style="vertical-align: top; width: 30%; font-size: 9px; text-align: center"
                                                                  th:utext="${ typeVehicule ? #numbers.formatInteger(r0442, 1)+' %' : #numbers.formatInteger(r1225, 1)+' %'}">
                                                              </td>
-                                                             <td style="font-size: 7px; width: 35%; text-align: center" th:if="${ typeVehicule }">
+                                                             <td style="font-size: 8px; width: 35%; text-align: center" th:if="${ typeVehicule }">
                                                                  <span th:utext="${ #numbers.formatInteger(r0439,1)+' daN'}"></span><br/>
                                                                  <span th:utext="${ #numbers.formatInteger(r0423,1)+' kg'}"></span>
                                                              </td>
-                                                             <td style="font-size: 7px; width: 35%; text-align: center" th:if="${!typeVehicule}">
+                                                             <td style="font-size: 8px; width: 35%; text-align: center" th:if="${!typeVehicule}">
                                                                  <span th:utext="${ #numbers.formatInteger(r1220,1)+' daN'}"></span>
                                                              </td>
                                                          </tr>
@@ -458,13 +458,13 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                     <table style="height:100%; width:100%">
                                                         <tr>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1321,1)+' daN'}"></span>
                                                             </td>
                                                             <td style="vertical-align: top; width: 30%; font-size: 9px; text-align: center"
                                                                 th:utext="${#numbers.formatInteger(r1325, 1)+' %'}">
                                                             </td>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1320,1)+' daN'}"></span>
                                                             </td>
                                                         </tr>
@@ -480,13 +480,13 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                     <table style="height:100%; width:100%">
                                                         <tr>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1421,1)+' daN'}"></span>
                                                             </td>
                                                             <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
                                                                 th:utext="${#numbers.formatInteger(r1425, 1)+' %'}">
                                                             </td>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1420,1)+' daN'}"></span>
                                                             </td>
                                                         </tr>
@@ -502,13 +502,13 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                     <table style="height:100%; width:100%">
                                                         <tr>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1521,1)+' daN'}"></span>
                                                             </td>
                                                             <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
                                                                 th:utext="${#numbers.formatInteger(r1525, 1)+' %'}">
                                                             </td>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1520,1)+' daN'}"></span>
                                                             </td>
                                                         </tr>
@@ -524,13 +524,13 @@
                                                 <td class="text-center" style="color: gray; border: 1px solid black; height:26px; width:140px;">
                                                     <table style="height:100%; width:100%">
                                                         <tr>
-                                                            <td  style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td  style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1621,1)+' daN'}"></span>
                                                             </td>
                                                             <td style="vertical-align: top; width: 30%; text-align: center; font-size: 9px"
                                                                 th:utext="${#numbers.formatInteger(r1625, 1)+' %'}">
                                                             </td>
-                                                            <td style="font-size: 7px; width: 35%; text-align: center">
+                                                            <td style="font-size: 8px; width: 35%; text-align: center">
                                                                 <span th:utext="${ #numbers.formatInteger(r1620,1)+' daN'}"></span>
                                                             </td>
                                                         </tr>
@@ -547,11 +547,11 @@
                 </div>
             </td>
         </tr>
-        <tr valign="top">
+        <tr valign="bottom">
             <td style="border-bottom: none; border-left: none; border-right: none">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm">
+                        <div class="col-sm" >
 
 
                             <br/>
@@ -563,7 +563,7 @@
                             <div  align="center">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
-                                    CAT. : <span th:utext="${v.carteGrise.produit.description}"></span> <br/>
+                                    CAT. : <span th:utext="${v.carteGrise.produit.libelle}"></span> <br/>
                                 </p>
                                 <div align="center">
                                     <table style="border-collapse: collapse" cellspacing="0" cellpadding="1" align="center">
@@ -595,9 +595,9 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td align="top" colspan="3">
-                                               <div th:if="${v.process.status}" align="center">
+                                        <tr valign="top" style="vertical-align: top">
+                                            <td valign="top" colspan="3">
+                                               <div  th:if="${v.process.status}" align="center">
                                                    <p style="font-size: 7px; font-weight: bold">valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
                                             </td>
