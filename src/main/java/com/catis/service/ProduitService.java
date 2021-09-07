@@ -1,5 +1,6 @@
 package com.catis.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +30,9 @@ public class ProduitService {
         base64New.trim();
         //base64 = base64.replace("data:image/png;base64,","");
         byte[] bytes = Base64.getMimeDecoder().decode(base64New);
+        File f= new File(env.getProperty("uploaded.image"));
+        if(!f.exists())
+            f.mkdirs();
         FileOutputStream output = new FileOutputStream(folder+libelle+".png");
         output.write(bytes);
         return folder + libelle + ".png";
