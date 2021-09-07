@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProduitPOJO {
+    private Long id;
     private String libelle;
     private String description;
     private double prix;
