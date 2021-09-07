@@ -176,7 +176,7 @@ public class VisiteController {
 
         //convert list to page for applying hatoas
         log.info("------------Avant le hatoas ");
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), 100);
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),200);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
         log.info("**************après le hatoas ");

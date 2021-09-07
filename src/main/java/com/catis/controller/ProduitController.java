@@ -67,6 +67,7 @@ public class ProduitController {
 
         LOGGER.trace("liste des produits...");
         Produit produit = new Produit();
+        produit.setProduitId(produitPOJO.getId());
         produit.setLibelle(produitPOJO.getLibelle());
         produit.setDescription(produitPOJO.getDescription());
         produit.setPrix(produitPOJO.getPrix());
