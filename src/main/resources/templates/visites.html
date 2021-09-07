@@ -596,7 +596,7 @@
                                         <tr>
                                             <td align="center" colspan="2">
                                                <div th:if="${v.process.status}">
-                                                   <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(v.control.getValidityAt(), 'dd/MM/yyyy')}"></span> </p>
+                                                   <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
                                             </td>
                                         </tr>
@@ -657,12 +657,6 @@
             </td>
         </tr>
     </table>
-
-    <!--div id="watermark" style="transform: rotate(45deg);">
-        <p th:if="${v.process.reference} != null">
-            <span th:each="i: ${#numbers.sequence(0, 133)}" th:text="${v.process.reference}+'. '"></span>
-        </p>
-    </div-->
 
 </div>
 <footer style="font-size: 10px; color: gray; font-family: 'Lucida Console'">
