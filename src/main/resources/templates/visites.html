@@ -76,31 +76,33 @@
         </tr>
     </table>
 
+
+
     <table cellspacing="8" cellpadding="1" th:style="${v.process.status} ? 'margin-top: 75px; width: 100%;  ' : ' width: 100%; '">
-        <tr>
+        <tr style="border: 1px solid black;">
             <td  style="width:50%;">
                 <div>
-                    <table  cellpadding="0" cellspacing="0" style="width:100%;">
-                    <tr>
-                        <td style="width:70%; padding: 0px">
-                            <span>
-                                N° PV/ SHEET N° :
-                            </span>
-                            <span style="color: gray;" th:utext="${v.process.reference}"></span> <br/>
-                            <span>
-                                Date du contrôle / Date of control :
-                            </span>
-                            <span style="color: gray; font-size: 9px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
-                            </span>
-                        </td>
-                        <td style="width:30%;padding: 0px">
-                            <img alt="QRcode" th:src="@{'http://localhost:8080/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
+                    <div class="container" style="width:100%;">
+                        <div class="row">
+                            <div class="col-sm" style="width:70%;">
+                                <span>
+                                    N° PV/ SHEET N° :
+                                </span>
+                                    <span style="color: gray;" th:utext="${v.process.reference}"></span> <br/>
+                                    <span>
+                                    Date du contrôle / Date of control :
+                                </span>
+                                    <span style="color: gray; font-size: 10px" th:text="${#dates.format(v.getDateDebut(), 'dd-MM-yyyy')}">
+                                </span>
+                            </div>
+                            <div class="col-sm" style="width:30%;">
+                                <img alt="QRcode" th:src="@{'http://localhost:8080/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
                                                                                                                    display: block;
                                                                                                                   width: 20%;
                                                                                                                     padding: 0px"/>
-                        </td>
-                    </tr>
-                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </td>
             <td style="width:50%;">
@@ -112,7 +114,7 @@
                             <span class="text-left font-weight-bold">
                         Catégorie / Category:
                     </span>
-                    <span style="color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span> <br/><br/>
+                    <span style="font-size: 10px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span> <br/><br/>
                 </div>
             </td>
         </tr>
@@ -594,7 +596,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="center" colspan="2">
+                                            <td align="center" colspan="3">
                                                <div th:if="${v.process.status}">
                                                    <p>valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
