@@ -75,7 +75,7 @@
     </table>
 
     <table cellspacing="8" cellpadding="1" th:style="${v.process.status} ? 'margin-top: 75px; width: 100%;  ' : ' width: 100%; '">
-        <tr>
+        <tr height="15">
             <td  style="width:50%;">
                 <table  cellpadding="0" cellspacing="0" style="width:100%;">
                     <tr>
@@ -596,8 +596,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="center" colspan="3">
-                                               <div th:if="${v.process.status}">
+                                            <td align="top" colspan="3">
+                                               <div th:if="${v.process.status}" align="center">
                                                    <p style="font-size: 7px; font-weight: bold">valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
                                             </td>
