@@ -196,9 +196,9 @@
             </td>
         </tr>
         <tr valign="top">
-            <td style=" width: 50%; border: 1px solid black; " rowspan="2">
-                <div th:style="${v.process.status} ? 'width:90%; height: 610px; max-height: 610px padding: 4px' : 'width:90%; height: 450px; max-height: 450px padding: 4px'">
-                    <div class="text-left font-weight-bold">
+            <td style=" width: 50%; border: 1px solid black; height: 610px; max-height: 610px; padding: 4px" rowspan="2">
+                <div th:style="${v.process.status} ? 'width:90%; height: 610px; max-height: 610px padding: 4px' : 'width:90%; height: 450px; max-height: 450px; padding: 4px'">
+                    <div style="font-weight: bold; padding: 4px">
                         <div th:if="${#lists.size(majorDefault)} != 0">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
@@ -632,9 +632,8 @@
             </td>
         </tr>
         <tr>
-            <br/>
             <td>
-                <div>
+                <div style="z-index: 0">
                     <img th:src="${mesurevisuel != null ? (mesurevisuel.image1  != null ? 'data:image/png;base64,'+mesurevisuel.image1: '') : ''}"
                          style="height: 250px; width: 320px;"/>
                 </div>
