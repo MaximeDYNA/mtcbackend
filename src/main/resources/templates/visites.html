@@ -35,7 +35,7 @@
     </style>
 </head>
 <body>
-<div th:if="${v.statut > 6}" style="position: absolute; z-index: -1; "><img alt="duplicata" th:src="@{classpath:static/images/duplicata.png}" style="height: 980px; width: 750px"/></div>
+<div th:if="${v.statut > 6}" style="position: absolute; z-index: -1; "><img alt="duplicata" th:src="@{classpath:static/images/duplicata.png}" style="height: 940px; width: 750px"/></div>
 <div th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type == 'VL'}">
 
     <table th:if="${!v.process.status}" style ="width: 100%; ">
@@ -196,11 +196,9 @@
             </td>
         </tr>
         <tr valign="top">
-            <td style=" width: 50%; border: 1px solid black;" rowspan="2">
-                <div th:style="${v.process.status} ? 'width:90%; height: 610px; padding: 4px' : 'width:90%; height: 470px; padding: 4px'">
+            <td style=" width: 50%; border: 1px solid black; " rowspan="2">
+                <div th:style="${v.process.status} ? 'width:90%; height: 610px; max-height: 610px padding: 4px' : 'width:90%; height: 470px; max-height: 470px padding: 4px'">
                     <div th:if="${#lists.size(majorDefault)} != 0">
-                        <div style="font-weight: bold; font-size: 10px;
-                                height:70px;">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
@@ -208,11 +206,8 @@
                                     <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                 </li>
                             </ol>
-                        </div>
                     </div>
                     <div th:if="${#lists.size(minorDefault)} != 0">
-                        <div style="font-weight: bold; font-size: 10px;
-                                height:70px;">
                             <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
@@ -220,7 +215,7 @@
                                     <span style="color: gray;" th:text="${lexique.libelle}"> </span>
                                 </li>
                             </ol>
-                        </div>
+                    </div>
                     </div>
                     <span>	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
                     <h2
