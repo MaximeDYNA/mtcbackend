@@ -530,8 +530,12 @@ public class VisiteController {
             y += textLayout.getAscent();
             y += textLayout.getAscent();
             y += textLayout.getAscent();
+            y += textLayout.getAscent();
+            y += textLayout.getAscent();
 
             textLayout.draw(g, -785, y);
+            y += textLayout.getDescent() + textLayout.getLeading();
+            y += textLayout.getDescent() + textLayout.getLeading();
             y += textLayout.getDescent() + textLayout.getLeading();
             y += textLayout.getDescent() + textLayout.getLeading();
             y += textLayout.getDescent() + textLayout.getLeading();
