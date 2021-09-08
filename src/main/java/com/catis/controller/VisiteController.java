@@ -490,6 +490,7 @@ public class VisiteController {
     }
 
     public void createWatermark(String ref){
+        String duplicata ="DUPLICATA";
         StringBuilder bld = new StringBuilder();
         for (int i = 0; i < 3500; ++i) {
             if(i % 25 == 0)
@@ -502,6 +503,7 @@ public class VisiteController {
         BufferedImage img = new BufferedImage(895, 1142, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = img.createGraphics();
+        Graphics2D duplicataImage = img.createGraphics();
 
         AffineTransform affineTransform = new AffineTransform();
         g2d.setTransform(affineTransform);
