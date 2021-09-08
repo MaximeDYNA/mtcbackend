@@ -35,7 +35,7 @@
     </style>
 </head>
 <body>
-<div th:if="${v.statut > 6}" style="position: absolute; z-index: -1; "><img alt="duplicata" src="duplicata.png" style="height: 500px; width: 500px"/></div>
+<div th:if="${v.statut > 6}" style="position: absolute; z-index: -1; "><img alt="duplicata" th:src="@{classpath:static/images/duplicata.png}" style="height: 980px; width: 750px"/></div>
 <div th:with="typeVehicule=${v.carteGrise.produit.categorieVehicule.type == 'VL'}">
 
     <table th:if="${!v.process.status}" style ="width: 100%; ">
@@ -629,16 +629,20 @@
 <div style="page-break-after: always;"></div>
 
 <div id="logo" class="media" data-src="watermark.png" style="opacity: 0.5; position: absolute; width: 750px; height: 865px"></div>
+
+
+
 <div align="center" style="height:100%">
     <table cellspacing="10" style="margin-top: 200px; margin-bottom: 300px">
         <tr>
             <td align="center" colspan="2">
-                <div style="z-index: 5">
-                    <h3> Véhicule immatriculé /
-                        Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
-                    </h3>
+                <div style="position: absolute; left: 50%;">
+                    <div style="position: relative; left: -50%;">
+                        <h3 style="z-index: 10"> Véhicule immatriculé /
+                            Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
+                        </h3>
+                    </div>
                 </div>
-
             </td>
         </tr>
         <tr>
