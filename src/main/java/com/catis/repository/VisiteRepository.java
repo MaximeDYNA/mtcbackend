@@ -46,7 +46,7 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
 
-    List<Visite> findByEncoursTrueAndStatut(int status, Sort sort);
+    List<Visite> findByEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, Long orgId, Sort sort);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteFalse();
 
