@@ -197,8 +197,9 @@
         </tr>
         <tr valign="top">
             <td style=" width: 50%; border: 1px solid black; " rowspan="2">
-                <div th:style="${v.process.status} ? 'width:90%; height: 610px; max-height: 610px padding: 4px' : 'width:90%; height: 470px; max-height: 470px padding: 4px'">
-                    <div th:if="${#lists.size(majorDefault)} != 0">
+                <div th:style="${v.process.status} ? 'width:90%; height: 610px; max-height: 610px padding: 4px' : 'width:90%; height: 450px; max-height: 450px padding: 4px'">
+                    <div class="text-left font-weight-bold">
+                        <div th:if="${#lists.size(majorDefault)} != 0">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
@@ -206,8 +207,8 @@
                                     <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                 </li>
                             </ol>
-                    </div>
-                    <div th:if="${#lists.size(minorDefault)} != 0">
+                        </div>
+                        <div th:if="${#lists.size(minorDefault)} != 0">
                             <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
@@ -215,6 +216,7 @@
                                     <span style="color: gray;" th:text="${lexique.libelle}"> </span>
                                 </li>
                             </ol>
+                        </div>
                     </div>
 
                     <span>	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
@@ -234,10 +236,7 @@
             </td>
             <td valign="top" style="width: 50%; border: 1px solid black;">
                 <div style=" height: 360px;">
-                    <table cellspacing="0">
-                        <tr >
-                            <td>
-                                <div style="height: auto; min-height: 460px; padding: 4px">
+                    <div style="height: auto; min-height: 460px; padding: 4px">
                                     <div style=" height:auto;">
                                         <h4>
                                             RELEVE DES MESURES/ MEASUREMENT: <br/>
@@ -536,10 +535,6 @@
                                         </table>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-
-                    </table>
                 </div>
             </td>
         </tr>
