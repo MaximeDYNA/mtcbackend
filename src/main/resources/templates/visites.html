@@ -217,21 +217,19 @@
                                 </li>
                             </ol>
                         </div>
+                        <span>	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
+                        <h2
+                                th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
+                        <p class="text-left font-weight-bold">
+                            <span th:utext="${v.process.status} ? 'PROCHAINE VISITE / NEXT VISIT: ' : 'JUSQU\'AU / UNTIL: '"></span>
+                            <span style="font-size: 15px;"
+                                  th:utext="${v.process.status ? #dates.format(controlValidityAt, 'dd/MM/yyyy')
+                                  : #dates.format(controlDelayAt, 'dd/MM/yyyy')}"></span><br/>
+                            NOM et visa du contrôleur /<br/>
+                            Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
+                        </p>
+                            <img style="height: 150px; width: 150px; float: right;" th:src="@{${'http://localhost:8080/uploaded/signatures/'+v.inspection.signature}}"/>
                     </div>
-
-                    <span>	RESULTAT DU CONTROLE/ CONTROLE RESULT: </span>
-                    <h2
-                            th:utext="${v.process.status} ? 'ACCEPTE / ACCEPTED' : 'REFUSE / REJECTED'"></h2>
-                    <p class="text-left font-weight-bold">
-                        <span th:utext="${v.process.status} ? 'PROCHAINE VISITE / NEXT VISIT: ' : 'JUSQU\'AU / UNTIL: '"></span>
-                        <span style="font-size: 15px;"
-                              th:utext="${v.process.status ? #dates.format(controlValidityAt, 'dd/MM/yyyy')
-                              : #dates.format(controlDelayAt, 'dd/MM/yyyy')}"></span><br/>
-                        NOM et visa du contrôleur /<br/>
-                        Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
-                    </p>
-
-                        <img style="height: 150px; width: 150px; float: right;" th:src="@{${'http://localhost:8080/uploaded/signatures/'+v.inspection.signature}}"/>
                 </div>
             </td>
             <td valign="top" style="width: 50%; border: 1px solid black;">
@@ -543,10 +541,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm" >
-
                             <br/>
                             <br/>
-
                             <br/>
                             <br/>
                             <br/>
@@ -636,8 +632,9 @@
             </td>
         </tr>
         <tr>
+            <br/>
             <td>
-                <div style="z-index: 0">
+                <div>
                     <img th:src="${mesurevisuel != null ? (mesurevisuel.image1  != null ? 'data:image/png;base64,'+mesurevisuel.image1: '') : ''}"
                          style="height: 250px; width: 320px;"/>
                 </div>
