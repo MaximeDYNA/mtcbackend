@@ -73,7 +73,7 @@
             </td>
         </tr>
     </table>
-
+    <div th:if="${v.statut > 6}" style="position: absolute; z-index: -1; "><img alt="duplicata" src="duplicata.png" style="height: 1200px; width: 900px"/></div>
     <table cellspacing="8" cellpadding="1" th:style="${v.process.status} ? 'margin-top: 75px; width: 100%;  ' : ' width: 100%; '">
         <tr height="15">
             <td  style="width:50%;">
@@ -634,7 +634,7 @@
     <table cellspacing="10" style="margin-top: 200px; margin-bottom: 300px">
         <tr>
             <td align="center" colspan="2">
-                <div style="z-index: 2">
+                <div style="z-index: 5">
                     <h3> Véhicule immatriculé /
                         Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
                     </h3>
