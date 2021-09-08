@@ -176,7 +176,7 @@ public class VisiteController {
 
         //convert list to page for applying hatoas
         log.info("------------Avant le hatoas ");
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),200);
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),visiteService.enCoursVisitList(orgId).size());
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
         log.info("**************après le hatoas ");
@@ -210,8 +210,9 @@ public class VisiteController {
     public ResponseEntity<Object> visiteByStatut(@PathVariable int status) {
         try {
             log.info("Liste des visites en cours");
+            Long orgId = SessionData.getOrganisationId(request);
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.listParStatus(status));
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "KO", null);
@@ -234,18 +235,19 @@ public class VisiteController {
     public ResponseEntity<Object> listforKabanView() {
 
                 log.info("kaban view visit");
+                Long orgId = SessionData.getOrganisationId(request);
                 List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
-                List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0);
-                List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1);
-                List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2);
-                List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3);
-                List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4);
-                List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5);
-                List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6);
-                List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7);
-                List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8);
-                List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9);
-                List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10);
+                List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
+                List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
+                List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2, orgId);
+                List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3, orgId);
+                List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4, orgId);
+                List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5, orgId);
+                List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6, orgId);
+                List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7, orgId);
+                List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8, orgId);
+                List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9, orgId);
+                List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10, orgId);
                 kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
                 kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
                 kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
@@ -265,22 +267,23 @@ public class VisiteController {
     public ResponseEntity<Object> listforGraphView() {
         try {
             log.info("Graphe view visit");
+            Long orgId = SessionData.getOrganisationId(request);
             List<Object> graphViews = new ArrayList<>();
             int[] datas = new int[9];
             for (int i = 0; i < datas.length; i++) {
-                datas[i] = visiteService.listParStatus(i).size();
+                datas[i] = visiteService.listParStatus(i, orgId).size();
             }
             Map<String, int[]> result = new HashMap<>();
             result.put("tab", datas);
-            graphViews.add(new GraphView("maj", visiteService.listParStatus(0).size()));
-            graphViews.add(new GraphView("A inspecter", visiteService.listParStatus(1).size()));
-            graphViews.add(new GraphView("En cours test", visiteService.listParStatus(2).size()));
-            graphViews.add(new GraphView("A signer", visiteService.listParStatus(3).size()));
-            graphViews.add(new GraphView("A imprimer", visiteService.listParStatus(4).size()));
-            graphViews.add(new GraphView("A enregister", visiteService.listParStatus(5).size()));
-            graphViews.add(new GraphView("A certifier", visiteService.listParStatus(6).size()));
-            graphViews.add(new GraphView("Accepté", visiteService.listParStatus(7).size()));
-            graphViews.add(new GraphView("Refusé", visiteService.listParStatus(8).size()));
+            graphViews.add(new GraphView("maj", visiteService.listParStatus(0, orgId).size()));
+            graphViews.add(new GraphView("A inspecter", visiteService.listParStatus(1, orgId).size()));
+            graphViews.add(new GraphView("En cours test", visiteService.listParStatus(2, orgId).size()));
+            graphViews.add(new GraphView("A signer", visiteService.listParStatus(3, orgId).size()));
+            graphViews.add(new GraphView("A imprimer", visiteService.listParStatus(4, orgId).size()));
+            graphViews.add(new GraphView("A enregister", visiteService.listParStatus(5, orgId).size()));
+            graphViews.add(new GraphView("A certifier", visiteService.listParStatus(6, orgId).size()));
+            graphViews.add(new GraphView("Accepté", visiteService.listParStatus(7, orgId).size()));
+            graphViews.add(new GraphView("Refusé", visiteService.listParStatus(8, orgId).size()));
 
             return ApiResponseHandler.generateResponses(HttpStatus.OK, true, "Affichage graph view visit", graphViews, datas);
         } catch (Exception e) {
@@ -296,7 +299,8 @@ public class VisiteController {
 
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
-        for (Visite visite : visiteService.listParStatus(0)) {
+        Long orgId = SessionData.getOrganisationId(request);
+        for (Visite visite : visiteService.listParStatus(0, orgId)) {
             Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                     .getNumImmatriculation()));
@@ -325,8 +329,9 @@ public class VisiteController {
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
 
         log.info("list view visit");
+        Long orgId = SessionData.getOrganisationId(request);
         List<Listview> listVisit = new ArrayList<>();
-        visiteService.listParStatus(statutCode).forEach(
+        visiteService.listParStatus(statutCode, orgId).forEach(
                 visite -> listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
