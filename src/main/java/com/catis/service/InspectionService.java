@@ -61,7 +61,12 @@ public class InspectionService {
         Inspection inspection = findInspectionByVisite(id);
         inspection.setDateFin(new Date());
         inspection.setSignature(signature);
-        inspection.getVisite().setStatut(4);
+        if(inspection.getOrganisation().isConformity()){
+            inspection.getVisite().setStatut(4);
+        }
+        else
+            inspection.getVisite().setStatut(6);
+        
         inspection.setControleur(controleur);
 
         inspection = inspectionR.save(inspection);

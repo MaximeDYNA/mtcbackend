@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.WrongConfigurationException;
 import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.UserDTO;
@@ -100,6 +101,7 @@ public class InspectionController {
     public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws Exception {
 
             String diskPathToSignature = env.getProperty("signature.disk.path");
+
 
             byte[] decoded = Base64.decodeBase64(signatureDTO.getImageValue().split(",")[1]);
             if(diskPathToSignature == null)
