@@ -184,6 +184,29 @@ public class VisiteController {
 
     }
 
+    @GetMapping(value = "/api/v1/all/visites", params = { "search", "page", "size" })
+    public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("search") String search, @RequestParam("page") int page,
+                                                        @RequestParam("size") int size) {
+        log.info("recherche ---");
+        Long orgId = SessionData.getOrganisationId(request);
+        List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size) );
+        List<Listview> listVisit = new ArrayList<>();
+        resultPage.forEach(visite ->{
+            log.info("visite construction start "+ visite.getIdVisite());
+            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer));
+            log.info("visite construction end "+ visite.getIdVisite());
+        });
+
+        //convert list to page for applying hatoas
+        log.info("------------Avant le hatoas ");
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),visiteService.enCoursVisitList(orgId).size());
+        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+                .toModel(pages);
+        log.info("**************après le hatoas ");
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
+
+    }
+
     @GetMapping(value = "/api/v1/all/visitesended", params = { "page", "size" })
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
