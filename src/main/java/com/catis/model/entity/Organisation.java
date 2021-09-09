@@ -51,6 +51,10 @@ public class Organisation {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
+    private Set<Camera> cameras ;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
+    @JsonIgnore
     private Set<Lexique> lexiques;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
@@ -970,6 +974,14 @@ public class Organisation {
 
     public void setConformity(boolean conformity) {
         this.conformity = conformity;
+    }
+
+    public Set<Camera> getCameras() {
+        return cameras;
+    }
+
+    public void setCameras(Set<Camera> cameras) {
+        this.cameras = cameras;
     }
 
     @Override
