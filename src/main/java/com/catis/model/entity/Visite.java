@@ -39,8 +39,6 @@ public class Visite extends JournalData {
     private int statut;
     private int isConform;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Organisation organisation;
 
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;
@@ -48,18 +46,18 @@ public class Visite extends JournalData {
     @ManyToOne(fetch = FetchType.LAZY)
     private Caissier caissier;
 
-    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
     @JsonIgnore
     private Inspection inspection;
 
-    @OneToOne(mappedBy = "visite", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "visite")
     @JsonIgnore
     private VerbalProcess process;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private CarteGrise carteGrise;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Control control;
 
     public List<RapportDeVisite> getRapportDeVisites() {
@@ -70,7 +68,7 @@ public class Visite extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 
@@ -87,7 +85,7 @@ public class Visite extends JournalData {
     }
 
     public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
-                  Organisation organisation, boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
+                  boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
                   CarteGrise carteGrise, Control control, List<RapportDeVisite> rapportDeVisites) {
         super();
         this.idVisite = idVisite;
@@ -95,7 +93,6 @@ public class Visite extends JournalData {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.statut = statut;
-        this.organisation = organisation;
         this.encours = encours;
         this.caissier = caissier;
         this.inspection = inspection;
@@ -146,13 +143,6 @@ public class Visite extends JournalData {
         this.statut = statut;
     }
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(Organisation organisation) {
-        this.organisation = organisation;
-    }
 
     public Inspection getInspection() {
         return inspection;
