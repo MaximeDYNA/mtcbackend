@@ -184,8 +184,8 @@ public class VisiteService {
         return visiteEnCours;
     }
 
-    public Page<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
-        Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
+    public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
+        List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
 
         return visiteEnCours;
     }
