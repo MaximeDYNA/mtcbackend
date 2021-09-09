@@ -34,7 +34,7 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 
-    Page<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
 
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
 
