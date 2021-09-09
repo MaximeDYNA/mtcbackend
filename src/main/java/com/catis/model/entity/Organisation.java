@@ -33,6 +33,7 @@ public class Organisation {
     private String tel1;
     private String tel2;
     private boolean parent;
+    private boolean conformity = false;
     private double score;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
@@ -961,6 +962,14 @@ public class Organisation {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public boolean isConformity() {
+        return conformity;
+    }
+
+    public void setConformity(boolean conformity) {
+        this.conformity = conformity;
     }
 
     @Override
