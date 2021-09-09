@@ -185,7 +185,7 @@ public class VisiteService {
     }
 
     public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
-        List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
+        List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(orgId,Sort.by(Sort.Direction.DESC, "createdDate"), pageable);
 
         return visiteEnCours;
     }
