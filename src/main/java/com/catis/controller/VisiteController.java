@@ -174,9 +174,10 @@ public class VisiteController {
             log.info("visite construction end "+ visite.getIdVisite());
         });
 
-        //convert list to page for applying hatoas
+        //convert list to page for applying hat
+        // oas
         log.info("------------Avant le hatoas ");
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),visiteService.enCoursVisitList(orgId).size());
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
         log.info("**************après le hatoas ");
@@ -199,7 +200,7 @@ public class VisiteController {
 
         //convert list to page for applying hatoas
         log.info("------------Avant le hatoas ");
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),visiteService.enCoursVisitList(orgId).size());
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
                 .toModel(pages);
         log.info("**************après le hatoas ");

@@ -39,13 +39,13 @@ public class Visite extends JournalData {
     private int statut;
     private int isConform;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Organisation organisation;
 
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Caissier caissier;
 
     @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -56,10 +56,10 @@ public class Visite extends JournalData {
     @JsonIgnore
     private VerbalProcess process;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CarteGrise carteGrise;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Control control;
 
     public List<RapportDeVisite> getRapportDeVisites() {
@@ -70,7 +70,7 @@ public class Visite extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 
