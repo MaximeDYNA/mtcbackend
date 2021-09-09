@@ -66,7 +66,7 @@ public class InspectionService {
         }
         else
             inspection.getVisite().setStatut(6);
-        
+
         inspection.setControleur(controleur);
 
         inspection = inspectionR.save(inspection);
