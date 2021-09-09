@@ -56,7 +56,7 @@ public class Visite extends JournalData {
     @JsonIgnore
     private VerbalProcess process;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     private CarteGrise carteGrise;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
