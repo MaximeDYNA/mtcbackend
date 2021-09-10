@@ -34,6 +34,7 @@ public class Listview {
     private Long inspection;
     //private VerbalProcess process;
     private CarteGrise carteGrise;
+    private boolean conformityTest;
     private int isConform;
 
     @JsonIgnore
@@ -75,6 +76,7 @@ public class Listview {
         this.carteGrise=v.getCarteGrise();
         //this.control =v.getControl();
         this.isConform = v.getIsConform();
+        this.conformityTest = v.getOrganisation().isConformity();
 
         manageColor();
     }
@@ -343,6 +345,22 @@ public class Listview {
 
     public void setStatutVisite(int statutVisite) {
         this.statutVisite = statutVisite;
+    }
+
+    public boolean isConformityTest() {
+        return conformityTest;
+    }
+
+    public void setConformityTest(boolean conformityTest) {
+        this.conformityTest = conformityTest;
+    }
+
+    public Visite getVis() {
+        return vis;
+    }
+
+    public void setVis(Visite vis) {
+        this.vis = vis;
     }
 
     @Override
