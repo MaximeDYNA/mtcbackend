@@ -11,35 +11,16 @@ pipeline {
                   def pom = readMavenPom file: 'pom.xml'
                   version = pom.version
               }
-        sh "mvn clean install -DskipTests=true"
+        sh "mvn package -Dmaven.test.skip=true"
 	}
-	stage('Test')
-    {
-            steps
-            {
-              sh "${mvnCmd} test -Dspring.profiles.active=test"
-              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-            }
-    }
-	stage('Code Analysis')
-          {
-            steps
-             {
-              script
-              {
-                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
-              }
-            }
-          }
-		  
-	stage('Building image') {
+	stage('Build') {
       steps{
         script {
           dockerImage = docker.build managementtools
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Run') {
       steps{
         script {
           
