@@ -7,12 +7,14 @@ pipeline {
   agent any
   stages {
 	stage('clone'){
-		git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
-		script {
-                  def pom = readMavenPom file: 'pom.xml'
-                  version = pom.version
-              }
-        sh "mvn package -Dmaven.test.skip=true"
+        steps{
+            git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
+            script {
+                      def pom = readMavenPom file: 'pom.xml'
+                      version = pom.version
+                  }
+            sh "mvn package -Dmaven.test.skip=true"
+        }
 	}
 	stage('Build') {
       steps{
