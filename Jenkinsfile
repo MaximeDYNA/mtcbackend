@@ -1,10 +1,11 @@
 pipeline {
-  environment {
+    environment {
     registry = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
-  }
+    }
   agent any
+  stages {
 	stage('clone'){
 		git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
 		script {
@@ -24,7 +25,7 @@ pipeline {
       steps{
         script {
           
-          docker.withRegistry( 'http://51.210.48.154:5000' ) {
+          docker.withRegistry( 'http://135.125.244.28:5000' ) {
             /*dockerImage.push("$BUILD_NUMBER")*/
              dockerImage.push('latest')
 
@@ -32,4 +33,5 @@ pipeline {
         }
       }
     }
+  }
 }
