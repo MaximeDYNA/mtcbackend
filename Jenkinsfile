@@ -26,10 +26,11 @@ pipeline {
     stage('Run') {
       steps{
         script {
+
+          docker.withRegistry('https://registry.hub.docker.com', 'git') {
+                 app.push("${env.BUILD_NUMBER}")
+                 app.push("latest")
           
-          docker.withRegistry( 'http://135.125.244.28:5000' ) {
-            /*dockerImage.push("$BUILD_NUMBER")*/
-             dockerImage.push('latest')
 
           }
         }
