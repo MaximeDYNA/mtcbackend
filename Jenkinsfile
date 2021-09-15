@@ -19,7 +19,7 @@ pipeline {
 	stage('Build') {
       steps{
         script {
-          dockerImage = docker.build managementtools
+          dockerImage = docker.build(".")
         }
       }
     }
