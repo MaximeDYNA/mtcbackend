@@ -28,8 +28,8 @@ pipeline {
         script {
 
           docker.withRegistry('https://registry.hub.docker.com', 'c18ad32e-8713-4d37-9160-08e52018d5fb') {
-                 app.push("${env.BUILD_NUMBER}")
-                 app.push("latest")
+                 dockerImage.push("${env.BUILD_NUMBER}")
+                 dockerImage.push("latest")
 
 
           }
