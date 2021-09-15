@@ -19,7 +19,7 @@ pipeline {
 	stage('Build') {
       steps{
         script {
-          dockerImage = docker.build
+          dockerImage = docker.build("Ditros:${env.BUILD_ID}")
         }
       }
     }
