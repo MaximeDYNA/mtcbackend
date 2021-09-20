@@ -1,54 +1,40 @@
 pipeline {
-  environment {
+    environment {
     registry = "gustavoapolinario/docker-test"
     registryCredential = 'dockerhub'
     dockerImage = ''
-  }
-  agent any
-	stage('clone'){
-		git branch: 'develop', credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtc.git'
-		script {
-                  def pom = readMavenPom file: 'pom.xml'
-                  version = pom.version
-              }
-        sh "mvn clean install -DskipTests=true"
-	}
-	stage('Test')
-    {
-            steps
-            {
-              sh "${mvnCmd} test -Dspring.profiles.active=test"
-              //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-            }
     }
-	stage('Code Analysis')
-          {
-            steps
-             {
-              script
-              {
-                      sh "mvn sonar:sonar -Dsonar.host.url=http://51.210.48.154:9000"
-              }
-            }
-          }
-		  
-	stage('Building image') {
+  agent any
+  stages {
+	stage('clone'){
+        steps{
+            git branch: 'develop', credentialsId: 'bfbbd2d8-0c10-4887-ba75-cae23c18f8ec', url: 'https://github.com/CATIS-DEVELOPER/mtc.git'
+            script {
+                      def pom = readMavenPom file: 'pom.xml'
+                      version = pom.version
+                  }
+            sh "mvn package -Dmaven.test.skip=true"
+        }
+	}
+	stage('Build') {
       steps{
         script {
-          dockerImage = docker.build managementtools
+          dockerImage = docker.build("chefban/distros-backend")
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Run') {
       steps{
         script {
-          
-          docker.withRegistry( 'http://51.210.48.154:5000' ) {
-            /*dockerImage.push("$BUILD_NUMBER")*/
-             dockerImage.push('latest')
+
+          docker.withRegistry('https://registry.hub.docker.com', 'c18ad32e-8713-4d37-9160-08e52018d5fb') {
+                 dockerImage.push("${env.BUILD_NUMBER}")
+                 dockerImage.push("latest")
+
 
           }
         }
       }
     }
+  }
 }
