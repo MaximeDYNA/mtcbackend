@@ -242,106 +242,108 @@
                                         </h4>
                                     </div>
                                     <div>
-                                        <table cellspacing="0" border="1" rules="cols" style="border : none; height:10px; border-collapse: collapse;" th:if="${typeVehicule}">
-                                            <tr >
-                                                <td style="height: 13px; width:118px;
-                                    border : solid thin; font-size: 7px; padding: 4px">
-                                                    <span style="font-weight: bold; font-size:9px; border-spacing: 0px;">SUSPENSION</span>
-                                                </td>
-                                                <td align="center"
-                                                    style="width:65px;
-                                    border: solid thin; font-weight: bold; font-size: 7px;">
-                                                    Eff AG<br/>LF Eff
-                                                </td>
-                                                <td align="center" style="font-weight: bold; width:65px;
-                                    border: solid thin; font-size: 7px;">
-                                                    Eff AD<br/>Rf Eff
-                                                </td>
-                                                <td align="center" style="font-weight: bold; width:65px;
-                                    border: solid thin; font-size: 7px;">
-                                                    Eff RG<br/>LR Eff
-                                                </td>
-                                                <td align="center" style=";   font-weight: bold; width:65px;
-                                    border: solid thin; font-size: 7px;">
-                                                    Eff RD<br/>RR Eff
-                                                </td>
-                                                <td align="center" style="  font-weight: bold; width:65px;
-                                    border: solid thin; font-size: 7px;">
-                                                    Diss. AV<br/>F Diss.
-                                                </td>
-                                                <td align="center"
-                                                    style="  font-weight: bold;  width:65px;
-                                    border: solid thin; font-size: 7px;">
-                                                    Diss. AR<br/>R Diss.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="border-left: none ; border-bottom: none ;"></td>
-                                                <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0410, 1)+' %'}"></td>
-                                                <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0411, 1)+' %'}"></td>
-                                                <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0413, 1)+' %'}"></td>
-                                                <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0414, 1)+' %' }"></td>
-                                                <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0412, 1)+' %' }"></td>
-                                                <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0415, 1)+' %'}"></td>
-                                            </tr>
-                                        </table>
-                                        <br/>
-                                        <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
-                                            <tr>
-                                                <td style="height: 13px; width:28%; border : solid thin; font-size: 12px;  padding: 4px">
-                                                    <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">RIPAGE / SHIFT.</span>
-                                                </td>
-                                                <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
-                                                    Ripage avant <br/>Front Deviation
-                                                </td>
-                                                <td align="center" style=" width: 36.5%; border: solid thin; font-weight: bold; font-size: 7px;">
-                                                    Ripage Arrière<br/>Rear Deviation
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="border-left: none ; border-bottom: none ;"></td>
-                                                <td align="center" style="color: gray;" th:utext="${r0401 + ' mm/m'}"></td>
-                                                <td align="center" style="color: gray;" th:utext="${r0402 + ' mm/m'}"></td>
-                                            </tr>
-                                        </table>
-                                        <br/>
-                                        <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
-                                            <tr>
-                                                <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
-                                                    <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">POLLUTION</span>
-                                                </td>
-                                                <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
-                                                    Opacité<br/>Opacity
-                                                </td>
-                                                <td align="center" style="color: gray;" th:utext="${#strings.replace(r0538, '.0', '')+' m-1' }"></td>
-                                            </tr>
-                                        </table>
-                                        <br/>
-                                        <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
-                                            <tr>
-                                                <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
-                                                    <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">PHARES / LAMPS</span>
-                                                </td>
-                                                <td align="center"
-                                                    style="  font-weight: bold;  width:65px; border: solid thin; font-size: 7px;">
-                                                    Feu Crois. gauche<br/>Left Headlamp
-                                                </td>
-                                                <td align="center"
-                                                    style="  font-weight: bold;  width:65px; border: solid thin; font-size: 7px;">
-                                                    Feu Crois. droite<br/>Right Headlamp
-                                                </td>
+                                        <div th:if="${ prod.libelle != 'catDPLS'>
+                                            <table cellspacing="0" border="1" rules="cols" style="border : none; height:10px; border-collapse: collapse;" th:if="${typeVehicule}">
+                                                <tr >
+                                                    <td style="height: 13px; width:118px;
+                                        border : solid thin; font-size: 7px; padding: 4px">
+                                                        <span style="font-weight: bold; font-size:9px; border-spacing: 0px;">SUSPENSION</span>
+                                                    </td>
+                                                    <td align="center"
+                                                        style="width:65px;
+                                        border: solid thin; font-weight: bold; font-size: 7px;">
+                                                        Eff AG<br/>LF Eff
+                                                    </td>
+                                                    <td align="center" style="font-weight: bold; width:65px;
+                                        border: solid thin; font-size: 7px;">
+                                                        Eff AD<br/>Rf Eff
+                                                    </td>
+                                                    <td align="center" style="font-weight: bold; width:65px;
+                                        border: solid thin; font-size: 7px;">
+                                                        Eff RG<br/>LR Eff
+                                                    </td>
+                                                    <td align="center" style=";   font-weight: bold; width:65px;
+                                        border: solid thin; font-size: 7px;">
+                                                        Eff RD<br/>RR Eff
+                                                    </td>
+                                                    <td align="center" style="  font-weight: bold; width:65px;
+                                        border: solid thin; font-size: 7px;">
+                                                        Diss. AV<br/>F Diss.
+                                                    </td>
+                                                    <td align="center"
+                                                        style="  font-weight: bold;  width:65px;
+                                        border: solid thin; font-size: 7px;">
+                                                        Diss. AR<br/>R Diss.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-left: none ; border-bottom: none ;"></td>
+                                                    <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0410, 1)+' %'}"></td>
+                                                    <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0411, 1)+' %'}"></td>
+                                                    <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0413, 1)+' %'}"></td>
+                                                    <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0414, 1)+' %' }"></td>
+                                                    <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0412, 1)+' %' }"></td>
+                                                    <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0415, 1)+' %'}"></td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                            <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="height: 13px; width:28%; border : solid thin; font-size: 12px;  padding: 4px">
+                                                        <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">RIPAGE / SHIFT.</span>
+                                                    </td>
+                                                    <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
+                                                        Ripage avant <br/>Front Deviation
+                                                    </td>
+                                                    <td align="center" style=" width: 36.5%; border: solid thin; font-weight: bold; font-size: 7px;">
+                                                        Ripage Arrière<br/>Rear Deviation
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-left: none ; border-bottom: none ;"></td>
+                                                    <td align="center" style="color: gray;" th:utext="${r0401 + ' mm/m'}"></td>
+                                                    <td align="center" style="color: gray;" th:utext="${r0402 + ' mm/m'}"></td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                            <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
+                                                        <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">POLLUTION</span>
+                                                    </td>
+                                                    <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
+                                                        Opacité<br/>Opacity
+                                                    </td>
+                                                    <td align="center" style="color: gray;" th:utext="${#strings.replace(r0538, '.0', '')+' m-1' }"></td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                            <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="height: 13px; width:28%; border : solid thin; font-size: 9px;  padding: 4px">
+                                                        <span style="font-weight: bold; font-size: 9px; border-spacing: 0px;">PHARES / LAMPS</span>
+                                                    </td>
+                                                    <td align="center"
+                                                        style="  font-weight: bold;  width:65px; border: solid thin; font-size: 7px;">
+                                                        Feu Crois. gauche<br/>Left Headlamp
+                                                    </td>
+                                                    <td align="center"
+                                                        style="  font-weight: bold;  width:65px; border: solid thin; font-size: 7px;">
+                                                        Feu Crois. droite<br/>Right Headlamp
+                                                    </td>
 
-                                            </tr>
-                                            <tr>
-                                                <td style="border-left: none ; border-bottom: none ;">
-                                                </td>
-                                                <td align="center"  style="border-bottom: solid thin;"
-                                                    th:utext="${#numbers.formatInteger(r0490,1)==1 ? 'Correct': 'Unknown'}"></td>
-                                                <td align="center"  style=" border-bottom: solid thin;"
-                                                    th:utext="${#numbers.formatInteger(r0492,1)==1 ? 'Correct': 'Unknown'}"></td>
-                                            </tr>
-                                        </table>
-                                        <br/>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-left: none ; border-bottom: none ;">
+                                                    </td>
+                                                    <td align="center"  style="border-bottom: solid thin;"
+                                                        th:utext="${#numbers.formatInteger(r0490,1)==1 ? 'Correct': 'Unknown'}"></td>
+                                                    <td align="center"  style=" border-bottom: solid thin;"
+                                                        th:utext="${#numbers.formatInteger(r0492,1)==1 ? 'Correct': 'Unknown'}"></td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                        </div>
                                         <table cellspacing="0" border="1" rules="cols" style="width:100%; border : none; height:10px; border-collapse: collapse;">
                                             <tr>
                                                 <td style="height: 13px; width:28%; border : solid thin; font-size:7px;  padding: 4px">
