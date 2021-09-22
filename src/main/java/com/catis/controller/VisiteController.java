@@ -492,12 +492,15 @@ public class VisiteController {
                 PageRequest.of(0,1)
             );
 
+            Produit prod = v.getCarteGrise().getProduit();
+
             context.setVariable("controlValidityAt", v.getControl().getValidityAt() == null ? null : convert(v.getControl().getValidityAt() ));
             context.setVariable("controlDelayAt", convert(v.getControl().getContreVDelayAt() == null
                     ? LocalDateTime.now(): v.getControl().getContreVDelayAt() ));
             context.setVariable("mesurevisuel", mesureVisuels.isEmpty() ? null : mesureVisuels.get(0));
             context.setVariable("v", v);
             context.setVariable("tp", tp);
+            context.setVariable("prod", prod);
 
             context.setVariable("minorDefault", minorDefault);
             context.setVariable("majorDefault", majorDefault);
