@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.catis.controller.SseController;
 import com.catis.controller.VisiteController;
 import com.catis.model.entity.Controleur;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class InspectionService {
 
         inspection = inspectionR.save(inspection);
 
-        VisiteController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat);
+        SseController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat);
         return inspection;
 
     }

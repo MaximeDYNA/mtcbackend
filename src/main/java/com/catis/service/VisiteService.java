@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.Event.VisiteCreatedEvent;
+import com.catis.controller.SseController;
 import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.KanBanSimpleData;
@@ -162,14 +163,14 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return v;
     }
 
@@ -219,7 +220,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
@@ -245,7 +246,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        VisiteController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
 
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
@@ -351,7 +352,7 @@ public class VisiteService {
 
         Visite visite = event.getVisite();
         System.out.println("Visite test ---------"+ visite.getIdVisite());
-        VisiteController.dispatcheventoclients(visite, this, gieglanFileService, cat);
+        SseController.dispatcheventoclients(visite, this, gieglanFileService, cat);
     }
 
 
