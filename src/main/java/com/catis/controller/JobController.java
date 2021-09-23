@@ -144,7 +144,7 @@ public class JobController {
     @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
         try {
-            VisiteController.dispatchEdit(vs.findById(id),
+            SseController.dispatchEdit(vs.findById(id),
                     vs, gieglanFileService, catSer);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
         }
