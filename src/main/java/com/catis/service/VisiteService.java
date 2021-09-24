@@ -163,14 +163,14 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return v;
     }
 
@@ -220,7 +220,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+       // SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
@@ -246,7 +246,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
 
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
@@ -352,7 +352,7 @@ public class VisiteService {
 
         Visite visite = event.getVisite();
         System.out.println("Visite test ---------"+ visite.getIdVisite());
-        SseController.dispatcheventoclients(visite, this, gieglanFileService, cat);
+        //SseController.dispatcheventoclients(visite, this, gieglanFileService, cat);
     }
 
 
