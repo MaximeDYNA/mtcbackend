@@ -373,19 +373,7 @@ public class VisiteController {
         return "/public/pv/"+visiteId+".pdf";
 
     }
-
-    @GetMapping("/api/v1/visites/approuver/{visiteId}")
-    public ResponseEntity<Object> approuver(@PathVariable Long visiteId) {
-        try {
-            log.info("Demande d'approbation d'une visite...");
-            Visite visite = visiteService.findById(visiteId);
-            visite = visiteService.approuver(visite);
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Visite approuvée avec succès", visite);
-        } catch (Exception e) {
-            log.error("Erreur lors de l'approbation");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'approbation", null);
-        }
-    }
+    
 
 
     public String fillHtmlToValue(long id) {
