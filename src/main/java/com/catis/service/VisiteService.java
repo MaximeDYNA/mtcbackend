@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.Event.VisiteCreatedEvent;
-import com.catis.controller.SseController;
 import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.KanBanSimpleData;
@@ -16,20 +15,15 @@ import com.catis.objectTemporaire.OrganisationTopDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import com.catis.controller.VisiteController;
 import com.catis.controller.exception.VisiteEnCoursException;
 import com.catis.model.control.Control.StatusType;
-import com.catis.repository.ControlRepository;
 import com.catis.repository.VisiteRepository;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -43,15 +37,6 @@ public class VisiteService {
     @Autowired
     private OrganisationService os;
 
-    @Autowired
-    private CategorieTestVehiculeService cat;
-
-    @Autowired
-    private GieglanFileService gieglanFileService;
-
-
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteService.class);
@@ -94,13 +79,7 @@ public class VisiteService {
         return visites;
     }
 
-    public Visite approuver(Visite visite) throws IOException {
-        visite.setStatut(0);
-        Visite v = visiteRepository.save(visite);
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
 
-        return v;
-    }
 
     public List<Visite> findByReference(String ref, Long organisationId) {
         return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(ref, ref, organisationId);
@@ -162,14 +141,14 @@ public class VisiteService {
         }
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+
         //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+
         //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return v;
     }
@@ -221,7 +200,7 @@ public class VisiteService {
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
        // SseController.dispatchEdit(visite, this, gieglanFileService, cat);
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
+
     }
 
     public List<Visite> listParStatus(int status, Long orgId) {
@@ -248,7 +227,6 @@ public class VisiteService {
         visite = visiteRepository.save(visite);
         //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
 
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
     }
 
     public boolean isVisiteInitial(String ref, Long organisationId) throws VisiteEnCoursException {
