@@ -356,8 +356,8 @@ public class VisiteController {
 
             visite = visiteService.add(visite);
         applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
-        SseController.dispatchEdit(visite,
-                visiteService, gieglanFileService, catSer);
+        //SseController.dispatchEdit(visite,
+        //        visiteService, gieglanFileService, catSer);
         f = null;
             return "/public/pv/"+visiteId+".pdf";
 
