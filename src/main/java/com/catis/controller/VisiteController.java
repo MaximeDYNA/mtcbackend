@@ -108,7 +108,7 @@ public class VisiteController {
 
 
 
-    @GetMapping(value = "/api/v1/all/visitesencours", params = { "page", "size" })
+    @GetMapping(value = "/api/v1/all/visitesencours", params = {"page", "size"})
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
         log.info("Liste des visites en cours ---");
@@ -562,11 +562,11 @@ public class VisiteController {
     /****Administration****/
 
 
-    @GetMapping(value = "/api/v1/admin/visites",  params = { "search", "page", "size" })
-    public ResponseEntity<Object> getAllActive(@RequestParam("search") String search, @RequestParam("page") int page,
+    @GetMapping(value = "/api/v1/admin/visites",  params = { "page", "size" })
+    public ResponseEntity<Object> getAllActive(@RequestParam("page") int page,
                                                @RequestParam("size") int size) {
         List<Listview> listVisit = new ArrayList<>();
-        visiteService.searchedVisitListForAdmin(search, PageRequest.of(page, size)).forEach( visite ->
+        visiteService.visitListForAdmin(PageRequest.of(page, size)).forEach( visite ->
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );
         Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);

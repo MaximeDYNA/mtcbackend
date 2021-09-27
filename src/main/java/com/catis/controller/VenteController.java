@@ -12,6 +12,7 @@ import com.catis.objectTemporaire.Ticketdto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class VenteController {
     private OperationCaisseService ocs;
     private static Logger LOGGER = LoggerFactory.getLogger(VenteController.class);
 
-    @GetMapping( value = "/api/v1/ventes/listview")
+    /*@GetMapping( value = "/api/v1/ventes/listview")
     public ResponseEntity<Object> listVentes() {
 
         LOGGER.trace("Liste vente");
@@ -63,7 +64,7 @@ public class VenteController {
 			LOGGER.error(Message.ERREUR_LIST_VIEW +"Vente");
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}*/
-    }
+    //}
     @PostMapping( value = "/api/v1/ventes/search")
     public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
         List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
@@ -78,9 +79,10 @@ public class VenteController {
                 .collect(Collectors.toList());
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
     }
-    @GetMapping( value = "/api/v1/ventes/tickets/{lang}")
-    public ResponseEntity<Object> getAllTickets(@PathVariable String lang){
-        List<Ticketdto> ticketdtos = venteService.findAll()
+    @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
+    public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
+                                                @RequestParam("size") int size){
+        List<Ticketdto> ticketdtos = venteService.findAll(PageRequest.of(page, size))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null ? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
@@ -127,11 +129,12 @@ public class VenteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
         }
     }
-    @GetMapping("/api/v1/admin/ventes")
-    public ResponseEntity<Object> getVentes() {
+    @GetMapping(value="/api/v1/admin/ventes", params ={"page", "size"})
+    public ResponseEntity<Object> getVentes( @RequestParam("page") int page,
+                                            @RequestParam("size") int size) {
 
 
-            List<Vente> ventes = venteService.findAll();
+            List<Vente> ventes = venteService.findAll(PageRequest.of(page, size));
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Succès", ventes);
            /* try { } catch (Exception e) {
