@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -144,7 +141,12 @@ public class JobController {
     /*@GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
         try {
-            SseController.dispatchEdit(vs.findById(id),
+            Visite visite = vs.findById(id);
+            if(visite.getStatut() == 3){
+                visite.getInspection().setDateFin(new Date());
+                vs.add(visite);
+            }
+            SseController.dispatchEdit(visite,
                     vs, gieglanFileService, catSer);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
         }

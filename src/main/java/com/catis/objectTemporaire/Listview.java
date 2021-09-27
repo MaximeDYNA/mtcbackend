@@ -23,19 +23,16 @@ public class Listview {
     private String client;
     private String date;
     private String statut;
-  //private Organisation organisation;
     private int statutVisite;
     private Long idVisite;
     private boolean contreVisite;
- // private LocalDateTime dateDebut;
-  //private LocalDateTime dateFin;
     private boolean encours = true;
-  // private Caissier caissier;
     private Long inspection;
-    //private VerbalProcess process;
     private CarteGrise carteGrise;
     private boolean conformityTest;
     private int isConform;
+    private String bestPlate;
+    private double accurance;
 
     @JsonIgnore
     private Visite vis;
@@ -64,19 +61,18 @@ public class Listview {
         this.gieglanFileService = gieglanFileService;
         this.catSer = catSer;
         this.measures = new ArrayList<>();
- //       this.organisation = v.getOrganisation();
         this.idVisite = id;
         this.contreVisite = v.isContreVisite();
-   //     this.dateDebut = v.getDateDebut();
-     //   this.dateFin = v.getDateFin();
         this.encours = v.isEncours();
-       // this.caissier = v.getCaissier();
         this.inspection = v.getInspection() == null ? null : v.getInspection().getIdInspection();
-       // this.process =v.getProcess();
         this.carteGrise=v.getCarteGrise();
-        //this.control =v.getControl();
         this.isConform = v.getIsConform();
         this.conformityTest = v.getOrganisation().isConformity();
+        if(v.getStatut() > 6){
+            this.bestPlate = v.getInspection().getBestPlate();
+            this.accurance = v.getInspection().getDistancePercentage();
+        }
+
 
         manageColor();
     }

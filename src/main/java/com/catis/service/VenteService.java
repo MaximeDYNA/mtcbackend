@@ -42,6 +42,10 @@ public class VenteService {
         return venteRepository.findByVisite_IdVisite(id);
     }
 
+    public List<Vente> findByRef(String ref){
+        return venteRepository.findByActiveStatusTrueAndNumFactureStartingWith(ref);
+    }
+
     public String genererNumFacture() {
         Date now = new Date();
         DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");

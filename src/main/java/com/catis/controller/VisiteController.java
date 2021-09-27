@@ -94,14 +94,9 @@ public class VisiteController {
     private GieglanFileService gieglanFileService;
     @Autowired
     private CategorieTestVehiculeService catSer;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private PagedResourcesAssembler<Listview> pagedResourcesAssembler;
-
-
-
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -355,7 +350,6 @@ public class VisiteController {
             }
 
             visite = visiteService.add(visite);
-        applicationEventPublisher.publishEvent(new VisiteCreatedEvent(visite));
         //SseController.dispatchEdit(visite,
         //        visiteService, gieglanFileService, catSer);
 
@@ -373,7 +367,7 @@ public class VisiteController {
         return "/public/pv/"+visiteId+".pdf";
 
     }
-    
+
 
 
     public String fillHtmlToValue(long id) {
@@ -567,13 +561,18 @@ public class VisiteController {
 
     /****Administration****/
 
-    @GetMapping(value = "/api/v1/admin/visites")
-    public ResponseEntity<Object> getAllActive() {
+
+    @GetMapping(value = "/api/v1/admin/visites",  params = { "search", "page", "size" })
+    public ResponseEntity<Object> getAllActive(@RequestParam("search") String search, @RequestParam("page") int page,
+                                               @RequestParam("size") int size) {
         List<Listview> listVisit = new ArrayList<>();
-        visiteService.findActiveVisites().forEach( visite ->
+        visiteService.searchedVisitListForAdmin(search, PageRequest.of(page, size)).forEach( visite ->
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", listVisit);
+        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
+        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
     }
 
     @PostMapping(value = "/api/v1/admin/visites")
@@ -672,13 +671,12 @@ public class VisiteController {
                 Objects.equals(ps, that.ps) &&
                 Objects.equals(gieglanFileService, that.gieglanFileService) &&
                 Objects.equals(catSer, that.catSer) &&
-                Objects.equals(applicationEventPublisher, that.applicationEventPublisher) &&
                 Objects.equals(pagedResourcesAssembler, that.pagedResourcesAssembler);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(environment, request, visiteRepo, openAlprService, messageRepository, rapportListService, pdfGenaratorUtil, visiteService, rapportDeVisiteRepo, mesureVisuelRepository, venteService, taxeService, storageService, ps, gieglanFileService, catSer, applicationEventPublisher, pagedResourcesAssembler);
+        return Objects.hash(environment, request, visiteRepo, openAlprService, messageRepository, rapportListService, pdfGenaratorUtil, visiteService, rapportDeVisiteRepo, mesureVisuelRepository, venteService, taxeService, storageService, ps, gieglanFileService, catSer, pagedResourcesAssembler);
     }
 }
