@@ -5,14 +5,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.model.entity.TaxeProduit;
-import com.catis.objectTemporaire.ProduitTicketdto;
-import com.catis.objectTemporaire.SearchVentedto;
-import com.catis.objectTemporaire.TaxeTicketdto;
-import com.catis.objectTemporaire.Ticketdto;
+import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,8 @@ public class VenteController {
     private VenteService venteService;
     @Autowired
     private DetailVenteService detailVenteService;
+    @Autowired
+    private PagedResourcesAssembler<Ticketdto> pagedResourcesAssembler;
     @Autowired
     private OperationCaisseService ocs;
     private static Logger LOGGER = LoggerFactory.getLogger(VenteController.class);
@@ -92,7 +97,12 @@ public class VenteController {
                                 detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
                         vente.getMontantTotal(), convert(lang, vente.getMontantTotal())))
                         .collect(Collectors.toList());
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
+
+
+        Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
+        PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", result);
     }
 
 
