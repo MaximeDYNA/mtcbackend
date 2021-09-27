@@ -1,10 +1,14 @@
 package com.catis.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.catis.model.entity.TaxeProduit;
+import com.catis.objectTemporaire.ProduitTicketdto;
+import com.catis.objectTemporaire.SearchVentedto;
+import com.catis.objectTemporaire.TaxeTicketdto;
+import com.catis.objectTemporaire.Ticketdto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import com.catis.model.entity.Vente;
 import com.catis.service.DetailVenteService;
 import com.catis.service.OperationCaisseService;
 import com.catis.service.VenteService;
+import pl.allegro.finance.tradukisto.ValueConverters;
 
 @RestController
 @CrossOrigin
@@ -30,7 +35,7 @@ public class VenteController {
     private OperationCaisseService ocs;
     private static Logger LOGGER = LoggerFactory.getLogger(VenteController.class);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/listview")
+    @GetMapping( value = "/api/v1/ventes/listview")
     public ResponseEntity<Object> listVentes() {
 
         LOGGER.trace("Liste vente");
@@ -59,6 +64,35 @@ public class VenteController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}*/
     }
+    @PostMapping( value = "/api/v1/ventes/search")
+    public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
+        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
+                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
+                        Date.from(vente.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant()),
+                        vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
+                                detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
+                                detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
+                        vente.getMontantTotal(), convert(searchVentedto.getLang(), vente.getMontantTotal())))
+                .collect(Collectors.toList());
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
+    }
+    @GetMapping( value = "/api/v1/ventes/tickets/{lang}")
+    public ResponseEntity<Object> getAllTickets(@PathVariable String lang){
+        List<Ticketdto> ticketdtos = venteService.findAll()
+                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
+                        vente.getClient() == null ? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
+                        vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
+                        Date.from(vente.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant()),
+                        vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
+                                detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
+                                detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
+                        vente.getMontantTotal(), convert(lang, vente.getMontantTotal())))
+                        .collect(Collectors.toList());
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/{id}/detailsvente/listview")
     public ResponseEntity<Object> listVentes(@PathVariable Long id) {
@@ -117,6 +151,23 @@ public class VenteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);
         }*/
     }
+    public double getPrix(double prixTTC, Set<TaxeProduit> taxeProduits){
 
+        double sum = taxeProduits.stream()
+                .map(taxeTicketdto -> new Double(taxeTicketdto.getTaxe().getValeur()))
+                .reduce((a,b) -> a+b)
+                .get();
+        double prix = prixTTC *(100+ sum) /100;
+        return prix;
+    }
+    public String convert(String lang, double price){
+        ValueConverters converter;
+        if (lang.equalsIgnoreCase("fr")) {
+            converter = ValueConverters.FRENCH_INTEGER;
+        } else
+            converter = ValueConverters.ENGLISH_INTEGER;
+
+        return converter.asWords((int) price);
+    }
 
 }

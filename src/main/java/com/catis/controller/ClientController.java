@@ -133,9 +133,7 @@ public class ClientController {
                 if (clientService.findByPartenaire(p.getPartenaireId()) != null) {
                     cp = new ClientPartenaire();
                     cp.setNom(p.getNom());
-
-
-                    cp.setPrenom(p.getPrenom());
+                    cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
                     cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
                     clientPartenaires.add(cp);

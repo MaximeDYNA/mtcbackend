@@ -12,6 +12,7 @@ public interface VenteRepository extends CrudRepository<Vente, Long> {
 
     Vente findByVisite_IdVisite(Long idVisite);
     List<Vente> findByActiveStatusTrue();
+    List<Vente> findByActiveStatusTrueAndNumFactureStartingWith(String ref);
 
     @Query("select v from Vente v where v.createdDate >= CURRENT_DATE ")
     List<Vente> venteOftheDay();

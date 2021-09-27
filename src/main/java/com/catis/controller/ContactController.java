@@ -211,7 +211,7 @@ public class ContactController {
                 cp = new ClientPartenaire();
                 if (contactService.getContactByPartenaireId(p.getPartenaireId()) != null) {
                     cp.setNom(p.getNom());
-                    cp.setPrenom(p.getPrenom());
+                    cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
                     cp.setContactId(contactService.getContactByPartenaireId(p.getPartenaireId()).getContactId());
                     clientPartenaires.add(cp);

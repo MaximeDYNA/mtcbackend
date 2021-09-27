@@ -31,7 +31,7 @@ public class CaisseController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CaisseController.class);
 
-    @RequestMapping("/api/v1/admin/caisses")
+    @GetMapping("/api/v1/admin/caisses")
     public ResponseEntity<Object> afficherLesCaisses() {
 
         List<Caisse> caisses = caisseService.findAllCaisse();
@@ -39,6 +39,8 @@ public class CaisseController {
                 caisses);
 
     }
+
+
     @GetMapping("/api/v1/admin/caisses/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 
@@ -85,25 +87,5 @@ public class CaisseController {
 
     }
 
-	/*@GetMapping(value="/userconnected")
-    public ResponseEntity<Object> getTasks()
-    {
-		 try {
-			 
-		        
-			 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-					 , getKeycloakSecurityContext().getIdToken().getGivenName());
-		 }
-			
-			catch(Exception e) {
-				LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
-						+ "l'ajout d'un client", null);
-			}
-       
-    }
-	 private KeycloakSecurityContext getKeycloakSecurityContext()
-	    {
-	        return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-	    }*/
+
 }

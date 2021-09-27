@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface MarqueVehiculeRepository extends CrudRepository<MarqueVehicule, Long> {
 
-    List<MarqueVehicule> findByActiveStatusTrue();
+    List<MarqueVehicule> findByActiveStatusTrueOrderByLibelleAsc();
 }

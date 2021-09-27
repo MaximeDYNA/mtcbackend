@@ -112,7 +112,9 @@
                             <span>
                                 Catégorie / Category:
                             </span>
-                            <span style="font-size: 11px; color: gray;" th:utext="${v.carteGrise.produit.libelle}"></span>
+                            <span style="font-size: 11px; color: gray;" th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
+                                    (${v.carteGrise.produit.libelle} == 'catB1'? 'B1 - Véhicule léger inf. à 3500 Kg et [...]' : (${v.carteGrise.produit.libelle} == 'catCPL'? 'C - Bus sup. à 3500 Kg' : (${v.carteGrise.produit.libelle} == 'catCVL'? 'C - Bus inf. à 3500 Kg' :
+                                    (${v.carteGrise.produit.libelle} == 'catDPL'? 'D - Tire remorque' : (${v.carteGrise.produit.libelle} == 'catDPLS'? 'D - Semi remorque' : 'Error'))))))"></span>
                         </td>
                     </tr>
                 </table>
@@ -551,7 +553,9 @@
                             <div  align="center" style="margin-left: 15px">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
-                                    CAT. : <span th:utext="${v.carteGrise.produit.libelle}"></span> <br/>
+                                    CAT. : <span th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
+                                    (${v.carteGrise.produit.libelle} == 'catB1'? 'B1 - Véhicule léger inf. à 3500 Kg et [...]' : (${v.carteGrise.produit.libelle} == 'catCPL'? 'C - Bus sup. à 3500 Kg' : (${v.carteGrise.produit.libelle} == 'catCVL'? 'C - Bus inf. à 3500 Kg' :
+                                    (${v.carteGrise.produit.libelle} == 'catDPL'? 'D - Tire remorque' : (${v.carteGrise.produit.libelle} == 'catDPLS'? 'D - Semi remorque' : 'Error'))))))"></span> <br/>
                                 </p>
                                 <div align="center">
                                     <table style="border-collapse: collapse" cellspacing="0" cellpadding="1" align="center">

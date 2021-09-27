@@ -178,6 +178,10 @@ public class VisiteService {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_OrganisationId(search, search, search, search, orgId, pageable);
         return visiteEnCours;
     }
+    public List<Visite> searchedVisitListForAdmin(String search, Pageable pageable){
+        List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCase(search, search, search, search, pageable);
+        return visiteEnCours;
+    }
     public List<Visite> endedVisitList(Long orgId){
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
         return visiteEnCours;

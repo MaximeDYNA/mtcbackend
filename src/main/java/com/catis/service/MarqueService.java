@@ -17,7 +17,7 @@ public class MarqueService {
 
     public List<MarqueVehicule> marqueList() {
         List<MarqueVehicule> marques = new ArrayList<>();
-        marqueRepo.findByActiveStatusTrue().forEach(marques::add);
+        marqueRepo.findByActiveStatusTrueOrderByLibelleAsc().forEach(marques::add);
         return marques;
     }
 
