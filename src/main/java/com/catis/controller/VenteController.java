@@ -1,6 +1,7 @@
 package com.catis.controller;
 
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,11 +73,12 @@ public class VenteController {
     //}
     @PostMapping( value = "/api/v1/ventes/search")
     public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
-                        Date.from(vente.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant()),
+                        vente.getCreatedDate().format(formatter),
                         vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
                                 detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
                                 detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
@@ -87,11 +89,12 @@ public class VenteController {
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
     public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
                                                 @RequestParam("size") int size){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<Ticketdto> ticketdtos = venteService.findAll(PageRequest.of(page, size))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null ? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
-                        Date.from(vente.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant()),
+                        vente.getCreatedDate().format(formatter),
                         vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
                                 detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
                                 detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
