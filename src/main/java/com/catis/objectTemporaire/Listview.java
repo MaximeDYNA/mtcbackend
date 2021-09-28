@@ -22,6 +22,7 @@ public class Listview {
     private String chassis;
     private String client;
     private String date;
+    private LocalDateTime createdDate;
     private String statut;
     private int statutVisite;
     private Long idVisite;
@@ -54,6 +55,7 @@ public class Listview {
         this.vis=v;
         this.statut="";
         this.statutVisite = v.getStatut();
+        this.createdDate = v.getCreatedDate();
         this.chassis = (v.getCarteGrise().getVehicule()==null
                 ? "": (v.getCarteGrise().getVehicule().getChassis()==null
                 ? "" : v.getCarteGrise().getVehicule().getChassis()));
