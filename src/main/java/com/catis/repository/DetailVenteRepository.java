@@ -12,5 +12,5 @@ public interface DetailVenteRepository extends CrudRepository<DetailVente, Strin
 
     List<DetailVente> findByVente_IdVente(Long id);
     List<DetailVente> findByVente_NumFactureAndActiveStatusTrue(String ref);
-    List<DetailVente> findByVente_NumFactureAndActiveStatusTrue(Pageable pageable);
+    List<DetailVente> findByActiveStatusTrue(Pageable pageable);
 }
