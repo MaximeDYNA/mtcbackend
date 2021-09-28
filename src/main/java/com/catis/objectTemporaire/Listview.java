@@ -21,7 +21,7 @@ public class Listview {
     private String reference;
     private String chassis;
     private String client;
-    private String date;
+    private String createdAt;
     private LocalDateTime createdDate;
     private String statut;
     private int statutVisite;
@@ -32,6 +32,7 @@ public class Listview {
     private CarteGrise carteGrise;
     private boolean conformityTest;
     private int isConform;
+    private String organisation;
     private String bestPlate;
     private double accurance;
 
@@ -52,9 +53,11 @@ public class Listview {
     public Listview(Visite v, VisiteService visiteService, GieglanFileService gieglanFileService, CategorieTestVehiculeService catSer) {
         super();
         this.id = v.getIdVisite();
+        this.organisation = v.getOrganisation().getNom();
         this.vis=v;
         this.statut="";
         this.statutVisite = v.getStatut();
+        this.setCreatedAt(v.getCreatedDate());
         this.createdDate = v.getCreatedDate();
         this.chassis = (v.getCarteGrise().getVehicule()==null
                 ? "": (v.getCarteGrise().getVehicule().getChassis()==null
@@ -239,14 +242,46 @@ public class Listview {
         this.client = client;
     }
 
-    public String getDate() {
+    public String getCreatedAt() {
 
-        return date;
+        return createdAt;
     }
 
-    public void setDate(LocalDateTime date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        this.date = date.format(formatter);
+    public void setCreatedAt(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.createdAt = date.format(formatter);
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(String organisation) {
+        this.organisation = organisation;
+    }
+
+    public String getBestPlate() {
+        return bestPlate;
+    }
+
+    public void setBestPlate(String bestPlate) {
+        this.bestPlate = bestPlate;
+    }
+
+    public double getAccurance() {
+        return accurance;
+    }
+
+    public void setAccurance(double accurance) {
+        this.accurance = accurance;
     }
 
     public String getStatut() {
@@ -293,9 +328,6 @@ public class Listview {
     }
 
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public List<GieglanFileIcon> getMeasures() {
         return measures;
@@ -373,7 +405,7 @@ public class Listview {
                 Objects.equals(reference, listview.reference) &&
                 Objects.equals(chassis, listview.chassis) &&
                 Objects.equals(client, listview.client) &&
-                Objects.equals(date, listview.date) &&
+                Objects.equals(createdAt, listview.createdAt) &&
                 Objects.equals(statut, listview.statut) &&
                 Objects.equals(measures, listview.measures) &&
                 Objects.equals(visiteService, listview.visiteService) &&
@@ -384,9 +416,12 @@ public class Listview {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, categorie, type, reference, chassis, client, date, statut, statutVisite, measures, visiteService, gieglanFileService, catSer);
+        return Objects.hash(id, categorie, type, reference, chassis, client, createdAt, statut, statutVisite, measures, visiteService, gieglanFileService, catSer);
     }
 
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Long getIdVisite() {
         return idVisite;
