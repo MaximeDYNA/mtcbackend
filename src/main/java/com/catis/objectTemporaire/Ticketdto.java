@@ -12,7 +12,7 @@ public class Ticketdto {
     private String numTicket;
     private String nomClient;
     private String numClient;
-    private Date dateVente;
+    private String dateVente;
     private List<ProduitTicketdto> produits;
     private double total;
     private String lettre;
