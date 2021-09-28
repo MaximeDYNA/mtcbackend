@@ -34,7 +34,7 @@ public class DetailVenteService {
 
     }
     public List<DetailVente> findAll(Pageable pageable) {
-        return detailVenteRepository.findByVente_NumFactureAndActiveStatusTrue(pageable);
+        return detailVenteRepository.findByActiveStatusTrue(pageable);
 
     }
 
