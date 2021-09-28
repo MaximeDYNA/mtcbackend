@@ -92,7 +92,7 @@ public class SseController {
             v.setClient(visite.getCarteGrise().getProprietaireVehicule()
                     .getPartenaire()
                     .getNom());
-        v.setDate(visite.getDateDebut());
+        v.setCreatedAt(visite.getCreatedDate());
         v.setReference(visite.getCarteGrise().getNumImmatriculation());
         v.setStatut(visite.statutRender(visite.getStatut()));
         v.setType(visite.typeRender());
