@@ -12,4 +12,6 @@ public class ProduitTicketdto {
     private String cat;
     private double prixTTC;
     private double prix;
+    private String description;
+    private List<TaxeTicketdto> taxeTicketdtos;
 }
