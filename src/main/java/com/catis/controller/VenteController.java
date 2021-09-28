@@ -74,33 +74,63 @@ public class VenteController {
     @PostMapping( value = "/api/v1/ventes/search")
     public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
+        List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
+        List<Ticketdto> ticketdtos = detailVenteService.findByRefVente(searchVentedto.getRef())
+                .stream().map(detailVente -> new Ticketdto(detailVente.getVente().getNumFacture(),
+                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getNom():detailVente.getVente().getClient().getPartenaire().getNom(),
+                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
+                        detailVente.getVente().getCreatedDate().format(formatter),
+                        new ArrayList<ProduitTicketdto>(){{
+                            add(new ProduitTicketdto(detailVente.getReference(), detailVente.getProduit().getLibelle(),
+                                    detailVente.getPrix(), getPrix(detailVente.getPrix(),
+                                    detailVente.getProduit().getTaxeProduit()) , detailVente.getProduit().getDescription(),
+                            detailVente.getProduit()
+                                    .getTaxeProduit()
+                                    .stream()
+                                    .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+                                    .collect(Collectors.toList())
+                                    )
+                            );
+                        }}, detailVente.getVente().getMontantTotal(), convert(searchVentedto.getLang(), detailVente.getVente().getMontantTotal())))
+                .collect(Collectors.toList());
+
+
+        /*List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
                         vente.getCreatedDate().format(formatter),
                         vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
                                 detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
-                                detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
+                                detailVente.getProduit().getTaxeProduit()),
+                                detailVente.getProduit().getDescription()),
+                                ).collect(Collectors.toList()),
                         vente.getMontantTotal(), convert(searchVentedto.getLang(), vente.getMontantTotal())))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
     }
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
     public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
                                                 @RequestParam("size") int size){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        List<Ticketdto> ticketdtos = venteService.findAll(PageRequest.of(page, size))
-                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
-                        vente.getClient() == null ? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
-                        vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
-                        vente.getCreatedDate().format(formatter),
-                        vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
-                                detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
-                                detailVente.getProduit().getTaxeProduit()))).collect(Collectors.toList()),
-                        vente.getMontantTotal(), convert(lang, vente.getMontantTotal())))
-                        .collect(Collectors.toList());
-
+        List<Ticketdto> ticketdtos = detailVenteService.findAll(PageRequest.of(page, size))
+                .stream().map(detailVente -> new Ticketdto(detailVente.getVente().getNumFacture(),
+                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getNom():detailVente.getVente().getClient().getPartenaire().getNom(),
+                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
+                        detailVente.getVente().getCreatedDate().format(formatter),
+                        new ArrayList<ProduitTicketdto>(){{
+                            add(new ProduitTicketdto(detailVente.getReference(), detailVente.getProduit().getLibelle(),
+                                            detailVente.getPrix(), getPrix(detailVente.getPrix(),
+                                    detailVente.getProduit().getTaxeProduit()) , detailVente.getProduit().getDescription(),
+                                            detailVente.getProduit()
+                                                    .getTaxeProduit()
+                                                    .stream()
+                                                    .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+                                                    .collect(Collectors.toList())
+                                    )
+                            );
+                        }}, detailVente.getVente().getMontantTotal(), convert(lang, detailVente.getVente().getMontantTotal())))
+                .collect(Collectors.toList());
 
         Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler
@@ -173,7 +203,7 @@ public class VenteController {
                 .map(taxeTicketdto -> new Double(taxeTicketdto.getTaxe().getValeur()))
                 .reduce((a,b) -> a+b)
                 .get();
-        double prix = prixTTC *(100+ sum) /100;
+        double prix = prixTTC * 100/(100+ sum);
         return prix;
     }
     public String convert(String lang, double price){
