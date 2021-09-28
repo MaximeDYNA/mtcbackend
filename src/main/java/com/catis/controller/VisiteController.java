@@ -635,6 +635,10 @@ public class VisiteController {
     public ResponseEntity<Object> delVisite(@PathVariable Long id) {
 
         Visite visite = visiteService.findById(id);
+        visite.getVente().getDetailventes().forEach(
+                detailVente -> detailVente.setActiveStatus(false)
+        );
+        visite.getVente().setActiveStatus(false);
         visite.setStatut(0);
         visiteService.add(visite);
 
