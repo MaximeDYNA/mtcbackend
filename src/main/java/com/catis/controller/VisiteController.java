@@ -284,7 +284,7 @@ public class VisiteController {
                         .getClient()
                         .getPartenaire()
                         .getNom());
-            lv.setDate(visite.getDateDebut());
+            lv.setCreatedAt(visite.getCreatedDate());
             lv.setReference(visite.getCarteGrise().getNumImmatriculation());
             lv.setStatut(visite.statutRender(visite.getStatut()));
             lv.setType(visite.typeRender());

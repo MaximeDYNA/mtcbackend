@@ -54,6 +54,7 @@ public class Listview {
         super();
         this.id = v.getIdVisite();
         this.organisation = v.getOrganisation().getNom();
+        this.organisation = v.getOrganisation().getNom();
         this.vis=v;
         this.statut="";
         this.statutVisite = v.getStatut();
