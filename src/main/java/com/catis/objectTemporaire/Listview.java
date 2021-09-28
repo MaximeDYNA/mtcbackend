@@ -245,7 +245,7 @@ public class Listview {
     }
 
     public void setDate(LocalDateTime date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.date = date.format(formatter);
     }
 
