@@ -179,7 +179,7 @@ public class VisiteService {
         return visiteEnCours;
     }
     public List<Visite> visitListForAdmin(Pageable pageable){
-        List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrue(pageable);
+        List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueOrderByCreatedDateDesc(pageable);
         return visiteEnCours;
     }
     public List<Visite> endedVisitList(Long orgId){

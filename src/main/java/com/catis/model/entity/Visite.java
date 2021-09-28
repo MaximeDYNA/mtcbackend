@@ -50,6 +50,10 @@ public class Visite extends JournalData {
     @JsonIgnore
     private Inspection inspection;
 
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Vente vente;
+
     @OneToOne(mappedBy = "visite")
     @JsonIgnore
     private VerbalProcess process;
@@ -225,8 +229,14 @@ public class Visite extends JournalData {
         if (this.contreVisite) {
             return "CV";
         } else
-            return "VTP";
+            return "VI";
     }
 
+    public Vente getVente() {
+        return vente;
+    }
 
+    public void setVente(Vente vente) {
+        this.vente = vente;
+    }
 }

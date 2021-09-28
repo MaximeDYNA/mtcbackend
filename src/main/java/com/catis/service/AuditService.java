@@ -70,9 +70,8 @@ public class AuditService {
         AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(clazz, false, true);
         List a =  query.getResultList();
 
-        List b;
         Object e = clazz.newInstance();
-        int j =0;
+
         DefaultRevisionEntity r1;
         RevisionType r2;
         AuditRevisionEntity audit;
@@ -82,7 +81,7 @@ public class AuditService {
 
         for(Object i : a){
             Object[] objArray = (Object[]) i;
-            System.out.println("forRevisions of Entity "+ToStringBuilder.reflectionToString( i));
+            //System.out.println("forRevisions of Entity "+ToStringBuilder.reflectionToString( i));
             simpleLog = new DaschBoardLogDTO();
             e =  theClass.cast(objArray[0]);
             r1 = (DefaultRevisionEntity)  objArray[1];
@@ -93,7 +92,7 @@ public class AuditService {
             simpleLog.setEntity(clazz.getSimpleName());
             simpleLog.setDate(r1.getRevisionDate());
             d = (Long) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e);
-            System.out.println("Id présumé a "+em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e));
+            //System.out.println("Id présumé a "+em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e));
             simpleLog.setEntityId(d);
             System.out.println("id's "+d);
 
