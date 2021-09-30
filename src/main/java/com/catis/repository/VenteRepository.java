@@ -16,8 +16,8 @@ public interface VenteRepository extends CrudRepository<Vente, Long> {
     List<Vente> findByActiveStatusTrue(Pageable pageable);
     @Query("select v from Vente v where " +
             ":ref is null or lower(v.numFacture) like lower(concat('%', :ref,'%')) " +
-            "or lower(v.visite.cartegrise.proprietaireVehicule.nom) like lower(concat('%', :ref,'%')) " +
-            "or lower(v.visite.cartegrise.numImmatriculation) like lower(concat('%', :ref,'%'))")
+            "or lower(v.visite.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', :ref,'%')) " +
+            "or lower(v.visite.carteGrise.numImmatriculation) like lower(concat('%', :ref,'%'))")
     List<Vente> findByRef(@Param("ref") String name, Pageable pageable);
 
     @Query("select v from Vente v where v.createdDate >= CURRENT_DATE ")
