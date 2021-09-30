@@ -5,8 +5,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.KanBanSimpleData;
@@ -178,8 +176,8 @@ public class VisiteService {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_OrganisationId(search, search, search, search, orgId, pageable);
         return visiteEnCours;
     }
-    public List<Visite> visitListForAdmin(Pageable pageable){
-        List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueOrderByCreatedDateDesc(pageable);
+    public List<Visite> visitListForAdmin(String search, Pageable pageable){
+        List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(search,search,search,search,search,pageable);
         return visiteEnCours;
     }
     public List<Visite> endedVisitList(Long orgId){
@@ -327,15 +325,6 @@ public class VisiteService {
 
     }
 
-
-    @Async
-    @TransactionalEventListener
-    public void dispatchVisite(VisiteCreatedEvent event) {
-
-        Visite visite = event.getVisite();
-        System.out.println("Visite test ---------"+ visite.getIdVisite());
-        //SseController.dispatcheventoclients(visite, this, gieglanFileService, cat);
-    }
 
 
 }
