@@ -71,13 +71,14 @@ public class VenteController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}*/
     //}
-    @PostMapping( value = "/api/v1/search/ventes", params ={"page", "size"})
-    public ResponseEntity<Object> getTickets(@RequestBody SearchVentedto searchVentedto,
-                                             @RequestParam("page") int page,
-                                             @RequestParam("size") int size){
+    @GetMapping( value = "/api/v1/search/ventes", params ={"page", "size", "title", "lang"})
+    public ResponseEntity<Object> getTickets(@RequestParam("page") int page,
+                                             @RequestParam("size") int size,
+                                             @RequestParam("title") String title,
+                                                @RequestParam("lang") String lang){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
-        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef(), PageRequest.of(page, size))
+        List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
@@ -92,7 +93,7 @@ public class VenteController {
                                                 .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
                                                 .collect(Collectors.toList()))).collect(Collectors.toList()),
                         vente.getMontantTotal(),
-                        convert(searchVentedto.getLang(), vente.getMontantTotal()),
+                        convert(lang, vente.getMontantTotal()),
                         vente.getMontantHT()))
                 .collect(Collectors.toList());
 
