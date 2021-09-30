@@ -34,6 +34,7 @@ public class CarteGriseReceived {
     private String lieuDedelivrance;// lieu de délivrance
     private String centre_ssdt;
     private int places;
+    private String type;
 
     public CarteGriseReceived() {
         super();
@@ -318,5 +319,11 @@ public class CarteGriseReceived {
         this.places = places;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 }
