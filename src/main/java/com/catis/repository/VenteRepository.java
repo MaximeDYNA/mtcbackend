@@ -13,7 +13,7 @@ public interface VenteRepository extends CrudRepository<Vente, Long> {
 
     Vente findByVisite_IdVisite(Long idVisite);
     List<Vente> findByActiveStatusTrue(Pageable pageable);
-    List<Vente> findByActiveStatusTrueAndNumFactureStartingWith(String ref);
+    List<Vente> findByActiveStatusTrueAndNumFactureStartingWithOrVisite_CarteGrise_NumImmatriculationContainingIgnoreCaseOrVisite_CarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseOrderByCreatedDateDESC(String ref1, String ref2, String ref, Pageable pageable);
 
     @Query("select v from Vente v where v.createdDate >= CURRENT_DATE ")
     List<Vente> venteOftheDay();

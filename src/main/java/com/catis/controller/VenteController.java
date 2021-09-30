@@ -71,11 +71,13 @@ public class VenteController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}*/
     //}
-    @PostMapping( value = "/api/v1/ventes/search")
-    public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
+    @PostMapping( value = "/api/v1/search/ventes", params ={"page", "size"})
+    public ResponseEntity<Object> getTickets(@RequestBody SearchVentedto searchVentedto,
+                                             @RequestParam("page") int page,
+                                             @RequestParam("size") int size){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
-        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
+        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef(), PageRequest.of(page, size))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),

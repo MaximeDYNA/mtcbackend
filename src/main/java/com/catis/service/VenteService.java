@@ -43,8 +43,8 @@ public class VenteService {
         return venteRepository.findByVisite_IdVisite(id);
     }
 
-    public List<Vente> findByRef(String ref){
-        return venteRepository.findByActiveStatusTrueAndNumFactureStartingWith(ref);
+    public List<Vente> findByRef(String ref, Pageable pageable){
+        return venteRepository.findByActiveStatusTrueAndNumFactureStartingWithOrVisite_CarteGrise_NumImmatriculationContainingIgnoreCaseOrVisite_CarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseOrderByCreatedDateDESC(ref, ref, ref, pageable);
     }
 
     public String genererNumFacture() {
