@@ -73,7 +73,7 @@ public class CarteGrise extends JournalData {
         this.montantPaye = c.getMontantPaye();
         this.vehiculeGage = c.isVehiculeGage();
         this.genreVehicule = c.getGenreVehicule();
-        this.type = c.getTypeVehicule();
+        this.type = c.getType();
 
         this.enregistrement = c.getEnregistrement();
         this.dateDelivrance = c.getDateDelivrance();
