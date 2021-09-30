@@ -143,6 +143,7 @@ public class CarteGriseController {
 
         //récupère l'id de la cg
         carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
+        carteGrise.setOrganisation(visite.getOrganisation());
         carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
         carteGrise.setVehicule(vehicule);
@@ -155,12 +156,9 @@ public class CarteGriseController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", visite.getCarteGrise() );
 			/*try {} 
-		catch(Exception e){ 
-			
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD +"Carte grise", null );
-				  
+		catch(Exception e){
+			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD +"Carte grise", null );
 		}*/
-
     }
     @GetMapping("/api/v1/cartegrise/listview")
     public ResponseEntity<Object> carteGriseListView() {
@@ -175,9 +173,6 @@ public class CarteGriseController {
                 listView.put("immatriculation", c.getNumImmatriculation());
                 listView.put("proprietaire", c.getProprietaireVehicule().getPartenaire().getNom());
                 listView.put("montant", c.getMontantPaye());
-
-                //listView.put("marque", c.getMarqueVehicule());
-
                 listView.put("createdDate", c.getCreatedDate());
                 listView.put("modifiedDate", c.getModifiedDate());
                 mapList.add(listView);
