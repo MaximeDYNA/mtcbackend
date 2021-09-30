@@ -8,12 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Vente;
+import org.springframework.data.repository.query.Param;
 
 public interface VenteRepository extends CrudRepository<Vente, Long> {
 
     Vente findByVisite_IdVisite(Long idVisite);
     List<Vente> findByActiveStatusTrue(Pageable pageable);
-    List<Vente> findByActiveStatusTrueAndNumFactureStartingWithOrVisite_CarteGrise_NumImmatriculationContainingIgnoreCaseOrVisite_CarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseOrderByCreatedDateDesc(String ref1, String ref2, String ref, Pageable pageable);
+    @Query("select v from Vente v where " +
+            ":ref is null or lower(v.numFacture) like lower(concat('%', :ref,'%')) " +
+            "or lower(v.visite.cartegrise.proprietaireVehicule.nom) like lower(concat('%', :ref,'%')) " +
+            "or lower(v.visite.cartegrise.numImmatriculation) like lower(concat('%', :ref,'%'))")
+    List<Vente> findByRef(@Param("ref") String name, Pageable pageable);
 
     @Query("select v from Vente v where v.createdDate >= CURRENT_DATE ")
     List<Vente> venteOftheDay();
