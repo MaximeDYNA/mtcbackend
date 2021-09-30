@@ -81,17 +81,17 @@ public class VenteController {
                         detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
                         detailVente.getVente().getCreatedDate().format(formatter),
                         detailVente.getVente().getDetailventes().stream()
-                                .map(detailVente1 -> new ProduitTicketdto(detailVente.getReference(), detailVente.getProduit().getLibelle(),
-                                        detailVente.getPrix(), getPrix(detailVente.getPrix(),
-                                        detailVente.getProduit().getTaxeProduit()) , detailVente.getProduit().getDescription(),
-                                        detailVente.getProduit()
+                                .map(detailVente1 -> new ProduitTicketdto(detailVente1.getReference(), detailVente1.getProduit().getLibelle(),
+                                        detailVente1.getPrix(), getPrix(detailVente1.getPrix(),
+                                        detailVente1.getProduit().getTaxeProduit()) , detailVente1.getProduit().getDescription(),
+                                        detailVente1.getProduit()
                                                 .getTaxeProduit()
                                                 .stream()
                                                 .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
                                                 .collect(Collectors.toList()))).collect(Collectors.toList()),
                         detailVente.getVente().getMontantTotal(), convert(searchVentedto.getLang(), detailVente.getVente().getMontantTotal())))
                 .collect(Collectors.toList());
-        
+
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
     }
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
@@ -104,10 +104,10 @@ public class VenteController {
                         detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
                         detailVente.getVente().getCreatedDate().format(formatter),
                         detailVente.getVente().getDetailventes().stream()
-                        .map(detailVente1 -> new ProduitTicketdto(detailVente.getReference(), detailVente.getProduit().getLibelle(),
-                                            detailVente.getPrix(), getPrix(detailVente.getPrix(),
-                                    detailVente.getProduit().getTaxeProduit()) , detailVente.getProduit().getDescription(),
-                                            detailVente.getProduit()
+                        .map(detailVente1 -> new ProduitTicketdto(detailVente1.getReference(), detailVente1.getProduit().getLibelle(),
+                                detailVente1.getPrix(), getPrix(detailVente1.getPrix(),
+                                detailVente1.getProduit().getTaxeProduit()) , detailVente1.getProduit().getDescription(),
+                                detailVente1.getProduit()
                                                     .getTaxeProduit()
                                                     .stream()
                                                     .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
