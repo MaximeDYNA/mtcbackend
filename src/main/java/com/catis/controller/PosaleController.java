@@ -94,7 +94,13 @@ public class PosaleController {
             Message msg = msgRepo.findByCode("PS004");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg
                     , null);
-        } catch (Exception e) {
+        } catch (VisiteEnCoursException v) {
+            LOGGER.error("Une visite est actuellement en cours pour ce véhicule");
+            Message msg = msgRepo.findByCode("PS008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
+
+        catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'un produit dans le panier");
             Message msg = msgRepo.findByCode("PS003");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
