@@ -16,4 +16,5 @@ public class Ticketdto {
     private List<ProduitTicketdto> produits;
     private double total;
     private String lettre;
+    private double totalHT;
 }
