@@ -72,10 +72,10 @@ public class VenteController {
 		}*/
     //}
     @GetMapping( value = "/api/v1/search/ventes", params ={"page", "size", "title", "lang"})
-    public ResponseEntity<Object> getTickets(@RequestParam("page") int page,
-                                             @RequestParam("size") int size,
-                                             @RequestParam("title") String title,
-                                                @RequestParam("lang") String lang){
+    public ResponseEntity<Object> getTickets(@RequestParam(required = false) int page,
+                                             @RequestParam(required = false) int size,
+                                             @RequestParam(required = false) String title,
+                                                @RequestParam(required = false) String lang){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
         List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size))
@@ -96,8 +96,11 @@ public class VenteController {
                         convert(lang, vente.getMontantTotal()),
                         vente.getMontantHT()))
                 .collect(Collectors.toList());
+        Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
+        PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler
+                .toModel(pages);
 
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", result);
     }
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
     public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
