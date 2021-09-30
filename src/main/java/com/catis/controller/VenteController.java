@@ -75,12 +75,12 @@ public class VenteController {
     public ResponseEntity<Object> getTickets(@PathVariable SearchVentedto searchVentedto){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
-        List<Ticketdto> ticketdtos = detailVenteService.findByRefVente(searchVentedto.getRef())
-                .stream().map(detailVente -> new Ticketdto(detailVente.getVente().getNumFacture(),
-                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getNom():detailVente.getVente().getClient().getPartenaire().getNom(),
-                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
-                        detailVente.getVente().getCreatedDate().format(formatter),
-                        detailVente.getVente().getDetailventes().stream()
+        List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
+                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
+                        vente.getCreatedDate().format(formatter),
+                        vente.getDetailventes().stream()
                                 .map(detailVente1 -> new ProduitTicketdto(detailVente1.getReference(), detailVente1.getProduit().getLibelle(),
                                         detailVente1.getPrix(), getPrix(detailVente1.getPrix(),
                                         detailVente1.getProduit().getTaxeProduit()) , detailVente1.getProduit().getDescription(),
@@ -89,7 +89,9 @@ public class VenteController {
                                                 .stream()
                                                 .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
                                                 .collect(Collectors.toList()))).collect(Collectors.toList()),
-                        detailVente.getVente().getMontantTotal(), convert(searchVentedto.getLang(), detailVente.getVente().getMontantTotal())))
+                        vente.getMontantTotal(),
+                        convert(searchVentedto.getLang(), vente.getMontantTotal()),
+                        vente.getMontantHT()))
                 .collect(Collectors.toList());
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
@@ -98,12 +100,12 @@ public class VenteController {
     public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
                                                 @RequestParam("size") int size){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        List<Ticketdto> ticketdtos = detailVenteService.findAll(PageRequest.of(page, size))
-                .stream().map(detailVente -> new Ticketdto(detailVente.getVente().getNumFacture(),
-                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getNom():detailVente.getVente().getClient().getPartenaire().getNom(),
-                        detailVente.getVente().getClient() == null? detailVente.getVente().getContact().getPartenaire().getTelephone():detailVente.getVente().getClient().getPartenaire().getTelephone(),
-                        detailVente.getVente().getCreatedDate().format(formatter),
-                        detailVente.getVente().getDetailventes().stream()
+        List<Ticketdto> ticketdtos = venteService.findAll(PageRequest.of(page, size))
+                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
+                        vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
+                        vente.getCreatedDate().format(formatter),
+                        vente.getDetailventes().stream()
                         .map(detailVente1 -> new ProduitTicketdto(detailVente1.getReference(), detailVente1.getProduit().getLibelle(),
                                 detailVente1.getPrix(), getPrix(detailVente1.getPrix(),
                                 detailVente1.getProduit().getTaxeProduit()) , detailVente1.getProduit().getDescription(),
@@ -112,8 +114,9 @@ public class VenteController {
                                                     .stream()
                                                     .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
                                                     .collect(Collectors.toList()))).collect(Collectors.toList()),
-                        detailVente.getVente().getMontantTotal(),
-                        convert(lang, detailVente.getVente().getMontantTotal())))
+                        vente.getMontantTotal(),
+                        convert(lang, vente.getMontantTotal()),
+                        vente.getMontantHT()))
                 .collect(Collectors.toList());
 
         Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
