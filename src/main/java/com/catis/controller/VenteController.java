@@ -91,20 +91,7 @@ public class VenteController {
                                                 .collect(Collectors.toList()))).collect(Collectors.toList()),
                         detailVente.getVente().getMontantTotal(), convert(searchVentedto.getLang(), detailVente.getVente().getMontantTotal())))
                 .collect(Collectors.toList());
-
-
-        /*List<Ticketdto> ticketdtos = venteService.findByRef(searchVentedto.getRef())
-                .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
-                        vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
-                        vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
-                        vente.getCreatedDate().format(formatter),
-                        vente.getDetailventes().stream().map(detailVente -> new ProduitTicketdto(detailVente.getReference(),
-                                detailVente.getProduit().getLibelle(),detailVente.getPrix(),getPrix(detailVente.getPrix(),
-                                detailVente.getProduit().getTaxeProduit()),
-                                detailVente.getProduit().getDescription()),
-                                ).collect(Collectors.toList()),
-                        vente.getMontantTotal(), convert(searchVentedto.getLang(), vente.getMontantTotal())))
-                .collect(Collectors.toList());*/
+        
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", ticketdtos);
     }
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
