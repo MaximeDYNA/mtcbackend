@@ -17,7 +17,6 @@ import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.ImpressionException;
 import com.catis.controller.pdfhandler.MediaReplacedElementFactory;
 import com.catis.controller.pdfhandler.PdfGenaratorUtil;
-import com.catis.Event.VisiteCreatedEvent;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.*;
@@ -562,11 +561,12 @@ public class VisiteController {
     /****Administration****/
 
 
-    @GetMapping(value = "/api/v1/admin/visites",  params = { "page", "size" })
-    public ResponseEntity<Object> getAllActive(@RequestParam("page") int page,
+    @GetMapping(value = "/api/v1/admin/visites",  params = { "search","page", "size" })
+    public ResponseEntity<Object> getAllActive(@RequestParam(value = "search", required = false, defaultValue = "")  final String search,
+                                                @RequestParam("page") int page,
                                                @RequestParam("size") int size) {
         List<Listview> listVisit = new ArrayList<>();
-        visiteService.visitListForAdmin(PageRequest.of(page, size)).forEach( visite ->
+        visiteService.visitListForAdmin(search, PageRequest.of(page, size)).forEach( visite ->
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );
         Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);

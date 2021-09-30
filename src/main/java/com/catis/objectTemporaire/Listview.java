@@ -35,6 +35,7 @@ public class Listview {
     private String organisation;
     private String bestPlate;
     private double accurance;
+    private LocalDateTime date;
 
     @JsonIgnore
     private Visite vis;
@@ -56,6 +57,7 @@ public class Listview {
         this.organisation = v.getOrganisation().getNom();
         this.organisation = v.getOrganisation().getNom();
         this.vis=v;
+
         this.statut="";
         this.statutVisite = v.getStatut();
         this.setCreatedAt(v.getCreatedDate());
@@ -241,6 +243,14 @@ public class Listview {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getCreatedAt() {
