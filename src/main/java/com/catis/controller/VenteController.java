@@ -78,6 +78,7 @@ public class VenteController {
                                                 @RequestParam(required = false) String lang) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
+        LOGGER.info("before ticket search");
         List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
@@ -96,6 +97,7 @@ public class VenteController {
                         convert(lang, vente.getMontantTotal()),
                         vente.getMontantHT()))
                 .collect(Collectors.toList());
+        LOGGER.info("After ticket search");
         Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler
                 .toModel(pages);
