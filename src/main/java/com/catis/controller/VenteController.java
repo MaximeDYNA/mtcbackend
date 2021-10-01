@@ -75,7 +75,7 @@ public class VenteController {
     public ResponseEntity<Object> getTickets(@RequestParam(required = false) int page,
                                              @RequestParam(required = false) int size,
                                              @RequestParam(required = false) String title,
-                                                @RequestParam(required = false) String lang){
+                                                @RequestParam(required = false) String lang) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
         List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size))
