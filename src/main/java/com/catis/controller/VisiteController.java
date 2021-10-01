@@ -112,7 +112,7 @@ public class VisiteController {
                                                         @RequestParam("size") int size) {
         log.info("Liste des visites en cours ---");
         Long orgId = SessionData.getOrganisationId(request);
-        List<Visite> resultPage = visiteService.enCoursVisitList(orgId, PageRequest.of(page, size, Sort.by("createdDate").descending()));
+        List<Visite> resultPage = visiteService.getOrganisationVisiteWithTest(orgId, PageRequest.of(page, size, Sort.by("createdDate").descending()));
         List<Listview> listVisit = new ArrayList<>();
         resultPage.forEach(visite ->{
             log.info("visite construction start "+ visite.getIdVisite());

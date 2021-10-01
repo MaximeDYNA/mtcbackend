@@ -161,6 +161,11 @@ public class VisiteService {
 
         return visiteEnCours;
     }
+    public List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable) {
+        List<Visite> visiteEnCours = visiteRepository.getOrganisationVisiteWithTest(orgId, pageable);
+
+        return visiteEnCours;
+    }
 
     public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(orgId, pageable);

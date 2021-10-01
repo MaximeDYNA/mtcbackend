@@ -104,7 +104,6 @@ public class Listview {
             } else {
                 List<GieglanFileIcon> categorieTests = new ArrayList<>();
 
-
                 Set<CategorieTestProduit> integersSet = new LinkedHashSet<CategorieTestProduit>(this.vis
                         .getCarteGrise()
                         .getProduit()

@@ -34,6 +34,13 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 
+    @Query("select v from Visite v inner join fetch v.carteGrise c " +
+            "inner join fetch c.produit p inner join fetch p.categorieTestProduits cat " +
+            "where v.organisation.organisationId = :organisationId " +
+            "and v.encours = true " +
+            "and v.activeStatus = true ")
+    List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable);
+
     List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(Long orgId, Pageable pageable);
 
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
