@@ -131,8 +131,8 @@ public class VisiteController {
 
     }
 
-    @GetMapping(value = "/api/v1/all/visites", params = { "search", "page", "size" })
-    public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("search") String search, @RequestParam("page") int page,
+    @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
+    public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
         log.info("recherche ---");
         Long orgId = SessionData.getOrganisationId(request);
