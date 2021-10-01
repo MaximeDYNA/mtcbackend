@@ -35,7 +35,7 @@ public class Listview {
     private String organisation;
     private String bestPlate;
     private double accurance;
-    private LocalDateTime date;
+    private String date;
 
     @JsonIgnore
     private Visite vis;
@@ -244,11 +244,11 @@ public class Listview {
         this.client = client;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

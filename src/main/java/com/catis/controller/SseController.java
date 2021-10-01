@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,6 +23,7 @@ public class SseController {
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
     /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
@@ -92,7 +94,7 @@ public class SseController {
             v.setClient(visite.getCarteGrise().getProprietaireVehicule()
                     .getPartenaire()
                     .getNom());
-        v.setDate(visite.getCreatedDate());
+        v.setDate(visite.getCreatedDate().format(dateTimeFormatter));
         v.setCreatedAt(visite.getCreatedDate());
         v.setReference(visite.getCarteGrise().getNumImmatriculation());
         v.setStatut(visite.statutRender(visite.getStatut()));
