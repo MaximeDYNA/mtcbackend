@@ -42,8 +42,6 @@ public class Listview {
     @JsonIgnore
     private List<GieglanFileIcon> measures;
     @JsonIgnore
-    private List<CategorieTest> testAttendus = new ArrayList<>();
-    @JsonIgnore
     private VisiteService visiteService;
     @JsonIgnore
     private GieglanFileService gieglanFileService;
@@ -97,7 +95,6 @@ public class Listview {
                     if(g.getType()!=GieglanFile.FileType.CARD_REGISTRATION){
                         gfi.setExtension(g.getCategorieTest().getLibelle());
                         gfi.setIcon(g.getCategorieTest().getIcon());
-                        this.testAttendus.add(g.getCategorieTest());
                         this.measures.add(replaceIconIfNecessary(gfi, this.id));
                     }
                 }
@@ -115,7 +112,6 @@ public class Listview {
                     GieglanFileIcon gfi = new GieglanFileIcon();
                     gfi.setExtension(c.getCategorieTest().getLibelle());
                     gfi.setIcon(c.getCategorieTest().getIcon());
-                    this.testAttendus.add(c.getCategorieTest());
                     categorieTests.add(gfi);
                 }
                 categorieTests.forEach(categorieTest -> {
@@ -486,11 +482,4 @@ public class Listview {
         this.isConform = isConform;
     }
 
-    public List<CategorieTest> getTestAttendus() {
-        return testAttendus;
-    }
-
-    public void setTestAttendus(List<CategorieTest> testAttendus) {
-        this.testAttendus = testAttendus;
-    }
 }
