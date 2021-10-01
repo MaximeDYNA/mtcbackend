@@ -36,7 +36,7 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     @Query("select v from Visite v inner join fetch v.carteGrise c " +
             "inner join fetch c.produit p inner join fetch p.categorieTestProduits cat " +
-            "where v.organisation.organisationId = :organisationId " +
+            "where v.organisation.organisationId = ?1 " +
             "and v.encours = true " +
             "and v.activeStatus = true ")
     List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable);
