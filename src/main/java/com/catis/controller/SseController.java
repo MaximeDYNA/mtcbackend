@@ -23,7 +23,7 @@ public class SseController {
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
-    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
     /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
