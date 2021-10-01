@@ -38,7 +38,8 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
             "inner join fetch c.produit p inner join fetch p.categorieTestProduits cat " +
             "where v.organisation.organisationId = ?1 " +
             "and v.encours = true " +
-            "and v.activeStatus = true ")
+            "and v.activeStatus = true " +
+            "order by v.createdDate desc ")
     List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable);
 
     List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(Long orgId, Pageable pageable);
