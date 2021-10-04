@@ -349,8 +349,8 @@ public class VisiteController {
             }
 
             visite = visiteService.add(visite);
-        //SseController.dispatchEdit(visite,
-        //        visiteService, gieglanFileService, catSer);
+        SseController.dispatchEdit(visite,
+                visiteService, gieglanFileService, catSer);
 
         //Openaplr to know if the car is in the center
         String uri = environment.getProperty("endpoint.openalpr") ;
