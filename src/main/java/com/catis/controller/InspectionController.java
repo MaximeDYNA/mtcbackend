@@ -156,6 +156,8 @@ public class InspectionController {
 
     }
 
+
+
     @DeleteMapping("/api/v1/admin/inspections/{id}")
     public ResponseEntity<Object> deleteInspection(@PathVariable Long id) {
 
