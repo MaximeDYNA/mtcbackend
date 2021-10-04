@@ -138,7 +138,7 @@ public class JobController {
                 true, "Erreur", null);
     }
 
-    /*@GetMapping("/public/maj/{id}")
+    @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
         try {
             Visite visite = vs.findById(id);
@@ -153,6 +153,6 @@ public class JobController {
         catch (Exception e) {
             System.out.println("Erreur survenur lors de la notification du Job");
         }
-    }*/
+    }
 
 }

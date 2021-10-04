@@ -5,6 +5,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.catis.controller.SseController;
 import com.catis.model.control.Control;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.KanBanSimpleData;
@@ -34,6 +36,10 @@ public class VisiteService {
 
     @Autowired
     private OrganisationService os;
+    @Autowired
+    private CategorieTestVehiculeService cat;
+    @Autowired
+    private GieglanFileService gieglanFileService;
 
 
 
@@ -140,14 +146,14 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
 
-        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
 
-        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
         return v;
     }
 
@@ -206,7 +212,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
         visite = visiteRepository.save(visite);
-       // SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
 
     }
 
@@ -232,7 +238,7 @@ public class VisiteService {
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
-        //SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
 
     }
 

@@ -26,7 +26,7 @@ public class SseController {
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
-    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(){
         System.out.println("---Subscribe---");
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -77,7 +77,7 @@ public class SseController {
                 emitters.remove(emitter);
             }
         }
-    }*/
+    }
 
     public static Listview buildListView(Visite visite, VisiteService visiteService,
                                          GieglanFileService gieglanFileService,
