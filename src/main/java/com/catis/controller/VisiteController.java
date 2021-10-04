@@ -13,10 +13,13 @@ import java.util.Date;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+
 import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.ImpressionException;
 import com.catis.controller.pdfhandler.MediaReplacedElementFactory;
 import com.catis.controller.pdfhandler.PdfGenaratorUtil;
+import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.*;
@@ -71,6 +74,9 @@ public class VisiteController {
     PdfGenaratorUtil pdfGenaratorUtil;
     @Autowired
     private VisiteService visiteService;
+
+    @Autowired
+    private InspectionService inspectionService;
 
     @Autowired
     private RapportDeVisiteRepo rapportDeVisiteRepo;
@@ -544,6 +550,34 @@ public class VisiteController {
 
     }
 
+    @GetMapping(value = "/api/v1/visite/tests/{i}")
+    public ResponseEntity<Object> getInspectionTest(@PathVariable Long i) {
+
+        try {
+
+            Inspection inspection = inspectionService.findInspectionById(i);
+            List<Testdto> files = new ArrayList<>();
+            if(inspection.getVisite().isContreVisite()){
+                files = gieglanFileService.getGieglanFileFailed(inspection.getVisite())
+                        .stream()
+                        .map(gieglanFile -> new Testdto(gieglanFile.getCategorieTest().getLibelle(), gieglanFile.getCategorieTest().getDescription()))
+                        .collect(Collectors.toList());
+            }
+            else{
+                files = inspection.getVisite().getCarteGrise()
+                        .getProduit().getCategorieTestProduits()
+                        .stream()
+                        .map(categorieTestProduit -> new Testdto(categorieTestProduit.getCategorieTest().getLibelle(), categorieTestProduit.getCategorieTest().getDescription()))
+                        .collect(Collectors.toList());
+            }
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "tests", files);
+        } catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "tests", null);
+        }
+
+    }
+
 
 
 
@@ -653,6 +687,8 @@ public class VisiteController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", size);
 
     }
+
+
 
     @Override
     public boolean equals(Object o) {
