@@ -211,11 +211,11 @@ public class VisiteService {
     }
 
     public List<Visite> listParStatus(int status, Long orgId) {
-        return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "dateDebut"));
+        return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
     public List<KanBanSimpleData> listParStatusForkanban(int status, Long orgId) {
-        List<Visite> visites = visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "dateDebut"));
+        List<Visite> visites = visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
         List<KanBanSimpleData> kanBanSimpleDatas = new ArrayList<>();
 
         KanBanSimpleData kanBanSimpleData;
