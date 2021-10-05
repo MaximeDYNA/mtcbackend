@@ -146,7 +146,7 @@ public class VisiteService {
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
 
-        SseController.dispatchEdit(visite, this, gieglanFileService, cat);
+        SseController.dispatchNewVisit(visite, this, gieglanFileService, cat);
         return visite;
     }
 
