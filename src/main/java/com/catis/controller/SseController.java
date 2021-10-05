@@ -66,7 +66,7 @@ public class SseController {
     }
 
     //dispatching all event
-    public static void dispatcheventoclients(Visite visite, VisiteService vs,
+    public static void dispatchNewVisit(Visite visite, VisiteService vs,
                                              GieglanFileService gieglanFileService,
                                              CategorieTestVehiculeService catSer ){
         for(SseEmitter emitter:emitters){
