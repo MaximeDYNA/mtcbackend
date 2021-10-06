@@ -4,21 +4,5 @@ VOLUME /opt
 WORKDIR /usr/app
 COPY ./target/mtc-* ./
 EXPOSE 8086
-
-
-#FROM tomcat:9.0.38
-#VOLUME /tmp
-#WORKDIR /usr/app
-#COPY ./target/mtc-* ./
-#"EXPOSE 8086
-#CMD ["java", "-jar", "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
-
-
-
-#FROM openjdk:8-jdk-alpine
-#WORKDIR /usr/app
-#COPY ./target/mtc-* ./
-#EXPOSE 8086
-#CMD ["j
-CMD ["java", "-jar",  "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
+CMD ["java", "-jar", "-Xmx2048",  "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
 

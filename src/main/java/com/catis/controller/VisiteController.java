@@ -673,7 +673,7 @@ public class VisiteController {
                 detailVente -> detailVente.setActiveStatus(false)
         );
         visite.getVente().setActiveStatus(false);
-        visite.setStatut(0);
+        visite.setActiveStatus(false);
         visiteService.add(visite);
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", visite);

@@ -245,15 +245,15 @@ public class VisiteService {
     public boolean isVisiteInitial(String ref, Long organisationId) throws VisiteEnCoursException {
         List<Visite> visites = findByReference(ref, organisationId);
 
-        Visite visite = visites.stream().max(Comparator.comparing(Visite::getCreatedDate))
+        Visite visite = visites.stream().filter(visite1 -> visite1.isActiveStatus()).max(Comparator.comparing(Visite::getCreatedDate))
                 .orElse(null);
 
         if (visite != null) {
 
-            /*if (visite.getControl().getStatus().equals(StatusType.INITIALIZED)) {
+            if (visite.getControl().getStatus().equals(StatusType.INITIALIZED)) {
 
                 throw new VisiteEnCoursException();
-            }*/
+            }
             if (visite.getControl().getStatus().equals(StatusType.VALIDATED)) {
                 return true;
             }
