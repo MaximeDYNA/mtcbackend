@@ -250,10 +250,10 @@ public class VisiteService {
 
         if (visite != null) {
 
-            if (visite.getControl().getStatus().equals(StatusType.INITIALIZED)) {
+            /*if (visite.getControl().getStatus().equals(StatusType.INITIALIZED)) {
 
                 throw new VisiteEnCoursException();
-            }
+            }*/
             if (visite.getControl().getStatus().equals(StatusType.VALIDATED)) {
                 return true;
             }
