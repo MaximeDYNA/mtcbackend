@@ -48,9 +48,9 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
 
     @Query("select v from Visite v where " +
-            "(:ref is null or lower(v.caissier.partenaire.nom) like lower(concat('%', :ref,'%')) " +
-            "or lower(v.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', :ref,'%')) " +
-            "or lower(v.carteGrise.numImmatriculation) like lower(concat('%', :ref,'%'))) " +
+            "(:ref is null or (lower(v.caissier.partenaire.nom) like lower(concat('%', :ref,'%')))" +
+            "or (lower(v.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', :ref,'%'))) " +
+            "or (lower(v.carteGrise.numImmatriculation) like lower(concat('%', :ref,'%')))) " +
             "and v.organisation.organisationId = :orgId " +
             "and v.activeStatus = true " +
             "and v.encours = true")
