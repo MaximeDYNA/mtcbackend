@@ -185,7 +185,7 @@ public class VisiteService {
     }
 
     public List<Visite> searchedVisitList(String search, Long orgId, Pageable pageable){
-        List<Visite> visiteEnCours = visiteRepository.findByRef(search, pageable);
+        List<Visite> visiteEnCours = visiteRepository.findByRef(search, orgId, pageable);
         return visiteEnCours;
     }
     public List<Visite> visitListForAdmin(String search, Pageable pageable){
