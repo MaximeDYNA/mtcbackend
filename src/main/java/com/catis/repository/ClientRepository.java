@@ -2,6 +2,7 @@ package com.catis.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Client;
@@ -13,4 +14,5 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     Client findByClientId(long id);
 
     List<Client> findByActiveStatusTrue();
+    List<Client> findByActiveStatusTrue(Pageable pageable);
 }

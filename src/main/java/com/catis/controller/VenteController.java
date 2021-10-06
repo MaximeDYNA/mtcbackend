@@ -39,6 +39,8 @@ public class VenteController {
     @Autowired
     private PagedResourcesAssembler<Ticketdto> pagedResourcesAssembler;
     @Autowired
+    private PagedResourcesAssembler<Vente> pagedResourcesAssemblerVente;
+    @Autowired
     private OperationCaisseService ocs;
     private static Logger LOGGER = LoggerFactory.getLogger(VenteController.class);
 
@@ -174,7 +176,11 @@ public class VenteController {
 
             List<Vente> ventes = venteService.findAll(PageRequest.of(page, size));
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Succès", ventes);
+        Page<Vente> pages = new PageImpl<>(ventes, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<Vente>> result = pagedResourcesAssemblerVente
+                .toModel(pages);
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Succès", result);
            /* try { } catch (Exception e) {
             LOGGER.error(Message.ERREUR_LIST_VIEW + "Vente");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.ERREUR_LIST_VIEW + "Vente", null);

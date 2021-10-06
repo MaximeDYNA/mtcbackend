@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Client;
@@ -26,6 +27,11 @@ public class ClientService {
     public List<Client> findAllCustomer() {
         List<Client> clients = new ArrayList<>();
         clientRepository.findByActiveStatusTrue().forEach(clients::add);
+        return clients;
+    }
+    public List<Client> findAllCustomer(Pageable pageable) {
+        List<Client> clients = new ArrayList<>();
+        clientRepository.findByActiveStatusTrue(pageable).forEach(clients::add);
         return clients;
     }
 

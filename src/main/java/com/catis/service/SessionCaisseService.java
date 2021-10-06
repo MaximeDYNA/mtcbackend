@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.SessionCaisse;
@@ -59,6 +60,14 @@ public class SessionCaisseService {
         List<SessionCaisse> sessionCaisses = new ArrayList<>();
 
         sessionCaisseRepository.findByActiveStatusTrue().forEach(sessionCaisses::add);
+
+        return sessionCaisses;
+    }
+
+    public List<SessionCaisse> getAll(Pageable pageable){
+        List<SessionCaisse> sessionCaisses = new ArrayList<>();
+
+        sessionCaisseRepository.findByActiveStatusTrue(pageable).forEach(sessionCaisses::add);
 
         return sessionCaisses;
     }

@@ -9,6 +9,13 @@ import com.catis.service.CaissierService;
 import com.catis.service.OrganisationService;
 import com.catis.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +36,8 @@ public class CaissierController {
     private OrganisationService organisationService;
     @Autowired
     private UtilisateurService us;
+    @Autowired
+    private PagedResourcesAssembler<CaissierDTO> pagedResourcesAssembler;
 
     @PostMapping
     public ResponseEntity<Object> enregistrer(@RequestBody CaissierPOJO caissierPOJO){
@@ -63,14 +72,17 @@ public class CaissierController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
                 caissier);
     }
-    @GetMapping
-    public ResponseEntity<Object> list(){
-        List<Caissier> caissiers = caissierService.findAll();
+    @GetMapping(params = {"page", "size"})
+    public ResponseEntity<Object> list(@RequestParam("page") int page,
+                                       @RequestParam("size") int size){
+        List<Caissier> caissiers = caissierService.findAll(PageRequest.of(page, size, Sort.by("createdDate").descending()));
         List<CaissierDTO> caissierDTOs = new ArrayList<>();
-        CaissierDTO caissierDTO ;
+
+
+
 
         for(Caissier c : caissiers){
-            caissierDTO = new CaissierDTO();
+            CaissierDTO caissierDTO = new CaissierDTO();
             caissierDTO.setCaisse(c.getCaisse()==null?null:c.getCaisse().getCaisse_id());
             caissierDTO.setCaissierId(c.getCaissierId());
             caissierDTO.setCni(c.getPartenaire()==null ? null : c.getPartenaire().getCni());
@@ -88,10 +100,13 @@ public class CaissierController {
             }
             caissierDTOs.add(caissierDTO);
         }
+        Page<CaissierDTO> pages = new PageImpl<>(caissierDTOs, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<CaissierDTO>> result = pagedResourcesAssembler
+                .toModel(pages);
 
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
-                true, Message.ListOK + " Users", caissierDTOs);
+                true, Message.ListOK + " Users", result);
     }
 
     @DeleteMapping("/{id}")

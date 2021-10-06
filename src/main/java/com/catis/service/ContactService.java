@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Contact;
@@ -19,6 +20,11 @@ public class ContactService {
         return contactRepository.save(contact);
     }
 
+    public List<Contact> getContacts(Pageable pageable) {
+        List<Contact> contacts = new ArrayList<>();
+        contactRepository.findByActiveStatusTrue(pageable).forEach(contacts::add);
+        return contacts;
+    }
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
         contactRepository.findByActiveStatusTrue().forEach(contacts::add);

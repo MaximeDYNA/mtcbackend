@@ -7,9 +7,17 @@ import java.util.Optional;
 
 
 import com.catis.model.entity.Caissier;
+import com.catis.model.entity.Produit;
 import com.catis.repository.CaissierRepository;
 //import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +52,8 @@ public class SessionCaisseController {
     private HttpServletRequest request;
     @Autowired
     private CaissierRepository cr;
+    @Autowired
+    private PagedResourcesAssembler<SessionCaisse> pagedResourcesAssembler;
 
    // private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
@@ -144,11 +154,16 @@ public class SessionCaisseController {
 
     //Admin session de caisse
 
-    @GetMapping("/api/v1/admin/sessioncaisses")
-    public ResponseEntity<Object> sessionCaisse() {
+    @GetMapping(value="/api/v1/admin/sessioncaisses",  params = {"page", "size"})
+    public ResponseEntity<Object> sessionCaisse(@RequestParam("page") int page,
+                                                @RequestParam("size") int size) {
 
-        List<SessionCaisse> sessionCaisseList = sessionCaisseService.getAll();
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseList);
+        List<SessionCaisse> sessionCaisseList = sessionCaisseService.getAll(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+        Page<SessionCaisse> pages = new PageImpl<>(sessionCaisseList, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<SessionCaisse>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
     }
 
 }

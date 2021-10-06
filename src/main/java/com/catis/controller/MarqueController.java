@@ -1,11 +1,19 @@
 package com.catis.controller;
 
+import com.catis.model.entity.Vente;
 import com.catis.objectTemporaire.MarquePOJO;
 import com.catis.service.OrganisationService;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +35,8 @@ public class MarqueController {
     @Autowired
     private OrganisationService os;
     private static Logger LOGGER = LoggerFactory.getLogger(MarqueController.class);
+    @Autowired
+    private PagedResourcesAssembler<MarqueVehicule> pagedResourcesAssemblerVente;
 
     @GetMapping("/api/v1/all/search/marques")
     public ResponseEntity<Object> listMarque() {
@@ -42,13 +52,18 @@ public class MarqueController {
 
     /*Admin*/
 
-    @GetMapping("/api/v1/admin/marques")
-    public ResponseEntity<Object> listAdminMarque() {
+    @GetMapping(value="/api/v1/admin/marques", params ={"page", "size"})
+    public ResponseEntity<Object> listAdminMarque(@RequestParam("page") int page,
+                                                  @RequestParam("size") int size) {
         LOGGER.trace("List des marques...");
         try {
-            List<MarqueVehicule> marqueVehiculeList = marqueService.marqueList();
+            List<MarqueVehicule> marqueVehiculeList = marqueService.marqueList(PageRequest.of(page, size));
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",marqueVehiculeList );
+            Page<MarqueVehicule> pages = new PageImpl<>(marqueVehiculeList, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+            PagedModel<EntityModel<MarqueVehicule>> result = pagedResourcesAssemblerVente
+                    .toModel(pages);
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",result );
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
 
