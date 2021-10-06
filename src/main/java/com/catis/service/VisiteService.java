@@ -172,7 +172,8 @@ public class VisiteService {
 
         return visiteEnCours;
     }
-
+    
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(orgId, pageable);
 
