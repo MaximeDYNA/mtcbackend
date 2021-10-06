@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Visite;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -46,7 +47,12 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
 
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
 
-    List<Visite> findByEncoursTrueAndActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_OrganisationId(String imma, String chassis, String caissier, String proprietaire, Long organisationId, Pageable pageable);
+    @Query("select v from Visite v where " +
+            "(:ref is null or lower(v.caissier.partenaire.nom) like lower(concat('%', :ref,'%')) " +
+            "or lower(v.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', :ref,'%')) " +
+            "or lower(v.carteGrise.numImmatriculation) like lower(concat('%', :ref,'%'))) " +
+            "and v.organisation.organisationId = :orgId")
+    List<Visite> findByRef(@Param("ref") String name, @Param("orgId") Long organisationId, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(String imma, String chassis, String caissier, String proprietaire, String organisation, Pageable pageable);
 

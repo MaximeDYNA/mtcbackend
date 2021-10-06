@@ -172,7 +172,7 @@ public class VisiteService {
 
         return visiteEnCours;
     }
-    
+
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(orgId, pageable);
@@ -185,7 +185,7 @@ public class VisiteService {
     }
 
     public List<Visite> searchedVisitList(String search, Long orgId, Pageable pageable){
-        List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_OrganisationId(search, search, search, search, orgId, pageable);
+        List<Visite> visiteEnCours = visiteRepository.findByRef(search, orgId, pageable);
         return visiteEnCours;
     }
     public List<Visite> visitListForAdmin(String search, Pageable pageable){
