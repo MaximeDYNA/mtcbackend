@@ -51,7 +51,9 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
             "(:ref is null or lower(v.caissier.partenaire.nom) like lower(concat('%', :ref,'%')) " +
             "or lower(v.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', :ref,'%')) " +
             "or lower(v.carteGrise.numImmatriculation) like lower(concat('%', :ref,'%'))) " +
-            "and v.organisation.organisationId = :orgId")
+            "and v.organisation.organisationId = :orgId " +
+            "and v.activeStatus = true " +
+            "and v.encours = true")
     List<Visite> findByRef(@Param("ref") String name, @Param("orgId") Long organisationId, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(String imma, String chassis, String caissier, String proprietaire, String organisation, Pageable pageable);
