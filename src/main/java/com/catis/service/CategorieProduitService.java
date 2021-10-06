@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.CategorieProduit;
@@ -18,6 +19,11 @@ public class CategorieProduitService {
     public List<CategorieProduit> listeCategorieProduit() {
         List<CategorieProduit> categorieProduites = new ArrayList<>();
         categoProduitRepository.findByActiveStatusTrue().forEach(categorieProduites::add);
+        return categorieProduites;
+    }
+    public List<CategorieProduit> listeCategorieProduit(Pageable pageable) {
+        List<CategorieProduit> categorieProduites = new ArrayList<>();
+        categoProduitRepository.findByActiveStatusTrue(pageable).forEach(categorieProduites::add);
         return categorieProduites;
     }
 

@@ -10,6 +10,13 @@ import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +60,8 @@ public class ProduitController {
     HttpServletRequest request;
     @Autowired
     FilesStorageService storageService;
+    @Autowired
+    private PagedResourcesAssembler<Produit> pagedResourcesAssembler;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
 
@@ -199,12 +208,15 @@ public class ProduitController {
     }
 
     /*Administration*/
-    @GetMapping(value = "/api/v1/admin/produits")
-    public ResponseEntity<Object> ProduitList() {
+    @GetMapping(value = "/api/v1/admin/produits", params = {"page", "size"})
+    public ResponseEntity<Object> ProduitList(@RequestParam("page") int page,
+                                              @RequestParam("size") int size) {
 
-        List<Produit> produits = produitService.findAllProduit();
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", produits);
+        List<Produit> produits = produitService.findAllProduit(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+        Page<Produit> pages = new PageImpl<>(produits, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<Produit>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
     }
     @GetMapping(value = "/api/v1/admin/produits/select")
     public ResponseEntity<Object> produitListForSelect() {

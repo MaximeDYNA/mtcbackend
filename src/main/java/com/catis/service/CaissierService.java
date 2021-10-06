@@ -3,6 +3,7 @@ package com.catis.service;
 import com.catis.model.entity.Caissier;
 import com.catis.repository.CaissierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -19,6 +20,11 @@ public class CaissierService {
         return caissierRepository.save(caissier);
     }
 
+    public List<Caissier> findAll(Pageable pageable){
+        List<Caissier> caissiers = new ArrayList<>();
+        caissierRepository.findByActiveStatusTrue(pageable).forEach(caissiers::add);
+        return caissiers;
+    }
     public List<Caissier> findAll(){
         List<Caissier> caissiers = new ArrayList<>();
         caissierRepository.findByActiveStatusTrue().forEach(caissiers::add);

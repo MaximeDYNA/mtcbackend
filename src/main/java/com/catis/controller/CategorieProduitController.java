@@ -7,12 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.catis.objectTemporaire.CatProductForSelectDTO;
-import com.catis.objectTemporaire.CategorieproduitProduitPOJO;
+import com.catis.objectTemporaire.*;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,8 +28,6 @@ import com.catis.model.entity.CategorieProduit;
 import com.catis.model.entity.Produit;
 import com.catis.model.entity.Taxe;
 import com.catis.model.entity.TaxeProduit;
-import com.catis.objectTemporaire.ListViewCatProduit;
-import com.catis.objectTemporaire.ProduitEtTaxe;
 import com.catis.service.CategorieProduitService;
 import com.catis.service.ProduitService;
 import com.catis.service.TaxeProduitService;
@@ -44,7 +48,8 @@ public class CategorieProduitController {
     private TaxeProduitService tps;
     @Autowired
     private OrganisationService os;
-
+    @Autowired
+    private PagedResourcesAssembler<CategorieProduit> pagedResourcesAssembler;
 
     private Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 
@@ -114,14 +119,21 @@ public class CategorieProduitController {
 
     //***Admin***//
 
-    @GetMapping("/api/v1/admin/catproducts")
-    public List<CategorieProduit> catproduct() {
+    @GetMapping(value = "/api/v1/admin/catproducts", params = {"page", "size"})
+    public ResponseEntity<Object> catproduct(@RequestParam("page") int page,
+                                             @RequestParam("size") int size) {
         try {
             LOGGER.trace("Liste des catégories");
-            return  cateProduitService.listeCategorieProduit();
+
+
+            List<CategorieProduit> categorieProduits = cateProduitService.listeCategorieProduit(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+            Page<CategorieProduit> pages = new PageImpl<>(categorieProduits, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+            PagedModel<EntityModel<CategorieProduit>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
-            return null;
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Error", null);
         }
 
     }

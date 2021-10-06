@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.catis.model.entity.Taxe;
 import com.catis.model.entity.TaxeProduit;
@@ -29,6 +30,12 @@ public class TaxeService {
     public List<Taxe> getAllActiveTax() {
         List<Taxe> taxes = new ArrayList<>();
         taxeRepository.findByActiveStatusTrue().forEach(taxes::add);
+        return taxes;
+    }
+
+    public List<Taxe> getAllActiveTax(Pageable pageable) {
+        List<Taxe> taxes = new ArrayList<>();
+        taxeRepository.findByActiveStatusTrue(pageable).forEach(taxes::add);
         return taxes;
     }
 

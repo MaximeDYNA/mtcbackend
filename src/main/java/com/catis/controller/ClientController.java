@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.catis.model.entity.CategorieProduit;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.MessageRepository;
@@ -15,6 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +49,8 @@ public class ClientController {
     private OrganisationService os;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    private PagedResourcesAssembler<ClientDTO> pagedResourcesAssembler;
     private static Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/clients")
@@ -190,10 +200,12 @@ public class ClientController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/clients")
-    public ResponseEntity<Object> getClients() {
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/clients", params = {"page", "size"})
+    public ResponseEntity<Object> getClients(@RequestParam("page") int page,
+                                             @RequestParam("size") int size) {
         LOGGER.trace("liste des clients...");
-        List<Client> clients = clientService.findAllCustomer();
+
+        List<Client> clients = clientService.findAllCustomer(PageRequest.of(page, size, Sort.by("createdDate").descending()));
         List<ClientDTO> clientDTOS = new ArrayList<>();
         ClientDTO c;
         for(Client client : clients){
@@ -214,9 +226,11 @@ public class ClientController {
             clientDTOS.add(c);
 
         }
+        Page<ClientDTO> pages = new PageImpl<>(clientDTOS, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<ClientDTO>> result = pagedResourcesAssembler
+                .toModel(pages);
 
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientDTOS );
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", result );
     }
 
     @DeleteMapping("/api/v1/admin/clients/{id}")

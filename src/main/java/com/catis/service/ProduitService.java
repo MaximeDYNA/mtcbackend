@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.catis.model.entity.CarteGrise;
 import com.catis.model.entity.Produit;
@@ -44,6 +45,11 @@ public class ProduitService {
         return produits;
     }
 
+    public List<Produit> findAllProduit(Pageable pageable) {
+        List<Produit> produits = new ArrayList<>();
+        produitRepository.findByActiveStatusTrue(pageable).forEach(produits::add);
+        return produits;
+    }
     public List<Produit> findByCategorieProduit(Long id) {
         return produitRepository.findByCategorieProduit_CategorieProduitId(id);
     }

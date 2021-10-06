@@ -14,6 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +47,8 @@ public class ContactController {
     private MessageRepository msgRepo;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    private PagedResourcesAssembler<ContactDTO> pagedResourcesAssembler;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
@@ -104,15 +113,15 @@ public class ContactController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
     }
-    @GetMapping("/api/v1/admin/contacts")
-    private ResponseEntity<Object> getAdminContacts() {
+    @GetMapping(value="/api/v1/admin/contacts", params = {"page", "size"})
+    private ResponseEntity<Object> getAdminContacts(@RequestParam("page") int page,
+                                                    @RequestParam("size") int size) {
         LOGGER.trace("liste des Contacts...");
-        List<Contact> contacts = contactService.getContacts();
+        List<Contact> contacts = contactService.getContacts(PageRequest.of(page, size, Sort.by("createdDate").descending()));
         List<ContactDTO> contactDTOs = new ArrayList<>();
 
-        ContactDTO c;
         for(Contact contact : contacts){
-            c = new ContactDTO();
+            ContactDTO c = new ContactDTO();
             c.setCni(contact.getPartenaire().getCni());
             c.setContactId(contact.getContactId());
             c.setEmail(contact.getPartenaire().getEmail());
@@ -129,7 +138,10 @@ public class ContactController {
             contactDTOs.add(c);
 
         }
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactDTOs);
+        Page<ContactDTO> pages = new PageImpl<>(contactDTOs, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<ContactDTO>> result = pagedResourcesAssembler
+                .toModel(pages);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", result);
     }
     @DeleteMapping("/api/v1/admin/contacts/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) throws ParseException {
