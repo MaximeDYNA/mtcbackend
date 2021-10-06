@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Caisse;
@@ -23,6 +24,11 @@ public class CaisseService {
         caisseRepository.save(caisse);
     }
 
+    public List<Caisse> findAllCaisse(Pageable pageable) {
+        List<Caisse> caisses = new ArrayList<>();
+        caisseRepository.findByActiveStatusTrue(pageable).forEach(caisses::add);
+        return caisses;
+    }
     public List<Caisse> findAllCaisse() {
         List<Caisse> caisses = new ArrayList<>();
         caisseRepository.findByActiveStatusTrue().forEach(caisses::add);

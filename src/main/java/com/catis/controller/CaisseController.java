@@ -9,10 +9,18 @@ import java.util.Map;
 import com.catis.controller.message.Message;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.CaissePOJO;
+import com.catis.objectTemporaire.Listview;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +35,24 @@ public class CaisseController {
     private CaisseService caisseService;
     @Autowired
     private OrganisationService organisationService;
+    @Autowired
+    private PagedResourcesAssembler<Caisse> pagedResourcesAssembler;
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(CaisseController.class);
 
-    @GetMapping("/api/v1/admin/caisses")
-    public ResponseEntity<Object> afficherLesCaisses() {
+    @GetMapping(value ="/api/v1/admin/caisses", params = {"page", "size"})
+    public ResponseEntity<Object> afficherLesCaisses(@RequestParam("page") int page,
+                                                     @RequestParam("size") int size) {
 
-        List<Caisse> caisses = caisseService.findAllCaisse();
+        List<Caisse> caisses = caisseService.findAllCaisse(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+        Page<Caisse> pages = new PageImpl<>(caisses, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<Caisse>> result = pagedResourcesAssembler
+                .toModel(pages);
+
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
-                caisses);
+                result);
 
     }
 
