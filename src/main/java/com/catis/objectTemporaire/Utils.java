@@ -21,6 +21,15 @@ public class Utils {
                     add(new TestNew(12L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures Visuelles\"><i class=\"i-Eye\"></i></span>&nbsp", "JSON")  );
                 }}
         ));
+        add(new ProduitCategorieTest(7L,
+                new ArrayList<TestNew>() {{
+                    add(new TestNew(1L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp", "F") );
+                    add(new TestNew(2L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"><i class=\"i-Car-2\"></i></span>&nbsp", "R"));
+                    add(new TestNew(4L,"<span class=\"badge badge-light\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Reglophare\"><i class=\"i-Flash\"></i></span>&nbsp", "P")  );
+                    add(new TestNew(9L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"><i class=\"i-Cloud1\"></i></span>&nbsp","G" )  );
+                    add(new TestNew(12L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures Visuelles\"><i class=\"i-Eye\"></i></span>&nbsp", "JSON")  );
+                }}
+        ));
         add(new ProduitCategorieTest(2L,
                 new ArrayList<TestNew>() {{
                     add(new TestNew(1L,"<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp", "F")  );
