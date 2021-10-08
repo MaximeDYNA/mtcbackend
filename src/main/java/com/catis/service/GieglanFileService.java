@@ -104,6 +104,12 @@ public class GieglanFileService {
         return gieglanfiles;
     }
 
+    public List<GieglanFile> getGieglan(Visite visite){
+        List<GieglanFile> gieglanfiles = gieglanFileRepository
+                .getMyGieglanFile(visite, PageRequest.of(0,1, Sort.by("id").ascending()));
+        return gieglanfiles;
+    }
+
     public List<GieglanFile> findActiveByInspection(Long inspectionId){
         List<GieglanFile> gieglanfiles = gieglanFileRepository
                 .findByInspection_IdInspectionAndActiveStatusTrue(inspectionId);

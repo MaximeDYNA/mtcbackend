@@ -101,7 +101,7 @@ public class VisiteController {
     private CategorieTestVehiculeService catSer;
 
     @Autowired
-    private PagedResourcesAssembler<Listview> pagedResourcesAssembler;
+    private PagedResourcesAssembler<NewListView> pagedResourcesAssembler;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -113,7 +113,7 @@ public class VisiteController {
 
 
 
-    @GetMapping(value = "/api/v1/all/visitesencours", params = {"page", "size"})
+    /*@GetMapping(value = "/api/v1/all/visitesencours", params = {"page", "size"})
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
         log.info("Liste des visites en cours ---");
@@ -135,7 +135,7 @@ public class VisiteController {
         log.info("**************après le hatoas ");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
-    }
+    }*/
 
     @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
@@ -146,17 +146,35 @@ public class VisiteController {
             search=null;
         }
         List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
-        List<Listview> listVisit = new ArrayList<>();
+
+        List<NewListView> newListViews = resultPage.stream().map(visite ->
+            new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                    (visite.getCarteGrise().getVehicule()==null
+                            ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                            ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                    (visite.getVente().getClient() == null
+                            ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                    Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                    getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                    visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                    visite.getIsConform(),
+                    visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                    visite.getCreatedDate().format(SseController.dateTimeFormatter))
+        ).collect(Collectors.toList());
+
+
+
+        /*List<Listview> listVisit = new ArrayList<>();
         resultPage.forEach(visite ->{
             log.info("visite construction start "+ visite.getIdVisite());
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer));
             log.info("visite construction end "+ visite.getIdVisite());
         });
-
+*/
         //convert list to page for applying hatoas
         log.info("------------Avant le hatoas ");
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
-        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
                 .toModel(pages);
         log.info("**************après le hatoas ");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
@@ -172,14 +190,29 @@ public class VisiteController {
         Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
 
-        log.info("Liste des visites terminées");
+        List<NewListView> newListViews = resultPage.stream().map(visite ->
+                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        (visite.getCarteGrise().getVehicule()==null
+                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                        (visite.getVente().getClient() == null
+                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getIsConform(),
+                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter))
+        ).collect(Collectors.toList());
+
+        /*log.info("Liste des visites terminées");
         resultPage.forEach(visite ->
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
-        );
+        );*/
 
         //convert list to page for applying hatoas
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
-        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
+        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
                 .toModel(pages);
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
@@ -594,6 +627,208 @@ public class VisiteController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", v);
     }
 
+    public String getHTML(Visite visite) {
+        String icons = "";
+        switch (visite.statutRender()) {
+            case "maj":
+                return "<span class=\"badge badge-primary\">" + visite.statutRender() + "</span>";
+
+            case "A inspecter":
+                return  "<span class=\"badge badge-warning\">" + visite.statutRender() + "</span>";
+
+            case "En cours test":
+                for (GieglanFileIcon cat : replaceIconIfNecessary(visite)) {
+                    icons += cat.getIcon();
+                }
+                return icons;
+
+            case "A signer":
+                if(visite.getProcess().isStatus())
+                    return  "<span class=\"badge badge-info\"> ACCEPTE " + visite.statutRender() + "</span>";
+                else
+                    return  "<span class=\"badge badge-info\"> REFUSE " + visite.statutRender() + "</span>";
+
+            case "A imprimer":
+                    return "<span class=\"badge badge-success\">" + visite.statutRender() + "</span>";
+
+            case "A certifier":
+                    return "<span class=\"badge badge-primary\">" + visite.statutRender() + "</span>";
+            case "Accepté":
+                    return "<span class=\"badge badge-success\">" + visite.statutRender() + "</span>";
+            case "Refusé":
+                    return "<span class=\"badge badge-dark\">" + visite.statutRender() + "</span>";
+            default:
+                    return "<span class=\"badge badge-warning\">" + visite.statutRender() + "</span>";
+        }
+    }
+
+    public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
+        List<GieglanFileIcon> gieglanFileIcons = new ArrayList<>();
+        if(visite.isContreVisite()){
+            gieglanFileService.getGieglanFileFailed(visite).forEach(g -> {
+                if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
+                    switch (g.getCategorieTest().getLibelle()){
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F","<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R","<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S","<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P","<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON","<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G","<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+                    }
+                }
+                else if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
+                    switch (g.getCategorieTest().getLibelle()){
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F","<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R","<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S","<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P","<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON","<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G","<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+
+                    }
+
+                }
+                else{
+                    switch (g.getCategorieTest().getLibelle()){
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F","<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R","<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S","<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P","<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON","<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G","<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+
+                    }
+
+                }
+            });
+        }
+        else {
+            List<GieglanFile> gieglanFiles = gieglanFileService.getGieglan(visite);
+            gieglanFiles.forEach(g -> {
+                if (g.getStatus().equals(GieglanFile.StatusType.VALIDATED)) {
+                    switch (g.getCategorieTest().getLibelle()) {
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+
+                    }
+                } else if (g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)) {
+                    switch (g.getCategorieTest().getLibelle()) {
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+
+                    }
+
+                } else {
+                    switch (g.getCategorieTest().getLibelle()) {
+                        case "F":
+                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                            break;
+                        case "R":
+                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                            break;
+
+                        case "S":
+                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                            break;
+                        case "P":
+                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                            break;
+                        case "JSON":
+                            gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                            break;
+
+                        case "G":
+                            gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                            break;
+
+                    }
+
+                }
+
+            });
+        }
+        return gieglanFileIcons;
+
+    }
+
 
     /****Administration****/
 
@@ -603,11 +838,24 @@ public class VisiteController {
                                                 @RequestParam("page") int page,
                                                @RequestParam("size") int size) {
         List<Listview> listVisit = new ArrayList<>();
-        visiteService.visitListForAdmin(search, PageRequest.of(page, size)).forEach( visite ->
-            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
-        );
-        Page<Listview> pages = new PageImpl<>(listVisit, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
-        PagedModel<EntityModel<Listview>> result = pagedResourcesAssembler
+
+        List<Visite> resultPage = visiteService.visitListForAdmin(search, PageRequest.of(page, size));
+        List<NewListView> newListViews = resultPage.stream().map(visite ->
+                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        (visite.getCarteGrise().getVehicule()==null
+                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                        (visite.getVente().getClient() == null
+                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getIsConform(),
+                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter))
+        ).collect(Collectors.toList());
+        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
+        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
                 .toModel(pages);
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
     }

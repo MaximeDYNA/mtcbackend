@@ -217,6 +217,35 @@ public class Visite extends JournalData {
 
     }
 
+    public String statutRender() {
+        if (this.statut == 0) {
+            return "maj";
+        } else if (this.statut == 1) {
+            return "A inspecter";
+        } else if (this.statut == 2) {
+            return "En cours test";
+        } else if (this.statut == 3) {
+            return "A signer";
+        } else if (this.statut == 4) {
+            return "En Attente conformité";
+        } else if (this.statut == 5) {
+            return "Non conforme";
+        } else if (this.statut == 6) {
+            return "A imprimer";
+        } else if (this.statut == 7) {
+            return "Refusé";
+        } else if (this.statut == 8) {
+            return "A certifier";
+        } else if (this.statut == 9) {
+            return "Accepté";
+        } else if (this.statut == 10) {
+            return "A approuver";
+        } else {
+            return "erreur";
+        }
+
+    }
+
     public int getIsConform() {
         return isConform;
     }
