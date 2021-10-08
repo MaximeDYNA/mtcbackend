@@ -767,29 +767,72 @@ public class VisiteController {
         }
         else {
             List<GieglanFile> gieglanFiles = gieglanFileService.getGieglan(visite);
+
             gieglanFiles.forEach(g -> {
                 if (g.getStatus().equals(GieglanFile.StatusType.VALIDATED)) {
+                    int j;
                     switch (g.getCategorieTest().getLibelle()) {
+
                         case "F":
-                            gieglanFileIcons.stream().map(o -> o.getExtension() == "F" ? new GieglanFileIcon("F", "<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"): o);
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("F")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
+                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
                             break;
                         case "R":
-                            gieglanFileIcons.stream().map(o -> o.getExtension() == "R" ? new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"): o);
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("R")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
+                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
                             break;
 
                         case "S":
-                            gieglanFileIcons.stream().map(o -> o.getExtension() == "S" ? new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"): o);
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("S")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
+                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
                             break;
                         case "P":
-                            gieglanFileIcons.stream().map(o -> o.getExtension() == "P" ? new GieglanFileIcon("P","<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"): o);
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("P")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
+                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
                             break;
-
                         case "JSON":
-                            
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("JSON")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
                             gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
                             break;
 
                         case "G":
+                            j = 0;
+                            for(GieglanFileIcon i: gieglanFileIcons){
+                                if (i.getExtension().equals("G")){
+                                    gieglanFileIcons.remove(j);
+                                    j++;
+                                }
+                            }
                             gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
                             break;
 
