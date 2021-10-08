@@ -52,8 +52,6 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.catis.controller.SseController.buildListView;
-
 @RestController
 @CrossOrigin
 public class VisiteController {
@@ -350,9 +348,20 @@ public class VisiteController {
 
         log.info("list view visit");
         Long orgId = SessionData.getOrganisationId(request);
-        List<Listview> listVisit = new ArrayList<>();
+        List<NewListView> listVisit = new ArrayList<>();
         visiteService.listParStatus(statutCode, orgId).forEach(
-                visite -> listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
+                visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        (visite.getCarteGrise().getVehicule()==null
+                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                        (visite.getVente().getClient() == null
+                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getIsConform(),
+                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter)))
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 
@@ -399,8 +408,7 @@ public class VisiteController {
             }
 
             visite = visiteService.add(visite);
-        SseController.dispatchEdit(visite,
-                visiteService, gieglanFileService, catSer);
+            visiteService.dispatchEdit(visite);
 
         //Openaplr to know if the car is in the center
         String uri = environment.getProperty("endpoint.openalpr") ;
