@@ -146,8 +146,7 @@ public class JobController {
                 visite.getInspection().setDateFin(new Date());
                 vs.add(visite);
             }
-            SseController.dispatchEdit(visite,
-                    vs, gieglanFileService, catSer);
+            vs.dispatchEdit(visite);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
         }
         catch (Exception e) {
