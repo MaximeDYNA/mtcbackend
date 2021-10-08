@@ -666,7 +666,7 @@ public class VisiteController {
     }
 
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
-
+        System.out.println("build visite +++++++++++++++"+ visite.getIdVisite());
         ProduitCategorieTest p = Utils.tests.stream()
                 .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
                 .findFirst()
