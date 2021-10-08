@@ -17,8 +17,14 @@ public interface GieglanFileRepository extends CrudRepository<GieglanFile, Long>
 
     List<GieglanFile> findByCategorieTestLibelleAndInspection_Visite_IdVisite(String libelle, Long idVisite, Pageable pageable);
 
-    @Query(value = "select g from GieglanFile g join g.inspection i "
-            + "join i.visite v where v.control = ?1  and v <> ?2 "
+    @Query("select g from GieglanFile g inner join fetch g.inspection i "
+            + "inner join fetch i.visite v where v = ?1  "
+            + " and g.type = 'MEASURE' and g.status <> 'NOT_DEFINED' "
+            + "order by v.idVisite desc")
+    List<GieglanFile> getMyGieglanFile(Visite visite, Pageable pageable);
+
+    @Query(value = "select g from GieglanFile g inner join fetch g.inspection i "
+            + "inner join fetch i.visite v where v.control = ?1  and v <> ?2 "
             + "and g.isAccept = 0 and g.type = 'MEASURE' and g.status = 'VALIDATED' "
             + "order by v.idVisite desc"
     )
