@@ -106,7 +106,7 @@ public class GieglanFileService {
 
     public List<GieglanFile> getGieglan(Visite visite){
         List<GieglanFile> gieglanfiles = gieglanFileRepository
-                .getMyGieglanFile(visite, PageRequest.of(0,1, Sort.by("id").ascending()));
+                .getMyGieglanFile(visite, PageRequest.of(0,10, Sort.by("id").ascending()));
         return gieglanfiles;
     }
 
