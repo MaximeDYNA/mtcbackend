@@ -201,8 +201,13 @@ public class VisiteController {
                         (visite.getCarteGrise().getVehicule()==null
                                 ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
                                 ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                        (visite.getVente().getClient() == null
-                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                        (visite.getCarteGrise().getProprietaireVehicule()
+                                .getPartenaire()
+                                .getNom()
+                                == null
+                                ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                .getPartenaire()
+                                .getNom()),
                         Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                         getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
                         visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
