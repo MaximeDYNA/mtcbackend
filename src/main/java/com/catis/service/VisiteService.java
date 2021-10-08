@@ -419,29 +419,6 @@ public class VisiteService {
         }
     }
 
-    public static Listview buildListView(Visite visite, VisiteService visiteService,
-                                         GieglanFileService gieglanFileService,
-                                         CategorieTestVehiculeService catSer ){
-        Listview v = new Listview(visite, visiteService, gieglanFileService,catSer);
-        v.setCategorie(visite.getCarteGrise().getProduit());
-
-        if (visite.getCarteGrise().getProprietaireVehicule()
-                .getPartenaire()
-                .getNom()
-                == null)
-            v.setClient(null);
-        else
-            v.setClient(visite.getCarteGrise().getProprietaireVehicule()
-                    .getPartenaire()
-                    .getNom());
-        v.setDate(visite.getCreatedDate().format(SseController.dateTimeFormatter));
-        v.setCreatedAt(visite.getCreatedDate());
-        v.setReference(visite.getCarteGrise().getNumImmatriculation());
-        v.setStatut(visite.statutRender(visite.getStatut()));
-        v.setType(visite.typeRender());
-        return v;
-    }
-
     public String getHTML(Visite visite) {
         String icons = "";
         switch (visite.statutRender()) {
@@ -667,7 +644,6 @@ public class VisiteService {
 
             });
         }
-        boolean exist = false;
         List<GieglanFileIcon> addor = new ArrayList<>();
         for(GieglanFileIcon i :icons){
             for(GieglanFileIcon j :gieglanFileIcons){
