@@ -210,9 +210,9 @@ public class VisiteController {
                                 .getNom()),
                         Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                         getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? null : visite.getInspection().getDistancePercentage(),
                         visite.getCreatedDate().format(SseController.dateTimeFormatter))
         ).collect(Collectors.toList());
 
@@ -363,9 +363,9 @@ public class VisiteController {
                                 ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
                         Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                         getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? null : visite.getInspection().getDistancePercentage(),
                         visite.getCreatedDate().format(SseController.dateTimeFormatter)))
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
@@ -887,9 +887,9 @@ public class VisiteController {
                                 ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
                         Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                         getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
+                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? null : visite.getInspection().getDistancePercentage(),
                         visite.getCreatedDate().format(SseController.dateTimeFormatter))
         ).collect(Collectors.toList());
         Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
