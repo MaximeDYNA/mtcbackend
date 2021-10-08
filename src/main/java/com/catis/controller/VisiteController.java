@@ -156,7 +156,8 @@ public class VisiteController {
                             ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
                     Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                     getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                    visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                    visite.getInspection() == null
+                            ? 0 : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                     visite.getIsConform(),
                     visite.getOrganisation().getNom() ,visite.getInspection().getBestPlate(), visite.getInspection().getDistancePercentage(),
                     visite.getCreatedDate().format(SseController.dateTimeFormatter))
