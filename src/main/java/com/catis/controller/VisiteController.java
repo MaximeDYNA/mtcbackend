@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.catis.controller.configuration.SessionData;
@@ -665,9 +666,14 @@ public class VisiteController {
     }
 
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
-        List<GieglanFileIcon> gieglanFileIcons = visite.getCarteGrise().getProduit().getCategorieTestProduits()
-                .stream().map(categorieTestProduit -> new GieglanFileIcon(categorieTestProduit.getCategorieTest().getLibelle(), categorieTestProduit.getCategorieTest().getIcon()))
-                .collect(Collectors.toList());
+
+        ProduitCategorieTest p = Utils.tests.stream()
+                .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
+                .findFirst()
+                .get();
+        List<GieglanFileIcon> gieglanFileIcons  =p.getTest().stream().map(
+                testNew -> new GieglanFileIcon(testNew.getExtension(), testNew.getIcon())
+        ).collect(Collectors.toList());
         if(visite.isContreVisite()){
             gieglanFileService.getGieglanFileFailed(visite).forEach(g -> {
                 if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
