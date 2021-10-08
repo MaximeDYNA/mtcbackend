@@ -580,7 +580,7 @@ public class VisiteService {
                             break;
                         case "JSON":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("P") ?new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp") : o)
+                                    .map(o -> o.getExtension().equals("JSON") ?new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp") : o)
                                     .collect(Collectors.toList()));
                             break;
                         case "G":

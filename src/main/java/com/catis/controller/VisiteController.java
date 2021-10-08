@@ -788,34 +788,40 @@ public class VisiteController {
                     switch (g.getCategorieTest().getLibelle()) {
                         case "F":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("F") ? new GieglanFileIcon("F","<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ) : o)
+                                    .filter(o -> o.getExtension().equals("F"))
+                                    .map(o ->  new GieglanFileIcon("F","<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ))
                                     .collect(Collectors.toList()));
                             break;
                         case "R":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("R") ? new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp") : o)
+                                    .filter(o -> o.getExtension().equals("R"))
+                                    .map(o -> new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"))
                                     .collect(Collectors.toList()));
                             //gieglanFileIcons.add();
                             break;
                         case "S":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("S") ? new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp") : o)
+                                    .filter(o -> o.getExtension().equals("S"))
+                                    .map(o -> new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"))
                                     .collect(Collectors.toList()));
                             //gieglanFileIcons.add();
                             break;
                         case "P":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("P") ? new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp") : o)
+                                    .filter(o -> o.getExtension().equals("P"))
+                                    .map(o -> new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"))
                                     .collect(Collectors.toList()));
                             break;
                         case "JSON":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("P") ?new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp") : o)
+                                    .filter(o -> o.getExtension().equals("JSON"))
+                                    .map(o -> new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"))
                                     .collect(Collectors.toList()));
                             break;
                         case "G":
                             icons.addAll(gieglanFileIcons.stream()
-                                    .map(o -> o.getExtension().equals("G") ?new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp") : o)
+                                    .filter(o -> o.getExtension().equals("G"))
+                                    .map(o -> new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp") )
                                     .collect(Collectors.toList()));
                             break;
 
