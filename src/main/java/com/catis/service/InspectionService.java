@@ -72,7 +72,7 @@ public class InspectionService {
 
         inspection = inspectionR.save(inspection);
 
-        SseController.dispatchEdit(inspection.getVisite(), visiteService, gieglanFileService, cat);
+        visiteService.dispatchEdit(inspection.getVisite());
         return inspection;
 
     }

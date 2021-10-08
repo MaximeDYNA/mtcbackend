@@ -1,12 +1,8 @@
 package com.catis.controller;
 
-import com.catis.model.control.GieglanFile;
-import com.catis.model.entity.Visite;
-import com.catis.objectTemporaire.*;
-import com.catis.service.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class SseController {
 
-    private static Logger log = LoggerFactory.getLogger(VisiteController.class);
+    private static Logger log = LoggerFactory.getLogger(SseController.class);
 
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
