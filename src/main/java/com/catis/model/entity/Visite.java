@@ -4,18 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.catis.model.control.Control;
 import org.hibernate.envers.Audited;
@@ -50,6 +39,7 @@ public class Visite extends JournalData {
     @JsonIgnore
     private Inspection inspection;
 
+
     @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
     @JsonIgnore
     private Vente vente;
@@ -79,7 +69,29 @@ public class Visite extends JournalData {
     public Visite() {
 
     }
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult ripage;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult suspension;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult freinage;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult pollution;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult reglophare;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'PENDING'")
+    private TestResult visuel;
 
+
+    public enum TestResult{
+        PENDING, SUCCESS, ERROR
+    };
     public Control getControl() {
         return control;
     }
@@ -267,5 +279,53 @@ public class Visite extends JournalData {
 
     public void setVente(Vente vente) {
         this.vente = vente;
+    }
+
+    public TestResult getRipage() {
+        return ripage;
+    }
+
+    public void setRipage(TestResult ripage) {
+        this.ripage = ripage;
+    }
+
+    public TestResult getSuspension() {
+        return suspension;
+    }
+
+    public void setSuspension(TestResult suspension) {
+        this.suspension = suspension;
+    }
+
+    public TestResult getFreinage() {
+        return freinage;
+    }
+
+    public void setFreinage(TestResult freinage) {
+        this.freinage = freinage;
+    }
+
+    public TestResult getPollution() {
+        return pollution;
+    }
+
+    public void setPollution(TestResult pollution) {
+        this.pollution = pollution;
+    }
+
+    public TestResult getReglophare() {
+        return reglophare;
+    }
+
+    public void setReglophare(TestResult reglophare) {
+        this.reglophare = reglophare;
+    }
+
+    public TestResult getVisuel() {
+        return visuel;
+    }
+
+    public void setVisuel(TestResult visuel) {
+        this.visuel = visuel;
     }
 }
