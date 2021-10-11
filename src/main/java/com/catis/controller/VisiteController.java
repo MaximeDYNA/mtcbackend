@@ -147,6 +147,7 @@ public class VisiteController {
         List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
 
         List<NewListView> newListViews = resultPage.stream().map(visite ->
+
             new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                     (visite.getCarteGrise().getVehicule()==null
                             ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
