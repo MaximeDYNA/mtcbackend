@@ -695,190 +695,119 @@ public class VisiteController {
         ).collect(Collectors.toList());
         if(visite.isContreVisite()){
             gieglanFileService.getGieglanFileFailed(visite).forEach(g -> {
-                if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
-                    switch (g.getCategorieTest().getLibelle()){
-                        case "F":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("F"))
-                            .map(gieglanFileIcon -> new GieglanFileIcon("F","<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
-                            break;
-                        case "R":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("R"))
-                                    .map(gieglanFileIcon -> new GieglanFileIcon("R","<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
-                            break;
+                switch (g.getCategorieTest().getLibelle()){
+                    case "F" :
+                        if(visite.getFreinage().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        else if(visite.getFreinage().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        break;
+                    case "R" :
+                        if(visite.getRipage().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        else if(visite.getRipage().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        break;
+                    case "S" :
+                        if(visite.getSuspension().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        else if(visite.getSuspension().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        break;
+                    case "P" :
+                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        break;
 
-                        case "S":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("S"))
-                                    .map(gieglanFileIcon ->new GieglanFileIcon("S","<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
-                            break;
-                        case "P":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("P"))
-                                .map(gieglanFileIcon ->new GieglanFileIcon("P","<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
-                            break;
-                        case "JSON":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("JSON"))
-                                    .map(gieglanFileIcon ->new GieglanFileIcon("JSON","<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                            break;
+                    case "JSON":
 
-                        case "G":
-                            gieglanFileIcons.stream().filter(gieglanFileIcon -> gieglanFileIcon.getExtension().equals("G"))
-                                    .map(gieglanFileIcon -> new GieglanFileIcon("G","<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
-                            break;
-                    }
-                }
-                else if(g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)){
-                    /*switch (g.getCategorieTest().getLibelle()){
-                        case "F":
-                            gieglanFileIcons.add(new GieglanFileIcon("F","<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
-                            break;
-                        case "R":
-                            gieglanFileIcons.add(new GieglanFileIcon("R","<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
-                            break;
-
-                        case "S":
-                            gieglanFileIcons.add(new GieglanFileIcon("S","<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
-                            break;
-                        case "P":
-                            gieglanFileIcons.add(new GieglanFileIcon("P","<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
-                            break;
-                        case "JSON":
-                            gieglanFileIcons.add(new GieglanFileIcon("JSON","<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                            break;
-
-                        case "G":
-                            gieglanFileIcons.add(new GieglanFileIcon("G","<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
-                            break;
-
-                    }*/
+                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        break;
+                    case "G":
+                        if(visite.getPollution().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                        else if(visite.getPollution().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
 
                 }
-                else{
-                    switch (g.getCategorieTest().getLibelle()){
-                        case "F":
-                            gieglanFileIcons.add(new GieglanFileIcon("F","<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ));
-                            break;
-                        case "R":
-                            gieglanFileIcons.add(new GieglanFileIcon("R","<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp" ));
-                            break;
+        });
 
-                        case "S":
-                            gieglanFileIcons.add(new GieglanFileIcon("S","<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp" ));
-                            break;
-                        case "P":
-                            gieglanFileIcons.add(new GieglanFileIcon("P","<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
-                            break;
-                        case "JSON":
-                            gieglanFileIcons.add(new GieglanFileIcon("JSON","<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                            break;
-
-                        case "G":
-                            gieglanFileIcons.add(new GieglanFileIcon("G","<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
-                            break;
-
-                    }
-
-                }
-            });
         }
+
         else {
-            List<GieglanFile> gieglanFiles = gieglanFileService.getGieglan(visite);
+            gieglanFileIcons.forEach(gieglanFileIcon -> {
+                switch (gieglanFileIcon.getExtension()){
+                    case "F" :
+                        if(visite.getFreinage().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        else if(visite.getFreinage().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("F", "<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
+                        break;
+                    case "R" :
+                        if(visite.getRipage().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        else if(visite.getRipage().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("R", "<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
+                        break;
+                    case "S" :
+                        if(visite.getSuspension().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        else if(visite.getSuspension().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("S", "<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
+                        break;
+                    case "P" :
+                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("P", "<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
+                        break;
 
-            gieglanFiles.forEach(g -> {
-                if (g.getStatus().equals(GieglanFile.StatusType.VALIDATED)) {
-                    int j;
-                    switch (g.getCategorieTest().getLibelle()) {
-                        case "F":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("F"))
-                                    .map(o ->  new GieglanFileIcon("F","<span class=\"badge badge-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp" ))
-                                    .findFirst().orElse(new GieglanFileIcon("F", "<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp")));
-                            break;
-                        case "R":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("R"))
-                                    .map(o -> new GieglanFileIcon("R", "<span class=\"badge badge-success\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"))
-                                    .findFirst().orElse(new GieglanFileIcon("R", "<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp")));
-                            //gieglanFileIcons.add();
-                            break;
-                        case "S":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("S"))
-                                    .map(o -> new GieglanFileIcon("S", "<span class=\"badge badge-success\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"))
-                                    .findFirst().orElse(new GieglanFileIcon("S", "<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp")));
-                            //gieglanFileIcons.add();
-                            break;
-                        case "P":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("P"))
-                                    .map(o -> new GieglanFileIcon("P", "<span class=\"badge badge-success\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"))
-                                    .findFirst().orElse(new GieglanFileIcon("P", "<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp")));
-                            break;
-                        case "JSON":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("JSON"))
-                                    .map(o -> new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"))
-                                    .findFirst().orElse(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp")));
-                            break;
-                        case "G":
-                            icons.add(gieglanFileIcons.stream()
-                                    .filter(o -> o.getExtension().equals("G"))
-                                    .map(o -> new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp") )
-                                    .findFirst().orElse(new GieglanFileIcon("G", "<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp")));
-                            break;
+                    case "JSON":
 
-                    }
-                } else if (g.getStatus().equals(GieglanFile.StatusType.INITIALIZED)) {
-                   /* switch (g.getCategorieTest().getLibelle()) {
-                        case "F":
-                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-light\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
-                            break;
-                        case "R":
-                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-light\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
-                            break;
-
-                        case "S":
-                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-light\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
-                            break;
-                        case "P":
-                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-light\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
-                            break;
-                        case "JSON":
-                            gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                            break;
-
-                        case "G":
-                            gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
-                            break;
-
-                    }*/
-
-                } else {
-                    /*switch (g.getCategorieTest().getLibelle()) {
-                        case "F":
-                            gieglanFileIcons.add(new GieglanFileIcon("F", "<span class=\"badge badge-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Freinage\"><i class=\"i-Pause\"></i></span>&nbsp"));
-                            break;
-                        case "R":
-                            gieglanFileIcons.add(new GieglanFileIcon("R", "<span class=\"badge badge-danger\"><i class=\"i-Car-2\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ripage\"></i></span>&nbsp"));
-                            break;
-
-                        case "S":
-                            gieglanFileIcons.add(new GieglanFileIcon("S", "<span class=\"badge badge-danger\"><i class=\"i-Jeep-2\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"Suspension\"></i></span>&nbsp"));
-                            break;
-                        case "P":
-                            gieglanFileIcons.add(new GieglanFileIcon("P", "<span class=\"badge badge-danger\"><i class=\"i-Flash\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Réglophare\"></i></span>&nbsp"));
-                            break;
-                        case "JSON":
-                            gieglanFileIcons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                            break;
-
-                        case "G":
-                            gieglanFileIcons.add(new GieglanFileIcon("G", "<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
-                            break;
-
-                    }*/
-
+                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        else
+                            icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
+                        break;
+                    case "G":
+                        if(visite.getPollution().equals(Visite.TestResult.PENDING))
+                            icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-light\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                        else if(visite.getPollution().equals(Visite.TestResult.SUCCESS))
+                            icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-success\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                        else
+                        icons.add(new GieglanFileIcon("G", "<span class=\"badge badge-danger\"><i class=\"i-Cloud1\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Analyseur de gaz\"></i></span>&nbsp"));
+                    break;
                 }
-
             });
+
+
         }
         /*List<GieglanFileIcon> addor = new ArrayList<>();
         for(GieglanFileIcon i :icons){
