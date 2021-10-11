@@ -810,15 +810,6 @@ public class VisiteController {
 
 
         }
-        /*List<GieglanFileIcon> addor = new ArrayList<>();
-        for(GieglanFileIcon i :icons){
-            for(GieglanFileIcon j :gieglanFileIcons){
-                if(!i.getExtension().equals(j.extension)){
-                    addor.add(j);
-                }
-            }
-        }*/
-        //icons.addAll(addor);
         return icons;
 
     }
