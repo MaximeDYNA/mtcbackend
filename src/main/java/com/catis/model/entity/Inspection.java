@@ -69,7 +69,7 @@ public class Inspection extends JournalData {
     @OneToOne(cascade = CascadeType.ALL)
     private Visite visite;
 
-    @OneToMany(mappedBy = "inspection", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inspection", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles =new HashSet<>();
 
