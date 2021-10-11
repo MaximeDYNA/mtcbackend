@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor @NoArgsConstructor
+@NoArgsConstructor
 public class NewListView {
     private Long id;
     private Produit categorie;
@@ -31,4 +32,28 @@ public class NewListView {
     private String bestPlate;
     private double accurance;
     private String date;
+
+    public NewListView(Long id, Produit categorie, String type, String reference, String chassis, String client, String createdAt, LocalDateTime createdDate, String statut, int statutVisite, Long idVisite, boolean contreVisite, Long inspection, CarteGrise carteGrise, boolean conformityTest, int isConform, String organisation, String bestPlate, double accurance, String date) {
+        this.id = id;
+        this.categorie = categorie;
+        this.type = type;
+        this.reference = reference;
+        this.chassis = chassis;
+        this.client = client;
+        this.createdAt = createdAt;
+        this.createdDate = createdDate;
+        this.statut = statut;
+        this.statutVisite = statutVisite;
+        this.idVisite = idVisite;
+        this.contreVisite = contreVisite;
+        this.inspection = inspection;
+        this.carteGrise = carteGrise;
+        this.conformityTest = conformityTest;
+        this.isConform = isConform;
+        this.organisation = organisation;
+        this.bestPlate = bestPlate;
+        this.accurance = accurance;
+        this.date = date;
+        System.out.println(new Date()+"visite id "+this.id);
+    }
 }
