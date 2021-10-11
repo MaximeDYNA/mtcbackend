@@ -45,7 +45,7 @@ public class GieglanFile extends JournalData {
     @ManyToOne(cascade = CascadeType.ALL)
     private Machine machine;
 
-    @OneToMany(mappedBy = "gieglanFile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gieglanFile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<ValeurTest> valeurTests;
 
