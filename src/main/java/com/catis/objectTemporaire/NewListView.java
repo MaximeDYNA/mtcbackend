@@ -55,6 +55,7 @@ public class NewListView {
         this.bestPlate = bestPlate;
         this.accurance = accurance;
         this.date = date;
+        System.out.println("Traitement de la visite N°"+this.id);
     }
     public NewListView(Long id, Produit categorie, String type, String reference,
                        String chassis, String client, String createdAt, LocalDateTime createdDate,
