@@ -41,6 +41,9 @@ public class Caissier extends JournalData {
     @JsonIgnore
     private Set<SessionCaisse> sessionCaisses;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")
+    private Set<Visite> visites;
+
     public Caissier() {
     }
 
@@ -128,5 +131,11 @@ public class Caissier extends JournalData {
         return Objects.equals(getCaissierId(), caissier.getCaissierId());
     }
 
+    public Set<Visite> getVisites() {
+        return visites;
+    }
 
+    public void setVisites(Set<Visite> visites) {
+        this.visites = visites;
+    }
 }

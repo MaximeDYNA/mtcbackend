@@ -32,7 +32,7 @@ public class Visite extends JournalData {
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Caissier caissier;
 
     @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
