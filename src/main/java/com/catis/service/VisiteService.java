@@ -148,6 +148,13 @@ public class VisiteService {
         }
         visite.setCaissier(caissier);
         visite.setOrganisation(organisation);
+        visite.setReglophare(Visite.TestResult.PENDING);
+        visite.setRipage(Visite.TestResult.PENDING);
+        visite.setFreinage(Visite.TestResult.PENDING);
+        visite.setSuspension(Visite.TestResult.PENDING);
+        visite.setPollution(Visite.TestResult.PENDING);
+        visite.setVisuel(Visite.TestResult.PENDING);
+
         visite = visiteRepository.save(visite);
 
         dispatchNewVisit(visite);

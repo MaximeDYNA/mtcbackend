@@ -6,6 +6,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.text.AttributedString;
 import java.time.*;
 
@@ -381,6 +382,10 @@ public class VisiteController {
         File f= new File(environment.getProperty("pv.path"));
         if(!f.exists())
             f.mkdirs();
+
+        File ok= new File(environment.getProperty("pv.path")+"/"+visiteId+".pgf");
+        if(ok.exists() && Files.size(ok.toPath())>1)
+            return "/public/pv/"+visiteId+".pdf";
 
         String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
 
