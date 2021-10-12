@@ -76,6 +76,8 @@ public class EncaissementController {
         String user = UserInfoIn.getUserInfo(request).getLogin();
 
         Caissier caissier = caissierService.findBylogin(user);
+        if(caissier==null)
+            throw new VisiteEnCoursException("Please enter a correct login");
 
         Organisation organisation = os.findByOrganisationId(orgId);
 
