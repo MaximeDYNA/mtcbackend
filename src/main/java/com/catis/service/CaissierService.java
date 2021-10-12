@@ -38,6 +38,13 @@ public class CaissierService {
         return null;
     }
 
+    public Caissier findBylogin(String login){
+        Optional<Caissier> caissier = caissierRepository.findByUser_Login(login);
+        if(caissier.isPresent())
+            return caissier.get();
+        return null;
+    }
+
     public List<Caissier> findByCaisse(Long id){
          return caissierRepository.findByCaisse_caisseId(id);
     }
