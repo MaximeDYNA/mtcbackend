@@ -33,6 +33,7 @@ public class Visite extends JournalData {
     private boolean encours = true;
 
     @ManyToOne
+    @JsonIgnore
     private Caissier caissier;
 
     @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
