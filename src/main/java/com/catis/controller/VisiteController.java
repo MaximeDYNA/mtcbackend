@@ -383,7 +383,7 @@ public class VisiteController {
         if(!f.exists())
             f.mkdirs();
 
-        File ok= new File(environment.getProperty("pv.path")+"/"+visiteId+".pgf");
+        File ok= new File(environment.getProperty("pv.path")+File.separator +visiteId+".pdf");
         if(ok.exists() && Files.size(ok.toPath())>1)
             return "/public/pv/"+visiteId+".pdf";
 
