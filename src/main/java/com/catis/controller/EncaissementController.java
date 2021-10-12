@@ -62,6 +62,8 @@ public class EncaissementController {
     private CategorieTestVehiculeService catSer;
     @Autowired
     private MessageRepository msgRepo;
+    @Autowired
+    private CaissierService caissierService;
 
     List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
@@ -71,6 +73,12 @@ public class EncaissementController {
     @Transactional
     public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
         Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
+        String user = UserInfoIn.getUserInfo(request).getLogin();
+
+        Caissier caissier = caissierService.findBylogin(user);
+        if(caissier==null)
+            throw new VisiteEnCoursException("Please enter a correct login");
+
         Organisation organisation = os.findByOrganisationId(orgId);
 
             OperationCaisse op = new OperationCaisse();
@@ -127,7 +135,7 @@ public class EncaissementController {
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId);
+                            encaissement.getMontantEncaisse(), orgId,caissier);
                 } else {
                     produit.setProduitId(posale.getProduit().getProduitId());
                     if (encaissement.getClientId() != 0)
@@ -149,7 +157,7 @@ public class EncaissementController {
                     carteGrise.setProduit(produit);
                     carteGrise.setOrganisation(organisation);
                     visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId);
+                            encaissement.getMontantEncaisse(), orgId, caissier);
 
                 }
                 /*-----------------Visite-----------------*/

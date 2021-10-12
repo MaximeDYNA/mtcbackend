@@ -108,7 +108,7 @@ public class VisiteService {
     }
 
     @Transactional
-    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId) throws VisiteEnCoursException {
+    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId, Caissier caissier) throws VisiteEnCoursException {
         Visite visite = new Visite();
 
         Organisation organisation = os.findByOrganisationId(organisationId);
@@ -146,6 +146,7 @@ public class VisiteService {
         if (cg.getProduit().getProduitId() == 1) {
             return visite;
         }
+        visite.setCaissier(caissier);
         visite.setOrganisation(organisation);
         visite = visiteRepository.save(visite);
 
