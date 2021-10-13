@@ -510,7 +510,7 @@ public class VisiteService {
 
                     case "JSON":
 
-                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                        if(visite.getVisuel().equals(Visite.TestResult.PENDING))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
                         else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
@@ -568,7 +568,7 @@ public class VisiteService {
 
                     case "JSON":
 
-                        if(visite.getReglophare().equals(Visite.TestResult.PENDING))
+                        if(visite.getVisuel().equals(Visite.TestResult.PENDING))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
                         else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
