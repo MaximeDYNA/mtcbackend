@@ -27,10 +27,15 @@ public class OpenAlprService {
     @Autowired
     private WebClient.Builder webClient;
 
-
+    public Date addHoursToJavaUtilDate(Date date, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
+    }
     public BestPlate getPresenceConfidence(String openalpruri, String apiKey, Inspection inspection){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(inspection.getDateFin());
+        cal.setTime(addHoursToJavaUtilDate(inspection.getDateFin(),2));
         cal.add(Calendar.HOUR, -1);
         Date oneHourBack = cal.getTime();
 
