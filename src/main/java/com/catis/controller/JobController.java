@@ -144,7 +144,7 @@ public class JobController {
             Visite visite = vs.findById(id);
             if(visite.getStatut() == 3){
                 visite.getInspection().setDateFin(new Date());
-                vs.add(visite);
+                visite = vs.add(visite);
             }
             vs.dispatchEdit(visite);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
