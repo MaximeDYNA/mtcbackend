@@ -140,7 +140,7 @@ public class JobController {
 
     @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable Long id){
-        try {
+
             Visite visite = vs.findById(id);
             if(visite.getStatut() == 3){
                 visite.getInspection().setDateFin(new Date());
@@ -148,10 +148,10 @@ public class JobController {
             }
             vs.dispatchEdit(visite);
             System.out.println("le Job a effectué un chanqement sur la visite n°"+id+", le statut de la visite est "+visite.getStatut() +" :)");
-        }
+        /*try {}
         catch (Exception e) {
             System.out.println("Erreur survenur lors de la notification du Job");
-        }
+        }*/
     }
 
 }
