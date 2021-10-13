@@ -147,7 +147,7 @@ public class JobController {
                 visite = vs.add(visite);
             }
             vs.dispatchEdit(visite);
-            System.out.println("le Job a effectué un chanqement sur la visite n°"+id+" :)");
+            System.out.println("le Job a effectué un chanqement sur la visite n°"+id+", le statut de la visite est "+visite.getStatut() +" :)");
         }
         catch (Exception e) {
             System.out.println("Erreur survenur lors de la notification du Job");
