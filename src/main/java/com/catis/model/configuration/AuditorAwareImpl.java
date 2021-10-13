@@ -21,8 +21,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
 
         KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
-        if(token==null)
-            return Optional.ofNullable("DITROS");
+
         KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
         KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
         AccessToken accessToken = session.getToken();
