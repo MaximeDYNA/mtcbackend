@@ -512,7 +512,7 @@ public class VisiteService {
 
                         if(visite.getVisuel().equals(Visite.TestResult.PENDING))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                        else if(visite.getVisuel().equals(Visite.TestResult.SUCCESS))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
                         else
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
@@ -570,7 +570,7 @@ public class VisiteService {
 
                         if(visite.getVisuel().equals(Visite.TestResult.PENDING))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-light\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
-                        else if(visite.getReglophare().equals(Visite.TestResult.SUCCESS))
+                        else if(visite.getVisuel().equals(Visite.TestResult.SUCCESS))
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-success\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
                         else
                             icons.add(new GieglanFileIcon("JSON", "<span class=\"badge badge-danger\"><i class=\"i-Eye\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Mesures visuelles\"></i></span>&nbsp"));
