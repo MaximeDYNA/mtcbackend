@@ -383,9 +383,7 @@ public class VisiteController {
         if(!f.exists())
             f.mkdirs();
 
-        File ok= new File(environment.getProperty("pv.path")+File.separator +visiteId+".pdf");
-        if(ok.exists() && Files.size(ok.toPath())>1)
-            return "/public/pv/"+visiteId+".pdf";
+
 
         String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
 
@@ -400,8 +398,10 @@ public class VisiteController {
             renderer.setDocumentFromString(fillHtmlToValue(visiteId));
             renderer.layout();
             renderer.createPDF(outputStream);
+            log.info("PDF successuffully created! We thank you.");
 
         }catch (Exception e){
+            log.info("Error occured during pdf printing");
             log.error(e.getMessage());
         }finally {
             outputStream.close();
