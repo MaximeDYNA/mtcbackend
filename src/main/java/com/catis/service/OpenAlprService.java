@@ -35,8 +35,8 @@ public class OpenAlprService {
     }
     public BestPlate getPresenceConfidence(String openalpruri, String apiKey, Inspection inspection){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(addHoursToJavaUtilDate(inspection.getDateFin(),2));
-        cal.add(Calendar.HOUR, -1);
+        cal.setTime(addHoursToJavaUtilDate(inspection.getDateFin(),1));
+        //cal.add(Calendar.HOUR, -1);
         Date oneHourBack = cal.getTime();
 
         SimpleDateFormat sdf;
@@ -45,7 +45,7 @@ public class OpenAlprService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(openalpruri)
                 .queryParam("api_key", apiKey)
                 .queryParam("start", sdf.format(oneHourBack))
-                .queryParam("end", sdf.format(inspection.getDateFin()));
+                .queryParam("end", sdf.format(addHoursToJavaUtilDate(inspection.getDateFin(),2)));
 
         System.err.println(builder.toUriString());
 
