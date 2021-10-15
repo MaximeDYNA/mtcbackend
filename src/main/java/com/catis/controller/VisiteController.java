@@ -398,10 +398,10 @@ public class VisiteController {
             renderer.setDocumentFromString(fillHtmlToValue(visiteId));
             renderer.layout();
             renderer.createPDF(outputStream);
-            log.info("PDF successuffully created! We thank you.");
+            log.info("PDF successfully created! We thank you.");
 
         }catch (Exception e){
-            log.info("Error occured during pdf printing");
+            log.info("Error occurred during pdf printing");
             log.error(e.getMessage());
         }finally {
             outputStream.close();
