@@ -384,7 +384,6 @@ public class VisiteController {
             f.mkdirs();
 
 
-
         String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
 
 

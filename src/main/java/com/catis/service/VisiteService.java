@@ -108,7 +108,7 @@ public class VisiteService {
     }
 
     @Transactional
-    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId, Caissier caissier) throws VisiteEnCoursException {
+    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId, Caissier caissier, String document) throws VisiteEnCoursException {
         Visite visite = new Visite();
 
         Organisation organisation = os.findByOrganisationId(organisationId);
@@ -154,6 +154,7 @@ public class VisiteService {
         visite.setSuspension(Visite.TestResult.PENDING);
         visite.setPollution(Visite.TestResult.PENDING);
         visite.setVisuel(Visite.TestResult.PENDING);
+        visite.setDocument(document);
 
         visite = visiteRepository.save(visite);
 

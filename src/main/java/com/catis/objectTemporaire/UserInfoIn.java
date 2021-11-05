@@ -93,7 +93,7 @@ public class UserInfoIn {
         return userResource.getId();
     }
 
-    public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm) {
+    public static String getUserName(String name, HttpServletRequest request, String serverUrl, String realm)  {
 
         KeycloakSecurityContext context ;
         Keycloak keycloak;
