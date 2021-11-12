@@ -38,6 +38,7 @@ public class OpenAlprService {
         cal.setTime(addHoursToJavaUtilDate(inspection.getDateFin(),1));
         //cal.add(Calendar.HOUR, -1);
         Date oneHourBack = cal.getTime();
+        String errorReason = "";
 
         SimpleDateFormat sdf;
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -48,27 +49,32 @@ public class OpenAlprService {
                 .queryParam("end", sdf.format(addHoursToJavaUtilDate(inspection.getDateFin(),2)));
 
         System.err.println(builder.toUriString());
+        try{
+            Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
+                    .uri(builder.toUriString())
+                    //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .header(HttpHeaders.HOST, "cloud.openalpr.com")
+                    .accept(MediaType.ALL)
+                    .retrieve()
+                    .onStatus(HttpStatus::isError, (it->
+                                    handleErrors(it.statusCode().getReasonPhrase())
+                            )
+                    )
+                    .bodyToMono(OpenAlprResponseDTO[].class);
+            OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
+            return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
 
-        Mono<OpenAlprResponseDTO[]> response = webClient.build().get()
-                .uri(builder.toUriString())
-                //.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.HOST, "cloud.openalpr.com")
-                .accept(MediaType.ALL)
-                .retrieve()
-                .onStatus(HttpStatus::isError, this::handleErrors)
-                .bodyToMono(OpenAlprResponseDTO[].class);
 
-        OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
+        }catch (Exception o){
+            o.printStackTrace();
+            return new BestPlate(o.getMessage(),0);
+        }
 
-        return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
-    }
-    private Mono<Throwable> handleErrors(ClientResponse response ){
-            System.err.println("HTTP ERROR "+ response.statusCode());
-        return response.bodyToMono(String.class).flatMap(body -> {
-            System.err.println("Open ALPR ERROR "+ response.statusCode());
-                //return Mono.error(new Exception());
-            return Mono.empty();
-        });
+
+       }
+    private Mono<Throwable> handleErrors(String message){
+        System.err.println("Open ALPR ERROR "+ message);
+        return Mono.error(new Exception(message));
     }
 
     public BestPlate calculateMatchingPercentage(String ref, OpenAlprResponseDTO[] cars){
