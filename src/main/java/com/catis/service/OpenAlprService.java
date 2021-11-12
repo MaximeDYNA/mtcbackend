@@ -55,7 +55,7 @@ public class OpenAlprService {
                 .header(HttpHeaders.HOST, "cloud.openalpr.com")
                 .accept(MediaType.ALL)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, this::handleErrors)
+                .onStatus(HttpStatus::isError, this::handleErrors)
                 .bodyToMono(OpenAlprResponseDTO[].class);
 
         OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
@@ -63,10 +63,11 @@ public class OpenAlprService {
         return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
     }
     private Mono<Throwable> handleErrors(ClientResponse response ){
-        System.err.println("HTTP ERROR "+ response.statusCode());
-        return response.bodyToMono(String.class).flatMap(body -> {
             System.err.println("HTTP ERROR "+ response.statusCode());
-            return Mono.error(new Exception());
+        return response.bodyToMono(String.class).flatMap(body -> {
+            System.err.println("Open ALPR ERROR "+ response.statusCode());
+                //return Mono.error(new Exception());
+            return null;
         });
     }
 

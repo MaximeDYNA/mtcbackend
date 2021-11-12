@@ -8,6 +8,7 @@ public class Encaissement {
     private long vendeurId;
     private long contactId;
     private int type;
+    private String document;
     private double montantTotal;
     private double montantEncaisse;
     private double montantHT;
@@ -164,5 +165,13 @@ public class Encaissement {
 
     public void setNumerocontacts(String numerocontacts) {
         this.numerocontacts = numerocontacts;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
     }
 }

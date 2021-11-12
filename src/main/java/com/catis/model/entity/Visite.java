@@ -45,6 +45,8 @@ public class Visite extends JournalData {
     @JsonIgnore
     private Vente vente;
 
+    private String document;
+
     @OneToOne(mappedBy = "visite")
     @JsonIgnore
     private VerbalProcess process;
@@ -154,6 +156,14 @@ public class Visite extends JournalData {
 
     public int getStatut() {
         return statut;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
     }
 
     public void setStatut(int statut) {
