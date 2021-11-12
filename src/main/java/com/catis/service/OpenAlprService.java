@@ -67,7 +67,7 @@ public class OpenAlprService {
         return response.bodyToMono(String.class).flatMap(body -> {
             System.err.println("Open ALPR ERROR "+ response.statusCode());
                 //return Mono.error(new Exception());
-            return null;
+            return Mono.empty();
         });
     }
 
