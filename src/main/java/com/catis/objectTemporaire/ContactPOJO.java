@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactPOJO {
-    private Long contactId;
+    private UUID contactId;
     private String nom;
     private String prenom;
     private Date dateNaiss;
@@ -22,7 +23,7 @@ public class ContactPOJO {
     private String cni;
     private String telephone;
     private String email;
-    private Long organisationId;
+    private UUID organisationId;
     private Long caisse;
     private Long user;
     private String description;

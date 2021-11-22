@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class NewListView {
-    private Long id;
+    private UUID id;
     private Produit categorie;
     private String type;
     private String reference;
@@ -22,9 +23,9 @@ public class NewListView {
     private LocalDateTime createdDate;
     private String statut;
     private int statutVisite;
-    private Long idVisite;
+    private UUID idVisite;
     private boolean contreVisite;
-    private Long inspection;
+    private UUID inspection;
     private CarteGrise carteGrise;
     private boolean conformityTest;
     private int isConform;
@@ -34,7 +35,7 @@ public class NewListView {
     private String date;
     private boolean newCss=false;
 
-    public NewListView(Long id, Produit categorie, String type, String reference, String chassis, String client, String createdAt, LocalDateTime createdDate, String statut, int statutVisite, Long idVisite, boolean contreVisite, Long inspection, CarteGrise carteGrise, boolean conformityTest, int isConform, String organisation, String bestPlate, double accurance, String date) {
+    public NewListView(UUID id, Produit categorie, String type, String reference, String chassis, String client, String createdAt, LocalDateTime createdDate, String statut, int statutVisite, UUID idVisite, boolean contreVisite, UUID inspection, CarteGrise carteGrise, boolean conformityTest, int isConform, String organisation, String bestPlate, double accurance, String date) {
         this.id = id;
         this.categorie = categorie;
         this.type = type;
@@ -57,10 +58,10 @@ public class NewListView {
         this.date = date;
         System.out.println("Traitement de la visite N°"+this.id);
     }
-    public NewListView(Long id, Produit categorie, String type, String reference,
+    public NewListView(UUID id, Produit categorie, String type, String reference,
                        String chassis, String client, String createdAt, LocalDateTime createdDate,
-                       String statut, int statutVisite, Long idVisite, boolean contreVisite,
-                       Long inspection, CarteGrise carteGrise, boolean conformityTest, int isConform,
+                       String statut, int statutVisite, UUID idVisite, boolean contreVisite,
+                       UUID inspection, CarteGrise carteGrise, boolean conformityTest, int isConform,
                        String organisation, String bestPlate, double accurance, String date, boolean newCss) {
         this.id = id;
         this.categorie = categorie;

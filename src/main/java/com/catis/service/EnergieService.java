@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class EnergieService {
         return energieRepo.save(e);
     }
 
-    public Energie findEnergie(Long energieId) {
+    public Energie findEnergie(UUID energieId) {
         return energieRepo.findById(energieId).get();
     }
 
@@ -28,7 +29,7 @@ public class EnergieService {
         energieRepo.findByActiveStatusTrue().forEach(energies::add);
         return energies;
     }
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         energieRepo.deleteById(id);
     }
 }

@@ -139,7 +139,7 @@ public class JobController {
     }
 
     @GetMapping("/public/maj/{id}")
-    public void majvisiteEvent(@PathVariable Long id){
+    public void majvisiteEvent(@PathVariable UUID id){
 
             Visite visite = vs.findById(id);
         try {

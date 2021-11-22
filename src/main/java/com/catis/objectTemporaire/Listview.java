@@ -15,7 +15,7 @@ import com.catis.service.VisiteService;
 
 public class Listview {
 
-    private Long id;
+    private UUID id;
     private Produit categorie;
     private String type;
     private String reference;
@@ -25,10 +25,10 @@ public class Listview {
     private LocalDateTime createdDate;
     private String statut;
     private int statutVisite;
-    private Long idVisite;
+    private UUID idVisite;
     private boolean contreVisite;
     private boolean encours = true;
-    private Long inspection;
+    private UUID inspection;
     private CarteGrise carteGrise;
     private boolean conformityTest;
     private int isConform;
@@ -122,7 +122,7 @@ public class Listview {
         }
     }
 
-    public GieglanFileIcon replaceIconIfNecessary(GieglanFileIcon categorieTest, Long idVisite){
+    public GieglanFileIcon replaceIconIfNecessary(GieglanFileIcon categorieTest, UUID idVisite){
         List<GieglanFile> gieglanFiles = gieglanFileService.findByExtensionAndVisite(categorieTest.getExtension(), idVisite);
         gieglanFiles.forEach(g -> {
                     if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
@@ -204,7 +204,7 @@ public class Listview {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

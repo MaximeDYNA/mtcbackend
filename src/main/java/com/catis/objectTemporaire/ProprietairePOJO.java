@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ProprietairePOJO {
 
     private Long proprietaireVehiculeId;
-    private Long idControleur;
+    private UUID idControleur;
     private String nom;
     private String prenom;
     private Date dateNaiss;

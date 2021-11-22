@@ -50,14 +50,14 @@ public class ProduitService {
         produitRepository.findByActiveStatusTrue(pageable).forEach(produits::add);
         return produits;
     }
-    public List<Produit> findByCategorieProduit(Long id) {
+    public List<Produit> findByCategorieProduit(UUID id) {
         return produitRepository.findByCategorieProduit_CategorieProduitId(id);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         produitRepository.deleteById(id);
     }
-    public Produit findById(Long id) {
+    public Produit findById(UUID id) {
         return produitRepository.findById(id).get();
     }
 

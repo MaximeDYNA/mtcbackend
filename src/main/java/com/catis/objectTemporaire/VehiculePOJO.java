@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehiculePOJO {
-    private Long vehiculeId;
+    private UUID vehiculeId;
     private String typeVehicule;
     private String carrosserie;
     private int placeAssise;
@@ -24,6 +25,6 @@ public class VehiculePOJO {
     private int chargeUtile;
     private int cylindre;
     private Long marqueVehicule;
-    private Long energie;
+    private UUID energie;
     private ObjectForSelect organisationId;
 }

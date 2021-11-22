@@ -79,7 +79,7 @@ public class pdfController {
     }
 
     @GetMapping("/visites/{id}/verso")
-    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable long id) throws WriterException, IOException {
+    public ModelAndView versoPV(ModelAndView modelAndView, @PathVariable UUID id) throws WriterException, IOException {
         Optional<Visite> visite = this.visiteRepo.findById(id);
         modelAndView.addObject("visite", visite.get());
         modelAndView.setViewName("pvVerso");
@@ -91,7 +91,7 @@ public class pdfController {
     public void generatePdfFromHtml(@PathVariable Long id) throws Exception { }
 
     @GetMapping("/public/visites/qrcode/{id}")
-    public ResponseEntity<byte[]> qr(@PathVariable final Long id) throws WriterException, IOException {
+    public ResponseEntity<byte[]> qr(@PathVariable final UUID id) throws WriterException, IOException {
         Visite v = visiteService.findById(id);
         System.out.println("qrcode en cours de fabrication...");
 

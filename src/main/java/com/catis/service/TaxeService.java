@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class TaxeService {
         return taxe;
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         taxeRepository.deleteById(id);
     }
     public Taxe findByNom(String nom) {

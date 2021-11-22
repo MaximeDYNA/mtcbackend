@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class VisitePOJO {
-    private Long idVisite;
+    private UUID idVisite;
     private boolean contreVisite;
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;

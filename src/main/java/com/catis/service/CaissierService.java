@@ -10,6 +10,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CaissierService {
@@ -31,7 +32,7 @@ public class CaissierService {
         return caissiers;
     }
 
-    public Caissier findById(Long id){
+    public Caissier findById(UUID id){
         Optional<Caissier> caissier = caissierRepository.findById(id);
             if(caissier.isPresent())
                 return caissier.get();
@@ -45,11 +46,11 @@ public class CaissierService {
         return null;
     }
 
-    public List<Caissier> findByCaisse(Long id){
+    public List<Caissier> findByCaisse(UUID id){
          return caissierRepository.findByCaisse_caisseId(id);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         caissierRepository.deleteById(id);
     }
 }

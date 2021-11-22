@@ -49,7 +49,7 @@ public class MesureVisuel extends JournalData {
 
     private String signature2;
 
-    private Long gieglanFileDeleted;
+    private UUID gieglanFileDeleted;
 
     @OneToOne
     @JsonIgnore
@@ -62,11 +62,11 @@ public class MesureVisuel extends JournalData {
                 + heureFin + ", dateControl=" + dateControl + ", plateNumber=" + plateNumber + ", gps=" + gps + ", inspection=" + "]";
     }
 
-    public Long getGieglanFileDeleted() {
+    public UUID getGieglanFileDeleted() {
         return gieglanFileDeleted;
     }
 
-    public void setGieglanFileDeleted(Long gieglanFileDeleted) {
+    public void setGieglanFileDeleted(UUID gieglanFileDeleted) {
         this.gieglanFileDeleted = gieglanFileDeleted;
     }
 }

@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class MarqueService {
         return marques;
     }
 
-    public MarqueVehicule findById(Long id) {
+    public MarqueVehicule findById(UUID id) {
 
         return marqueRepo.findById(id).get();
     }
@@ -38,7 +39,7 @@ public class MarqueService {
         return marqueVehicule;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         marqueRepo.deleteById(id);
     }
 

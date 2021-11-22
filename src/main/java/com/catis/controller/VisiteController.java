@@ -142,7 +142,7 @@ public class VisiteController {
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
         log.info("recherche ---");
-        Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = SessionData.getOrganisationId(request);
         if(search == "" ){
             search=null;
         }
@@ -194,7 +194,7 @@ public class VisiteController {
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
 
-        Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = SessionData.getOrganisationId(request);
 
         Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
         List<Listview> listVisit = new ArrayList<>();
@@ -236,7 +236,7 @@ public class VisiteController {
     public ResponseEntity<Object> visiteByStatut(@PathVariable int status) {
         try {
             log.info("Liste des visites en cours");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
@@ -261,7 +261,7 @@ public class VisiteController {
     public ResponseEntity<Object> listforKabanView() {
 
                 log.info("kaban view visit");
-                Long orgId = SessionData.getOrganisationId(request);
+                UUID orgId = SessionData.getOrganisationId(request);
                 List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
                 List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
                 List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
@@ -293,7 +293,7 @@ public class VisiteController {
     public ResponseEntity<Object> listforGraphView() {
         try {
             log.info("Graphe view visit");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
             List<Object> graphViews = new ArrayList<>();
             int[] datas = new int[9];
             for (int i = 0; i < datas.length; i++) {
@@ -325,7 +325,7 @@ public class VisiteController {
 
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
-        Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = UUID.fromString(SessionData.getOrganisationId(request)) ;
         for (Visite visite : visiteService.listParStatus(0, orgId)) {
             Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
@@ -355,7 +355,7 @@ public class VisiteController {
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
 
         log.info("list view visit");
-        Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = SessionData.getOrganisationId(request);
         List<NewListView> listVisit = new ArrayList<>();
         visiteService.listParStatus(statutCode, orgId).forEach(
                 visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -376,7 +376,7 @@ public class VisiteController {
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public String printPV(@PathVariable Long visiteId) throws ImpressionException, IOException, DocumentException {
+    public String printPV(@PathVariable UUID visiteId) throws ImpressionException, IOException, DocumentException {
 
         log.info("Impression PV");
 
@@ -438,7 +438,7 @@ public class VisiteController {
 
 
 
-    public String fillHtmlToValue(long id) {
+    public String fillHtmlToValue(UUID id) {
 
         Optional<Visite> visite = this.visiteRepo.findById(id);
         Taxe tp = taxeService.findByNom("TVA");
@@ -645,7 +645,7 @@ public class VisiteController {
 
 
     @PostMapping("/api/v1/visite/{id}/status/{status}")
-    public ResponseEntity<Object> editStatus(@PathVariable Long id, @PathVariable int status) {
+    public ResponseEntity<Object> editStatus(@PathVariable UUID id, @PathVariable int status) {
 
         Visite v = visiteService.findById(id);
         v.setStatut(status);
@@ -692,7 +692,7 @@ public class VisiteController {
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
         System.out.println("build visite +++++++++++++++"+ visite.getIdVisite());
         ProduitCategorieTest p = Utils.tests.stream()
-                .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
+                .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()))
                 .findFirst()
                 .get();
         List<GieglanFileIcon> icons =new ArrayList<>();
@@ -866,7 +866,7 @@ public class VisiteController {
     }
 
     @PostMapping(value = "/api/v1/admin/visites/reset/{id}")
-    public ResponseEntity<Object> reset(@PathVariable Long id) {
+    public ResponseEntity<Object> reset(@PathVariable UUID id) {
 
         Visite v = visiteService.findById(id);
 
@@ -898,7 +898,7 @@ public class VisiteController {
     }
 
     @GetMapping(value = "/api/v1/admin/visites/{id}")
-    public ResponseEntity<Object> getOneVisite(@PathVariable Long id) {
+    public ResponseEntity<Object> getOneVisite(@PathVariable UUID id) {
 
         Visite visite = visiteService.findById(id);
 
@@ -907,7 +907,7 @@ public class VisiteController {
     }
 
     @DeleteMapping(value = "/api/v1/admin/visites/{id}")
-    public ResponseEntity<Object> delVisite(@PathVariable Long id) {
+    public ResponseEntity<Object> delVisite(@PathVariable UUID id) {
 
         Visite visite = visiteService.findById(id);
         visite.getVente().getDetailventes().forEach(

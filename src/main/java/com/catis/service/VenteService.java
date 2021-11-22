@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class VenteService {
         return ventes;
     }
 
-    public Vente findById(Long id) {
+    public Vente findById(UUID id) {
         return venteRepository.findById(id).get();
     }
 
-    public Vente findByVisite(Long id) {
+    public Vente findByVisite(UUID id) {
         return venteRepository.findByVisite_IdVisite(id);
     }
 
@@ -57,7 +58,7 @@ public class VenteService {
         return start;
     }
 
-    public List<Vente> recap(Long caissierId, LocalDateTime start, LocalDateTime end) {
+    public List<Vente> recap(UUID caissierId, LocalDateTime start, LocalDateTime end) {
 
         List<Vente> ventes = venteRepository.findBySessionCaisseCaissierCaissierIdAndCreatedDateGreaterThanOrderByCreatedDateDesc(caissierId, start)
                 .stream().filter(vente -> vente.getCreatedDate().isBefore(end)).collect(Collectors.toList());
