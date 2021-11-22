@@ -6,8 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import com.catis.model.entity.Taxe;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface TaxeRepository extends CrudRepository<Taxe, Long> {
+public interface TaxeRepository extends CrudRepository<Taxe, UUID> {
 
     Taxe findByNom(String nom);
     List<Taxe> findByActiveStatusTrue();

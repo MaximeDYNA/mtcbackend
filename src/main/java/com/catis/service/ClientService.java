@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -35,15 +36,15 @@ public class ClientService {
         return clients;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         clientRepository.deleteById(id);
     }
 
-    public Client findCustomerById(long id) {
+    public Client findCustomerById(UUID id) {
         return clientRepository.findByClientId(id);
     }
 
-    public Client findByPartenaire(long id) {
+    public Client findByPartenaire(UUID id) {
         return clientRepository.findByPartenaire_PartenaireId(id);
     }
 }

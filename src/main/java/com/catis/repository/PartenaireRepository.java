@@ -1,12 +1,13 @@
 package com.catis.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Partenaire;
 
-public interface PartenaireRepository extends CrudRepository<Partenaire, Long> {
+public interface PartenaireRepository extends CrudRepository<Partenaire, UUID> {
     List<Partenaire> findByNomStartsWithIgnoreCase(String nom);
 
     /*

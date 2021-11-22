@@ -2,11 +2,17 @@ package com.catis.model.control;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
 import com.catis.model.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,11 +25,18 @@ import com.catis.model.configuration.JournalData;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class GieglanFile extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String name;
 
@@ -70,122 +83,5 @@ public class GieglanFile extends JournalData {
         INITIALIZED, REJECTED, VALIDATED, NOT_DEFINED
     }
 
-    public GieglanFile(Long id, String name, Date fileCreatedAt, FileType type, StatusType status,
-                       Inspection inspection, Machine machine, Set<ValeurTest> valeurTests, Set<RapportDeVisite> rapportDeVisites,
-                       CategorieTest categorieTest) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.fileCreatedAt = fileCreatedAt;
-        this.type = type;
-        this.status = status;
-        this.inspection = inspection;
-        this.machine = machine;
-        this.valeurTests = valeurTests;
-        this.rapportDeVisites = rapportDeVisites;
-        this.categorieTest = categorieTest;
-    }
 
-    public StatusType getStatus() {
-        return status;
-    }
-
-
-    public void setStatus(StatusType status) {
-        this.status = status;
-    }
-
-
-    public GieglanFile() {
-
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getFileCreatedAt() {
-        return fileCreatedAt;
-    }
-
-    public void setFileCreatedAt(Date fileCreatedAt) {
-        this.fileCreatedAt = fileCreatedAt;
-    }
-
-    public FileType getType() {
-        return type;
-    }
-
-    public void setType(FileType type) {
-        this.type = type;
-    }
-
-    public Inspection getInspection() {
-        return inspection;
-    }
-
-    public void setInspection(Inspection inspection) {
-        this.inspection = inspection;
-    }
-
-    public Machine getMachine() {
-        return machine;
-    }
-
-    public void setMachine(Machine machine) {
-        this.machine = machine;
-    }
-
-    public Set<ValeurTest> getValeurTests() {
-        return valeurTests;
-    }
-
-    public void setValeurTests(Set<ValeurTest> valeurTests) {
-        this.valeurTests = valeurTests;
-    }
-
-    public Set<RapportDeVisite> getRapportDeVisites() {
-        return rapportDeVisites;
-    }
-
-    public void setRapportDeVisites(Set<RapportDeVisite> rapportDeVisites) {
-        this.rapportDeVisites = rapportDeVisites;
-    }
-
-    public Boolean getAccept() {
-        return isAccept;
-    }
-    public CategorieTest getCategorieTest() {
-        return categorieTest;
-    }
-
-
-    public void setCategorieTest(CategorieTest categorieTest) {
-        this.categorieTest = categorieTest;
-    }
-
-    public void setAccept(Boolean accept) {
-        isAccept = accept;
-    }
-
-    public MesureVisuel getMesureVisuel() {
-        return mesureVisuel;
-    }
-
-    public void setMesureVisuel(MesureVisuel mesureVisuel) {
-        this.mesureVisuel = mesureVisuel;
-    }
 }

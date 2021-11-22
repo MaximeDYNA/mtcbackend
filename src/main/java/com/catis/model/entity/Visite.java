@@ -81,7 +81,7 @@ public class Visite extends JournalData {
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255) default 'PENDING'")
     private TestResult ripage;

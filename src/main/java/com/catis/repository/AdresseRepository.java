@@ -4,7 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Adresse;
 
-public interface AdresseRepository extends CrudRepository<Adresse, Long> {
+import java.util.UUID;
+
+public interface AdresseRepository extends CrudRepository<Adresse, UUID> {
 
 
 }

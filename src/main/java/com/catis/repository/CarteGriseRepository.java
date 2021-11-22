@@ -2,6 +2,7 @@ package com.catis.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.catis.model.entity.CarteGrise;
 import org.springframework.data.repository.query.Param;
 
-public interface CarteGriseRepository extends CrudRepository<CarteGrise, Long> {
+public interface CarteGriseRepository extends CrudRepository<CarteGrise, UUID> {
 
     List<CarteGrise> findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(String immatriculation, String Chassis);
 
@@ -33,7 +34,7 @@ public interface CarteGriseRepository extends CrudRepository<CarteGrise, Long> {
             "and con.status = 'VALIDATED' " +
             "and con.validityAt >= current_date " +
             "and c.numImmatriculation = ?1 " +
-            "order by con.id desc")
+            "order by con.createdDate desc")
     Optional<CarteGrise> findCGWithOrderedValidControl(String immatriculation);
 
     List<CarteGrise> findByActiveStatusTrue();

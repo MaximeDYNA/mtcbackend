@@ -2,6 +2,7 @@ package com.catis.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.model.control.Control;
 import com.catis.model.entity.Produit;
@@ -16,16 +17,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VisiteRepository extends CrudRepository<Visite, Long> {
+public interface VisiteRepository extends CrudRepository<Visite, UUID> {
 
 
-    List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, Long id);
+    List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, UUID id);
 
-    List<Visite> findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, Long id);
+    List<Visite> findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, UUID id);
 
     List<Visite> findByContreVisiteFalse();
 
-    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrue(Long id);
+    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrue(UUID id);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteTrue();
 
@@ -41,11 +42,11 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
             "and v.encours = true " +
             "and v.activeStatus = true " +
             "order by v.createdDate desc ")
-    List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable);
+    List<Visite> getOrganisationVisiteWithTest(UUID orgId, Pageable pageable);
 
-    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(Long orgId, Pageable pageable);
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(UUID orgId, Pageable pageable);
 
-    Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId, Pageable pageable);
+    Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId, Pageable pageable);
 
     @Query("select v from Visite v where " +
             "(?1 is null " +
@@ -54,32 +55,32 @@ public interface VisiteRepository extends CrudRepository<Visite, Long> {
             "and v.organisation.organisationId = ?2 " +
             "and v.activeStatus = true " +
             "and v.encours = true")
-    List<Visite> findByRef(String name, Long organisationId, Pageable pageable);
+    List<Visite> findByRef(String name, UUID organisationId, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(String imma, String chassis, String caissier, String proprietaire, String organisation, Pageable pageable);
 
-    List<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
-    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+    List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
-    List<Visite> findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+    List<Visite> findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
-    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(Long orgId);
+    List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
-    List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, Long orgId, Sort sort);
+    List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Sort sort);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteFalse();
 
     @Query(value = "select v from Visite v join fetch v.rapportDeVisites r "
             + "join fetch r.seuil s join fetch s.formule f join fetch f.mesures m "
             + "join fetch r.gieglanFile g where v.control = ?1 and v <> ?2 and g.isAccept = true "
-            + "and g.status = 'VALIDATED' order by v.idVisite desc")
+            + "and g.status = 'VALIDATED' order by v.createdDate desc")
     List<Visite> getLastVisiteWithTestIsOk(Control control, Visite visite);
 
     @Query(value = "select v from Visite v join fetch v.inspection i "
             + "join fetch i.gieglanFiles f where v.control = ?1  and v <> ?2 "
             + "and f.isAccept = 0 and f.type = 'MEASURE' and f.status = 'VALIDATED' "
-            + "order by v.idVisite desc"
+            + "order by v.createdDate desc"
     )
     List<Visite> getBeforeLastVisite(Control control, Visite visite, Pageable pageable);
 

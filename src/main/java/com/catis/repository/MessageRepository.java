@@ -3,6 +3,8 @@ package com.catis.repository;
 import com.catis.model.entity.Message;
 import org.springframework.data.repository.CrudRepository;
 
-public interface MessageRepository extends CrudRepository<Message, Long> {
+import java.util.UUID;
+
+public interface MessageRepository extends CrudRepository<Message, UUID> {
     Message findByCode(String code);
 }
