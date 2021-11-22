@@ -2,6 +2,7 @@ package com.catis.objectTemporaire;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class UserDTO {
     private String id;
@@ -11,7 +12,7 @@ public class UserDTO {
     private String email;
     private String adresse;
     private String tel;
-    private String organisanionId;
+    private UUID organisanionId;
     private Set<String> roles;
 
 
@@ -21,7 +22,7 @@ public class UserDTO {
     }
 
 
-    public UserDTO(String nom, String prenom, String email, String adresse, String tel, String organisanionId,
+    public UserDTO(String nom, String prenom, String email, String adresse, String tel, UUID organisanionId,
                    Set<String> roles) {
         super();
         this.nom = nom;
@@ -111,7 +112,7 @@ public class UserDTO {
         return id;
     }
 
-    public String getOrganisanionId() {
+    public UUID getOrganisanionId() {
         return organisanionId;
     }
 

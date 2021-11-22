@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
@@ -72,7 +73,7 @@ public class EncaissementController {
     @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
     public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
-        Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
+        UUID orgId = UserInfoIn.getUserInfo(request).getOrganisanionId();
         String user = UserInfoIn.getUserInfo(request).getLogin();
 
         Caissier caissier = caissierService.findBylogin(user);
