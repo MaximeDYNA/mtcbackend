@@ -28,6 +28,7 @@ import com.catis.repository.*;
 import com.catis.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lowagie.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -375,7 +376,7 @@ public class VisiteController {
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public String printPV(@PathVariable Long visiteId) throws ImpressionException, IOException {
+    public String printPV(@PathVariable Long visiteId) throws ImpressionException, IOException, DocumentException {
 
         log.info("Impression PV");
 
@@ -388,7 +389,7 @@ public class VisiteController {
 
 
         OutputStream outputStream =  new FileOutputStream(outputFolder);
-        try {
+
 
             createWatermark(visiteService.findById(visiteId).getProcess().getReference());
 
@@ -399,12 +400,12 @@ public class VisiteController {
             renderer.createPDF(outputStream);
             log.info("PDF successfully created! We thank you.");
 
-        }catch (Exception e){
+        /*try {}catch (Exception e){
             log.info("Error occurred during pdf printing");
             log.error(e.getMessage());
         }finally {
             outputStream.close();
-        }
+        }*/
 
 
             Visite visite = visiteService.findById(visiteId);
