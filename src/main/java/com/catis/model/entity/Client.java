@@ -2,9 +2,15 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,11 +23,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_client SET active_status=false WHERE client_id=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Client extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clientId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID clientId;
     private String description;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
@@ -33,55 +46,6 @@ public class Client extends JournalData {
     @JsonIgnore
     Set<Vente> ventes;
 
-    public Client() {
-    }
-
-    public Client(String description, Partenaire partenaire, Set<Lexique> lexiques, Set<Vente> ventes) {
-        this.description = description;
-        this.partenaire = partenaire;
-        this.lexiques = lexiques;
-        this.ventes = ventes;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public Partenaire getPartenaire() {
-        return partenaire;
-    }
-
-    public void setPartenaire(Partenaire partenaire) {
-        this.partenaire = partenaire;
-    }
-
-    public Set<Vente> getVentes() {
-        return ventes;
-    }
-
-    public void setVentes(Set<Vente> ventes) {
-        this.ventes = ventes;
-    }
-
-    public Set<Lexique> getLexiques() {
-        return lexiques;
-    }
-
-    public void setLexiques(Set<Lexique> lexiques) {
-        this.lexiques = lexiques;
-    }
 
     @Override
     public boolean equals(Object o) {

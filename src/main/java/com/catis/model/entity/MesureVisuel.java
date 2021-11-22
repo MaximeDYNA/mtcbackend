@@ -5,18 +5,32 @@ import javax.persistence.*;
 import com.catis.model.configuration.JournalData;
 import com.catis.model.control.GieglanFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "t_mesurevisuel")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class MesureVisuel extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idMesureVisuel;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idMesureVisuel;
 
     private String heureDebut;
     private String heureFin;
@@ -41,112 +55,6 @@ public class MesureVisuel extends JournalData {
     @JsonIgnore
     private GieglanFile gieglanFile;
 
-    public MesureVisuel(Long idMesureVisuel, String heureDebut, String heureFin, String dateControl, String plateNumber,
-            String image1, String image2, String gps, String signature1,
-            String signature2, GieglanFile gieglanFile) {
-        this.idMesureVisuel = idMesureVisuel;
-        this.heureDebut = heureDebut;
-        this.heureFin = heureFin;
-        this.dateControl = dateControl;
-        this.plateNumber = plateNumber;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.gps = gps;
-        this.signature1 = signature1;
-        this.signature2 = signature2;
-        this.gieglanFile = gieglanFile;
-    }
-
-    public MesureVisuel() {
-    }
-
-    public Long getIdMesureVisuel() {
-        return idMesureVisuel;
-    }
-
-    public void setIdMesureVisuel(Long idMesureVisuel) {
-        this.idMesureVisuel = idMesureVisuel;
-    }
-
-    public String getHeureDebut() {
-        return heureDebut;
-    }
-
-    public void setHeureDebut(String heureDebut) {
-        this.heureDebut = heureDebut;
-    }
-
-    public String getHeureFin() {
-        return heureFin;
-    }
-
-    public void setHeureFin(String heureFin) {
-        this.heureFin = heureFin;
-    }
-
-    public String getDateControl() {
-        return dateControl;
-    }
-
-    public void setDateControl(String dateControl) {
-        this.dateControl = dateControl;
-    }
-
-    public String getPlateNumber() {
-        return plateNumber;
-    }
-
-    public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
-    }
-
-    public String getImage1() {
-        return image1;
-    }
-
-    public void setImage1(String image1) {
-        this.image1 = image1;
-    }
-
-    public String getImage2() {
-        return image2;
-    }
-
-    public void setImage2(String image2) {
-        this.image2 = image2;
-    }
-
-    public String getGps() {
-        return gps;
-    }
-
-    public void setGps(String gps) {
-        this.gps = gps;
-    }
-
-    public String getSignature1() {
-        return signature1;
-    }
-
-    public void setSignature1(String signature1) {
-        this.signature1 = signature1;
-    }
-
-    public String getSignature2() {
-        return signature2;
-    }
-
-    public void setSignature2(String signature2) {
-        this.signature2 = signature2;
-    }
-
-    public GieglanFile getGieglanFile() {
-        return gieglanFile;
-    }
-
-    public void setGieglanFile(GieglanFile gieglanFile) {
-        this.gieglanFile = gieglanFile;
-    }
 
     @Override
     public String toString() {

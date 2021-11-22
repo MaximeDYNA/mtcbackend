@@ -2,15 +2,15 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,11 +20,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class VerbalProcess extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String reference;
 
@@ -39,11 +46,6 @@ public class VerbalProcess extends JournalData {
     @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
-    public VerbalProcess() {
-
-        // TODO Auto-generated constructor stub
-    }
-
 
     public boolean isStatus() {
         return status;
@@ -55,16 +57,6 @@ public class VerbalProcess extends JournalData {
     }
 
 
-    public VerbalProcess(Long id, String reference, String signature, boolean status, Visite visite,
-                         Set<RapportDeVisite> rapportDeVisites) {
-        super();
-        this.id = id;
-        this.reference = reference;
-        this.signature = signature;
-        this.status = status;
-        this.visite = visite;
-        this.rapportDeVisites = rapportDeVisites;
-    }
 
 
     public Set<RapportDeVisite> getRapportDeVisites() {
@@ -77,37 +69,6 @@ public class VerbalProcess extends JournalData {
     }
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public Visite getVisite() {
-        return visite;
-    }
-
-    public void setVisite(Visite visite) {
-        this.visite = visite;
-    }
 
     @Override
     public boolean equals(Object o) {

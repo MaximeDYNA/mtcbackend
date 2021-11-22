@@ -2,17 +2,16 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.catis.model.control.GieglanFile;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,11 +22,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorietest")
 @Audited
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class CategorieTest extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCategorieTest;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idCategorieTest;
 
     private String libelle;
 
@@ -47,78 +53,7 @@ public class CategorieTest extends JournalData {
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles;
 
-    public Long getIdCategorieTest() {
-        return idCategorieTest;
-    }
 
-    public void setIdCategorieTest(Long idCategorieTest) {
-        this.idCategorieTest = idCategorieTest;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<CategorieTestMachine> getCategorieTestMachines() {
-        return categorieTestMachines;
-    }
-
-    public void setCategorieTestMachines(Set<CategorieTestMachine> categorieTestMachines) {
-        this.categorieTestMachines = categorieTestMachines;
-    }
-
-    public Set<CategorieTestProduit> getCategorieTestVehicules() {
-        return categorieTestVehicules;
-    }
-
-    public void setCategorieTestVehicules(Set<CategorieTestProduit> categorieTestVehicules) {
-        this.categorieTestVehicules = categorieTestVehicules;
-    }
-
-
-    public Set<GieglanFile> getGieglanFiles() {
-        return gieglanFiles;
-    }
-
-    public void setGieglanFiles(Set<GieglanFile> gieglanFiles) {
-        this.gieglanFiles = gieglanFiles;
-    }
-
-    public CategorieTest(Long idCategorieTest, String libelle, String description,
-                         Set<CategorieTestMachine> categorieTestMachines, Set<CategorieTestProduit> categorieTestVehicules,
-                         Set<GieglanFile> gieglanFiles) {
-        super();
-        this.idCategorieTest = idCategorieTest;
-        this.libelle = libelle;
-        this.description = description;
-        this.categorieTestMachines = categorieTestMachines;
-        this.categorieTestVehicules = categorieTestVehicules;
-        this.gieglanFiles = gieglanFiles;
-    }
-
-    public CategorieTest() {
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public boolean equals(Object o) {

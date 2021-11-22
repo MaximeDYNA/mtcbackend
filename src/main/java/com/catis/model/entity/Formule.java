@@ -1,16 +1,16 @@
 package com.catis.model.entity;
 
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,11 +19,18 @@ import com.catis.model.configuration.JournalData;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Formule extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String description;
 
@@ -35,47 +42,5 @@ public class Formule extends JournalData {
     @JsonIgnore
     private Set<Seuil> seuils;
 
-    public Formule() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public Formule(Long id, String description, Set<Mesure> mesures, Set<Seuil> seuils) {
-        this.id = id;
-        this.description = description;
-        this.mesures = mesures;
-        this.seuils = seuils;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Mesure> getMesures() {
-        return mesures;
-    }
-
-    public void setMesures(Set<Mesure> mesures) {
-        this.mesures = mesures;
-    }
-
-    public Set<Seuil> getSeuils() {
-        return seuils;
-    }
-
-    public void setSeuils(Set<Seuil> seuils) {
-        this.seuils = seuils;
-    }
 
 }

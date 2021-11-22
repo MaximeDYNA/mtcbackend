@@ -3,10 +3,16 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,10 +24,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_vente")
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Setter @Getter
 public class Vente extends JournalData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVente;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idVente;
     private double montantTotal;
     private double montantHT;
     private int statut;
@@ -48,12 +61,7 @@ public class Vente extends JournalData {
 
     private String numFacture;
 
-    public Vente() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Vente(Long idVente, double montantTotal, double montantHT, Client client, Vendeur vendeur,
+    public Vente(UUID idVente, double montantTotal, double montantHT, Client client, Vendeur vendeur,
                  @NotEmpty @NotNull Contact contact, SessionCaisse sessionCaisse, Set<OperationCaisse> operationCaisse,
                  Set<DetailVente> detailventes, String numFacture) {
 
@@ -69,105 +77,6 @@ public class Vente extends JournalData {
         this.numFacture = numFacture;
     }
 
-    public Set<OperationCaisse> getOperationCaisse() {
-        return operationCaisse;
-    }
-
-    public void setOperationCaisse(Set<OperationCaisse> operationCaisse) {
-        this.operationCaisse = operationCaisse;
-    }
-
-    public Long getIdVente() {
-        return idVente;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public void setIdVente(long idVente) {
-        this.idVente = idVente;
-    }
-
-    public double getMontantTotal() {
-        return montantTotal;
-    }
-
-    public void setMontantTotal(double montantTotal) {
-        this.montantTotal = montantTotal;
-    }
-
-    public Set<DetailVente> getDetailventes() {
-        return detailventes;
-    }
-
-    public void setDetailventes(Set<DetailVente> detailventes) {
-        this.detailventes = detailventes;
-    }
-
-    public Vendeur getVendeur() {
-        return vendeur;
-    }
-
-    public void setVendeur(Vendeur vendeur) {
-        this.vendeur = vendeur;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public SessionCaisse getSessionCaisse() {
-        return sessionCaisse;
-    }
-
-    public void setSessionCaisse(SessionCaisse sessionCaisse) {
-        this.sessionCaisse = sessionCaisse;
-    }
-
-    public String getNumFacture() {
-        return numFacture;
-    }
-
-    public void setNumFacture(String numFacture) {
-        this.numFacture = numFacture;
-    }
-
-    public void setIdVente(Long idVente) {
-        this.idVente = idVente;
-    }
-
-    public double getMontantHT() {
-        return montantHT;
-    }
-
-    public void setMontantHT(double montantHT) {
-        this.montantHT = montantHT;
-    }
-
-    public Visite getVisite() {
-        return visite;
-    }
-
-    public void setVisite(Visite visite) {
-        this.visite = visite;
-    }
-
-    public int getStatut() {
-        return statut;
-    }
-
-    public void setStatut(int statut) {
-        this.statut = statut;
-    }
 
     public String getLibelleStatut() {
         if (this.statut == 0)

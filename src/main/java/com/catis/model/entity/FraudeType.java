@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -25,8 +27,13 @@ import java.util.Set;
 @SQLDelete(sql = "UPDATE t_fraude_type SET active_status=false WHERE id=?")
 public class FraudeType extends JournalData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String code;
     private String fraude;
     private String description;
