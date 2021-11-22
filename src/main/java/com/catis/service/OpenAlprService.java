@@ -61,14 +61,14 @@ public class OpenAlprService {
                     )
                     .bodyToMono(OpenAlprResponseDTO[].class);
             OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
-            System.out.println(" if you are reading this getPresenceConfidence return that "+ToStringBuilder.reflectionToString(calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS)));
+            //System.out.println(" if you are reading this getPresenceConfidence return that "+ToStringBuilder.reflectionToString(calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS)));
 
             return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
 
         }catch (Exception o){
             o.printStackTrace();
-            System.out.println(" if you are reading this getPresenceConfidence return this "+ToStringBuilder.reflectionToString(new BestPlate(o.getMessage(),0)));
-            return new BestPlate(o.getMessage(),0);
+            //System.out.println(" if you are reading this getPresenceConfidence return this "+ToStringBuilder.reflectionToString(new BestPlate(o.getMessage(),0)));
+            return new BestPlate("ERROR",0);
         }
 
 
