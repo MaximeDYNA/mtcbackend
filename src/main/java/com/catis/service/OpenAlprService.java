@@ -38,7 +38,6 @@ public class OpenAlprService {
         cal.setTime(addHoursToJavaUtilDate(inspection.getDateFin(),1));
         //cal.add(Calendar.HOUR, -1);
         Date oneHourBack = cal.getTime();
-        String errorReason = "";
 
         SimpleDateFormat sdf;
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -62,11 +61,13 @@ public class OpenAlprService {
                     )
                     .bodyToMono(OpenAlprResponseDTO[].class);
             OpenAlprResponseDTO[] openAlprResponseDTOS = response.block();
-            return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
+            System.out.println(" if you are reading this getPresenceConfidence return that "+ToStringBuilder.reflectionToString(calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS)));
 
+            return calculateMatchingPercentage(inspection.getVisite().getCarteGrise().getNumImmatriculation(), openAlprResponseDTOS);
 
         }catch (Exception o){
             o.printStackTrace();
+            System.out.println(" if you are reading this getPresenceConfidence return this "+ToStringBuilder.reflectionToString(new BestPlate(o.getMessage(),0)));
             return new BestPlate(o.getMessage(),0);
         }
 
