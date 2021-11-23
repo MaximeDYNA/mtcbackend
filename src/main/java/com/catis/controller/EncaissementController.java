@@ -74,7 +74,7 @@ public class EncaissementController {
     public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
         Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
         String user = UserInfoIn.getUserInfo(request).getLogin();
-
+    try {
         Caissier caissier = caissierService.findBylogin(user);
         if(caissier==null)
             throw new VisiteEnCoursException("Please enter a correct login");
@@ -198,10 +198,10 @@ public class EncaissementController {
 
             Message msg = msgRepo.findByCode("EN001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-           /*      try { } catch (Exception e) {
+         } catch (Exception e) {
             Message msg = msgRepo.findByCode("EN002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-        }*/
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e);
+        }
 
 
     }
