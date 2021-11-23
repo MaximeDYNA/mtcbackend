@@ -131,9 +131,15 @@ public class CarteGriseController {
 
         if(carteGriseR.getVehiculeId() == null){
             vehicule = new Vehicule(carteGriseR);
-            vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+            if(carteGriseR.getEnergieId()==null)
+                vehicule.setEnergie(null);
+            else
+                vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
             vehicule.setScore(100);
-            vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
+            if(carteGriseR.getMarqueVehiculeId()==null)
+                vehicule.setMarqueVehicule(null);
+            else
+                vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
         }
         else
             vehicule = vehiculeService.findById(carteGriseR.getVehiculeId());
