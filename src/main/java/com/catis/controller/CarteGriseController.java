@@ -124,7 +124,7 @@ public class CarteGriseController {
     @PostMapping("/api/v1/cg/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
-
+        try {
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
         Vehicule vehicule;
         //initialise le vehicule avec les éléments reçus par la vue
@@ -161,10 +161,10 @@ public class CarteGriseController {
         //carteGrise = cgs.updateCarteGrise(carteGrise);
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", visite.getCarteGrise() );
-			/*try {} 
+        }
 		catch(Exception e){
-			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD +"Carte grise", null );
-		}*/
+			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, e.getMessage(), null );
+		}
     }
     @GetMapping("/api/v1/cartegrise/listview")
     public ResponseEntity<Object> carteGriseListView() {
