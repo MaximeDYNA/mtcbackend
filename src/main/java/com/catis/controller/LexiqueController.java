@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.catis.objectTemporaire.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,6 +119,8 @@ public class LexiqueController {
     public ResponseEntity<Object> readLexiques(@RequestBody LexiqueAndCategorieDTO lexiqueAndCategorieDTO) {
 
         System.out.println("***********The server has received request from android tablet**********");
+        System.out.println("this is payload *"+ ToStringBuilder.reflectionToString(lexiqueAndCategorieDTO));
+        System.out.println("************************************************************************");
         LexiqueChildDTO lexiqueChildDTO;
         List<LexiqueDTO> parents = new ArrayList<>();
 
