@@ -34,6 +34,7 @@ public class NewListView {
     private double accurance;
     private String date;
     private boolean newCss=false;
+    private String document;
 
     public NewListView(UUID id, Produit categorie, String type, String reference, String chassis, String client, String createdAt, LocalDateTime createdDate, String statut, int statutVisite, UUID idVisite, boolean contreVisite, UUID inspection, CarteGrise carteGrise, boolean conformityTest, int isConform, String organisation, String bestPlate, double accurance, String date) {
         this.id = id;
@@ -62,7 +63,7 @@ public class NewListView {
                        String chassis, String client, String createdAt, LocalDateTime createdDate,
                        String statut, int statutVisite, UUID idVisite, boolean contreVisite,
                        UUID inspection, CarteGrise carteGrise, boolean conformityTest, int isConform,
-                       String organisation, String bestPlate, double accurance, String date, boolean newCss) {
+                       String organisation, String bestPlate, double accurance, String date, boolean newCss, String document) {
         this.id = id;
         this.categorie = categorie;
         this.type = type;
@@ -84,5 +85,6 @@ public class NewListView {
         this.accurance = accurance;
         this.date = date;
         this.newCss = newCss;
+        this.document = document;
     }
 }

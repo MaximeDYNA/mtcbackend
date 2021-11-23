@@ -1,9 +1,6 @@
 package com.catis.service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +36,7 @@ public class CarteGriseService {
         return c;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         cgr.deleteById(id);
     }
 
@@ -53,7 +50,7 @@ public class CarteGriseService {
         return carteGrises;
     }
 
-    public CarteGrise findCarteGriseById(Long carteGriseId) {
+    public CarteGrise findCarteGriseById(UUID carteGriseId) {
         return cgr.findById(carteGriseId).get();
     }
 
@@ -87,7 +84,7 @@ public class CarteGriseService {
         return reponse;
     }
 
-    public List<CarteGrise> findByLigne(Long idLigne) {
+    public List<CarteGrise> findByLigne(UUID idLigne) {
         List<CarteGrise> cgs = new ArrayList<>();
         for (Inspection inspection : inpectionR.inspectionbyligneAndVisibleToTabTrue(2, idLigne)) {
 

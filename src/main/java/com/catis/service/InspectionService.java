@@ -53,7 +53,7 @@ public class InspectionService {
         return inspection;
     }
 
-    public Inspection setSignature(Long id, String signature, Controleur controleur) throws IOException {
+    public Inspection setSignature(UUID id, String signature, Controleur controleur) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);
         Inspection inspection = findInspectionByVisite(id);

@@ -82,6 +82,21 @@ public class Inspection extends JournalData {
      * @ManyToMany(mappedBy = "inspections") private Set<Lexique> lexiques;
      */
 
+    public Inspection(InpectionReceived i) {
+
+        this.idInspection = i.getIdInspection();
+        this.dateDebut = i.getDateDebut();
+        this.dateFin = i.getDateFin();
+        this.signature = i.getSignature();
+        this.kilometrage = i.getKilometrage();
+        this.chassis = i.getChassis();
+        this.essieux = i.getEssieux();
+        this.position = i.getPosition();
+    }
+    public void addLexique(Lexique lexique) {
+        this.lexiques.add(lexique);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

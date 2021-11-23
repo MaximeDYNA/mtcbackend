@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class CaissierDTO {
 
-    private Long caissierId;
+    private UUID caissierId;
     private String nom;
     private String prenom;
     private Date dateNaiss;
@@ -26,7 +27,7 @@ public class CaissierDTO {
     private String telephone;
     private String email;
     private Organisation organisation;
-    private Long caisse;
+    private UUID caisse;
     private Long user;
     private LocalDateTime createdDate;
 }

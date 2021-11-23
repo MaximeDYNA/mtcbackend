@@ -1,22 +1,23 @@
 package com.catis.objectTemporaire;
 
 import java.util.Date;
+import java.util.UUID;
 
 
 public class InpectionReceived {
 
-    private Long idInspection;
+    private UUID idInspection;
     private Date dateDebut;
     private Date dateFin;
     private String signature; // chemin image signature du controleur
-    private Long produitId;
+    private UUID produitId;
     private double kilometrage;
     private String chassis;
     private int essieux;
     private String position;
     private String controleurId;
-    private Long ligneId;
-    private Long visiteId;
+    private UUID ligneId;
+    private UUID visiteId;
 
 
     public InpectionReceived() {
@@ -25,9 +26,9 @@ public class InpectionReceived {
     }
 
 
-    public InpectionReceived(Long idInspection, Date dateDebut, Date dateFin, String signature, Long produitId,
-                             double kilometrage, String chassis, int essieux, String position, String controleurId, Long ligneId,
-                             Long visiteId) {
+    public InpectionReceived(UUID idInspection, Date dateDebut, Date dateFin, String signature, UUID produitId,
+                             double kilometrage, String chassis, int essieux, String position, String controleurId, UUID ligneId,
+                             UUID visiteId) {
         super();
         this.idInspection = idInspection;
         this.dateDebut = dateDebut;
@@ -44,12 +45,12 @@ public class InpectionReceived {
     }
 
 
-    public Long getIdInspection() {
+    public UUID getIdInspection() {
         return idInspection;
     }
 
 
-    public void setIdInspection(Long idInspection) {
+    public void setIdInspection(UUID idInspection) {
         this.idInspection = idInspection;
     }
 
@@ -84,12 +85,12 @@ public class InpectionReceived {
     }
 
 
-    public Long getProduitId() {
+    public UUID getProduitId() {
         return produitId;
     }
 
 
-    public void setProduitId(Long produitId) {
+    public void setProduitId(UUID produitId) {
         this.produitId = produitId;
     }
 
@@ -144,22 +145,22 @@ public class InpectionReceived {
     }
 
 
-    public Long getLigneId() {
+    public UUID getLigneId() {
         return ligneId;
     }
 
 
-    public void setLigneId(Long ligneId) {
+    public void setLigneId(UUID ligneId) {
         this.ligneId = ligneId;
     }
 
 
-    public Long getVisiteId() {
+    public UUID getVisiteId() {
         return visiteId;
     }
 
 
-    public void setVisiteId(Long visiteId) {
+    public void setVisiteId(UUID visiteId) {
         this.visiteId = visiteId;
     }
 

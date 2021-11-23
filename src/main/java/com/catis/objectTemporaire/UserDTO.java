@@ -116,7 +116,7 @@ public class UserDTO {
         return organisanionId;
     }
 
-    public void setOrganisanionId(String organisanionId) {
+    public void setOrganisanionId(UUID organisanionId) {
         this.organisanionId = organisanionId;
     }
 

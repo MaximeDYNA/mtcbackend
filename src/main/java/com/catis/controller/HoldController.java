@@ -3,6 +3,7 @@ package com.catis.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import com.catis.model.entity.Message;
 import com.catis.model.entity.SessionCaisse;
@@ -43,7 +44,7 @@ public class HoldController {
     private static Logger LOGGER = LoggerFactory.getLogger(HoldController.class);
 
     @RequestMapping(value = "/api/v1/caisse/newhold/{sessionCaisseId}")
-    public ResponseEntity<Object> ajouterOnglet(@PathVariable Long sessionCaisseId) throws ParseException {
+    public ResponseEntity<Object> ajouterOnglet(@PathVariable UUID sessionCaisseId) throws ParseException {
 
         try {
             LOGGER.trace("création onglet demandé...");
@@ -106,7 +107,7 @@ public class HoldController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/holdlist/{sessionCaisseId}")
-    public ResponseEntity<Object> sessionsHold(@PathVariable Long sessionCaisseId) {
+    public ResponseEntity<Object> sessionsHold(@PathVariable UUID sessionCaisseId) {
 
         try {
             LOGGER.trace("sélection des onglets d'une session ID...");

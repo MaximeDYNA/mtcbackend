@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import com.catis.model.entity.MarqueVehicule;
 import com.catis.service.MarqueService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -89,7 +86,7 @@ public class MarqueController {
     }
 
     @DeleteMapping("/api/v1/admin/marques/{id}")
-    public ResponseEntity<Object> addMarque(@PathVariable Long id) {
+    public ResponseEntity<Object> addMarque(@PathVariable UUID id) {
         LOGGER.trace("List des marques...");
             marqueService.deleteById(id);
         try {

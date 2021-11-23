@@ -5,7 +5,7 @@ import com.catis.model.entity.Partenaire;
 import java.util.UUID;
 
 public class ClientPartenaire {
-    private long clientId;
+    private UUID clientId;
     private UUID contactId;
     ;
     private UUID vendeurId;
@@ -22,7 +22,7 @@ public class ClientPartenaire {
     private Partenaire partenaire;
 
 
-    public ClientPartenaire(long clientId, UUID contactId, UUID vendeurId, String variants, String nom, String email,
+    public ClientPartenaire(UUID clientId, UUID contactId, UUID vendeurId, String variants, String nom, String email,
                             String prenom, String dateNaiss, String lieuDeNaiss, String passport, String permiDeConduire, String cni,
                             String telephone, Partenaire partenaire) {
         super();
@@ -47,11 +47,11 @@ public class ClientPartenaire {
         // TODO Auto-generated constructor stub
     }
 
-    public long getClientId() {
+    public UUID getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(UUID clientId) {
         this.clientId = clientId;
     }
 
@@ -147,7 +147,7 @@ public class ClientPartenaire {
         return vendeurId;
     }
 
-    public void setVendeurId(long vendeurId) {
+    public void setVendeurId(UUID vendeurId) {
         this.vendeurId = vendeurId;
     }
 

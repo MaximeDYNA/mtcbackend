@@ -1,10 +1,7 @@
 package com.catis.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.catis.objectTemporaire.CarteGrisePOJO;
 import com.catis.service.*;
@@ -247,7 +244,7 @@ public class CarteGriseController {
         }*/
     }
     @DeleteMapping("/api/v1/admin/cartegrises/{id}")
-    public ResponseEntity<Object> energie(@PathVariable Long id) {
+    public ResponseEntity<Object> energie(@PathVariable UUID id) {
         try {
             cgs.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"

@@ -83,7 +83,7 @@ public class CaissierController {
 
         for(Caissier c : caissiers){
             CaissierDTO caissierDTO = new CaissierDTO();
-            caissierDTO.setCaisse(c.getCaisse()==null?null:c.getCaisse().getCaisse_id());
+            caissierDTO.setCaisse(c.getCaisse()==null?null:c.getCaisse().getCaisseId());
             caissierDTO.setCaissierId(c.getCaissierId());
             caissierDTO.setCni(c.getPartenaire()==null ? null : c.getPartenaire().getCni());
             if(c.getPartenaire() != null){
@@ -110,7 +110,7 @@ public class CaissierController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             caissierService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

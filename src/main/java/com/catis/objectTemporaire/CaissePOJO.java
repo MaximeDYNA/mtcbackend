@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CaissePOJO {
-    private Long caisse_id;
+    private UUID caisse_id;
     private String libelle;
     private String description;
-    private Long organisation;
+    private UUID organisation;
 }

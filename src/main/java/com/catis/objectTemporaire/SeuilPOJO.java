@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SeuilPOJO {
 
-    private Long id;
+    private UUID id;
     private double value;
     private String operande;
     private String codeMessage;

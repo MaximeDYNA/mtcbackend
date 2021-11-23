@@ -14,5 +14,5 @@ import java.util.UUID;
 public class EnergiePOJO {
     private UUID energieId;
     private String libelle;
-    private Long organisationId;
+    private UUID organisationId;
 }

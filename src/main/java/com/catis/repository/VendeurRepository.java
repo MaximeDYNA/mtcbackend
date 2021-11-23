@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface VendeurRepository extends CrudRepository<Vendeur, UUID> {
 
-    Vendeur findByPartenaire_PartenaireId(long partenaireId);
+    Vendeur findByPartenaire_PartenaireId(UUID partenaireId);
 }

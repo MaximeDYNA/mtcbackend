@@ -81,7 +81,7 @@ public class ScoringController {
     }
 
     @DeleteMapping("/fraudes/{id}")
-    public ResponseEntity<Object> deleteFraude(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteFraude(@PathVariable UUID id) {
 
             fraudeTypeRepository.deleteById(id);
 
@@ -110,7 +110,7 @@ public class ScoringController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,true,"OK", catsSelect);
     }
     @DeleteMapping("/regles/{id}")
-    public ResponseEntity<Object> delRule(@PathVariable Long id){
+    public ResponseEntity<Object> delRule(@PathVariable UUID id){
 
             iftr.deleteById(id);
 
@@ -124,7 +124,7 @@ public class ScoringController {
         System.out.println("Received data "+ ToStringBuilder.reflectionToString(intervenant_fraudeType));
         Intervenant_fraudeType t = new Intervenant_fraudeType();
         Optional<FraudeType> ift = fraudeTypeRepository.findByCodeAndActiveStatusTrue(intervenant_fraudeType.getFraudeType().getName());
-        Optional<IntervenantFraude> ifr = intervenantFraudeRepository.findById(Long.valueOf(intervenant_fraudeType.getIntervenantFraude().getId()));
+        Optional<IntervenantFraude> ifr = intervenantFraudeRepository.findById(intervenant_fraudeType.getIntervenantFraude().getId());
         t.setFraudeType(ift.get());
         t.setAppreciation(Double.valueOf(intervenant_fraudeType.getAppreciation()));
         t.setDepreciation(Double.valueOf(intervenant_fraudeType.getDepreciation()));
@@ -143,7 +143,7 @@ public class ScoringController {
     }
 
     @DeleteMapping("/fraudes/intervenants/{id}")
-    public ResponseEntity<Object> delIntervenantFraud(@PathVariable Long id){
+    public ResponseEntity<Object> delIntervenantFraud(@PathVariable UUID id){
 
         iftr.deleteById(id);
 

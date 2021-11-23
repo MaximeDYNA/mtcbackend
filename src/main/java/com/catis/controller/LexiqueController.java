@@ -1,9 +1,6 @@
 package com.catis.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.catis.objectTemporaire.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +73,7 @@ public class LexiqueController {
                 lexiq.setHaschild(false);
             lexiq.setVersionLexique(vl);
             lexiq.setVisuel(Boolean.valueOf(l.getVisual()));
-            lexiq.setCategorieVehicule(categorieVehiculeService.findById(Long.valueOf(l.getCategoryId())));
+            lexiq.setCategorieVehicule(categorieVehiculeService.findById(l.getCategoryId()));
             lexiqueService.add(lexiq);
         }
         vl = versionLexiqueService.findById(vl.getId());
@@ -87,7 +84,7 @@ public class LexiqueController {
 
 
     @GetMapping(value = "/api/v1/admin/lexiques/{id}")
-    public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable Long id) {
+    public ResponseEntity<Object> getLexiquesForUpdate(@PathVariable UUID id) {
 
         LexiqueReceived lr = new LexiqueReceived();
         List<LexiquePOJO> list = new ArrayList<>();
@@ -100,8 +97,8 @@ public class LexiqueController {
             pojo.setParent(l.getParent() == null ? null : l.getParent().getCode());
             pojo.setVisual(l.getVisuel().toString());
             pojo.setHaschild(l.getHaschild().toString());
-            pojo.setCategoryId(l.getCategorieVehicule().getId().intValue());
-            List<Long> ids = new ArrayList<>();
+            pojo.setCategoryId(l.getCategorieVehicule().getId());
+            List<UUID> ids = new ArrayList<>();
             for (Client i : l.getClients()) {
                 ids.add(i.getClientId());
             }

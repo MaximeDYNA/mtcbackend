@@ -1,19 +1,21 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class CatProductForSelectDTO {
-    private Long Id;
+    private UUID Id;
     private String name;
 
-    public CatProductForSelectDTO(Long id, String name) {
+    public CatProductForSelectDTO(UUID id, String name) {
         Id = id;
         this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return Id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         Id = id;
     }
 

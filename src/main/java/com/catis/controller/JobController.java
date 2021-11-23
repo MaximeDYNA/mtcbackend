@@ -32,7 +32,7 @@ public class JobController {
     private ControleurService controleurService;
 
     @GetMapping(value = "/public/controleurs/{organisationId}")
-    public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable Long organisationId) {
+    public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable UUID organisationId) {
 
         List<Controleur> controleurs = controleurService.findAllByOrganisation(organisationId);
         List<ProprietaireDTO> ps = new ArrayList<>();

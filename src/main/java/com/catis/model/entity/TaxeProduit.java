@@ -36,4 +36,9 @@ public class TaxeProduit extends JournalData {
     private Produit produit;
 
 
+    public TaxeProduit(Taxe taxe, Produit produit) {
+
+        this.taxe = taxe;
+        this.produit = produit;
+    }
 }

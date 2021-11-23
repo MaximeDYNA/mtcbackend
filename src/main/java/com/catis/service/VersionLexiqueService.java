@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class VersionLexiqueService {
         return versionLexiqueRepo.save(v);
     }
 
-    public VersionLexique findById(Long id) {
+    public VersionLexique findById(UUID id) {
         return versionLexiqueRepo.findById(id).get();
     }
     public VersionLexique findByName(String name) {

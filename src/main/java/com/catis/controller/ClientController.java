@@ -2,11 +2,7 @@ package com.catis.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.catis.model.entity.CategorieProduit;
 import com.catis.model.entity.Organisation;
@@ -76,8 +72,7 @@ public class ClientController {
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
             UserDTO u = UserInfoIn.getUserInfo(request);
-            partenaire.setOrganisation(os.findByOrganisationId(Long.valueOf(u.getOrganisanionId())));
-            client.setPartenaire(partenaireService.addPartenaire(partenaire));
+            partenaire.setOrganisation(os.findByOrganisationId(u.getOrganisanionId()));
             client.setDescription(clientPartenaire.getVariants());
             clientService.addCustomer(client);
             LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
@@ -234,7 +229,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/api/v1/admin/clients/{id}")
-    public ResponseEntity<Object> getClients(@PathVariable Long id){
+    public ResponseEntity<Object> getClients(@PathVariable UUID id){
         try {
             clientService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

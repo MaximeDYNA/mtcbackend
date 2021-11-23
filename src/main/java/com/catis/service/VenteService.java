@@ -66,7 +66,7 @@ public class VenteService {
 
     }
 
-    public List<OpCaisseDTO> recapOp(Long caissierId, LocalDateTime start, LocalDateTime end) {
+    public List<OpCaisseDTO> recapOp(UUID caissierId, LocalDateTime start, LocalDateTime end) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         List<Vente> ventes = recap(caissierId, start, end);

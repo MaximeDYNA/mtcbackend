@@ -1,9 +1,6 @@
 package com.catis.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.catis.objectTemporaire.VehiculePOJO;
 import com.catis.service.EnergieService;
@@ -115,7 +112,7 @@ public class VehiculeController {
         }
     }
     @DeleteMapping("/api/v1/admin/vehicules/{id}")
-    public ResponseEntity<Object> vehiculeAdminList(@PathVariable Long id) {
+    public ResponseEntity<Object> vehiculeAdminList(@PathVariable UUID id) {
         try {
             vehiculeService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"

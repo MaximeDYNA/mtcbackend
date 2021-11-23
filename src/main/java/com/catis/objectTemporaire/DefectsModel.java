@@ -3,18 +3,20 @@ package com.catis.objectTemporaire;
 import com.catis.model.configuration.JournalData;
 import org.hibernate.envers.Audited;
 
+import java.util.UUID;
+
 
 public class DefectsModel {
 
-    public Long id;
+    public UUID id;
     public String subcategory;
     public String defect;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

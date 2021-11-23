@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AuditRepository extends CrudRepository<AuditRevisionEntity, UUID> {
+public interface AuditRepository extends CrudRepository<AuditRevisionEntity, Integer> {
 
-   Optional<AuditRevisionEntity> findById(UUID i);
+   Optional<AuditRevisionEntity> findById(Integer i);
 
 }

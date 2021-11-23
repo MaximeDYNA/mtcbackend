@@ -2,6 +2,7 @@ package com.catis.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class VersionController {
     }
 
     @GetMapping("/api/v1/admin/versionlists/{id}")
-    public ResponseEntity<Object> getVersion(@PathVariable Long id) {
+    public ResponseEntity<Object> getVersion(@PathVariable UUID id) {
 
         VersionLexiqueDTO versionLexiqueDTO = new VersionLexiqueDTO();
         VersionLexique dto = vls.findById(id);

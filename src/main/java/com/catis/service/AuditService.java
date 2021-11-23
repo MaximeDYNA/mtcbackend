@@ -56,7 +56,7 @@ public class AuditService {
         }
 
     }
-    public AuditRevisionEntity findById(UUID id){
+    public AuditRevisionEntity findById(Integer id){
         Optional<AuditRevisionEntity> are = at.findById(id);
         if(are.isPresent())
             return are.get();

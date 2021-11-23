@@ -1,24 +1,26 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class SignatureDTO {
 
-    private Long visiteId;
+    private UUID visiteId;
     private String imageValue;
 
     public SignatureDTO() {
     }
 
-    public SignatureDTO(Long visiteId, String imageValue) {
+    public SignatureDTO(UUID visiteId, String imageValue) {
         super();
         this.visiteId = visiteId;
         this.imageValue = imageValue;
     }
 
-    public Long getVisiteId() {
+    public UUID getVisiteId() {
         return visiteId;
     }
 
-    public void setVisiteId(Long visiteId) {
+    public void setVisiteId(UUID visiteId) {
         this.visiteId = visiteId;
     }
 

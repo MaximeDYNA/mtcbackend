@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.catis.model.entity.CategorieVehicule;
 import com.catis.repository.CategorieVehiculeRepo;
 
+import java.util.UUID;
+
 @Service
 public class CategorieVehiculeService {
 
@@ -17,7 +19,7 @@ public class CategorieVehiculeService {
         return categorieVehiculeRepo.findByType(type);
     }
 
-    public CategorieVehicule findById(Long id) {
+    public CategorieVehicule findById(UUID id) {
         return categorieVehiculeRepo.findById(id).get();
     }
 }

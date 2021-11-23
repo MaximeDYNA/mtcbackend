@@ -3,6 +3,7 @@ package com.catis.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,7 +88,7 @@ public class UserInfo {
             user.setEmail(accessToken.getEmail());
             Access realmAccess = accessToken.getRealmAccess();
             user.setRoles(realmAccess.getRoles());
-            user.setOrganisanionId(accessToken.getOtherClaims().get("organisationId").toString());
+            user.setOrganisanionId(UUID.fromString(accessToken.getOtherClaims().get("organisationId").toString()));
         }
         return  user;
     }

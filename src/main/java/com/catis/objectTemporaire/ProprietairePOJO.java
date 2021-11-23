@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProprietairePOJO {
 
-    private Long proprietaireVehiculeId;
+    private UUID proprietaireVehiculeId;
     private UUID idControleur;
     private String nom;
     private String prenom;

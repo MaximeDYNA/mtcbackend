@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,11 @@ public class VendeurService {
         return vendeurs;
     }
 
-    public Vendeur findVendeurById(Long id) {
+    public Vendeur findVendeurById(UUID id) {
         return vendeurRepository.findById(id).get();
     }
 
-    public Vendeur findVendeurByPartenaireId(long PartenaireId) {
+    public Vendeur findVendeurByPartenaireId(UUID PartenaireId) {
         return vendeurRepository.findByPartenaire_PartenaireId(PartenaireId);
     }
 

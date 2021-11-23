@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class CategorieProduitService {
         return categoProduitRepository.save(cp);
     }
 
-    public void deleteCategorieProduit(Long id) {
+    public void deleteCategorieProduit(UUID id) {
         categoProduitRepository.deleteById(id);
     }
 
@@ -42,7 +43,7 @@ public class CategorieProduitService {
 
     }
 
-    public CategorieProduit findById(Long id) {
+    public CategorieProduit findById(UUID id) {
         return categoProduitRepository.findById(id).get();
 
     }

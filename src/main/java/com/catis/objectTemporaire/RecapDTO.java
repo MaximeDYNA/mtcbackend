@@ -1,26 +1,28 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class RecapDTO {
 
-    private Long caissierId;
+    private UUID caissierId;
     private String dateDebut;
     private String dateFin;
 
     public RecapDTO() {
     }
 
-    public RecapDTO(Long caissierId, String dateDebut, String dateFin) {
+    public RecapDTO(UUID caissierId, String dateDebut, String dateFin) {
         super();
         this.caissierId = caissierId;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
     }
 
-    public Long getCaissierId() {
+    public UUID getCaissierId() {
         return caissierId;
     }
 
-    public void setCaissierId(Long caissierId) {
+    public void setCaissierId(UUID caissierId) {
         this.caissierId = caissierId;
     }
 

@@ -164,11 +164,11 @@ public class VisiteController {
                     Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                     getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
                     visite.getInspection() == null
-                            ? 0 : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            ? UUID.fromString("0") : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                     visite.getIsConform(),
                     visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
                     visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
-                    visite.getCreatedDate().format(SseController.dateTimeFormatter))
+                    visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
         ).collect(Collectors.toList());
 
 
@@ -216,7 +216,7 @@ public class VisiteController {
                         visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
                         visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter))
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
         ).collect(Collectors.toList());
 
         /*log.info("Liste des visites terminées");
@@ -325,7 +325,7 @@ public class VisiteController {
 
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
-        UUID orgId = UUID.fromString(SessionData.getOrganisationId(request)) ;
+        UUID orgId = SessionData.getOrganisationId(request);
         for (Visite visite : visiteService.listParStatus(0, orgId)) {
             Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
@@ -369,7 +369,7 @@ public class VisiteController {
                         visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
                         visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter)))
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
         );
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
 
@@ -614,7 +614,7 @@ public class VisiteController {
     }
 
     @GetMapping(value = "/api/v1/visite/tests/{i}")
-    public ResponseEntity<Object> getInspectionTest(@PathVariable Long i) {
+    public ResponseEntity<Object> getInspectionTest(@PathVariable UUID i) {
 
         try {
 

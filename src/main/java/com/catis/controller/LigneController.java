@@ -2,6 +2,7 @@ package com.catis.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.LignePOJO;
@@ -69,7 +70,7 @@ public class LigneController {
     }
 
     @GetMapping(value = "/api/v1/vehicules/lignes/{id}")
-    public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
+    public ResponseEntity<Object> getCartegriseByLigne(@PathVariable UUID id) {
 
 
             LOGGER.trace("liste des vehicules par ligne");
@@ -133,7 +134,7 @@ public class LigneController {
     }
 
     @DeleteMapping("/api/v1/admin/lignes/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id){
+    public ResponseEntity<Object> deleteById(@PathVariable UUID id){
 
         try{
             ligneService.deleteById(id);

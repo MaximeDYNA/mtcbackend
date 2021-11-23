@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,14 +30,14 @@ public class UserController {
     private UtilisateurService us;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUsersOfOrganisation(@PathVariable Long id){
+    public ResponseEntity<Object> getUsersOfOrganisation(@PathVariable UUID id){
 
         List<UserKeycloak> userDTOList = keycloakService.getUserList();
         List<ChildKanbanDTO> children = os.findChildren(id);
         children.add(new ChildKanbanDTO(id,"",0));
         userDTOList = userDTOList.stream()
                 .filter(userDTO -> children.stream()
-                        .anyMatch(childKanbanDTO -> childKanbanDTO.getId() == userDTO.getOrganisationId()))
+                        .anyMatch(childKanbanDTO -> childKanbanDTO.getId().equals(userDTO.getOrganisationId()) ))
                 .collect(Collectors.toList());
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
@@ -117,7 +114,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             us.deleteUtilisateurById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

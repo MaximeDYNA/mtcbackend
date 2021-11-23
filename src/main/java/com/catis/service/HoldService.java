@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.model.entity.SessionCaisse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class HoldService {
     }
 
     @Transactional
-    public void deleteHoldByNumber(Long number, Long sessionCaisseId) throws ParseException {
+    public void deleteHoldByNumber(Long number, UUID sessionCaisseId) throws ParseException {
         for (Posales posale : posaleRepository.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId)) {
             posaleRepository.delete(posale);
         }
@@ -54,27 +55,32 @@ public class HoldService {
     }
 
     @Transactional
-    public void deleteHoldBySessionCaisse(Long sessionCaisseId) {
+    public void deleteHoldBySessionCaisse(UUID sessionCaisseId) {
         if (!posaleRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId).isEmpty())
             posaleRepository.deleteBySessionCaisse_SessionCaisseId(sessionCaisseId);
         if (!holdRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId).isEmpty())
             holdRepository.deleteBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
-    public List<Hold> findHoldBySessionCaisse(Long sessionCaisseId) {
+    public List<Hold> findHoldBySessionCaisse(UUID sessionCaisseId) {
         return holdRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
-    public Hold findByNumberSessionCaisse(Long number, Long sessionCaisseId) {
+    public Hold findByNumberSessionCaisse(Long number, UUID sessionCaisseId) {
         return holdRepository.findByNumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
     }
 
-    public Hold findByHoldId(Long holdId) {
+    public Hold findByHoldId(UUID holdId) {
         if (holdId == null) {
             return null;
         }
         return holdRepository.findById(holdId).get();
     }
-
+    public Hold findBynumberAndSession(Long number, UUID sessionId) {
+        if (number == null) {
+            return null;
+        }
+        return holdRepository.findByNumberAndSessionCaisse_SessionCaisseId(number, sessionId);
+    }
 
 }

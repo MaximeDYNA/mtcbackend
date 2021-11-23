@@ -1,8 +1,10 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class LexiqueChildDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
 
 
@@ -12,19 +14,19 @@ public class LexiqueChildDTO {
     }
 
 
-    public LexiqueChildDTO(Long id, String name) {
+    public LexiqueChildDTO(UUID id, String name) {
         super();
         this.id = id;
         this.name = name;
     }
 
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

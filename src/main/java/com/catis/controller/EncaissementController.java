@@ -89,7 +89,7 @@ public class EncaissementController {
 
             double taxedetail;
             /* ---------client------------ */
-            if(encaissement.getClientId()==0){
+            if(encaissement.getClientId().equals(UUID.fromString("0"))){
                 if(encaissement.getNomclient().equals("")){
                     vente.setClient(null);
                 }
@@ -112,7 +112,7 @@ public class EncaissementController {
             Contact contact =new Contact();
             contact.setPartenaire(partenaire2);
 
-            vente.setContact(encaissement.getContactId() == 0 ? contact : contactService.findById(encaissement.getContactId()));
+            vente.setContact(encaissement.getContactId().equals(UUID.fromString("0")) ? contact : contactService.findById(encaissement.getContactId()));
             /*------------------------------*/
 
             /* ---------Session Caisse------------ */
@@ -139,11 +139,11 @@ public class EncaissementController {
                             encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument());
                 } else {
                     produit.setProduitId(posale.getProduit().getProduitId());
-                    if (encaissement.getClientId() != 0)
+                    if (!encaissement.getClientId().equals(UUID.fromString("0")) )
                         carteGrise.setProprietaireVehicule(
                                 pvs.addClientToProprietaire(clientService.findCustomerById(encaissement.getClientId())));
                     else{
-                        if(encaissement.getContactId() == 0){
+                        if(encaissement.getContactId().equals(UUID.fromString("0"))){
 
                             carteGrise.setProprietaireVehicule(proprietaireVehicule);
                         }

@@ -4,9 +4,11 @@ import com.catis.objectTemporaire.DefectsModel;
 import org.hibernate.envers.Audited;
 
 import java.util.List;
+import java.util.UUID;
+
 public class DefectResponse{
 
-    private Long idinspection;
+    private UUID idinspection;
 
     private String signature1;
 
@@ -17,17 +19,17 @@ public class DefectResponse{
     public DefectResponse() {
     }
 
-    public DefectResponse(Long inspection, List<DefectsModel> defectslist) {
+    public DefectResponse(UUID inspection, List<DefectsModel> defectslist) {
 
         this.idinspection = inspection;
         this.defectslist = defectslist;
     }
 
-    public Long getIdinspection() {
+    public UUID getIdinspection() {
         return idinspection;
     }
 
-    public void setIdinspection(Long idinspection) {
+    public void setIdinspection(UUID idinspection) {
         this.idinspection = idinspection;
     }
 

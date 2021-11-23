@@ -372,7 +372,7 @@ public class VisiteService {
                                     visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                                     visite.getIsConform(),
                                     visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                                    visite.getCreatedDate().format(SseController.dateTimeFormatter), true)));
+                                    visite.getCreatedDate().format(SseController.dateTimeFormatter), true, visite.getDocument())));
                     emitter.send(SseEmitter.event().name("controleur_visit").data(visite));
                 }
                 else{
@@ -421,7 +421,7 @@ public class VisiteService {
                                 visite.getIsConform(),
                                 visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
                                 visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                                visite.getCreatedDate().format(SseController.dateTimeFormatter), true)));
+                                visite.getCreatedDate().format(SseController.dateTimeFormatter), true, visite.getDocument())));
             }catch(IOException e){
                 emitters.remove(emitter);
             }

@@ -1,10 +1,11 @@
 package com.catis.objectTemporaire;
 
 import java.util.List;
+import java.util.UUID;
 
 public class LexiqueReceived {
 
-    private Long id;
+    private UUID id;
     private String nom;
     private String version;
     private List<LexiquePOJO> rows;
@@ -44,11 +45,11 @@ public class LexiqueReceived {
         this.version = version;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

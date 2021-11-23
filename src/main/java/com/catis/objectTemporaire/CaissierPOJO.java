@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CaissierPOJO {
 
-    private Long caissierId;
+    private UUID caissierId;
     private String nom;
     private String prenom;
     private Long dateNaiss;
@@ -23,8 +24,8 @@ public class CaissierPOJO {
     private String cni;
     private String telephone;
     private String email;
-    private Long organisationId;
-    private Long caisse;
-    private Long user;
+    private UUID organisationId;
+    private UUID caisse;
+    private UUID user;
 
 }

@@ -68,7 +68,7 @@ public class PosaleController {
             posale.setHold(hold);
             posale.setProduit(produitService.findById(posaleData.getProduitId()));
             if (visiteService.visiteEncours(posaleData.getReference(),
-                    Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())))
+                    UserInfoIn.getUserInfo(request).getOrganisanionId()))
                 throw new VisiteEnCoursException();
             posale.setReference(posaleData.getReference());
             posale.setStatus(true);
@@ -169,9 +169,9 @@ public class PosaleController {
 
         LOGGER.trace("Ajout d'un décaissement au panier");
         try {
-            posaleService.deletePosale(posaleData.getHoldId(), posaleData.getSessionCaisseId());
+            posaleService.deletePosale(posaleData.getNumber(), posaleData.getSessionCaisseId());
             Posales p = new Posales();
-            Hold hold = hs.findByHoldId(posaleData.getHoldId());
+            Hold hold = hs.findBynumberAndSession(posaleData.getNumber(), posaleData.getSessionCaisseId());
             Posales posale = new Posales();
             posale.setHold(hold);
             posale.setProduit(produitService.findByLibelle("dec"));

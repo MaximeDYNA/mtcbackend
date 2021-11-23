@@ -88,10 +88,9 @@ public class ProprietaireVehiculeController {
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
             partenaire.setOrganisation(os
-                    .findByOrganisationId(Long
-                    .valueOf(UserInfoIn
+                    .findByOrganisationId(UserInfoIn
                     .getUserInfo(request)
-                    .getOrganisanionId())));
+                    .getOrganisanionId()));
             pv.setPartenaire(partenaireService.addPartenaire(partenaire));
             pv.setDescription(clientPartenaire.getVariants());
 
@@ -167,7 +166,7 @@ public class ProprietaireVehiculeController {
         }
     }
     @DeleteMapping("/api/v1/admin/proprietaires/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             proprietaireVehiculeadresseService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

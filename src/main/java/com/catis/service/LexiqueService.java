@@ -3,6 +3,7 @@ package com.catis.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,18 @@ public class LexiqueService {
         return lexiqueRepository.findByCode(code);
     }
 
-    public Lexique findById(Long id) {
+    public Lexique findById(UUID id) {
         Optional<Lexique> lexique = lexiqueRepository.findById(id);
         if(lexique.isPresent())
             return lexique.get();
         return null;
     }
 
-    public List<Lexique> findByVersionLexique(Long versionLexiqueId) {
+    public List<Lexique> findByVersionLexique(UUID versionLexiqueId) {
         return lexiqueRepository.findByVersionLexique_id(versionLexiqueId);
     }
 
-    public List<Lexique> findByVersionLexiqueAndCategorie(Long versionLexiqueId, Long categorie) {
+    public List<Lexique> findByVersionLexiqueAndCategorie(UUID versionLexiqueId, UUID categorie) {
         return lexiqueRepository.findByVersionLexique_idAndCategorieVehicule_Id(versionLexiqueId, categorie);
     }
 

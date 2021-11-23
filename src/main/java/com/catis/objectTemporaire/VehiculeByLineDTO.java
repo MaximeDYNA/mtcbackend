@@ -1,11 +1,13 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class VehiculeByLineDTO {
 
-    private Long carteGriseId;
+    private UUID carteGriseId;
     private String ref;
-    private Long idInspection;
-    private Long idCategorie;
+    private UUID idInspection;
+    private UUID idCategorie;
 
 
     public VehiculeByLineDTO() {
@@ -14,7 +16,7 @@ public class VehiculeByLineDTO {
     }
 
 
-    public VehiculeByLineDTO(Long carteGriseId, String ref, Long idInspection, Long idCategorie) {
+    public VehiculeByLineDTO(UUID carteGriseId, String ref, UUID idInspection, UUID idCategorie) {
         super();
         this.carteGriseId = carteGriseId;
         this.ref = ref;
@@ -23,11 +25,11 @@ public class VehiculeByLineDTO {
     }
 
 
-    public Long getCarteGriseId() {
+    public UUID getCarteGriseId() {
         return carteGriseId;
     }
 
-    public void setCarteGriseId(Long carteGriseId) {
+    public void setCarteGriseId(UUID carteGriseId) {
         this.carteGriseId = carteGriseId;
     }
 
@@ -39,21 +41,21 @@ public class VehiculeByLineDTO {
         this.ref = ref;
     }
 
-    public Long getIdInspection() {
+    public UUID getIdInspection() {
         return idInspection;
     }
 
-    public void setIdInspection(Long idInspection) {
+    public void setIdInspection(UUID idInspection) {
         this.idInspection = idInspection;
     }
 
 
-    public Long getIdCategorie() {
+    public UUID getIdCategorie() {
         return idCategorie;
     }
 
 
-    public void setIdCategorie(Long idCategorie) {
+    public void setIdCategorie(UUID idCategorie) {
         this.idCategorie = idCategorie;
     }
 

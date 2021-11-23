@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class LignePOJO {
 
-    private Long idLigne;
+    private UUID idLigne;
     private String description;
     private String nom;
     private ObjectForSelect organisationId;

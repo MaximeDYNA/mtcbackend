@@ -200,7 +200,7 @@ public class Listview {
     }
 
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -429,11 +429,11 @@ public class Listview {
         this.createdAt = createdAt;
     }
 
-    public Long getIdVisite() {
+    public UUID getIdVisite() {
         return idVisite;
     }
 
-    public void setIdVisite(Long idVisite) {
+    public void setIdVisite(UUID idVisite) {
         this.idVisite = idVisite;
     }
 
@@ -456,11 +456,11 @@ public class Listview {
     }
 
 
-    public Long getInspection() {
+    public UUID getInspection() {
         return inspection;
     }
 
-    public void setInspection(Long inspection) {
+    public void setInspection(UUID inspection) {
         this.inspection = inspection;
     }
 

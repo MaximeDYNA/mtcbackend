@@ -24,7 +24,7 @@ public class VehiculePOJO {
     private int poidsVide;
     private int chargeUtile;
     private int cylindre;
-    private Long marqueVehicule;
+    private UUID marqueVehicule;
     private UUID energie;
     private ObjectForSelect organisationId;
 }

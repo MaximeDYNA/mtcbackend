@@ -1,19 +1,22 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class PosaleData {
 
 
     private String reference;
     private boolean status;
-    private Long holdId;
-    private Long produitId;
-    private Long sessionCaisseId;
+    private UUID holdId;
+    private UUID produitId;
+    private UUID sessionCaisseId;
+    private Long number;
 
     public PosaleData() {
 
     }
 
-    public PosaleData(String reference, boolean status, Long holdId, Long produitId, Long sessionCaisseId) {
+    public PosaleData(String reference, boolean status, UUID holdId, UUID produitId, UUID sessionCaisseId) {
         super();
         this.reference = reference;
         this.status = status;
@@ -38,27 +41,35 @@ public class PosaleData {
         this.status = status;
     }
 
-    public Long getHoldId() {
+    public UUID getHoldId() {
         return holdId;
     }
 
-    public void setHoldId(Long holdId) {
+    public void setHoldId(UUID holdId) {
         this.holdId = holdId;
     }
 
-    public Long getProduitId() {
+    public UUID getProduitId() {
         return produitId;
     }
 
-    public void setProduitId(Long produitId) {
+    public void setProduitId(UUID produitId) {
         this.produitId = produitId;
     }
 
-    public Long getSessionCaisseId() {
+    public UUID getSessionCaisseId() {
         return sessionCaisseId;
     }
 
-    public void setSessionCaisseId(Long sessionCaisseId) {
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    public void setSessionCaisseId(UUID sessionCaisseId) {
         this.sessionCaisseId = sessionCaisseId;
     }
 
