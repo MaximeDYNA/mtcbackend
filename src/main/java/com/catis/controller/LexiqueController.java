@@ -117,6 +117,7 @@ public class LexiqueController {
     @PostMapping(value = "/api/v1/all/lexiques/read")
     public ResponseEntity<Object> readLexiques(@RequestBody LexiqueAndCategorieDTO lexiqueAndCategorieDTO) {
 
+        System.out.println("***********The server has received request from android tablet**********");
         LexiqueChildDTO lexiqueChildDTO;
         List<LexiqueDTO> parents = new ArrayList<>();
 
