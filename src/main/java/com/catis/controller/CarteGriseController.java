@@ -157,8 +157,7 @@ public class CarteGriseController {
         carteGrise.setVehicule(vehicule);
 
         visite.setCarteGrise(carteGrise);
-        if (!visiteService.visiteEncours(carteGriseR.getNumImmatriculation(),
-                    visite.getIdVisite()))
+        if (visite.getStatut()<1)
             visite.setStatut(1);
 
         visite = visiteService.modifierVisite(visite);
