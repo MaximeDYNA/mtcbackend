@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.catis.objectTemporaire.CarteGrisePOJO;
+import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -131,6 +132,7 @@ public class CarteGriseController {
 
         if(carteGriseR.getVehiculeId() == null){
             vehicule = new Vehicule(carteGriseR);
+
             if(carteGriseR.getEnergieId()==null)
                 vehicule.setEnergie(null);
             else
@@ -146,7 +148,7 @@ public class CarteGriseController {
 
         // retrouve l'objet visite en bd
         Visite visite = visiteService.findById(carteGriseR.getVisiteId());
-
+        vehicule.setOrganisation(visite.getOrganisation());
         //récupère l'id de la cg
         carteGrise.setCarteGriseId(visite.getCarteGrise().getCarteGriseId());
         carteGrise.setOrganisation(visite.getOrganisation());
@@ -155,7 +157,9 @@ public class CarteGriseController {
         carteGrise.setVehicule(vehicule);
 
         visite.setCarteGrise(carteGrise);
-        visite.setStatut(1);
+        if (!visiteService.visiteEncours(carteGriseR.getNumImmatriculation(),
+                    visite.getIdVisite()))
+            visite.setStatut(1);
 
         visite = visiteService.modifierVisite(visite);
         //carteGrise = cgs.updateCarteGrise(carteGrise);
