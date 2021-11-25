@@ -3,6 +3,7 @@ package com.catis.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.catis.controller.configuration.SessionData;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.LignePOJO;
 import com.catis.service.OrganisationService;
@@ -21,6 +22,8 @@ import com.catis.service.CarteGriseService;
 import com.catis.service.InspectionService;
 import com.catis.service.LigneService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 
@@ -37,6 +40,9 @@ public class LigneController {
 
     @Autowired
     private InspectionService inspectionService;
+
+    @Autowired
+    HttpServletRequest request;
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
@@ -73,9 +79,10 @@ public class LigneController {
 
 
             LOGGER.trace("liste des vehicules par ligne");
+            Long orgId = SessionData.getOrganisationId(request);
 
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
-            for (CarteGrise cg : cgService.findByLigne(id)) {
+            for (CarteGrise cg : cgService.findByLigne(id, orgId)) {
                 VehiculeByLineDTO v = new VehiculeByLineDTO();
                 v.setCarteGriseId(cg.getCarteGriseId());
 
