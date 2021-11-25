@@ -8,4 +8,5 @@ import java.util.List;
 public interface LigneRepository extends CrudRepository<Ligne, Long> {
 
     List<Ligne> findByActiveStatusTrue();
+    List<Ligne> findByActiveStatusTrueAndOrganisation_OrganisationId(Long orgId);
 }

@@ -15,6 +15,7 @@ public interface InspectionRepository extends CrudRepository<Inspection, Long> {
 
     @Query("select i from Inspection i inner join i.visite v " +
             "where i.ligne.idLigne = ?2 and v.statut = ?1 and i.visibleToTab = true and i.activeStatus = true " +
+            "and i.visite.organisation.organisationId = ?3" +
             "group by i.idInspection")
     List<Inspection> inspectionbyligneAndVisibleToTabTrueAndOrganisation_OrganisationId(int statut, Long idLigne, Long orgId);
 
