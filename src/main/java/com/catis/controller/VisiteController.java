@@ -422,14 +422,14 @@ public class VisiteController {
             visiteService.dispatchEdit(visite);
 
         //Openaplr to know if the car is in the center
-        String uri = environment.getProperty("endpoint.openalpr") ;
+       /* String uri = environment.getProperty("endpoint.openalpr") ;
         String apiKey = environment.getProperty("endpoint.openalpr.api.key") ;
-        //Visite visite = visiteService.findById(id);
+
         BestPlate bestPlate = openAlprService.getPresenceConfidence(uri,apiKey,visite.getInspection());
         visite.getInspection().setDistancePercentage(
                 bestPlate.getRate()
         );
-        visite.getInspection().setBestPlate(bestPlate.getPlate());
+        visite.getInspection().setBestPlate(bestPlate.getPlate());*/
         visiteService.add(visite);
 
         return "/public/pv/"+visiteId+".pdf";
