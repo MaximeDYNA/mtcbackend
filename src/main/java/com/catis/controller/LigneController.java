@@ -63,11 +63,13 @@ public class LigneController {
 
     @GetMapping(value = "/api/v1/controleur/lignes")
     public ResponseEntity<Object> ligneList() {
+        LOGGER.trace("liste des lignes de l'organisation");
+
 
         try {
-            LOGGER.trace("liste des lignes");
+            Long orgId = SessionData.getOrganisationId(request);
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findActiveByorganisation(orgId));
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
         }
