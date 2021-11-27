@@ -246,12 +246,13 @@ public class VisiteService {
         }
         return kanBanSimpleDatas;
     }
-    public void commencerInspection(Visite visite) throws IOException {
+    public Visite commencerInspection(Visite visite) throws IOException {
 
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
         visite = visiteRepository.save(visite);
         dispatchEdit(visite);
+        return visite;
 
     }
 
