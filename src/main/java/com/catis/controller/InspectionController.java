@@ -65,35 +65,34 @@ public class InspectionController {
     @Transactional
     public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws Exception {
 
+        try {
+            LOGGER.trace("Nouvelle inpection...");
 
-        LOGGER.trace("Nouvelle inpection...");
+            Inspection inspection = new Inspection(inspectionReceived);
+            inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
+            inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
+            inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
+            inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
+            inspection.setDateDebut(new Date());
+            Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
+            if(visite.getInspection() != null)
+                throw new Exception("Une inspection est déjà en cours pour cette visite");
+            inspection.setVisite(visite);
+            visite.setInspection(inspection);
+            visite = visiteService.commencerInspection(visite);
 
-        Inspection inspection = new Inspection(inspectionReceived);
-        inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
-        inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
-        inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
-        inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
-        inspection.setDateDebut(new Date());
-        Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
-        if(visite.getInspection() != null)
-            throw new Exception("Une inspection est déjà en cours pour cette visite");
-        inspection.setVisite(visite);
-        visiteService.commencerInspection(visite);
-
-        inspection = inspectionService.addInspection(inspection);
-
+            //inspection = inspectionService.addInspection(inspection);
 
 
-        this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), inspection);
-				
-				/*String[] result = "this is a test".split("\\s");
-			     for (int x=0; x<result.length; x++)
-			         System.out.println(result[x]);*/
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspection);
-			/*try {}
-			catch (Exception e) {
-				return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Inspection", null);
-			}*/
+
+            this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), visite.getInspection());
+
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspection);
+        }
+        catch (Exception e) {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, Message.ERREUR_ADD + "Inspection", e.getMessage());
+        }
 
     }
 
