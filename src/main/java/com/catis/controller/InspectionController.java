@@ -59,6 +59,7 @@ public class InspectionController {
     private Environment env;
 
 
+
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
     @PostMapping(value = "/api/v1/controleur/inspections")
@@ -66,7 +67,8 @@ public class InspectionController {
     public ResponseEntity<Object> ajouterInspection(@RequestBody InpectionReceived inspectionReceived) throws Exception {
 
         try {
-            LOGGER.trace("Nouvelle inpection...");
+
+            LOGGER.info("ADD INSPECTION REQUEST...");
 
             Inspection inspection = new Inspection(inspectionReceived);
             inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
@@ -87,6 +89,7 @@ public class InspectionController {
 
             this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), visite.getInspection());
 
+            LOGGER.info("INSPECTION SUCCESSFULLY RECORDED");
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspection);
         }
