@@ -128,6 +128,7 @@ public class SessionCaisseController {
         sessionCaisseDTO.setCaissierId(sessionCaisse.getCaissier().getCaissierId());
         sessionCaisseDTO.setDateHeureOuverture(sessionCaisse.getDateHeureOuverture());
         sessionCaisseDTO.setMontantOuverture(sessionCaisse.getMontantOuverture());
+        sessionCaisseDTO.setSessionCaisseId(sessionCaisse.getSessionCaisseId());
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseDTO);
 		/*try {}
@@ -148,8 +149,7 @@ public class SessionCaisseController {
 
         LOGGER.info("CLOSING CASHER");
         hs.deleteHoldBySessionCaisse(closeSessionData.getSessionCaisseId());
-        //System.out.println("******6262626262"+		ImageSizeHandler.compress("bonjour"));
-        //System.out.println("*....................**decompressed***"+	 ImageSizeHandler.decompress(ImageSizeHandler.compress("bonjour")));
+
         sessionCaisseService.fermerSessionCaisse(closeSessionData.getSessionCaisseId(), closeSessionData.getMontantFermeture());
         LOGGER.info("CASHER SUCCESSFULLY CLOSED");
         //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", operationCaisse.findBySession(closeSessionData.getSessionCaisseId()));
