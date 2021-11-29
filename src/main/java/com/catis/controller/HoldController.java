@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.catis.model.entity.Message;
 import com.catis.model.entity.SessionCaisse;
+import com.catis.objectTemporaire.HoldDTO;
 import com.catis.repository.MessageRepository;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -46,10 +47,13 @@ public class HoldController {
     public ResponseEntity<Object> ajouterOnglet(@PathVariable Long sessionCaisseId) throws ParseException {
 
         try {
-            LOGGER.trace("création onglet demandé...");
+            LOGGER.info("CASHER SESSION ID "+sessionCaisseId+" is ADDING NEW HOLD...");
 
             Hold hold = new Hold();
+            HoldDTO holdDTO = new HoldDTO();
             SessionCaisse sessionCaisse =scs.findSessionCaisseById(sessionCaisseId);
+            if(!sessionCaisse.isActive())
+                throw new Exception("Please open a new session");
             hold.setSessionCaisse(sessionCaisse);
             hold.setNumber(holdService.maxNumber(sessionCaisse) + 1);
             SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
@@ -58,13 +62,19 @@ public class HoldController {
             hold = holdService.addHold(hold);
             ps.activatePosale(hold.getNumber(), hold.getSessionCaisse().getSessionCaisseId());
             Message msg = msgRepo.findByCode("HL001");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, hold);
+            holdDTO.setHoldId(hold.getHoldId());
+            holdDTO.setNumber(hold.getNumber());
+            holdDTO.setTime(hold.getTime());
+            LOGGER.info("HOLD SUCCESSFULLY ADDED FOR "+sessionCaisseId+" SESSION ID");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, holdDTO);
         } catch (java.lang.NullPointerException nul) {
+            nul.printStackTrace();
             Message msg = msgRepo.findByCode("SS003");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
         } catch (Exception e) {
             Message msg = msgRepo.findByCode("HL002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, e.getMessage());
         }
 
     }

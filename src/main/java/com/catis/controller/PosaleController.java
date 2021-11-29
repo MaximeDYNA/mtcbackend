@@ -56,7 +56,7 @@ public class PosaleController {
     public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData) {
 
         try {
-            LOGGER.trace("Ajout d'un produit dans un onglet");
+            LOGGER.info("ADD PRODUCT IN CARD");
             Message msg;
 
             if (posaleService.isDecaissementExist(posaleData.getHoldId(), posaleData.getSessionCaisseId())) {
@@ -83,6 +83,7 @@ public class PosaleController {
             }
             card.setTaxe(taxes);
             msg = msgRepo.findByCode("PS001");
+            LOGGER.info("PRODUCT SUCCESSFULLY ADDED");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, card);
         } catch (DataIntegrityViolationException integrity) {
             LOGGER.error("Duplicata de champ unique");
