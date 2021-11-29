@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.catis.model.entity.Caissier;
 import com.catis.model.entity.Produit;
+import com.catis.objectTemporaire.SessionCaisseDTO;
 import com.catis.repository.CaissierRepository;
 //import org.apache.log4j.Logger;
 import org.apache.log4j.Logger;
@@ -122,7 +123,13 @@ public class SessionCaisseController {
         hold.setSessionCaisse(sessionCaisse);
         hold.setTime(now);
         hs.addHold(hold);
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
+        SessionCaisseDTO sessionCaisseDTO = new SessionCaisseDTO();
+        sessionCaisseDTO.setActive(sessionCaisse.isActive());
+        sessionCaisseDTO.setCaissierId(sessionCaisse.getCaissier().getCaissierId());
+        sessionCaisseDTO.setDateHeureOuverture(sessionCaisse.getDateHeureOuverture());
+        sessionCaisseDTO.setMontantOuverture(sessionCaisse.getMontantOuverture());
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisseDTO);
 		/*try {}
 		catch(Exception e){
 			LOGGER.error("Une erreur est survenu");
