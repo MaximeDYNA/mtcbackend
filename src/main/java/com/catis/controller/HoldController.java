@@ -70,11 +70,11 @@ public class HoldController {
         } catch (java.lang.NullPointerException nul) {
             nul.printStackTrace();
             Message msg = msgRepo.findByCode("SS003");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         } catch (Exception e) {
             Message msg = msgRepo.findByCode("HL002");
             e.printStackTrace();
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, e.getMessage());
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
         }
 
     }
