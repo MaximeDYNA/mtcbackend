@@ -71,13 +71,18 @@ public class EncaissementController {
 
     @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
-    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
+    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws Exception {
+        LOGGER.info("ADDING A VISIT...");
         Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
         String user = UserInfoIn.getUserInfo(request).getLogin();
-
+        try {
         Caissier caissier = caissierService.findBylogin(user);
         if(caissier==null)
-            throw new VisiteEnCoursException("Please enter a correct login");
+            throw new Exception("Please enter a correct login");
+        if(!caissier.getSessionCaisses().stream().anyMatch(
+                sessionCaisse -> sessionCaisse.isActive()
+        ))
+            throw new Exception("Please open a session");
 
         Organisation organisation = os.findByOrganisationId(orgId);
 
@@ -197,11 +202,12 @@ public class EncaissementController {
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
 
             Message msg = msgRepo.findByCode("EN001");
+            LOGGER.info("VISIT SUCCESSFULLY ADDED");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-        /*try { } catch (Exception e) {
+         } catch (Exception e) {
             Message msg = msgRepo.findByCode("EN002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e);
-        }*/
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
+        }
 
 
     }

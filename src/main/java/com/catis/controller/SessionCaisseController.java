@@ -10,6 +10,7 @@ import com.catis.model.entity.Caissier;
 import com.catis.model.entity.Produit;
 import com.catis.repository.CaissierRepository;
 //import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -55,7 +56,7 @@ public class SessionCaisseController {
     @Autowired
     private PagedResourcesAssembler<SessionCaisse> pagedResourcesAssembler;
 
-   // private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
+    private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
     @RequestMapping(value = "/api/v1/caisse/sessioncaisseexist/{userId}")
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable String userId) {
@@ -138,12 +139,14 @@ public class SessionCaisseController {
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/fermerSessionCaisse")
     public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData) throws IOException {
 
-       // LOGGER.info("Fermeture session caisse...");
+        LOGGER.info("CLOSING CASHER");
         hs.deleteHoldBySessionCaisse(closeSessionData.getSessionCaisseId());
         //System.out.println("******6262626262"+		ImageSizeHandler.compress("bonjour"));
         //System.out.println("*....................**decompressed***"+	 ImageSizeHandler.decompress(ImageSizeHandler.compress("bonjour")));
         sessionCaisseService.fermerSessionCaisse(closeSessionData.getSessionCaisseId(), closeSessionData.getMontantFermeture());
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", operationCaisse.findBySession(closeSessionData.getSessionCaisseId()));
+        LOGGER.info("CASHER SUCCESSFULLY CLOSED");
+        //return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", operationCaisse.findBySession(closeSessionData.getSessionCaisseId()));
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null);
 		/*try {} catch (Exception e) {
 			LOGGER.error("Erreur lors de la suppression de l'onglet");
 			return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu "
