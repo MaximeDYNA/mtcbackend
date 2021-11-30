@@ -12,6 +12,7 @@ import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 
+import com.catis.repository.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class VisiteService {
     private CategorieTestVehiculeService cat;
     @Autowired
     private GieglanFileService gieglanFileService;
+    @Autowired
+    private NotificationService notificationService;
 
 
 
@@ -157,8 +160,12 @@ public class VisiteService {
         visite.setDocument(document);
 
         visite = visiteRepository.save(visite);
+        final Visite v = visite;
+        //dispatchNewVisit(visite);
+        organisation.getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
+        });
 
-        dispatchNewVisit(visite);
         return visite;
     }
 

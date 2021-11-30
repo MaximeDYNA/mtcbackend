@@ -1,13 +1,18 @@
 package com.catis.controller;
 
 
+import com.catis.controller.configuration.SessionData;
+import com.catis.objectTemporaire.EventDto;
+import com.catis.repository.NotificationService;
+import com.catis.service.EmitterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,12 +25,31 @@ import java.util.stream.Collectors;
 public class SseController {
 
     private static Logger log = LoggerFactory.getLogger(SseController.class);
+    HttpServletRequest request;
 
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
+    public static final String MEMBER_ID_HEADER = "MemberId";
+
+    private EmitterService emitterService;
+    private NotificationService notificationService;
 
     @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    public SseEmitter subscribeToEvents() {
+        String keycloakId = SessionData.getKeycloakId(request);
+        log.debug("Subscribing member ", keycloakId);
+        return emitterService.createEmitter(keycloakId);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void publishEvent(@RequestHeader(name = MEMBER_ID_HEADER) String memberId, @RequestBody EventDto event) {
+        log.debug("Publishing event {} for member with id {}", event, memberId);
+        notificationService.sendNotification(memberId, event);
+    }
+
+    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(){
         System.out.println("---Subscribe---");
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -38,7 +62,7 @@ public class SseController {
         emitter.onCompletion(()->emitters.remove(emitter));
 
         return emitter;
-    }
+    }*/
 
 
 
