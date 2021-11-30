@@ -15,4 +15,8 @@ public class SessionData {
     public static Long getOrganisationId(HttpServletRequest request){
         return Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
     }
+
+    public static String getKeycloakId(HttpServletRequest request){
+        return UserInfoIn.getUserInfo(request).getId();
+    }
 }
