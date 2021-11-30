@@ -13,7 +13,7 @@ public class EmitterService {
     private final long eventsTimeout;
     private final EmitterRepository repository;
 
-    public EmitterService(@Value("${events.connection.timeout}") long eventsTimeout,
+    public EmitterService(@Value("180000") long eventsTimeout,
                           EmitterRepository repository) {
         this.eventsTimeout = eventsTimeout;
         this.repository = repository;
