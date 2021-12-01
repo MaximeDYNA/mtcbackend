@@ -41,7 +41,7 @@ public class SseController {
     @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribeToEvents() {
         String keycloakId = SessionData.getKeycloakId(request);
-        log.debug("Subscribing member ", keycloakId);
+        log.info("Subscribing member ", keycloakId);
         return emitterService.createEmitter(keycloakId);
     }
 
