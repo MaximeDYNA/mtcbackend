@@ -32,9 +32,10 @@ public class SseController {
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
-    public static final String MEMBER_ID_HEADER = "MemberId";
 
+    @Autowired
     private EmitterService emitterService;
+    @Autowired
     private NotificationService notificationService;
 
     @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
@@ -44,12 +45,12 @@ public class SseController {
         return emitterService.createEmitter(keycloakId);
     }
 
-    @PostMapping
+  /*  @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void publishEvent(@RequestHeader(name = MEMBER_ID_HEADER) String memberId, @RequestBody EventDto event) {
+    public void publishEvent( @RequestBody EventDto event) {
         log.debug("Publishing event {} for member with id {}", event, memberId);
         notificationService.sendNotification(memberId, event);
-    }
+    }*/
 
     /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(){
