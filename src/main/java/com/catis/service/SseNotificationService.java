@@ -60,7 +60,7 @@ public class SseNotificationService implements NotificationService {
         if(edited) {
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
-                    log.debug("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
+                    log.info("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
                     if (visite.getStatut() == 1) {
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
                                 new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -98,16 +98,16 @@ public class SseNotificationService implements NotificationService {
                                 visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())));
                     }
                 } catch (IOException | IllegalStateException e) {
-                    log.debug("Error while sending visite to member for member: {} - exception: {}", memberId, e);
+                    log.info("Error while sending visite to member for member: {} - exception: {}", memberId, e);
                     emitterRepository.remove(memberId);
                 }
             } else {
-                log.debug("No emitter for member {}", memberId);
+                log.info("No emitter for member {}", memberId);
             }
         }else{
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
-                    log.debug("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
+                    log.info("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
                                 new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                         (visite.getCarteGrise().getVehicule()==null
@@ -129,11 +129,11 @@ public class SseNotificationService implements NotificationService {
                                         visite.getCreatedDate().format(SseController.dateTimeFormatter), true,  visite.getDocument())));
 
                 } catch (IOException | IllegalStateException e) {
-                    log.debug("Error while sending visite to member for member: {} - exception: {}", memberId, e);
+                    log.info("Error while sending visite to member for member: {} - exception: {}", memberId, e);
                     emitterRepository.remove(memberId);
                 }
             } else {
-                log.debug("No emitter for member {}", memberId);
+                log.info("No emitter for member {}", memberId);
             }
         }
     }

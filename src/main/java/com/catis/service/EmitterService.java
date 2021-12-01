@@ -15,11 +15,12 @@ public class EmitterService {
 
     public EmitterService(@Value("180000") long eventsTimeout,
                           EmitterRepository repository) {
-        this.eventsTimeout = eventsTimeout;
+        this.eventsTimeout = 180000;
         this.repository = repository;
     }
 
     public SseEmitter createEmitter(String memberId) {
+        log.info("Create SseEmitter for {}", memberId);
         SseEmitter emitter = new SseEmitter(eventsTimeout);
         emitter.onCompletion(() -> repository.remove(memberId));
         emitter.onTimeout(() -> repository.remove(memberId));
