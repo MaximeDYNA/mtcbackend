@@ -15,7 +15,7 @@ public class EmitterService {
 
     public EmitterService(@Value("180000") long eventsTimeout,
                           EmitterRepository repository) {
-        this.eventsTimeout = 180000;
+        this.eventsTimeout = Long.MAX_VALUE;
         this.repository = repository;
     }
 
