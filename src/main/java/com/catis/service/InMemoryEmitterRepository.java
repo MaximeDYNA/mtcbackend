@@ -20,6 +20,7 @@ public class InMemoryEmitterRepository implements EmitterRepository {
 
     @Override
     public void addOrReplaceEmitter(String memberId, SseEmitter emitter) {
+        log.info("adding or replacing member {} in emitters", memberId);
         userEmitterMap.put(memberId, emitter);
     }
 
