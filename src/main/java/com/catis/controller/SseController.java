@@ -5,6 +5,7 @@ import com.catis.controller.configuration.SessionData;
 import com.catis.objectTemporaire.EventDto;
 import com.catis.repository.NotificationService;
 import com.catis.service.EmitterService;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class SseController {
         String keycloakId = SessionData.getKeycloakId(request);
         log.info("Subscribing member ", keycloakId);
         SseEmitter emitter = emitterService.createEmitter(keycloakId);
+        log.info("this is the recorded emitter {}", ToStringBuilder.reflectionToString(emitter));
         return emitter;
     }
 
