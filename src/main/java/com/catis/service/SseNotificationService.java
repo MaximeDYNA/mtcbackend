@@ -60,7 +60,7 @@ public class SseNotificationService implements NotificationService {
         if(edited) {
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
-                    log.info("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
+                    log.info("Sending edited visite: {} for member: {}", visite.getIdVisite(), memberId);
                     if (visite.getStatut() == 1) {
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
                                 new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -107,26 +107,26 @@ public class SseNotificationService implements NotificationService {
         }else{
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
-                    log.info("Sending visite: {} for member: {}", visite.getIdVisite(), memberId);
+                    log.info("Sending new visite: {} for member: {}", visite.getIdVisite(), memberId);
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
-                                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                                        (visite.getCarteGrise().getVehicule()==null
-                                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                                        (visite.getCarteGrise().getProprietaireVehicule()
-                                                .getPartenaire()
-                                                .getNom()
-                                                == null
-                                                ? null : visite.getCarteGrise().getProprietaireVehicule()
-                                                .getPartenaire()
-                                                .getNom()),
-                                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                                        visite.getIsConform(),
-                                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
-                                        visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                                        visite.getCreatedDate().format(SseController.dateTimeFormatter), true,  visite.getDocument())));
+                            new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                                (visite.getCarteGrise().getVehicule()==null
+                                        ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                        ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                                (visite.getCarteGrise().getProprietaireVehicule()
+                                        .getPartenaire()
+                                        .getNom()
+                                        == null
+                                        ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                        .getPartenaire()
+                                        .getNom()),
+                                Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                                getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                                visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                                visite.getIsConform(),
+                                visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
+                                visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                                visite.getCreatedDate().format(SseController.dateTimeFormatter), true,  visite.getDocument())));
 
                 } catch (IOException | IllegalStateException e) {
                     log.info("Error while sending visite to member for member: {} - exception: {}", memberId, e);
