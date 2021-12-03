@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -34,6 +35,8 @@ public class SseController {
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
+    public static HashMap<String, SseEmitter> emitterMap= new HashMap<>();
+
     @Autowired
     private EmitterService emitterService;
     @Autowired
@@ -44,6 +47,7 @@ public class SseController {
         String keycloakId = SessionData.getKeycloakId(request);
         log.info("Subscribing member ", keycloakId);
         SseEmitter emitter = emitterService.createEmitter(keycloakId);
+        emitterMap.put(keycloakId, emitter);
         try{
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
