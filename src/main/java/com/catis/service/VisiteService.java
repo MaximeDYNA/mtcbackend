@@ -163,7 +163,7 @@ public class VisiteService {
         final Visite v = visite;
         //dispatchNewVisit(visite);
         organisation.getUtilisateurs().forEach(utilisateur -> {
-            notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("test", new HashMap<String, Object>() {{
+            notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("EVENT_TYPE_WITH_UPPER_CASE", new HashMap<String, Object>() {{
                 put("a", "b");
                 put("c", "d");
             }}));
