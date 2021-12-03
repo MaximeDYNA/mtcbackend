@@ -166,14 +166,13 @@ public class VisiteService {
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
         });*/
 
-        notificationService.sendNotification(v.getCaissier().getUser().getKeycloakId(), new EventDto());
+        notificationService.sendNotification(v.getCaissier().getUser().getKeycloakId(), new EventDto("test", new HashMap<>()));
 
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-
         dispatchEdit(visite);
         return v;
     }
