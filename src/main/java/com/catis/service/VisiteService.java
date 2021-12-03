@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.catis.controller.SseController;
 import com.catis.model.control.Control;
-import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 
@@ -20,18 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.catis.controller.exception.VisiteEnCoursException;
 import com.catis.model.control.Control.StatusType;
 import com.catis.repository.VisiteRepository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import static com.catis.controller.SseController.emitters;
-import static com.catis.controller.SseController.emitterMap;
 
 @Service
 public class VisiteService {
@@ -170,13 +165,7 @@ public class VisiteService {
             }}));*/
 
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
-            if(emitterMap.get(utilisateur.getKeycloakId())!=null) {
-                try {
-                    emitterMap.get(utilisateur.getKeycloakId()).send(SseEmitter.event().name("new_visit").data("baby"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+
         });
 
 

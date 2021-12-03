@@ -5,6 +5,7 @@ import com.catis.controller.configuration.SessionData;
 import com.catis.objectTemporaire.EventDto;
 import com.catis.repository.NotificationService;
 import com.catis.service.EmitterService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-
+@RequiredArgsConstructor
 public class SseController {
 
     private static Logger log = LoggerFactory.getLogger(SseController.class);
@@ -35,7 +36,6 @@ public class SseController {
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
-    public static HashMap<String, SseEmitter> emitterMap= new HashMap<>();
 
     @Autowired
     private EmitterService emitterService;
@@ -47,7 +47,7 @@ public class SseController {
         String keycloakId = SessionData.getKeycloakId(request);
         log.info("Subscribing member ", keycloakId);
         SseEmitter emitter = emitterService.createEmitter(keycloakId);
-        emitterMap.put(keycloakId, emitter);
+
         try{
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
