@@ -31,6 +31,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import static com.catis.controller.SseController.emitters;
+import static com.catis.controller.SseController.emitterMap;
 
 @Service
 public class VisiteService {
@@ -169,6 +170,13 @@ public class VisiteService {
             }}));*/
 
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
+            if(emitterMap.get(utilisateur.getKeycloakId())!=null) {
+                try {
+                    emitterMap.get(utilisateur.getKeycloakId()).send(SseEmitter.event().name("new_visit").data("baby"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
 
