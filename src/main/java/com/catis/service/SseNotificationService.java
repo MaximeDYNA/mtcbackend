@@ -32,7 +32,7 @@ public class SseNotificationService implements NotificationService {
     @Override
     public void sendNotification(String memberId, EventDto event) {
         if (event == null) {
-            log.debug("No server event to send to device.");
+            log.info("No server event to send to device.");
             return;
         }
         doSendNotification(memberId, event);
@@ -43,15 +43,15 @@ public class SseNotificationService implements NotificationService {
 
         if(emitterRepository.get(memberId).isPresent()){
             try {
-                log.debug("Sending event: {} for member: {}", event, memberId);
+                log.info("Sending event: {} for member: {}", event, memberId);
                 emitterRepository.get(memberId).get().send(eventMapper.toSseEventBuilder(event));
             } catch (IOException | IllegalStateException e) {
-                log.debug("Error while sending event: {} for member: {} - exception: {}", event, memberId, e);
+                log.info("Error while sending event: {} for member: {} - exception: {}", event, memberId, e);
                 emitterRepository.remove(memberId);
             }
         }
         else{
-            log.debug("No emitter for member {}", memberId);
+            log.info("No emitter for member {}", memberId);
         }
 
     }
