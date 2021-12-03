@@ -5,6 +5,7 @@ import com.catis.controller.configuration.SessionData;
 import com.catis.objectTemporaire.EventDto;
 import com.catis.repository.NotificationService;
 import com.catis.service.EmitterService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-
+@RequiredArgsConstructor
 public class SseController {
 
     private static Logger log = LoggerFactory.getLogger(SseController.class);
@@ -34,7 +35,7 @@ public class SseController {
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
-    
+
 
     @Autowired
     private EmitterService emitterService;
