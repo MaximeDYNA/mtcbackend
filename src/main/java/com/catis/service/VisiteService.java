@@ -163,12 +163,12 @@ public class VisiteService {
         final Visite v = visite;
         //dispatchNewVisit(visite);
         organisation.getUtilisateurs().forEach(utilisateur -> {
-            notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("TEST", new HashMap<String, Object>() {{
+            /*notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("TEST", new HashMap<String, Object>() {{
                 put("a", "b");
                 put("c", "d");
-            }}));
+            }}));*/
 
-            //notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
         });
 
 
