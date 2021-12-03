@@ -162,9 +162,11 @@ public class VisiteService {
         visite = visiteRepository.save(visite);
         final Visite v = visite;
         //dispatchNewVisit(visite);
-        organisation.getUtilisateurs().forEach(utilisateur -> {
+        /*organisation.getUtilisateurs().forEach(utilisateur -> {
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
-        });
+        });*/
+
+        notificationService.sendNotification(v.getCaissier().getUser().getKeycloakId(), new EventDto());
 
         return visite;
     }
