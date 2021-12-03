@@ -44,6 +44,11 @@ public class SseController {
         String keycloakId = SessionData.getKeycloakId(request);
         log.info("Subscribing member ", keycloakId);
         SseEmitter emitter = emitterService.createEmitter(keycloakId);
+        try{
+            emitter.send(SseEmitter.event().name("INIT"));
+        }catch(IOException e){
+            log.error(e.getMessage());
+        }
         log.info("this is the recorded emitter {}", ToStringBuilder.reflectionToString(emitter));
         return emitter;
     }
