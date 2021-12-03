@@ -62,7 +62,7 @@ public class SseNotificationService implements NotificationService {
                 try {
                     log.info("Sending edited visite: {} for member: {}", visite.getIdVisite(), memberId);
                     if (visite.getStatut() == 1) {
-                        emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
+                        emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("new_visit").data(
                                 new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                         (visite.getCarteGrise().getVehicule() == null
                                                 ? "" : (visite.getCarteGrise().getVehicule().getChassis() == null
@@ -108,7 +108,7 @@ public class SseNotificationService implements NotificationService {
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
                     log.info("Sending new visite: {} for member: {}", visite.getIdVisite(), memberId);
-                        emitterRepository.get(memberId).get().send(SseEmitter.event().name("new_visit").data(
+                        emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("new_visit").data(
                             new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                 (visite.getCarteGrise().getVehicule()==null
                                         ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
