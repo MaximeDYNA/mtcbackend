@@ -23,13 +23,14 @@ public class EmitterService {
         log.info("Create SseEmitter for {}", memberId);
         SseEmitter emitter = new SseEmitter(eventsTimeout);
         repository.addOrReplaceEmitter(memberId, emitter);
+
         emitter.onCompletion(() -> repository.remove(memberId));
         emitter.onTimeout(() -> repository.remove(memberId));
         emitter.onError(e -> {
             log.error("Create SseEmitter exception", e);
             repository.remove(memberId);
         });
-
+        emitter.complete();
         return emitter;
     }
 

@@ -31,7 +31,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import static com.catis.controller.SseController.emitters;
-import static com.catis.controller.SseController.emittersPrim;
 
 @Service
 public class VisiteService {
@@ -164,24 +163,10 @@ public class VisiteService {
         final Visite v = visite;
         //dispatchNewVisit(visite);
         organisation.getUtilisateurs().forEach(utilisateur -> {
-            if(emittersPrim.get(utilisateur.getKeycloakId()) ==null){
-                log.info("No emitter bla bla bla");
-            }
-            else{
-                try {
-                    log.info("sending notification to "+utilisateur.getKeycloakId());
-                    emittersPrim.get(utilisateur.getKeycloakId()).send(SseEmitter.event().name("edit_visit").data(
-                            new HashMap<String, String>(){{
-                                put("ok","ok");
-                                put("ok","ok");
-                            }}
-                    ));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
+            notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("TEST", new HashMap<String, Object>() {{
+                put("a", "b");
+                put("c", "d");
+            }}));
 
             //notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
         });
