@@ -30,7 +30,7 @@ public class EmitterService {
             log.error("Create SseEmitter exception", e);
             repository.remove(memberId);
         });
-        emitter.complete();
+
         return emitter;
     }
 
