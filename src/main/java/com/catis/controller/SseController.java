@@ -49,7 +49,6 @@ public class SseController {
         }catch(IOException e){
             log.error(e.getMessage());
         }
-        log.info("this is the recorded emitter {}", ToStringBuilder.reflectionToString(emitter));
         return emitter;
     }
 

@@ -25,11 +25,11 @@ public class EmitterService {
         repository.addOrReplaceEmitter(memberId, emitter);
 
         emitter.onCompletion(() -> repository.remove(memberId));
-        emitter.onTimeout(() -> repository.remove(memberId));
+        /*emitter.onTimeout(() -> repository.remove(memberId));
         emitter.onError(e -> {
             log.error("Create SseEmitter exception", e);
             repository.remove(memberId);
-        });
+        });*/
 
         return emitter;
     }
