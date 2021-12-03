@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class SseController {
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
+    public static HashMap<String, SseEmitter> emittersPrim = new HashMap<>();
 
     @Autowired
     private EmitterService emitterService;
@@ -42,11 +44,21 @@ public class SseController {
     @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribeToEvents() {
         String keycloakId = SessionData.getKeycloakId(request);
-        log.info("Subscribing member ", keycloakId);
-        SseEmitter emitter = emitterService.createEmitter(keycloakId);
-        log.info("this is the recorded emitter {}", ToStringBuilder.reflectionToString(emitter));
+        log.info("Create SseEmitter for {}", keycloakId);
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        emittersPrim.put(keycloakId, emitter);
+        emitter.onCompletion(() -> emittersPrim.remove(keycloakId));
+        emitter.onTimeout(() -> emittersPrim.remove(keycloakId));
+        emitter.onError(e -> {
+            log.error("Create SseEmitter exception", e);
+            emittersPrim.remove(keycloakId);
+        });
+        //log.info("Subscribing member ", keycloakId);
+        //SseEmitter emitter = emitterService.createEmitter(keycloakId);
+        log.info("this is the recorded emitter {}", ToStringBuilder.reflectionToString(emittersPrim));
         return emitter;
     }
+
 
   /*  @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
