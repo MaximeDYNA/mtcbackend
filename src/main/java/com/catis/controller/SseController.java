@@ -49,7 +49,9 @@ public class SseController {
         SseEmitter emitter = emitterService.createEmitter(keycloakId);
 
         try{
-            emitter.send(SseEmitter.event().name("INIT"));
+            emitter.send(SseEmitter.event().name("INIT").data(new EventDto("Ex", new HashMap<String, Object>(){{
+                put("abc", "abc");
+            }})));
         }catch(IOException e){
             log.error(e.getMessage());
         }
