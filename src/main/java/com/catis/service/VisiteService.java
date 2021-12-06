@@ -406,6 +406,7 @@ public class VisiteService {
     //dispatching all event
     public void dispatchNewVisit(Visite visite){
         for(SseEmitter emitter:emitters){
+            System.out.println("SSE send a info");
             try{
                 emitter.send(SseEmitter.event().name("new_visit").data(
                         new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
