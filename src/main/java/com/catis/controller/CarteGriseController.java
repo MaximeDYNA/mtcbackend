@@ -1,10 +1,7 @@
 package com.catis.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.controller.configuration.SessionData;
@@ -158,6 +155,8 @@ public class CarteGriseController {
             vehicule = vehiculeService.findById(carteGriseR.getVehiculeId());
 
         // retrouve l'objet visite en bd
+        if(carteGriseR.getVisiteId()==null)
+            throw new Exception("Prière de choisir une visite");
         Visite visite = visiteService.findById(carteGriseR.getVisiteId());
         vehicule.setOrganisation(visite.getOrganisation());
         //récupère l'id de la cg
