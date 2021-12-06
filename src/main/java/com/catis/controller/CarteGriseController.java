@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.catis.controller.configuration.SessionData;
+import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.CarteGrisePOJO;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
@@ -22,6 +25,8 @@ import com.catis.model.entity.CarteGrise;
 import com.catis.model.entity.Vehicule;
 import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.CarteGriseReceived;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -44,6 +49,8 @@ public class CarteGriseController {
     private OrganisationService os;
     @Autowired
     private VehiculeService vehiculeService;
+    @Autowired
+    HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
 
@@ -125,7 +132,10 @@ public class CarteGriseController {
     @PostMapping("/api/v1/cg/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
+        Long orgId = SessionData.getOrganisationId(request);
+        Organisation organisation = os.findByOrganisationId(orgId);
         try {
+
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
         Vehicule vehicule;
         //initialise le vehicule avec les éléments reçus par la vue
@@ -138,6 +148,7 @@ public class CarteGriseController {
             else
                 vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
             vehicule.setScore(100);
+            vehicule.setOrganisation(organisation);
             if(carteGriseR.getMarqueVehiculeId()==null)
                 vehicule.setMarqueVehicule(null);
             else
@@ -155,11 +166,17 @@ public class CarteGriseController {
         carteGrise.setProprietaireVehicule(pvs.findById(carteGriseR.getProprietaireId()));
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
         carteGrise.setVehicule(vehicule);
+        carteGrise.setOrganisation(organisation);
 
         visite.setCarteGrise(carteGrise);
         if (visite.getStatut()<1)
             visite.setStatut(1);
 
+        if(!visiteService.enCoursVisitList(orgId).stream()
+                .filter(visite1 -> visite1.getCarteGrise().getVehicule()!=null)
+                .filter(visite1 -> visite1.getCarteGrise().getVehicule().getChassis()==carteGriseR.getChassis())
+                .collect(Collectors.toList()).isEmpty())
+            throw new Exception("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection");
         visite = visiteService.modifierVisite(visite);
         //carteGrise = cgs.updateCarteGrise(carteGrise);
 
