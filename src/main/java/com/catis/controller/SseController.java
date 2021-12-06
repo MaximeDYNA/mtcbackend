@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 public class SseController {
 
@@ -47,6 +46,9 @@ public class SseController {
             emitter.send(SseEmitter.event().name("INIT").data(new EventDto("Ex", new HashMap<String, Object>(){{
                 put("abc", "abc");
             }})));
+            notificationService.sendNotification(keycloakId, new EventDto("Ex notification", new HashMap<String, Object>(){{
+                put("abcd", "abcd");
+            }}));
         }catch(IOException e){
             //log.error(e.getMessage());
         }
