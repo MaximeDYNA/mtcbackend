@@ -33,7 +33,7 @@ public class SseController {
 
 
     @Autowired
-    private EmitterService emitterService;
+    private final EmitterService emitterService;
     @Autowired
     private NotificationService notificationService;
 
