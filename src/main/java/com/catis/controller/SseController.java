@@ -23,6 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class SseController {
 
     //private static Logger log = LoggerFactory.getLogger(SseController.class);
