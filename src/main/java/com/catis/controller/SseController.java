@@ -6,6 +6,7 @@ import com.catis.objectTemporaire.EventDto;
 import com.catis.repository.NotificationService;
 import com.catis.service.EmitterService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SseController {
 
     //private static Logger log = LoggerFactory.getLogger(SseController.class);
@@ -36,7 +38,7 @@ public class SseController {
     @Autowired
     private NotificationService notificationService;
 
-    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribeToEvents() {
         String keycloakId = SessionData.getKeycloakId(request);
         //log.info("Subscribing member ", keycloakId);
@@ -53,7 +55,7 @@ public class SseController {
             //log.error(e.getMessage());
         }
         return emitter;
-    }
+    }*/
 
   /*  @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -62,7 +64,7 @@ public class SseController {
         notificationService.sendNotification(memberId, event);
     }*/
 
-    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(){
         System.out.println("---Subscribe---");
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -75,7 +77,7 @@ public class SseController {
         emitter.onCompletion(()->emitters.remove(emitter));
 
         return emitter;
-    }*/
+    }
 
 
 

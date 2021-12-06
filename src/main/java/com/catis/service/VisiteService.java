@@ -157,16 +157,10 @@ public class VisiteService {
 
         visite = visiteRepository.save(visite);
         final Visite v = visite;
-        //dispatchNewVisit(visite);
-        organisation.getUtilisateurs().forEach(utilisateur -> {
-            /*notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("TEST", new HashMap<String, Object>() {{
-                put("a", "b");
-                put("c", "d");
-            }}));*/
-
+        dispatchNewVisit(visite);
+        /*organisation.getUtilisateurs().forEach(utilisateur -> {
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
-
-        });
+        });*/
 
 
         return visite;
