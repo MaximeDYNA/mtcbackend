@@ -9,7 +9,6 @@ import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.CarteGrisePOJO;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.service.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
-@Slf4j
 public class CarteGriseController {
     @Autowired
     private CarteGriseService cgs;
@@ -173,16 +171,13 @@ public class CarteGriseController {
         if (visite.getStatut()<1)
             visite.setStatut(1);
 
-        for(Visite visite2 : visiteService.enCoursVisitList(orgId)){
-            if(visite2.getCarteGrise().getVehicule()!=null){
-                if(visite2.getCarteGrise().getVehicule().getChassis()==carteGriseR.getChassis()){
-                    log.info("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection (visite N°{})", visite2.getIdVisite());
-                    throw new Exception("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection");
-                }
-            }
-        }
-
-
+        if(!visiteService.enCoursVisitList(orgId).stream()
+            .filter(visite1 -> visite1.getIdVisite() != carteGriseR.getVisiteId())
+            .filter(visite1 -> visite1.getCarteGrise().getVehicule()!=null)
+            .filter(visite1 -> visite1.getCarteGrise().getVehicule()
+                    .getChassis().equals(carteGriseR.getChassis()))
+            .collect(Collectors.toList()).isEmpty())
+            throw new Exception("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection");
         visite = visiteService.modifierVisite(visite);
         //carteGrise = cgs.updateCarteGrise(carteGrise);
 
