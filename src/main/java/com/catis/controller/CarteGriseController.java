@@ -171,9 +171,15 @@ public class CarteGriseController {
         if (visite.getStatut()<1)
             visite.setStatut(1);
 
+            visiteService.enCoursVisitList(orgId).stream()
+                    .filter(visite1 -> visite1.getCarteGrise().getVehicule()!=null)
+                    .filter(visite1 -> visite1.getCarteGrise().getVehicule()
+                            .getChassis().equals(carteGriseR.getChassis()))
+                    .forEach(visite1 -> System.out.println("voici les visites avec le mm chassis "+visite1.getIdVisite()));
         if(!visiteService.enCoursVisitList(orgId).stream()
                 .filter(visite1 -> visite1.getCarteGrise().getVehicule()!=null)
-                .filter(visite1 -> visite1.getCarteGrise().getVehicule().getChassis()==carteGriseR.getChassis())
+                .filter(visite1 -> visite1.getCarteGrise().getVehicule()
+                        .getChassis().equals(carteGriseR.getChassis()))
                 .collect(Collectors.toList()).isEmpty())
             throw new Exception("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection");
         visite = visiteService.modifierVisite(visite);
