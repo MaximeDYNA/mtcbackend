@@ -103,6 +103,8 @@ public class VisiteController {
 
     @Autowired
     private PagedResourcesAssembler<NewListView> pagedResourcesAssembler;
+    @Autowired
+    private MessageRepository msgRepo;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -141,52 +143,49 @@ public class VisiteController {
     @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
-        log.info("recherche ---");
-        Long orgId = SessionData.getOrganisationId(request);
-        if(search == "" ){
-            search=null;
+        try{
+            Long orgId = SessionData.getOrganisationId(request);
+            if(search == "" ){
+                search=null;
+            }
+            List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
+
+            List<NewListView> newListViews = resultPage.stream().map(visite ->
+
+                    new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()
+                                    == null
+                                    ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection() == null
+                                    ? 0 : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
+                            visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
+            ).collect(Collectors.toList());
+
+            Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+            PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
-        List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
-
-        List<NewListView> newListViews = resultPage.stream().map(visite ->
-
-            new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                    (visite.getCarteGrise().getVehicule()==null
-                            ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                            ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                    (visite.getCarteGrise().getProprietaireVehicule()
-                            .getPartenaire()
-                            .getNom()
-                             == null
-                            ? null : visite.getCarteGrise().getProprietaireVehicule()
-                            .getPartenaire()
-                            .getNom()),
-                    Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                    getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                    visite.getInspection() == null
-                            ? 0 : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                    visite.getIsConform(),
-                    visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
-                    visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
-                    visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
-        ).collect(Collectors.toList());
 
 
-
-        /*List<Listview> listVisit = new ArrayList<>();
-        resultPage.forEach(visite ->{
-            log.info("visite construction start "+ visite.getIdVisite());
-            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer));
-            log.info("visite construction end "+ visite.getIdVisite());
-        });
-*/
-        //convert list to page for applying hatoas
-        log.info("------------Avant le hatoas ");
-        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
-        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
-                .toModel(pages);
-        log.info("**************après le hatoas ");
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
     }
 
@@ -194,41 +193,51 @@ public class VisiteController {
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
 
-        Long orgId = SessionData.getOrganisationId(request);
+        try{
+            Long orgId = SessionData.getOrganisationId(request);
 
-        Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
-        List<Listview> listVisit = new ArrayList<>();
+            Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
+            List<Listview> listVisit = new ArrayList<>();
 
-        List<NewListView> newListViews = resultPage.stream().map(visite ->
-                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                        (visite.getCarteGrise().getVehicule()==null
-                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                        (visite.getCarteGrise().getProprietaireVehicule()
-                                .getPartenaire()
-                                .getNom()
-                                == null
-                                ? null : visite.getCarteGrise().getProprietaireVehicule()
-                                .getPartenaire()
-                                .getNom()),
-                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                        visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
-        ).collect(Collectors.toList());
+            List<NewListView> newListViews = resultPage.stream().map(visite ->
+                    new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()
+                                    == null
+                                    ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
+            ).collect(Collectors.toList());
 
         /*log.info("Liste des visites terminées");
         resultPage.forEach(visite ->
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );*/
 
-        //convert list to page for applying hatoas
-        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
-        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
-                .toModel(pages);
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
+            //convert list to page for applying hatoas
+            Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
+            PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS003");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("VS004");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+        }
+
 
     }
 
@@ -237,11 +246,11 @@ public class VisiteController {
         try {
             log.info("Liste des visites en cours");
             Long orgId = SessionData.getOrganisationId(request);
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.listParStatus(status,orgId));
+            Message msg = msgRepo.findByCode("VS005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "KO", null);
+            Message msg = msgRepo.findByCode("VS006");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
     }
 
@@ -252,7 +261,7 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.findAll());
         } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
                     + " de la liste des visite en cours", null);
         }
     }

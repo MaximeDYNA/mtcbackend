@@ -6,12 +6,15 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 
 import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.WrongConfigurationException;
+import com.catis.model.entity.Message;
 import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.repository.MessageRepository;
 import com.catis.service.*;
 import org.apache.commons.codec.binary.Base64;
 
@@ -25,7 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.controller.message.Message;
 import com.catis.model.entity.Inspection;
 import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
@@ -57,6 +59,8 @@ public class InspectionController {
     private OrganisationService os;
     @Autowired
     private Environment env;
+    @Autowired
+    private MessageRepository msgRepo;
 
 
 
@@ -89,12 +93,16 @@ public class InspectionController {
 
             this.gieglanFileService.createFileGieglanOfCgrise(visite.getCarteGrise(), visite.getInspection());
 
-            LOGGER.info("INSPECTION SUCCESSFULLY RECORDED");
+            LOGGER.info("Recherche carte grise reussi");
+            Message msg = msgRepo.findByCode("IP001");
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_ADD + "Inspection", inspection);
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, inspection);
         }
         catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, Message.ERREUR_ADD + "Inspection", e.getMessage());
+            e.printStackTrace();
+            LOGGER.error("ERROR WHEN RECORDING INSPECTION");
+            Message msg = msgRepo.findByCode("IP002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
         }
 
     }
@@ -124,6 +132,10 @@ public class InspectionController {
             }
             catch (Exception e){
                 LOGGER.error("Error when creating signature");
+                Message msg = msgRepo.findByCode("IP004");
+                return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+
             }finally {
                 stream.close();
             }
@@ -136,8 +148,9 @@ public class InspectionController {
             Inspection inspection = inspectionService
                     .setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId()
                             + ".png", u.getControleur());
+            Message msg = msgRepo.findByCode("IP003");
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", inspection);
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, inspection);
 
 
 
@@ -148,12 +161,14 @@ public class InspectionController {
     public ResponseEntity<Object> inspectionList() {
 
         try {
-            LOGGER.trace("création onglet demandé...");
-
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", inspectionService.findAllInspection());
+            List<Inspection> inspectionList = inspectionService.findAllInspection();
+            LOGGER.info("INSPECTION LIST");
+            Message msg = msgRepo.findByCode("IP005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, inspectionList);
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Inspection", null);
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("IP006");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
@@ -162,15 +177,15 @@ public class InspectionController {
 
     @DeleteMapping("/api/v1/admin/inspections/{id}")
     public ResponseEntity<Object> deleteInspection(@PathVariable Long id) {
-
-
-            LOGGER.trace("création onglet demandé...");
-
+        try {
+            LOGGER.info("INSPECTION DELETED");
+            Message msg = msgRepo.findByCode("IP007");
             inspectionService.deleteInspection(id);
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Suppression OK sur" + "Inspection", null);
-        /*try { } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Erreur " + "Inspection", null);
-        }*/
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, null);
+         } catch (Exception e) {
+            Message msg = msgRepo.findByCode("IP008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
 
     }
 }

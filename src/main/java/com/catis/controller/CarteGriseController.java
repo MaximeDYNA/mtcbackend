@@ -5,9 +5,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.controller.configuration.SessionData;
-import com.catis.model.entity.Organisation;
+import com.catis.model.entity.*;
 import com.catis.objectTemporaire.CarteGrisePOJO;
 import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.repository.MessageRepository;
 import com.catis.service.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -17,10 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.controller.message.Message;
-import com.catis.model.entity.CarteGrise;
-import com.catis.model.entity.Vehicule;
-import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.CarteGriseReceived;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +44,8 @@ public class CarteGriseController {
     @Autowired
     private VehiculeService vehiculeService;
     @Autowired
+    private MessageRepository msgRepo;
+    @Autowired
     HttpServletRequest request;
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
@@ -55,10 +54,15 @@ public class CarteGriseController {
     public ResponseEntity<Object> search(@PathVariable String imCha) {
         LOGGER.trace("Recherche carte grise...");
         try {
+            List<CarteGrise> carteGrises = cgs.findBychassis(imCha);
             //cgs.findByImmatriculationOuCarteGrise(imCha)
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cgs.findBychassis(imCha));
+            LOGGER.info("Liste des cartes grises");
+            Message msg = msgRepo.findByCode("CG007");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, carteGrises);
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+            LOGGER.error("Erreur liste des cartes grises");
+            Message msg = msgRepo.findByCode("CG008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
 
         }
     }
@@ -177,13 +181,16 @@ public class CarteGriseController {
                     && visite1.getCarteGrise().getVehicule().getChassis().equals(carteGriseR.getChassis()))
             .collect(Collectors.toList()).isEmpty())
             throw new Exception("Ce chassis est déjà utilisé pour un véhicule en cours d'inspection");
-        visite = visiteService.modifierVisite(visite);
-        //carteGrise = cgs.updateCarteGrise(carteGrise);
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", visite.getCarteGrise() );
+            visite = visiteService.modifierVisite(visite);
+            Message msg = msgRepo.findByCode("CG001");
+            LOGGER.info("Enregistrement "+ carteGriseR.getNumImmatriculation()+" carte grise réussi");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visite.getCarteGrise() );
         }
 		catch(Exception e){
-			return ApiResponseHandler.generateResponse(HttpStatus.OK, false, e.getMessage(), null );
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("CG002");
+            LOGGER.info("Enregistrement "+ carteGriseR.getNumImmatriculation()+" carte grise réussi");
+			return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null );
 		}
     }
     @GetMapping("/api/v1/cartegrise/listview")
@@ -203,11 +210,14 @@ public class CarteGriseController {
                 listView.put("modifiedDate", c.getModifiedDate());
                 mapList.add(listView);
             }
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", mapList);
+            Message msg = msgRepo.findByCode("CG003");
+            LOGGER.info("Affichage de la liste des cartes grises réussi");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, mapList);
 
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Client", null);
+            Message msg = msgRepo.findByCode("CG004");
+            LOGGER.info("Erreur lors de l'affichage de la liste des cartes grises");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
@@ -217,10 +227,14 @@ public class CarteGriseController {
         LOGGER.trace("Recherche carte grise...");
         try {
             List<CarteGrise> cs = cgs.findAll();
-            //cgs.findByImmatriculationOuCarteGrise(imCha)
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cs);
+            Message msg = msgRepo.findByCode("CG003");
+            LOGGER.info("Affichage de la liste des cartes grises réussi");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, cs);
         } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+            List<CarteGrise> cs = cgs.findAll();
+            Message msg = msgRepo.findByCode("CG004");
+            LOGGER.info("Erreur lors de l'affichage de la liste des cartes grises");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
 
         }
     }
@@ -228,24 +242,24 @@ public class CarteGriseController {
     @PostMapping("/api/v1/admin/cartegrises")
     public ResponseEntity<Object> saveCGforAdmin(@RequestBody CarteGrisePOJO c) {
         LOGGER.trace("Add CG...");
-
+        try {
 
             CarteGrise carteGrise = new CarteGrise();
-        carteGrise.setCarteGriseId(c.getCarteGriseId());
-        carteGrise.setNumImmatriculation(c.getNumImmatriculation());
-        carteGrise.setPreImmatriculation(c.getPreImmatriculation());
-        carteGrise.setDateDebutValid(c.getDateDebutValid());
-        carteGrise.setDateFinValid(c.getDateFinValid());
-        carteGrise.setSsdt_id(c.getSsdt_id());
-        carteGrise.setCommune(c.getCommune());
-        carteGrise.setMontantPaye(c.getMontantPaye());
-        carteGrise.setVehiculeGage(c.isVehiculeGage());
-        carteGrise.setGenreVehicule(c.getGenreVehicule());
+            carteGrise.setCarteGriseId(c.getCarteGriseId());
+            carteGrise.setNumImmatriculation(c.getNumImmatriculation());
+            carteGrise.setPreImmatriculation(c.getPreImmatriculation());
+            carteGrise.setDateDebutValid(c.getDateDebutValid());
+            carteGrise.setDateFinValid(c.getDateFinValid());
+            carteGrise.setSsdt_id(c.getSsdt_id());
+            carteGrise.setCommune(c.getCommune());
+            carteGrise.setMontantPaye(c.getMontantPaye());
+            carteGrise.setVehiculeGage(c.isVehiculeGage());
+            carteGrise.setGenreVehicule(c.getGenreVehicule());
 
-        carteGrise.setEnregistrement(c.getEnregistrement());
-        carteGrise.setDateDelivrance(c.getDateDelivrance());
-        carteGrise.setLieuDedelivrance(c.getLieuDedelivrance());
-        carteGrise.setCentre_ssdt(c.getCentre_ssdt());
+            carteGrise.setEnregistrement(c.getEnregistrement());
+            carteGrise.setDateDelivrance(c.getDateDelivrance());
+            carteGrise.setLieuDedelivrance(c.getLieuDedelivrance());
+            carteGrise.setCentre_ssdt(c.getCentre_ssdt());
             carteGrise.setCarteGriseId(c.getCarteGriseId());
 
             carteGrise.setProprietaireVehicule(c.getProprietaire() == null ?
@@ -265,22 +279,30 @@ public class CarteGriseController {
             System.out.println(ToStringBuilder.reflectionToString(carteGrise));
 
             carteGrise = cgs.save(carteGrise);
+            Message msg = msgRepo.findByCode("CG001");
+            LOGGER.info("Enregistrement "+ c.getNumImmatriculation()+" carte grise réussi");
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", carteGrise);
-        /*try { } catch (Exception e) {
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, carteGrise);
+         } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une erreur est survenue", null);
 
-        }*/
+        }
     }
     @DeleteMapping("/api/v1/admin/cartegrises/{id}")
     public ResponseEntity<Object> energie(@PathVariable Long id) {
         try {
             cgs.deleteById(id);
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+            Message msg = msgRepo.findByCode("CG006");
+            LOGGER.info("Suppression carte grise réussi");
+
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg
                     , null);
         } catch (Exception e) {
-            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
-            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_ADD + "Energie", null);
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("CG005");
+            LOGGER.error("Erreur lors de la suppression de la carte grise");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
     }
 
