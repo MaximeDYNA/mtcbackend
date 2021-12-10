@@ -46,4 +46,10 @@
 "VS003":"Affichage de la liste des visites terminés réussi",
 "VS004":"Erreur lors de l'affichage de la liste des visites terminés",
 "VS005":"Affichage de la liste des visites du statut donné réussi",
-"VS006":"Erreur lors de l'affichage de la liste des visites du statut donné"
+"VS006":"Erreur lors de l'affichage de la liste des visites du statut donné",
+"VS007":"Affichage kanban view visite",
+"VS008":"Erreur lors de l'affichage du kanban view visite",
+"VS009":"Affichage graphview view visite",
+"VS010":"Erreur lors de l'affichage du graphview view visite",
+"PV001":"Impression PV réussi",
+"PV002":"Impression PV échoué",

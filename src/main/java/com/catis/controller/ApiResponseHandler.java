@@ -54,7 +54,7 @@ public class ApiResponseHandler {
 
     }
 
-    public static ResponseEntity<Object> generateResponses(HttpStatus status, boolean error, String message, Object responseObj, Object datas) {
+    public static ResponseEntity<Object> generateResponses(HttpStatus status, boolean error, Message message, Object responseObj, Object datas) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {

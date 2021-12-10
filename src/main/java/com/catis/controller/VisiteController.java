@@ -105,6 +105,8 @@ public class VisiteController {
     private PagedResourcesAssembler<NewListView> pagedResourcesAssembler;
     @Autowired
     private MessageRepository msgRepo;
+    @Autowired
+    private NotificationService notificationService;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -249,6 +251,7 @@ public class VisiteController {
             Message msg = msgRepo.findByCode("VS005");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
+            e.printStackTrace();
             Message msg = msgRepo.findByCode("VS006");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
@@ -269,39 +272,49 @@ public class VisiteController {
     @GetMapping("/api/v1/visit/kanbanview")
     public ResponseEntity<Object> listforKabanView() {
 
-                log.info("kaban view visit");
-                Long orgId = SessionData.getOrganisationId(request);
-                List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
-                List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
-                List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
-                List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2, orgId);
-                List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3, orgId);
-                List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4, orgId);
-                List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5, orgId);
-                List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6, orgId);
-                List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7, orgId);
-                List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8, orgId);
-                List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9, orgId);
-                List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10, orgId);
-                kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
-                kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
-                kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
-                kabanViewVisits.add(new KabanViewVisit("A signer", toSign, toSign.size()));
-                kabanViewVisits.add(new KabanViewVisit("En Attente conformité",  confirms, confirms.size()));
-                kabanViewVisits.add(new KabanViewVisit("Non conforme", unconforms, unconforms.size()));
-                kabanViewVisits.add(new KabanViewVisit("A imprimer", prints, prints.size()));
-                kabanViewVisits.add(new KabanViewVisit("Refusés", refused, refused.size()));
-                kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
-                kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
-                kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
-                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
+        try{
+            Long orgId = SessionData.getOrganisationId(request);
+            List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
+            List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
+            List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
+            List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2, orgId);
+            List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3, orgId);
+            List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4, orgId);
+            List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5, orgId);
+            List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6, orgId);
+            List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7, orgId);
+            List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8, orgId);
+            List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9, orgId);
+            List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10, orgId);
+            kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
+            kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
+            kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
+            kabanViewVisits.add(new KabanViewVisit("A signer", toSign, toSign.size()));
+            kabanViewVisits.add(new KabanViewVisit("En Attente conformité",  confirms, confirms.size()));
+            kabanViewVisits.add(new KabanViewVisit("Non conforme", unconforms, unconforms.size()));
+            kabanViewVisits.add(new KabanViewVisit("A imprimer", prints, prints.size()));
+            kabanViewVisits.add(new KabanViewVisit("Refusés", refused, refused.size()));
+            kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
+            kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
+            kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
+            Message msg = msgRepo.findByCode("VS007");
+            log.info("kanbanview visit");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, kabanViewVisits);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.error("Erreur lors de l'affichage du kanban view visite");
+            Message msg = msgRepo.findByCode("VS008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+        }
 
     }
 
     @GetMapping("/api/v1/visite/graphview")
     public ResponseEntity<Object> listforGraphView() {
         try {
-            log.info("Graphe view visit");
+
             Long orgId = SessionData.getOrganisationId(request);
             List<Object> graphViews = new ArrayList<>();
             int[] datas = new int[9];
@@ -319,85 +332,101 @@ public class VisiteController {
             graphViews.add(new GraphView("A certifier", visiteService.listParStatus(6, orgId).size()));
             graphViews.add(new GraphView("Accepté", visiteService.listParStatus(7, orgId).size()));
             graphViews.add(new GraphView("Refusé", visiteService.listParStatus(8, orgId).size()));
-
-            return ApiResponseHandler.generateResponses(HttpStatus.OK, true, "Affichage graph view visit", graphViews, datas);
+            log.info("Affichage graphview view visite");
+            Message msg = msgRepo.findByCode("VS009");
+            return ApiResponseHandler.generateResponses(HttpStatus.OK, true, msg, graphViews, datas);
         } catch (Exception e) {
-            log.error("Erreur lors de l'affichage de la liste des visite en cours");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
-                    + " de la liste des visite en cours", null);
+            e.printStackTrace();
+            log.error("Erreur lors de l'affichage du graphview view visite");
+            Message msg = msgRepo.findByCode("VS010");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
 
     @GetMapping("/api/v1/all/visite/listview")
     public ResponseEntity<Object> listforlistView() {
+        try{
+            log.info("list view visit");
+            List<Listview> listVisit = new ArrayList<>();
+            Long orgId = SessionData.getOrganisationId(request);
+            for (Visite visite : visiteService.listParStatus(0, orgId)) {
+                Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
+                lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+                        .getNumImmatriculation()));
 
-        log.info("list view visit");
-        List<Listview> listVisit = new ArrayList<>();
-        Long orgId = SessionData.getOrganisationId(request);
-        for (Visite visite : visiteService.listParStatus(0, orgId)) {
-            Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
-            lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                    .getNumImmatriculation()));
+                if (venteService.findByVisite(visite.getIdVisite())
+                        == null)
+                    lv.setClient(null);
+                else
+                    lv.setClient(venteService.findByVisite(visite.getIdVisite())
+                            .getClient()
+                            .getPartenaire()
+                            .getNom());
+                lv.setCreatedAt(visite.getCreatedDate());
+                lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+                lv.setStatut(visite.statutRender(visite.getStatut()));
+                lv.setType(visite.typeRender());
+                listVisit.add(lv);
+                lv.setId(visite.getIdVisite());
 
-            if (venteService.findByVisite(visite.getIdVisite())
-                    == null)
-                lv.setClient(null);
-            else
-                lv.setClient(venteService.findByVisite(visite.getIdVisite())
-                        .getClient()
-                        .getPartenaire()
-                        .getNom());
-            lv.setCreatedAt(visite.getCreatedDate());
-            lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-            lv.setStatut(visite.statutRender(visite.getStatut()));
-            lv.setType(visite.typeRender());
-            listVisit.add(lv);
-            lv.setId(visite.getIdVisite());
-
+            }
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
         }
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+        catch (Exception e){
+            log.info("Affichage de toutes les visite");
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
+
 
     }
 
     @GetMapping("/api/v1/all/visite/listview/{statutCode}")
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
-
-        log.info("list view visit");
-        Long orgId = SessionData.getOrganisationId(request);
-        List<NewListView> listVisit = new ArrayList<>();
-        visiteService.listParStatus(statutCode, orgId).forEach(
-                visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                        (visite.getCarteGrise().getVehicule()==null
-                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                        (visite.getVente().getClient() == null
-                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
-                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                        visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
-        );
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+        try{
+            log.info("list view visit");
+            Long orgId = SessionData.getOrganisationId(request);
+            List<NewListView> listVisit = new ArrayList<>();
+            visiteService.listParStatus(statutCode, orgId).forEach(
+                    visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getVente().getClient() == null
+                                    ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
+            );
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
+        }catch (Exception e){
+            log.error("erreur de l'affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
 
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public String printPV(@PathVariable Long visiteId) throws ImpressionException, IOException, DocumentException {
+    public ResponseEntity<Object> printPV(@PathVariable Long visiteId) throws ImpressionException, IOException, DocumentException {
 
-        log.info("Impression PV");
-
-        File f= new File(environment.getProperty("pv.path"));
-        if(!f.exists())
-            f.mkdirs();
-
-
-        String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
+        try{
+            File f= new File(environment.getProperty("pv.path"));
+            if(!f.exists())
+                f.mkdirs();
+            Visite visite = visiteService.findById(visiteId);
+            String outputFolder = environment.getProperty("pv.path") + File.separator + visite.getProcess().getReference() + ".pdf";
 
 
-        OutputStream outputStream =  new FileOutputStream(outputFolder);
+            OutputStream outputStream =  new FileOutputStream(outputFolder);
 
 
             createWatermark(visiteService.findById(visiteId).getProcess().getReference());
@@ -417,7 +446,7 @@ public class VisiteController {
         }*/
 
 
-            Visite visite = visiteService.findById(visiteId);
+
             if(visite.getProcess().isStatus()){
                 visite.setStatut(8);
                 visite.setEncours(false);
@@ -427,10 +456,11 @@ public class VisiteController {
                 visite.setEncours(false);
             }
 
-            visite = visiteService.add(visite);
-            visiteService.dispatchEdit(visite);
-
-        //Openaplr to know if the car is in the center
+           Visite visite2 = visiteService.add(visite);
+            visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+                notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, false);
+            });
+            //Openaplr to know if the car is in the center
        /* String uri = environment.getProperty("endpoint.openalpr") ;
         String apiKey = environment.getProperty("endpoint.openalpr.api.key") ;
 
@@ -439,9 +469,17 @@ public class VisiteController {
                 bestPlate.getRate()
         );
         visite.getInspection().setBestPlate(bestPlate.getPlate());*/
-        visiteService.add(visite);
+            //visiteService.add(visite);
+            log.info("PDF SUCCESSFULLY PRINTED");
+            Message msg = msgRepo.findByCode("PV001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, "/public/pv/"+visite2.getProcess().getReference()+".pdf");
 
-        return "/public/pv/"+visiteId+".pdf";
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("PV002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, "VS002");
+        }
+
 
     }
 

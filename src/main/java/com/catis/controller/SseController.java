@@ -36,24 +36,17 @@ public class SseController {
     @Autowired
     private NotificationService notificationService;
 
-    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
-    public SseEmitter subscribeToEvents() {
-        String keycloakId = SessionData.getKeycloakId(request);
-        //log.info("Subscribing member ", keycloakId);
-        SseEmitter emitter = emitterService.createEmitter(keycloakId);
+    @GetMapping(value="/public/subscribe/{memberId}",consumes = MediaType.ALL_VALUE)
+    public SseEmitter subscribeToEvents(@PathVariable String memberId) {
+        SseEmitter emitter = emitterService.createEmitter(memberId);
 
         try{
-            emitter.send(SseEmitter.event().name("INIT").data(new EventDto("Ex", new HashMap<String, Object>(){{
-                put("abc", "abc");
-            }})));
-            notificationService.sendNotification(keycloakId, new EventDto("Ex notification", new HashMap<String, Object>(){{
-                put("abcd", "abcd");
-            }}));
+            emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
             //log.error(e.getMessage());
         }
         return emitter;
-    }*/
+    }
 
   /*  @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -62,7 +55,7 @@ public class SseController {
         notificationService.sendNotification(memberId, event);
     }*/
 
-    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
+    /*@GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(){
         System.out.println("---Subscribe---");
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -75,7 +68,7 @@ public class SseController {
         emitter.onCompletion(()->emitters.remove(emitter));
 
         return emitter;
-    }
+    }*/
 
 
 

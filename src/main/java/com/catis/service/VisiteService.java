@@ -157,10 +157,10 @@ public class VisiteService {
 
         visite = visiteRepository.save(visite);
         final Visite v = visite;
-        dispatchNewVisit(visite);
-        /*organisation.getUtilisateurs().forEach(utilisateur -> {
+        //dispatchNewVisit(visite);
+        organisation.getUtilisateurs().forEach(utilisateur -> {
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
-        });*/
+        });
 
 
         return visite;
@@ -168,7 +168,9 @@ public class VisiteService {
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        v.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, true);
+        });
         return v;
     }
 
@@ -227,8 +229,10 @@ public class VisiteService {
         visite.setEncours(false);
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
 
     }
 
@@ -253,9 +257,11 @@ public class VisiteService {
 
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
-        return visite;
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
+        return visite2;
 
     }
 
