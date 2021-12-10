@@ -159,13 +159,7 @@ public class VisiteService {
         final Visite v = visite;
         //dispatchNewVisit(visite);
         organisation.getUtilisateurs().forEach(utilisateur -> {
-            /*notificationService.sendNotification(utilisateur.getKeycloakId(), new EventDto("TEST", new HashMap<String, Object>() {{
-                put("a", "b");
-                put("c", "d");
-            }}));*/
-
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
-
         });
 
 
@@ -174,7 +168,9 @@ public class VisiteService {
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        v.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, true);
+        });
         return v;
     }
 
@@ -233,8 +229,10 @@ public class VisiteService {
         visite.setEncours(false);
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
 
     }
 
@@ -259,9 +257,11 @@ public class VisiteService {
 
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
-        return visite;
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
+        return visite2;
 
     }
 
@@ -412,6 +412,7 @@ public class VisiteService {
     //dispatching all event
     public void dispatchNewVisit(Visite visite){
         for(SseEmitter emitter:emitters){
+            System.out.println("SSE send a info");
             try{
                 emitter.send(SseEmitter.event().name("new_visit").data(
                         new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),

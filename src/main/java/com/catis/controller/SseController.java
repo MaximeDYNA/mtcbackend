@@ -6,54 +6,44 @@ import com.catis.objectTemporaire.EventDto;
 import com.catis.repository.NotificationService;
 import com.catis.service.EmitterService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
+@Slf4j
+@CrossOrigin
 public class SseController {
 
-    private static Logger log = LoggerFactory.getLogger(SseController.class);
+    //private static Logger log = LoggerFactory.getLogger(SseController.class);
     @Autowired
     HttpServletRequest request;
-
 
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
 
     @Autowired
-    private EmitterService emitterService;
+    private final EmitterService emitterService;
     @Autowired
     private NotificationService notificationService;
 
-    @GetMapping(value="/public/subscribe",consumes = MediaType.ALL_VALUE)
-    public SseEmitter subscribeToEvents() {
-        String keycloakId = SessionData.getKeycloakId(request);
-        log.info("Subscribing member ", keycloakId);
-        SseEmitter emitter = emitterService.createEmitter(keycloakId);
+    @GetMapping(value="/public/subscribe/{memberId}",consumes = MediaType.ALL_VALUE)
+    public SseEmitter subscribeToEvents(@PathVariable String memberId) {
+        SseEmitter emitter = emitterService.createEmitter(memberId);
 
         try{
-            emitter.send(SseEmitter.event().name("INIT").data(new EventDto("Ex", new HashMap<String, Object>(){{
-                put("abc", "abc");
-            }})));
+            emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
-            log.error(e.getMessage());
+            //log.error(e.getMessage());
         }
         return emitter;
     }

@@ -13,24 +13,24 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
+//@Slf4j
 public class InMemoryEmitterRepository implements EmitterRepository {
 
     private Map<String, SseEmitter> userEmitterMap = new ConcurrentHashMap<>();
 
     @Override
     public void addOrReplaceEmitter(String memberId, SseEmitter emitter) {
-        log.info("adding or replacing member {} in emitters", memberId);
+        //log.info("adding or replacing member {} in emitters", memberId);
         userEmitterMap.put(memberId, emitter);
     }
 
     @Override
     public void remove(String memberId) {
         if (userEmitterMap != null && userEmitterMap.containsKey(memberId)) {
-            log.debug("Removing emitter for member: {}", memberId);
+            //log.debug("Removing emitter for member: {}", memberId);
             userEmitterMap.remove(memberId);
         } else {
-            log.debug("No emitter to remove for member: {}", memberId);
+            //log.debug("No emitter to remove for member: {}", memberId);
         }
     }
 
