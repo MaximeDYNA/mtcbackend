@@ -4,4 +4,4 @@ WORKDIR /usr/app
 VOLUME /opt
 COPY ./target/mtc-* ./
 EXPOSE 8086
-CMD ["java", "-jar", "-Xmx256m", "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=dev", "mtc-0.0.1.jar"]
