@@ -75,7 +75,7 @@
             </td>
         </tr>
     </table>
-    <table  cellpadding="1" th:style="${v.process.status} ? ' padding-top: 140px; width: 100%; border-spacing: 25px 10px;' : ' padding-top: 30px; width: 100%; border-spacing: 25px 10px;'">
+    <table  cellpadding="1" th:style="${v.process.status} ? ' padding-top: 115px; width: 100%; border-spacing: 25px 10px;' : ' padding-top: 30px; width: 100%; border-spacing: 25px 10px;'">
         <tr height="15">
             <td style="width:50%;">
                 <table  cellpadding="0" cellspacing="0" style="width:100%; ">
@@ -199,8 +199,8 @@
 
             </td>
         </tr>
-        <tr valign="top">
-            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black; height: 530px; padding: 4px' : 'width: 50%; border: 1px solid black; height: 590px; padding: 4px'" rowspan="2">
+        <tr valign="top" >
+            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black; height: 500px; padding: 4px' : 'width: 50%; border: 1px solid black; height: 590px; padding: 4px'" rowspan="2">
                 <div th:style="${v.process.status} ? 'width:90%; height: 680px; padding: 4px' : 'width:90%; height: 600px;  padding: 4px'">
                     <div style="font-weight: bold; padding: 4px">
                         <div th:if="${#lists.size(majorDefault)} != 0">
@@ -547,7 +547,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <div  align="center" style="margin-left: 5px">
+                            <div  align="center" style="margin-left: 5px; margin-bottom: 5px">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
                                     CAT. : <span th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
@@ -613,14 +613,14 @@
 
 <div style="page-break-after: always;"></div>
 
-<div id="logo" class="media" data-src="watermark.png" style="opacity: 0.5; position: absolute; width: 750px; height: 865px"></div>
+<div id="logo" class="media" data-src="watermark.png" style="opacity: 0.3; position: absolute; width: 3095px; height: 1050px"></div>
 
 
 
 <div align="center" style="height:100%">
     <table cellspacing="10" style="margin-top: 200px; margin-bottom: 300px">
         <tr>
-            <td align="center" colspan="2" valign="top">
+            <td align="center" colspan="2" valign="top" style="padding-left: 25px">
                 <h3 style="z-index: 10"> Véhicule immatriculé /
                     Registered Vehicle : <span th:utext="${v.carteGrise.numImmatriculation}"></span>
                 </h3>
@@ -656,10 +656,23 @@
     </table>
 
 </div>
-<footer style="font-size: 10px; color: gray; font-family: 'Lucida Console'">
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<footer style="font-size: 10px; color: gray; font-family: 'Lucida Console';">
     <center>
         <p><span th:text="${o.nom} + ' - ' +${o.adress} + ' - ' + ${o.tel1}+ '/' + ${o.tel2}"></span></p>
     </center>
+
 </footer>
 
 </body>
