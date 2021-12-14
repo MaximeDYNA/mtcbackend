@@ -566,15 +566,15 @@ public class VisiteController {
         }
         ref =  bld.toString();
 
-        BufferedImage img = new BufferedImage(895, 1142, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(2995, 2042, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = img.createGraphics();
 
 
         AffineTransform affineTransform = new AffineTransform();
         g2d.setTransform(affineTransform);
-        g2d.rotate(-Math.PI/4);
-        Font font = new Font("Arial", Font.PLAIN, 5);
+        g2d.rotate(-Math.PI/10);
+        Font font = new Font("Arial", Font.PLAIN, 3);
 
         g2d.setColor(Color.YELLOW);
 
