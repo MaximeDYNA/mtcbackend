@@ -200,9 +200,9 @@
             </td>
         </tr>
         <tr valign="top">
-            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black;' : 'width: 50%; border: 1px solid black;'" rowspan="2">
+            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black; padding: 4px' : 'width: 50%; border: 1px solid black; padding: 4px'" rowspan="2">
                 <div >
-                    <div style="font-weight: bold; padding: 4px; height: 540px; padding: 2px">
+                    <div style="font-weight: bold; padding: 6px; height: 540px;">
                         <div th:if="${#lists.size(majorDefault)} != 0">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
@@ -237,7 +237,7 @@
                 </div>
             </td>
             <td valign="top" style="width: 50%; border: 1px solid black;">
-                <div style=" height: 330px;">
+                <div style="height: 380px;">
                     <div style=" padding: 4px; padding-left: 10px">
                         <div style=" height:auto;">
                             <h4>
@@ -543,7 +543,7 @@
             </td>
         </tr>
         <tr valign="bottom">
-            <td style="border-bottom: none; border-left: none; border-right: none">
+            <td style="border-bottom: none; border-left: none; border-right: none; height: 380px;">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
