@@ -199,10 +199,10 @@
 
             </td>
         </tr>
-        <tr valign="top" height="67">
-            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black; height: 540px; padding: 4px' : 'width: 50%; border: 1px solid black; height: 570px; padding: 4px'" rowspan="2">
-                <div>
-                    <div style="font-weight: bold; padding: 4px">
+        <tr valign="top">
+            <td th:style="${v.process.status} ? 'width: 50%; border: 1px solid black; ' : 'width: 50%; border: 1px solid black; height: 570px; padding: 4px'" rowspan="2">
+                <div >
+                    <div style="font-weight: bold; padding: 4px; height: 540px; padding: 4px">
                         <div th:if="${#lists.size(majorDefault)} != 0">
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
