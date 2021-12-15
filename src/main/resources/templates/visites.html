@@ -237,7 +237,7 @@
                 </div>
             </td>
             <td valign="top" style="width: 50%; border: 1px solid black;">
-                <div style="height: 380px;">
+                <div style="height: 365px;">
                     <div style=" padding: 4px; padding-left: 10px">
                         <div style=" height:auto;">
                             <h4>
@@ -547,7 +547,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <div  align="center" style="margin-left: 5px; margin-bottom: 20px">
+                            <div  align="center" style="margin-left: 5px; margin-bottom: 10px">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
                                     CAT. : <span th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
@@ -563,7 +563,7 @@
                                                 </div>
                                             </td>
                                             <td align="center" style="border-top: none; border-bottom: none; width:100px">
-                                                    <span style="font-weight: bold; font-size: 18px; margin-top: 50%; margin-bottom: 50%" th:utext="${v.process.status ? v.carteGrise.numImmatriculation: 'XX xxx XX'}"></span>
+                                                    <span style="font-weight: bold; font-size: 14px; margin-top: 50%; margin-bottom: 50%" th:utext="${v.process.status ? v.carteGrise.numImmatriculation: 'XX xxx XX'}"></span>
                                             </td>
                                             <td align="center">
                                                 <div style="width: 50px; border: 1px solid black">
@@ -632,14 +632,14 @@
                 </div-->
             </td>
         </tr>
-        <tr>
+        <tr valign="center">
             <td>
                 <div style="z-index: 0">
                     <img th:src="${mesurevisuel != null ? (mesurevisuel.image1  != null ? 'data:image/png;base64,'+mesurevisuel.image1: '') : ''}"
                          style="height: 250px; width: 320px;"/>
                 </div>
             </td>
-            <td>
+            <td >
                 <div>
                     <img th:src="${mesurevisuel != null ? (mesurevisuel.image2  != null ? 'data:image/png;base64,'+mesurevisuel.image2: '') : ''}"
                          style="height: 250px; width: 320px;"/>
