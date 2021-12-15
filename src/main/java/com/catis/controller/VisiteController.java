@@ -566,7 +566,7 @@ public class VisiteController {
         }
         ref =  bld.toString();
 
-        BufferedImage img = new BufferedImage(3095, 2042, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(2995, 2042, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = img.createGraphics();
 
