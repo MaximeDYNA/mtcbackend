@@ -547,7 +547,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <div  align="center" style="margin-left: 5px; margin-bottom: 5px">
+                            <div  align="center" style="margin-bottom: 5px; margin-right: 6px">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
                                     CAT. : <span th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
@@ -555,7 +555,7 @@
                                     (${v.carteGrise.produit.libelle} == 'catDPL'? 'D - Tire remorque' : (${v.carteGrise.produit.libelle} == 'catDPLS'? 'D - Semi remorque' : 'Error'))))))"></span> <br/>
                                 </p>
                                 <div align="center">
-                                    <table style="border-collapse: collapse" cellspacing="0" cellpadding="1" align="center">
+                                    <table style="border-collapse: collapse; margin-right: 15px" cellspacing="0" cellpadding="1" align="center">
                                         <tr>
                                             <td align="center">
                                                 <div style="width: 50px; border: 1px solid black">
@@ -589,6 +589,13 @@
                                                <div  th:if="${v.process.status}" align="center">
                                                    <p style="font-size: 7px; font-weight: bold">valable du / valid from : <span th:utext="${#dates.format(v.inspection.dateFin, 'dd/MM/yyyy')}"></span> Au / To <span th:utext="${#dates.format(controlValidityAt, 'dd/MM/yyyy')}"></span> </p>
                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top" style="vertical-align: top">
+                                            <td valign="top" colspan="3">
+                                                <div  th:if="${v.process.status}" align="center">
+                                                    <p style="font-size: 7px; font-weight: bold">Centre / Center : <span th:text="${o.nom}"></span></p>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
