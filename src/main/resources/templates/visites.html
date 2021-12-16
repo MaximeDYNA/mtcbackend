@@ -237,7 +237,7 @@
                 </div>
             </td>
             <td valign="top" style="width: 50%; border: 2px solid black;">
-                <div style="height: 383px;">
+                <div style="height: 363px;">
                     <div style=" padding: 4px; padding-left: 10px">
                         <div style=" height:auto;">
                             <h4>
@@ -543,11 +543,11 @@
             </td>
         </tr>
         <tr valign="bottom">
-            <td th:style="${v.process.status} ? 'border-bottom: none; border-left: none; border-right: none; height: 248px;':'border-bottom: none; border-left: none; border-right: none; height: 234px;'">
+            <td th:style="${v.process.status} ? 'border-bottom: none; border-left: none; border-right: none; height: 268px;':'border-bottom: none; border-left: none; border-right: none; height: 234px;'">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <div  align="center" style="margin-left: 5px; margin-bottom: 15px">
+                            <div  align="center" style="margin-left: 5px; margin-bottom: 10px">
                                 <p style="font-weight: bold; font-size: 8px">
                                     N° PV / SHEET N°: <span th:utext="${v.process.reference}"></span><br/>
                                     CAT. : <span th:utext="${v.carteGrise.produit.libelle} == 'catA'? 'A - Taxi et véhicule auto-école' : (${v.carteGrise.produit.libelle}== 'catB' ? 'B - véhicule léger particulier' :
