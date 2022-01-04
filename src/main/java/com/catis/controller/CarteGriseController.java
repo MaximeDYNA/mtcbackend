@@ -155,9 +155,27 @@ public class CarteGriseController {
             else
                 vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
         }
-        else
+        else{
             vehicule = vehiculeService.findById(carteGriseR.getVehiculeId());
-
+            vehicule.setTypeVehicule(carteGriseR.getTypeVehicule());
+            vehicule.setCarrosserie(carteGriseR.getCarrosserie());
+            vehicule.setPlaceAssise(carteGriseR.getPlaces());
+            vehicule.setPremiereMiseEnCirculation(carteGriseR.getPremiereMiseEnCirculation());
+            vehicule.setPuissAdmin(carteGriseR.getPuissAdmin());
+            vehicule.setPoidsTotalCha(carteGriseR.getPoidsTotalCha());
+            vehicule.setPoidsVide(carteGriseR.getPoidsVide());
+            vehicule.setChargeUtile(carteGriseR.getChargeUtile());
+            vehicule.setCylindre(vehicule.getCylindre()); // cm3
+            if(carteGriseR.getMarqueVehiculeId()==null)
+                vehicule.setMarqueVehicule(null);
+            else
+                vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
+            if(carteGriseR.getEnergieId()==null)
+                vehicule.setEnergie(null);
+            else
+                vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+        }
+        
         // retrouve l'objet visite en bd
         if(carteGriseR.getVisiteId()==null)
             throw new Exception("Prière de choisir une visite");

@@ -25,6 +25,7 @@
 "HL007":"Onglet selectionné avec succès",
 "HL008":"Erreur lors de la sélection de l'onglet",
 "EN001":"Encaissement reussi",
+"EN002":"Erreur lors de l'encaissement",
 "CG001":"Enregistrement carte grise réussi",
 "CG002":"Erreur lors de l'Enregistrement carte grise",
 "CG003":"Affichage de la liste des cartes grises réussi",
