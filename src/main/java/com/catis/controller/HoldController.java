@@ -108,6 +108,7 @@ public class HoldController {
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, holdService.findByNumberSessionCaisse(holdData.getNumber(), holdData.getSessionCaisseId()));
         } catch (Exception e) {
             Message msg = msgRepo.findByCode("HL008");
+            e.printStackTrace();
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false,
                     msg, null);
         }
