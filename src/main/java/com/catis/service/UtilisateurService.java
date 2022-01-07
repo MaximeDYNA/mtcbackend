@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.catis.model.entity.Utilisateur;
 import com.catis.repository.UtilisateurRepository;
@@ -20,6 +21,12 @@ public class UtilisateurService {
 
     public void updateUtilisateur(Utilisateur utilisateur) {
         utilisateurRepository.save(utilisateur);
+    }
+
+    public List<Utilisateur> findAllUtilisateur(Pageable pageable) {
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        utilisateurRepository.findByActiveStatusTrue(pageable).forEach(utilisateurs::add);
+        return utilisateurs;
     }
 
     public List<Utilisateur> findAllUtilisateur() {
