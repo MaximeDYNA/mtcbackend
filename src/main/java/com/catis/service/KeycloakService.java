@@ -52,14 +52,18 @@ public class KeycloakService {
 
 
         for (UserRepresentation u : users) {
+            System.out.println("***user list***");
+            System.out.println("user :"+ u.getUsername());
 
             userResource = usersResource.get(u.getId());
+
             userRole = userResource.roles()
                     .clientLevel(clientRepresentation.getId())
                     .listAll().size() == 0 ? null : userResource.roles()
                     .clientLevel(clientRepresentation.getId())
                     .listAll()
                     .get(0).getName();
+
             userDTO = new UserKeycloak();
             userDTO.setId(u.getId());
             userDTO.setFirstName(u.getFirstName());
@@ -73,6 +77,8 @@ public class KeycloakService {
                     false : (u.getAttributes().get("mtc") == null ? false :  Boolean.valueOf(u.getAttributes().get("mtc").get(0))))
             userDTOs.add(userDTO);
         }
+        keycloak.close();
+
         return userDTOs;
     }
 
