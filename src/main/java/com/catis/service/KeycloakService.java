@@ -31,8 +31,11 @@ public class KeycloakService {
 
     public List<UserKeycloak> getUserList() {
         String serverUrl = env.getProperty("keycloak.auth-server-url");
+
         String realm = env.getProperty("keycloak.realm");
+
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+
         Keycloak keycloak = KeycloakBuilder.builder()
                 .serverUrl(serverUrl)
                 .realm(realm)
@@ -43,27 +46,22 @@ public class KeycloakService {
         UsersResource usersResource = keycloak.realm(realm).users();
         List<UserRepresentation> users = usersResource.list();
         List<UserKeycloak> userDTOs = new ArrayList<>();
-        UserKeycloak userDTO;
-        UserResource userResource;
-        String userRole;
 
         ClientRepresentation clientRepresentation = keycloak.realm(realm).clients()
                 .findByClientId(env.getProperty("keycloak.resource")).get(0);
 
-
         for (UserRepresentation u : users) {
 
+            UserResource userResource = usersResource.get(u.getId());
 
-            userResource = usersResource.get(u.getId());
-
-            userRole = userResource.roles()
+            String userRole = userResource.roles()
                     .clientLevel(clientRepresentation.getId())
                     .listAll().size() == 0 ? null : userResource.roles()
                     .clientLevel(clientRepresentation.getId())
                     .listAll()
                     .get(0).getName();
 
-            userDTO = new UserKeycloak();
+            UserKeycloak userDTO = new UserKeycloak();
             userDTO.setId(u.getId());
             userDTO.setFirstName(u.getFirstName());
             userDTO.setLastName(u.getUsername());
@@ -73,7 +71,7 @@ public class KeycloakService {
                     u.getAttributes() == null ?
                     null : Long.valueOf(u.getAttributes().get("organisationId").get(0)));
             if(u.getAttributes() == null ?
-                    false : (u.getAttributes().get("mtc") == null ? false :  Boolean.valueOf(u.getAttributes().get("mtc").get(0))))
+                    false : (u.getAttributes().get("ditrosct") == null ? false :  Boolean.valueOf(u.getAttributes().get("ditrosct").get(0))))
             userDTOs.add(userDTO);
         }
         keycloak.close();
