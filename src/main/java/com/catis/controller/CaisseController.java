@@ -83,7 +83,7 @@ public class CaisseController {
 
         Caisse caisse = new Caisse();
         Organisation organisation = caissePOJO.getOrganisation() == null?
-                null : organisationService.findOrganisationById(caissePOJO.getOrganisation());
+                null : organisationService.findOrganisationById(caissePOJO.getOrganisation().getId());
         caisse.setCaisse_id(caissePOJO.getCaisse_id());
         caisse.setLibelle(caissePOJO.getLibelle() == null ? null : caissePOJO.getLibelle() );
         caisse.setDescription(caissePOJO.getDescription() == null ? null : caissePOJO.getDescription());

@@ -13,5 +13,5 @@ public class CaissePOJO {
     private Long caisse_id;
     private String libelle;
     private String description;
-    private Long organisation;
+    private OrganisationListDTO organisation;
 }
