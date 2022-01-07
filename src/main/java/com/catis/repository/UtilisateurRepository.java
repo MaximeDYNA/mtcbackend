@@ -1,5 +1,6 @@
 package com.catis.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Utilisateur;
@@ -9,5 +10,6 @@ import java.util.List;
 
 public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long> {
     Utilisateur findByKeycloakId(String keycloakId);
+    List<Utilisateur> findByActiveStatusTrue(Pageable pageable);
     List<Utilisateur> findByActiveStatusTrue();
 }

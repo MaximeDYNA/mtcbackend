@@ -1,6 +1,7 @@
 package com.catis.controller;
 
 import com.catis.controller.message.Message;
+import com.catis.model.entity.Caisse;
 import com.catis.model.entity.Organisation;
 import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.ChildKanbanDTO;
@@ -10,6 +11,13 @@ import com.catis.service.KeycloakService;
 import com.catis.service.OrganisationService;
 import com.catis.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +39,8 @@ public class UserController {
     private OrganisationService os;
     @Autowired
     private UtilisateurService us;
+    @Autowired
+    private PagedResourcesAssembler<Utilisateur> pagedResourcesAssembler;
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUsersOfOrganisation(@PathVariable Long id){
@@ -84,13 +94,20 @@ public class UserController {
                 true, Message.ListOK + " Users", usersList);
     }
 
-    @GetMapping
-    public ResponseEntity<Object> getUsersOfMtc() {
+    @GetMapping(params = {"page", "size"})
+    public ResponseEntity<Object> getUsersOfMtc(@RequestParam("page") int page,
+                                                @RequestParam("size") int size) {
         try {
-            List<Utilisateur> users = us.findAllUtilisateur();
+
+            List<Utilisateur> users = us.findAllUtilisateur(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+            Page<Utilisateur> pages = new PageImpl<>(users, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+
+            PagedModel<EntityModel<Utilisateur>> result = pagedResourcesAssembler
+                    .toModel(pages);
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK,
-                    true, Message.ListOK + " Users", users);
+                    true, Message.ListOK + " Users", result);
         } catch (Exception e) {
             e.printStackTrace();
             return ApiResponseHandler.generateResponse(HttpStatus.OK,
