@@ -175,7 +175,7 @@ public class CarteGriseController {
             else
                 vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
         }
-        
+
         // retrouve l'objet visite en bd
         if(carteGriseR.getVisiteId()==null)
             throw new Exception("Prière de choisir une visite");
