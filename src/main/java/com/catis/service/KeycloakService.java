@@ -52,8 +52,7 @@ public class KeycloakService {
 
 
         for (UserRepresentation u : users) {
-            System.out.println("***user list***");
-            System.out.println("user :"+ u.getUsername());
+
 
             userResource = usersResource.get(u.getId());
 
@@ -78,6 +77,7 @@ public class KeycloakService {
             userDTOs.add(userDTO);
         }
         keycloak.close();
+        System.out.println("***user dto size ** "+ userDTOs.size());
 
         return userDTOs;
     }

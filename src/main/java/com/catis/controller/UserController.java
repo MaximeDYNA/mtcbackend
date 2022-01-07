@@ -63,11 +63,8 @@ public class UserController {
         List<UserKeycloak> userDTOList = keycloakService.getUserList();
         List<Map<String, String>> users = new ArrayList<>();
 
-        Map<String, String> user ;
-
-
         for(UserKeycloak u: userDTOList){
-            user = new HashMap<>();
+            Map<String, String> user = new HashMap<>();
             user.put("id", u.getId());
             user.put("name", u.getFirstName() +" "+ u.getLastName() +" "+ u.getId());
             users.add(user);
