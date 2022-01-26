@@ -100,8 +100,10 @@ public class EncaissementController {
                 else{
                     partenaire.setNom(encaissement.getNomclient());
                     partenaire.setTelephone(encaissement.getNumeroclient());
+                    partenaire.setOrganisation(organisation);
                     Client client =new Client();
                     client.setPartenaire(partenaire);
+                    client.setOrganisation(organisation);
                     vente.setClient(client);
                 }
             }
@@ -113,8 +115,10 @@ public class EncaissementController {
             /* ---------Contact------------ */
             partenaire2.setNom(encaissement.getNomcontacts());
             partenaire2.setTelephone(encaissement.getNumerocontacts());
+            partenaire2.setOrganisation(organisation);
             Contact contact =new Contact();
             contact.setPartenaire(partenaire2);
+            contact.setOrganisation(organisation);
 
             vente.setContact(encaissement.getContactId() == 0 ? contact : contactService.findById(encaissement.getContactId()));
             /*------------------------------*/
@@ -131,6 +135,7 @@ public class EncaissementController {
             Visite visite;
             ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
             proprietaireVehicule.setPartenaire(contact.getPartenaire());
+            proprietaireVehicule.setOrganisation(organisation);
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 DetailVente detailVente = new DetailVente();
 
