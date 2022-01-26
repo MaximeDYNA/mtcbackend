@@ -127,6 +127,7 @@ public class VisiteService {
             control.setCarteGrise(cg);
             control.setStatus(StatusType.INITIALIZED);
             control.setVisites(visites);
+            control.setOrganisation(organisation);
             visite.setControl(control);
 
         } else {
