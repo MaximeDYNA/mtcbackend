@@ -36,6 +36,7 @@ public class MesureVisuelService {
             //mesure.setGieglanFile();
             mesure.setSignature1(defectResponse.getSignature1());
             mesure.setSignature2(defectResponse.getSignature2());
+            mesure.setOrganisation(i.getOrganisation());
             mesure = mesurevisuel.save(mesure);
             return mesure;
         //}

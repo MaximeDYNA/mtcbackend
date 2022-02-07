@@ -16,4 +16,8 @@ public class SessionData {
     public static UUID getOrganisationId(HttpServletRequest request){
         return UUID.fromString(String.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()));
     }
+
+    public static String getKeycloakId(HttpServletRequest request){
+        return UserInfoIn.getUserInfo(request).getId();
+    }
 }

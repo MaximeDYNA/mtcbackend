@@ -72,13 +72,18 @@ public class EncaissementController {
 
     @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
-    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws ContactVideException, VisiteEnCoursException {
+    public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws Exception {
+        LOGGER.info("ADDING A VISIT...");
         UUID orgId = UserInfoIn.getUserInfo(request).getOrganisanionId();
         String user = UserInfoIn.getUserInfo(request).getLogin();
-
+        try {
         Caissier caissier = caissierService.findBylogin(user);
         if(caissier==null)
-            throw new VisiteEnCoursException("Please enter a correct login");
+            throw new Exception("Please enter a correct login");
+        if(!caissier.getSessionCaisses().stream().anyMatch(
+                sessionCaisse -> sessionCaisse.isActive()
+        ))
+            throw new Exception("Please open a session");
 
         Organisation organisation = os.findByOrganisationId(orgId);
 
@@ -96,8 +101,10 @@ public class EncaissementController {
                 else{
                     partenaire.setNom(encaissement.getNomclient());
                     partenaire.setTelephone(encaissement.getNumeroclient());
+                    partenaire.setOrganisation(organisation);
                     Client client =new Client();
                     client.setPartenaire(partenaire);
+                    client.setOrganisation(organisation);
                     vente.setClient(client);
                 }
             }
@@ -109,8 +116,10 @@ public class EncaissementController {
             /* ---------Contact------------ */
             partenaire2.setNom(encaissement.getNomcontacts());
             partenaire2.setTelephone(encaissement.getNumerocontacts());
+            partenaire2.setOrganisation(organisation);
             Contact contact =new Contact();
             contact.setPartenaire(partenaire2);
+            contact.setOrganisation(organisation);
 
             vente.setContact(encaissement.getContactId().equals(UUID.fromString("0")) ? contact : contactService.findById(encaissement.getContactId()));
             /*------------------------------*/
@@ -127,6 +136,7 @@ public class EncaissementController {
             Visite visite;
             ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
             proprietaireVehicule.setPartenaire(contact.getPartenaire());
+            proprietaireVehicule.setOrganisation(organisation);
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 DetailVente detailVente = new DetailVente();
 
@@ -198,11 +208,12 @@ public class EncaissementController {
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());
 
             Message msg = msgRepo.findByCode("EN001");
+            LOGGER.info("VISIT SUCCESSFULLY ADDED");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-           /*      try { } catch (Exception e) {
+         } catch (Exception e) {
             Message msg = msgRepo.findByCode("EN002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, e);
-        }*/
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
+        }
 
 
     }

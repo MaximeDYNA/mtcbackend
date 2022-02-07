@@ -32,7 +32,7 @@ public class OperationCaisse extends JournalData {
     private int type;
     private double montant;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Vente vente;
 
     @ManyToOne

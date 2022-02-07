@@ -14,7 +14,7 @@ public interface HoldRepository extends CrudRepository<Hold, UUID> {
     void deleteByNumberAndSessionCaisse_SessionCaisseId(Long number, UUID sessionCaisseId);
 
     @Query(value = "SELECT max(number) FROM Hold h where h.sessionCaisse = ?1")
-    public Long max(SessionCaisse sessionCaisse);
+    Long max(SessionCaisse sessionCaisse);
 
     void deleteBySessionCaisse_SessionCaisseId(UUID sessionCaisseId);
 

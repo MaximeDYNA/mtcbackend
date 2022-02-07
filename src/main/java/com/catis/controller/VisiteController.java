@@ -103,6 +103,10 @@ public class VisiteController {
 
     @Autowired
     private PagedResourcesAssembler<NewListView> pagedResourcesAssembler;
+    @Autowired
+    private MessageRepository msgRepo;
+    @Autowired
+    private NotificationService notificationService;
 
     private static Logger log = LoggerFactory.getLogger(VisiteController.class);
 
@@ -142,13 +146,14 @@ public class VisiteController {
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
         log.info("recherche ---");
-        UUID orgId = SessionData.getOrganisationId(request);
-        if(search == "" ){
-            search=null;
-        }
-        List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
+        try{
+            UUID orgId = SessionData.getOrganisationId(request);
+            if(search == "" ){
+                search=null;
+            }
+            List<Visite> resultPage = visiteService.searchedVisitList(search, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
 
-        List<NewListView> newListViews = resultPage.stream().map(visite ->
+            List<NewListView> newListViews = resultPage.stream().map(visite ->
 
             new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                     (visite.getCarteGrise().getVehicule()==null
@@ -171,33 +176,31 @@ public class VisiteController {
                     visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
         ).collect(Collectors.toList());
 
+            Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+            PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
 
 
-        /*List<Listview> listVisit = new ArrayList<>();
-        resultPage.forEach(visite ->{
-            log.info("visite construction start "+ visite.getIdVisite());
-            listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer));
-            log.info("visite construction end "+ visite.getIdVisite());
-        });
-*/
-        //convert list to page for applying hatoas
-        log.info("------------Avant le hatoas ");
-        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
-        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
-                .toModel(pages);
-        log.info("**************après le hatoas ");
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
 
     }
 
     @GetMapping(value = "/api/v1/all/visitesended", params = { "page", "size" })
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
-
+        try{
         UUID orgId = SessionData.getOrganisationId(request);
 
-        Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
-        List<Listview> listVisit = new ArrayList<>();
+
+            Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
+            List<Listview> listVisit = new ArrayList<>();
 
         List<NewListView> newListViews = resultPage.stream().map(visite ->
                 new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -224,11 +227,20 @@ public class VisiteController {
             listVisit.add(buildListView(visite, visiteService, gieglanFileService,catSer))
         );*/
 
-        //convert list to page for applying hatoas
-        Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
-        PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
-                .toModel(pages);
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
+            //convert list to page for applying hatoas
+            Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")), visiteService.endedVisitList(orgId).size());
+            PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS003");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("VS004");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+        }
+
 
     }
 
@@ -237,11 +249,12 @@ public class VisiteController {
         try {
             log.info("Liste des visites en cours");
             UUID orgId = SessionData.getOrganisationId(request);
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.listParStatus(status,orgId));
+            Message msg = msgRepo.findByCode("VS005");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
-
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "KO", null);
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("VS006");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
     }
 
@@ -252,7 +265,7 @@ public class VisiteController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "liste des visite en cours", visiteService.findAll());
         } catch (Exception e) {
             log.error("Erreur lors de l'affichage de la liste des visite en cours");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Erreur lors de l'affichage"
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
                     + " de la liste des visite en cours", null);
         }
     }
@@ -260,7 +273,7 @@ public class VisiteController {
     @GetMapping("/api/v1/visit/kanbanview")
     public ResponseEntity<Object> listforKabanView() {
 
-                log.info("kaban view visit");
+                try{
                 UUID orgId = SessionData.getOrganisationId(request);
                 List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
                 List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
@@ -285,7 +298,16 @@ public class VisiteController {
                 kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
                 kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
                 kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
-                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage Kaban view visit", kabanViewVisits);
+            Message msg = msgRepo.findByCode("VS007");
+            log.info("kanbanview visit");    return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, kabanViewVisits);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.error("Erreur lors de l'affichage du kanban view visite");
+            Message msg = msgRepo.findByCode("VS008");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+        }
 
     }
 
@@ -310,19 +332,21 @@ public class VisiteController {
             graphViews.add(new GraphView("A certifier", visiteService.listParStatus(6, orgId).size()));
             graphViews.add(new GraphView("Accepté", visiteService.listParStatus(7, orgId).size()));
             graphViews.add(new GraphView("Refusé", visiteService.listParStatus(8, orgId).size()));
-
-            return ApiResponseHandler.generateResponses(HttpStatus.OK, true, "Affichage graph view visit", graphViews, datas);
+            log.info("Affichage graphview view visite");
+            Message msg = msgRepo.findByCode("VS009");
+            return ApiResponseHandler.generateResponses(HttpStatus.OK, true, msg, graphViews, datas);
         } catch (Exception e) {
-            log.error("Erreur lors de l'affichage de la liste des visite en cours");
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Erreur lors de l'affichage"
-                    + " de la liste des visite en cours", null);
+            e.printStackTrace();
+            log.error("Erreur lors de l'affichage du graphview view visite");
+            Message msg = msgRepo.findByCode("VS010");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
 
     }
 
     @GetMapping("/api/v1/all/visite/listview")
     public ResponseEntity<Object> listforlistView() {
-
+try{
         log.info("list view visit");
         List<Listview> listVisit = new ArrayList<>();
         UUID orgId = SessionData.getOrganisationId(request);
@@ -331,64 +355,78 @@ public class VisiteController {
             lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
                     .getNumImmatriculation()));
 
-            if (venteService.findByVisite(visite.getIdVisite())
-                    == null)
-                lv.setClient(null);
-            else
-                lv.setClient(venteService.findByVisite(visite.getIdVisite())
-                        .getClient()
-                        .getPartenaire()
-                        .getNom());
-            lv.setCreatedAt(visite.getCreatedDate());
-            lv.setReference(visite.getCarteGrise().getNumImmatriculation());
-            lv.setStatut(visite.statutRender(visite.getStatut()));
-            lv.setType(visite.typeRender());
-            listVisit.add(lv);
-            lv.setId(visite.getIdVisite());
+                if (venteService.findByVisite(visite.getIdVisite())
+                        == null)
+                    lv.setClient(null);
+                else
+                    lv.setClient(venteService.findByVisite(visite.getIdVisite())
+                            .getClient()
+                            .getPartenaire()
+                            .getNom());
+                lv.setCreatedAt(visite.getCreatedDate());
+                lv.setReference(visite.getCarteGrise().getNumImmatriculation());
+                lv.setStatut(visite.statutRender(visite.getStatut()));
+                lv.setType(visite.typeRender());
+                listVisit.add(lv);
+                lv.setId(visite.getIdVisite());
 
+            }
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
         }
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+        catch (Exception e){
+            log.info("Affichage de toutes les visite");
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
+
 
     }
 
     @GetMapping("/api/v1/all/visite/listview/{statutCode}")
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
-
-        log.info("list view visit");
-        UUID orgId = SessionData.getOrganisationId(request);
-        List<NewListView> listVisit = new ArrayList<>();
-        visiteService.listParStatus(statutCode, orgId).forEach(
-                visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                        (visite.getCarteGrise().getVehicule()==null
-                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                        (visite.getVente().getClient() == null
-                                ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
-                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                        visite.getIsConform(),
-                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
-        );
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Affichage en mode liste des visites", listVisit);
+        try{
+            log.info("list view visit");
+            UUID orgId = SessionData.getOrganisationId(request);
+            List<NewListView> listVisit = new ArrayList<>();
+            visiteService.listParStatus(statutCode, orgId).forEach(
+                    visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getVente().getClient() == null
+                                    ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
+            );
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
+        }catch (Exception e){
+            log.error("erreur de l'affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
 
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public String printPV(@PathVariable UUID visiteId) throws ImpressionException, IOException, DocumentException {
+    public ResponseEntity<Object> printPV(@PathVariable UUID visiteId) throws ImpressionException, IOException, DocumentException {
 
-        log.info("Impression PV");
-
-        File f= new File(environment.getProperty("pv.path"));
-        if(!f.exists())
-            f.mkdirs();
-
-
-        String outputFolder = environment.getProperty("pv.path") + File.separator + visiteId.toString() + ".pdf";
+        try{
+            File f= new File(environment.getProperty("pv.path"));
+            if(!f.exists())
+                f.mkdirs();
+            Visite visite = visiteService.findById(visiteId);
+            String outputFolder = environment.getProperty("pv.path") + File.separator + visite.getProcess().getReference() + ".pdf";
 
 
-        OutputStream outputStream =  new FileOutputStream(outputFolder);
+            OutputStream outputStream =  new FileOutputStream(outputFolder);
 
 
             createWatermark(visiteService.findById(visiteId).getProcess().getReference());
@@ -408,7 +446,7 @@ public class VisiteController {
         }*/
 
 
-            Visite visite = visiteService.findById(visiteId);
+
             if(visite.getProcess().isStatus()){
                 visite.setStatut(8);
                 visite.setEncours(false);
@@ -418,21 +456,30 @@ public class VisiteController {
                 visite.setEncours(false);
             }
 
-            visite = visiteService.add(visite);
-            visiteService.dispatchEdit(visite);
-
-        //Openaplr to know if the car is in the center
-        String uri = environment.getProperty("endpoint.openalpr") ;
+           Visite visite2 = visiteService.add(visite);
+            visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+                notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, false);
+            });
+            //Openaplr to know if the car is in the center
+       /* String uri = environment.getProperty("endpoint.openalpr") ;
         String apiKey = environment.getProperty("endpoint.openalpr.api.key") ;
-        //Visite visite = visiteService.findById(id);
+
         BestPlate bestPlate = openAlprService.getPresenceConfidence(uri,apiKey,visite.getInspection());
         visite.getInspection().setDistancePercentage(
                 bestPlate.getRate()
         );
-        visite.getInspection().setBestPlate(bestPlate.getPlate());
-        visiteService.add(visite);
+        visite.getInspection().setBestPlate(bestPlate.getPlate());*/
+            //visiteService.add(visite);
+            log.info("PDF SUCCESSFULLY PRINTED");
+            Message msg = msgRepo.findByCode("PV001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, "/public/pv/"+visite2.getProcess().getReference()+".pdf");
 
-        return "/public/pv/"+visiteId+".pdf";
+        }catch (Exception e){
+            e.printStackTrace();
+            Message msg = msgRepo.findByCode("PV002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, "VS002");
+        }
+
 
     }
 
@@ -519,15 +566,15 @@ public class VisiteController {
         }
         ref =  bld.toString();
 
-        BufferedImage img = new BufferedImage(895, 1142, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(2995, 2042, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = img.createGraphics();
 
 
         AffineTransform affineTransform = new AffineTransform();
         g2d.setTransform(affineTransform);
-        g2d.rotate(-Math.PI/4);
-        Font font = new Font("Arial", Font.PLAIN, 5);
+        g2d.rotate(-Math.PI/10);
+        Font font = new Font("Arial", Font.PLAIN, 3);
 
         g2d.setColor(Color.YELLOW);
 
@@ -842,7 +889,7 @@ public class VisiteController {
                         visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                         visite.getIsConform(),
                         visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                        visite.getCreatedDate().format(SseController.dateTimeFormatter))
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
         ).collect(Collectors.toList());
         Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler

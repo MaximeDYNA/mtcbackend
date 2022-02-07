@@ -80,10 +80,12 @@ public class ContactController {
             partenaire.setPassport(clientPartenaire.getPassport());
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-            partenaire.setOrganisation(os.findByOrganisationId(orgId));
+            Organisation org = os.findByOrganisationId(orgId);
+            partenaire.setOrganisation(org);
             partenaire.setContact(contact);
             contact.setPartenaire(partenaire);
             contact.setDescription(clientPartenaire.getVariants());
+            contact.setOrganisation(org);
             contactService.addContact(contact);
             LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
             Message message = msgRepo.findByCode("CT001");

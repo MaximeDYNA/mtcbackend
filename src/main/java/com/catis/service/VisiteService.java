@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 import com.catis.controller.SseController;
 import com.catis.model.control.Control;
-import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 
+import com.catis.repository.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +19,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.catis.controller.exception.VisiteEnCoursException;
 import com.catis.model.control.Control.StatusType;
 import com.catis.repository.VisiteRepository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import static com.catis.controller.SseController.emitters;
 
 @Service
@@ -43,6 +40,8 @@ public class VisiteService {
     private CategorieTestVehiculeService cat;
     @Autowired
     private GieglanFileService gieglanFileService;
+    @Autowired
+    private NotificationService notificationService;
 
 
 
@@ -128,6 +127,7 @@ public class VisiteService {
             control.setCarteGrise(cg);
             control.setStatus(StatusType.INITIALIZED);
             control.setVisites(visites);
+            control.setOrganisation(organisation);
             visite.setControl(control);
 
         } else {
@@ -157,15 +157,21 @@ public class VisiteService {
         visite.setDocument(document);
 
         visite = visiteRepository.save(visite);
+        final Visite v = visite;
+        //dispatchNewVisit(visite);
+        organisation.getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
+        });
 
-        dispatchNewVisit(visite);
+
         return visite;
     }
 
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
-
-        dispatchEdit(visite);
+        v.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, true);
+        });
         return v;
     }
 
@@ -224,8 +230,10 @@ public class VisiteService {
         visite.setEncours(false);
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(4);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
 
     }
 
@@ -246,12 +254,15 @@ public class VisiteService {
         }
         return kanBanSimpleDatas;
     }
-    public void commencerInspection(Visite visite) throws IOException {
+    public Visite commencerInspection(Visite visite) throws IOException {
 
         visite.setDateFin(LocalDateTime.now());
         visite.setStatut(2);
-        visite = visiteRepository.save(visite);
-        dispatchEdit(visite);
+        Visite visite2 = visiteRepository.save(visite);
+        visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
+        });
+        return visite2;
 
     }
 
@@ -389,7 +400,7 @@ public class VisiteService {
                             visite.getIsConform(),
                             visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
                             visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                            visite.getCreatedDate().format(SseController.dateTimeFormatter))));
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())));
                 }
 
             }catch(IOException e){
@@ -402,6 +413,7 @@ public class VisiteService {
     //dispatching all event
     public void dispatchNewVisit(Visite visite){
         for(SseEmitter emitter:emitters){
+            System.out.println("SSE send a info");
             try{
                 emitter.send(SseEmitter.event().name("new_visit").data(
                         new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -421,7 +433,8 @@ public class VisiteService {
                                 visite.getIsConform(),
                                 visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
                                 visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                                visite.getCreatedDate().format(SseController.dateTimeFormatter), true, visite.getDocument())));
+                                visite.getCreatedDate().format(SseController.dateTimeFormatter), true,  visite.getDocument())));
+
             }catch(IOException e){
                 emitters.remove(emitter);
             }

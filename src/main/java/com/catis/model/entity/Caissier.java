@@ -55,6 +55,7 @@ public class Caissier extends JournalData {
     private Set<SessionCaisse> sessionCaisses;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")
+    @JsonIgnore
     private Set<Visite> visites;
 
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.catis.controller.configuration.SessionData;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.LignePOJO;
 import com.catis.service.OrganisationService;
@@ -22,6 +23,8 @@ import com.catis.service.CarteGriseService;
 import com.catis.service.InspectionService;
 import com.catis.service.LigneService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 
@@ -38,6 +41,9 @@ public class LigneController {
 
     @Autowired
     private InspectionService inspectionService;
+
+    @Autowired
+    HttpServletRequest request;
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(LigneController.class);
@@ -58,11 +64,13 @@ public class LigneController {
 
     @GetMapping(value = "/api/v1/controleur/lignes")
     public ResponseEntity<Object> ligneList() {
+        LOGGER.trace("liste des lignes de l'organisation");
+
 
         try {
-            LOGGER.trace("liste des lignes");
+            Long orgId = SessionData.getOrganisationId(request);
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findAllLigne());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findActiveByorganisation(orgId));
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
         }
@@ -74,9 +82,10 @@ public class LigneController {
 
 
             LOGGER.trace("liste des vehicules par ligne");
+            Long orgId = SessionData.getOrganisationId(request);
 
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
-            for (CarteGrise cg : cgService.findByLigne(id)) {
+            for (CarteGrise cg : cgService.findByLigne(id, orgId)) {
                 VehiculeByLineDTO v = new VehiculeByLineDTO();
                 v.setCarteGriseId(cg.getCarteGriseId());
 

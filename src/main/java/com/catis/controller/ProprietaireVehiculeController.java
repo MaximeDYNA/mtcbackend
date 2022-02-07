@@ -67,6 +67,9 @@ public class ProprietaireVehiculeController {
     public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
             LOGGER.trace("Ajout d'un propriétaire...");
+            Organisation organisation =os.findByOrganisationId(UserInfoIn
+                                    .getUserInfo(request)
+                                    .getOrganisanionId());
 
             ProprietaireVehicule pv = new ProprietaireVehicule();
             Partenaire partenaire = new Partenaire();
@@ -87,12 +90,10 @@ public class ProprietaireVehiculeController {
             partenaire.setPassport(clientPartenaire.getPassport());
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-            partenaire.setOrganisation(os
-                    .findByOrganisationId(UserInfoIn
-                    .getUserInfo(request)
-                    .getOrganisanionId()));
+            partenaire.setOrganisation(organisation);
             pv.setPartenaire(partenaireService.addPartenaire(partenaire));
             pv.setDescription(clientPartenaire.getVariants());
+            pv.setOrganisation(organisation);
 
             LOGGER.trace("Ajout de " + partenaire.getNom() + " réussi");
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"

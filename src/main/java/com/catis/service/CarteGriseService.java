@@ -84,9 +84,9 @@ public class CarteGriseService {
         return reponse;
     }
 
-    public List<CarteGrise> findByLigne(UUID idLigne) {
+    public List<CarteGrise> findByLigne(UUID idLigne, UUID orgId) {
         List<CarteGrise> cgs = new ArrayList<>();
-        for (Inspection inspection : inpectionR.inspectionbyligneAndVisibleToTabTrue(2, idLigne)) {
+        for (Inspection inspection : inpectionR.inspectionbyligneAndVisibleToTabTrueAndOrganisation_OrganisationId(2, idLigne, orgId)) {
 
             cgs.add(inspection.getVisite().getCarteGrise());
             System.out.println("inspection "+ inspection.getIdInspection()+" visite "+inspection.getVisite().getIdVisite() +" immatriculation "+inspection.getVisite().getCarteGrise().getNumImmatriculation());
