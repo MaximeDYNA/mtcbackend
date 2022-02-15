@@ -68,7 +68,7 @@ public class LigneController {
 
 
         try {
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findActiveByorganisation(orgId));
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class LigneController {
 
 
             LOGGER.trace("liste des vehicules par ligne");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
 
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             for (CarteGrise cg : cgService.findByLigne(id, orgId)) {

@@ -26,7 +26,7 @@ public class LigneService {
         ligneR.findByActiveStatusTrue().forEach(lignes::add);
         return lignes;
     }
-    public List<Ligne> findActiveByorganisation(Long orgId) {
+    public List<Ligne> findActiveByorganisation(UUID orgId) {
         List<Ligne> lignes = new ArrayList<>();
         ligneR.findByActiveStatusTrueAndOrganisation_OrganisationId(orgId).forEach(lignes::add);
         return lignes;

@@ -9,5 +9,5 @@ import java.util.UUID;
 public interface LigneRepository extends CrudRepository<Ligne, UUID> {
 
     List<Ligne> findByActiveStatusTrue();
-    List<Ligne> findByActiveStatusTrueAndOrganisation_OrganisationId(Long orgId);
+    List<Ligne> findByActiveStatusTrueAndOrganisation_OrganisationId(UUID orgId);
 }
