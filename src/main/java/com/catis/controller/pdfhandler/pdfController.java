@@ -95,7 +95,7 @@ public class pdfController {
         Visite v = visiteService.findById(id);
         System.out.println("qrcode en cours de fabrication...");
 
-        //CryptoUtil.encrypt(v.getIdVisite().toString(), "password")
+        CryptoUtil.encrypt(v.getIdVisite().toString(), "password")
         byte[] bytes = QRCodeGenerator.getQRCodeImage(v.getProcess().getReference(), 50, 50);
 
         final HttpHeaders headers = new HttpHeaders();

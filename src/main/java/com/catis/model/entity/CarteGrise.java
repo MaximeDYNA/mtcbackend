@@ -60,7 +60,7 @@ public class CarteGrise extends JournalData {
     private String lieuDedelivrance;// lieu de délivrance
     private String centre_ssdt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private ProprietaireVehicule proprietaireVehicule;
 
     @ManyToOne(cascade = CascadeType.ALL)

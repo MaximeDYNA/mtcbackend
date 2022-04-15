@@ -12,9 +12,9 @@ import java.util.UUID;
 @Data
 public class Encaissement {
 
-    private UUID clientId;
-    private UUID vendeurId;
-    private UUID contactId;
+    private String clientId;
+    private String vendeurId;
+    private String contactId;
     private int type;
     private String document;
     private double montantTotal;

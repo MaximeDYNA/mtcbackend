@@ -2,10 +2,7 @@ package com.catis.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +69,7 @@ public class  OperationCaisseController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime start = LocalDateTime.parse(recapDTO.getDateDebut(), formatter);
             LocalDateTime end = LocalDateTime.parse(recapDTO.getDateFin(), formatter);
-            List<OpCaisseDTO> ops = venteService.recapOp(recapDTO.getCaissierId(), start, end);
+            List<OpCaisseDTO> ops = venteService.recapOp(UUID.fromString(recapDTO.getCaissierId()), start, end);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ops);
            /* try { } catch (Exception e) {
             LOGGER.error("Erreur");

@@ -66,11 +66,11 @@ public class LigneController {
     public ResponseEntity<Object> ligneList() {
         LOGGER.trace("liste des lignes de l'organisation");
 
-
         try {
             UUID orgId = SessionData.getOrganisationId(request);
+            List<Ligne> lignes = ligneService.findActiveByorganisation(orgId);
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findActiveByorganisation(orgId));
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection",lignes );
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
         }

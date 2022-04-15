@@ -169,7 +169,7 @@ public class VisiteController {
                     Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                     getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
                     visite.getInspection() == null
-                            ? UUID.fromString("0") : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            ? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
                     visite.getIsConform(),
                     visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
                     visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
