@@ -42,7 +42,7 @@ public class Visite extends JournalData {
     private LocalDateTime dateFin;
     private int statut;
     private int isConform;
-
+    private String certidocsId;
 
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;

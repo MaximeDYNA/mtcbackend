@@ -150,7 +150,7 @@ public class EncaissementController {
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument());
+                            encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument(), encaissement.getCertidocsId());
                 } else {
                     produit.setProduitId(posale.getProduit().getProduitId());
                     if (!encaissement.getClientId().equals("") )
@@ -173,7 +173,7 @@ public class EncaissementController {
                     carteGrise.setOrganisation(organisation);
                     carteGrise.setCarteGriseId(UUID.randomUUID());
                     visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId, caissier, encaissement.getDocument());
+                            encaissement.getMontantEncaisse(), orgId, caissier, encaissement.getDocument(), encaissement.getCertidocsId());
 
                 }
                 /*-----------------Visite-----------------*/

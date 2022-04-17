@@ -28,13 +28,8 @@ public class Encaissement {
     private UUID sessionCaisseId;
     private String lang;
     private List<ProduitVue> produitVue;
+    private String certidocsId;
 
-
-
-
-    public void setProduitVue(List<ProduitVue> produitVue) {
-        this.produitVue = produitVue;
-    }
 
     @Override
     public String toString() {
@@ -42,68 +37,4 @@ public class Encaissement {
         return super.toString();
     }
 
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public double getMontantHT() {
-        return montantHT;
-    }
-
-    public void setMontantHT(double montantHT) {
-        this.montantHT = montantHT;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getNomclient() {
-        return nomclient;
-    }
-
-    public void setNomclient(String nomclient) {
-        this.nomclient = nomclient;
-    }
-
-    public String getNumeroclient() {
-        return numeroclient;
-    }
-
-    public void setNumeroclient(String numeroclient) {
-        this.numeroclient = numeroclient;
-    }
-
-    public String getNomcontacts() {
-        return nomcontacts;
-    }
-
-    public void setNomcontacts(String nomcontacts) {
-        this.nomcontacts = nomcontacts;
-    }
-
-    public String getNumerocontacts() {
-        return numerocontacts;
-    }
-
-    public void setNumerocontacts(String numerocontacts) {
-        this.numerocontacts = numerocontacts;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
 }
