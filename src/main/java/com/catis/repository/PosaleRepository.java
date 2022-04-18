@@ -9,6 +9,7 @@ import com.catis.model.entity.Posales;
 
 public interface PosaleRepository extends CrudRepository<Posales, UUID> {
 
+    List<Posales> findByHold_HoldIdAndSessionCaisse_SessionCaisseId(UUID number, UUID sessionCaisseId);
     List<Posales> findByHold_NumberAndSessionCaisse_SessionCaisseId(Long number, UUID sessionCaisseId);
 
     List<Posales> findByHold_Number(Long number);

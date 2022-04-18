@@ -1,38 +1,26 @@
 package com.catis.objectTemporaire;
 
-import java.util.UUID;
+import lombok.Data;
 
+import java.util.UUID;
+@Data
 public class HoldData {
 
     private UUID sessionCaisseId;
-    private Long number;
+    private UUID number;
 
     public HoldData() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public HoldData(UUID sessionCaisseId, Long number) {
+    public HoldData(UUID sessionCaisseId, UUID number) {
         super();
         this.sessionCaisseId = sessionCaisseId;
         this.number = number;
     }
 
-    public UUID getSessionCaisseId() {
-        return sessionCaisseId;
-    }
 
-    public void setSessionCaisseId(UUID sessionCaisseId) {
-        this.sessionCaisseId = sessionCaisseId;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
-    }
 
     public boolean isValid() {
         if (this.sessionCaisseId == null || this.number == null) {

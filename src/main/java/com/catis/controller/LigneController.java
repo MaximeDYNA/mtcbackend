@@ -73,6 +73,7 @@ public class LigneController {
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection",lignes );
         } catch (Exception e) {
+            e.printStackTrace();
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
         }
 

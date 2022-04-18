@@ -89,6 +89,7 @@ public class EncaissementController {
 
             OperationCaisse op = new OperationCaisse();
             Vente vente = new Vente();
+
             Partenaire partenaire = new Partenaire();
             Partenaire partenaire2 = new Partenaire();
 
@@ -117,13 +118,13 @@ public class EncaissementController {
 
             /* ---------Contact------------ */
             partenaire2.setNom(encaissement.getNomcontacts());
-            partenaire2.setPartenaireId(UUID.randomUUID());
+
             partenaire2.setTelephone(encaissement.getNumerocontacts());
             partenaire2.setOrganisation(organisation);
             Contact contact =new Contact();
             contact.setPartenaire(partenaire2);
             contact.setOrganisation(organisation);
-            contact.setContactId(UUID.randomUUID());
+
 
             vente.setContact(encaissement.getContactId().equals("") ? contact : contactService.findById(UUID.fromString(encaissement.getContactId())));
             /*------------------------------*/
@@ -140,7 +141,7 @@ public class EncaissementController {
             Visite visite;
             ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
             proprietaireVehicule.setPartenaire(contact.getPartenaire());
-            proprietaireVehicule.setProprietaireVehiculeId(UUID.randomUUID());
+
             proprietaireVehicule.setOrganisation(organisation);
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 DetailVente detailVente = new DetailVente();
@@ -184,7 +185,7 @@ public class EncaissementController {
 
                 vente.setVisite(visite);
                 vente.setOrganisation(organisation);
-                vente.setIdVente(UUID.randomUUID());
+
                 vente = venteService.addVente(vente);
                 /*------------------------------------------*/
 
@@ -195,7 +196,6 @@ public class EncaissementController {
                 detailVente.setProduit(produit);
                 detailVente.setPrix(produit.getPrix() + produit.getPrix() * taxedetail / 100);
                 detailVente.setVente(vente);
-                detailVente.setIdDetailVente(UUID.randomUUID());
                 detailVente.setOrganisation(organisation);
                 detailVente.setReference(posale.getReference());
                 dvs.addVente(detailVente);
@@ -205,7 +205,7 @@ public class EncaissementController {
             /* ---------Opération de caisse------------ */
             op.setMontant(encaissement.getMontantEncaisse());
             op.setOrganisation(organisation);
-            op.setOperationDeCaisseId(UUID.randomUUID());
+
             op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
