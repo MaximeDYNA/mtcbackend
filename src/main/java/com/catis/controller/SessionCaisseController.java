@@ -98,7 +98,7 @@ public class SessionCaisseController {
 
         Date now = new Date();
         SessionCaisse sessionCaisse = new SessionCaisse();
-
+        sessionCaisse.setSessionCaisseId(UUID.randomUUID());
         sessionCaisse.setOrganisation(os.organisationIdRender(request));
         sessionCaisse.setDateHeureOuverture(now);
         sessionCaisse.setActive(true);
