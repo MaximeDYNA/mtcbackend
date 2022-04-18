@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,11 @@ public class ProprietaireVehiculeService {
         return pvr.save(p);
     }
 
-    public ProprietaireVehicule findById(Long id) {
+    public ProprietaireVehicule findById(UUID id) {
         return pvr.findById(id).get();
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         pvr.deleteById(id);
     }
 

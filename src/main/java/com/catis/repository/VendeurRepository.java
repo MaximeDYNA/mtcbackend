@@ -4,7 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Vendeur;
 
-public interface VendeurRepository extends CrudRepository<Vendeur, Long> {
+import java.util.UUID;
 
-    Vendeur findByPartenaire_PartenaireId(long partenaireId);
+public interface VendeurRepository extends CrudRepository<Vendeur, UUID> {
+
+    Vendeur findByPartenaire_PartenaireId(UUID partenaireId);
 }

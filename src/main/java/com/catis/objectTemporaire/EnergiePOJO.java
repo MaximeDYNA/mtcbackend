@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class EnergiePOJO {
-    private Long energieId;
+    private UUID energieId;
     private String libelle;
-    private Long organisationId;
+    private UUID organisationId;
 }

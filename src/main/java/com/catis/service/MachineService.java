@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MachineService {
@@ -24,7 +25,7 @@ public class MachineService {
         return m;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
 
         mr.deleteById(id);
 

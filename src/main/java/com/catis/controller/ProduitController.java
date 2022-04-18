@@ -1,10 +1,7 @@
 package com.catis.controller;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.catis.objectTemporaire.*;
 import org.slf4j.Logger;
@@ -95,7 +92,7 @@ public class ProduitController {
 
     }
     @DeleteMapping("/api/v1/produits/{id}")
-    public ResponseEntity<Object> addProduit(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Object> addProduit(@PathVariable UUID id) throws Exception {
 
             produitService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", null );
@@ -120,7 +117,7 @@ public class ProduitController {
                 imCha="";
 
                 if (visiteService.visiteEncours(imCha,
-                        Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())))
+                        UserInfoIn.getUserInfo(request).getOrganisanionId()))
                 throw new VisiteEnCoursException("Une visite est déjà en cours");
                 LOGGER.trace("liste des catégories...");
                 List<Produit> produits = new ArrayList<>();
@@ -131,7 +128,7 @@ public class ProduitController {
 
 
                 if (visiteService.isVisiteInitial(imCha,
-                        Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId()))) {
+                        UserInfoIn.getUserInfo(request).getOrganisanionId())) {
                     if (!cgs.isCarteGriseExist(imCha)) {
                         List<ProduitEtTaxe> pets = new ArrayList<>();
                         List<Taxe> taxes;

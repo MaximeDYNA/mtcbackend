@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.UUID;
 import java.util.List;
 
 import com.catis.controller.configuration.SessionData;
@@ -78,7 +79,7 @@ public class InspectionController {
             inspection.setControleur(controleurService.findControleurBykeycloakId(inspectionReceived.getControleurId()));
             inspection.setLigne(ligneService.findLigneById(inspectionReceived.getLigneId()));
             inspection.setProduit(produitService.findById(inspectionReceived.getProduitId()));
-            inspection.setOrganisation(os.findByOrganisationId(Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId())));
+            inspection.setOrganisation(os.findByOrganisationId(UserInfoIn.getUserInfo(request).getOrganisanionId()));
             inspection.setDateDebut(new Date());
             Visite visite = visiteService.findById(inspectionReceived.getVisiteId());
             if(visite.getInspection() != null)
@@ -176,7 +177,7 @@ public class InspectionController {
 
 
     @DeleteMapping("/api/v1/admin/inspections/{id}")
-    public ResponseEntity<Object> deleteInspection(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteInspection(@PathVariable UUID id) {
         try {
             LOGGER.info("INSPECTION DELETED");
             Message msg = msgRepo.findByCode("IP007");

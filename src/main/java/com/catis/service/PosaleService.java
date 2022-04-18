@@ -1,6 +1,7 @@
 package com.catis.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class PosaleService {
     @Autowired
     private PosaleRepository psr;
 
-    public void activatePosale(Long number, Long sessionCaisseId) {
+    public void activatePosale(Long number, UUID sessionCaisseId) {
         desactivateAll();
         for (Posales posales : psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId)) {
             posales.setStatus(true);
@@ -33,7 +34,7 @@ public class PosaleService {
 
     }
 
-    public void deletePosale(Long number, Long sessionCaisseId) {
+    public void deletePosale(Long number, UUID sessionCaisseId) {
         desactivateAll();
          List<Posales> posales = psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
          for(Posales p : posales){
@@ -42,19 +43,19 @@ public class PosaleService {
 
     }
 
-    public List<Posales> findByNumberSessionCaisse(Long number, Long sessionCaisseId) {
+    public List<Posales> findByNumberSessionCaisse(Long number, UUID sessionCaisseId) {
         return psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
     }
 
-    public List<Posales> findByReferenceSessionCaisse(String reference, Long sessionCaisseId) {
+    public List<Posales> findByReferenceSessionCaisse(String reference, UUID sessionCaisseId) {
         return psr.findByReferenceAndSessionCaisse_SessionCaisseId(reference, sessionCaisseId);
     }
 
-    public List<Posales> findBySessionCaisse(Long sessionCaisseId) {
+    public List<Posales> findBySessionCaisse(UUID sessionCaisseId) {
         return psr.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
-    public List<Posales> findActivePosaleBySessionId(Long sessionId) {
+    public List<Posales> findActivePosaleBySessionId(UUID sessionId) {
         return psr.findByStatusTrueAndSessionCaisse_SessionCaisseId(sessionId);
     }
 
@@ -63,12 +64,12 @@ public class PosaleService {
     }
 
     @Transactional
-    public void deletePosalesByReference(String reference, Long sessionCaisseId) {
+    public void deletePosalesByReference(String reference, UUID sessionCaisseId) {
         psr.deleteByReferenceAndSessionCaisse_SessionCaisseId(reference, sessionCaisseId);
     }
 
-    public boolean isDecaissementExist(Long holdId, Long sessionId) {
-        if (psr.findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_ProduitId(holdId, sessionId, 1L).isEmpty())
+    public boolean isDecaissementExist(UUID holdId, UUID sessionId) {
+        if (psr.findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_Libelle(holdId, sessionId, "dec").isEmpty())
             return false;
         else
             return true;

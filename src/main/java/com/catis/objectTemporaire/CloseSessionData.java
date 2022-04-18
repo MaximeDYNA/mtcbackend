@@ -1,10 +1,12 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class CloseSessionData {
-    private Long sessionCaisseId;
+    private UUID sessionCaisseId;
     private double montantFermeture;
 
-    public CloseSessionData(Long sessionCaisseId, double montantFermeture) {
+    public CloseSessionData(UUID sessionCaisseId, double montantFermeture) {
         super();
         this.sessionCaisseId = sessionCaisseId;
         this.montantFermeture = montantFermeture;
@@ -15,11 +17,11 @@ public class CloseSessionData {
         // TODO Auto-generated constructor stub
     }
 
-    public Long getSessionCaisseId() {
+    public UUID getSessionCaisseId() {
         return sessionCaisseId;
     }
 
-    public void setSessionCaisseId(Long sessionCaisseId) {
+    public void setSessionCaisseId(UUID sessionCaisseId) {
         this.sessionCaisseId = sessionCaisseId;
     }
 

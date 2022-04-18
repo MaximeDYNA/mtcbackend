@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class OperationCaisseService {
         return start;
     }
 
-    public List<OperationCaisse> findBySession(Long sessionCaisseId) {
+    public List<OperationCaisse> findBySession(UUID sessionCaisseId) {
         return operationCaisseRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
@@ -53,7 +54,7 @@ public class OperationCaisseService {
             return "Décaissement";
     }
 
-    public double montantTotalEncaisse(Long idVente) {
+    public double montantTotalEncaisse(UUID idVente) {
         double montant = 0;
         for (OperationCaisse o : operationCaisseRepository.findByTypeTrueAndVente_IdVente(idVente)) {
             montant += o.getMontant();

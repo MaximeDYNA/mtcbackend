@@ -1,56 +1,38 @@
 package com.catis.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "t_modelevehicule")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class ModeleVehicule extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idModele;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idModele;
     private String description;
-
-
-
-    public ModeleVehicule() {
-
-    }
-
-    public ModeleVehicule(Long idModele, String description) {
-        this.idModele = idModele;
-        this.description = description;
-
-    }
-
-    public Long getIdModele() {
-        return idModele;
-    }
-
-    public void setIdModele(Long idModele) {
-        this.idModele = idModele;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 
 }

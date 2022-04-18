@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.VersionLexique;
 
-public interface VersionLexiqueRepository extends CrudRepository<VersionLexique, Long> {
+import java.util.UUID;
+
+public interface VersionLexiqueRepository extends CrudRepository<VersionLexique, UUID> {
     VersionLexique findByLibelle(String libelle);
 }

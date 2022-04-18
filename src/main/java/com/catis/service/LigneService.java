@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,18 +26,18 @@ public class LigneService {
         ligneR.findByActiveStatusTrue().forEach(lignes::add);
         return lignes;
     }
-    public List<Ligne> findActiveByorganisation(Long orgId) {
+    public List<Ligne> findActiveByorganisation(UUID orgId) {
         List<Ligne> lignes = new ArrayList<>();
         ligneR.findByActiveStatusTrueAndOrganisation_OrganisationId(orgId).forEach(lignes::add);
         return lignes;
     }
 
-    public Ligne findLigneById(Long id) {
+    public Ligne findLigneById(UUID id) {
 
         return ligneR.findById(id).get();
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         ligneR.deleteById(id);
     }
 

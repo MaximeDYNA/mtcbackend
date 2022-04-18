@@ -2,10 +2,17 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,11 +24,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_ligne")
 @Audited
 @SQLDelete(sql = "UPDATE t_ligne SET active_status=false WHERE id_ligne=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Ligne extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idLigne;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idLigne;
     private String description;
     private String nom;
 
@@ -36,70 +51,6 @@ public class Ligne extends JournalData {
     @JsonIgnore
     private Set<Inspection> inspections;
 
-    public Ligne() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Ligne(Long idLigne, String description,  Set<LigneMachine> ligneMachines,
-                 Set<Inspection> inspections) {
-
-        this.idLigne = idLigne;
-        this.description = description;
-
-        this.ligneMachines = ligneMachines;
-        this.inspections = inspections;
-    }
-
-    public Long getIdLigne() {
-        return idLigne;
-    }
-
-    public void setIdLigne(Long idLigne) {
-        this.idLigne = idLigne;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-
-    public Set<LigneMachine> getLigneMachines() {
-        return ligneMachines;
-    }
-
-    public void setLigneMachines(Set<LigneMachine> ligneMachines) {
-        this.ligneMachines = ligneMachines;
-    }
-
-    public Set<Inspection> getInspections() {
-        return inspections;
-    }
-
-    public void setInspections(Set<Inspection> inspections) {
-        this.inspections = inspections;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public CategorieVehicule getCategorieVehicule() {
-        return categorieVehicule;
-    }
-
-    public void setCategorieVehicule(CategorieVehicule categorieVehicule) {
-        this.categorieVehicule = categorieVehicule;
-    }
 
     @Override
     public boolean equals(Object o) {

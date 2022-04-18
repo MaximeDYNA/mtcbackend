@@ -1,35 +1,23 @@
 package com.catis.objectTemporaire;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.UUID;
+
+@AllArgsConstructor @NoArgsConstructor
+@Data @ToString
+
+
 public class ProduitVue {
 
-    private Long produitId;
+    private UUID produitId;
     private String reference;
 
-    public ProduitVue(long produitId, String reference) {
-        super();
-        this.produitId = produitId;
-        this.reference = reference;
-    }
 
-    public ProduitVue() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-    public String getReference() {
-        return reference;
-    }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public Long getProduitId() {
-        return produitId;
-    }
-
-    public void setProduitId(Long produitId) {
-        this.produitId = produitId;
-    }
 
 }

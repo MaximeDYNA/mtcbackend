@@ -98,7 +98,7 @@ public class GieglanFileService {
         }
         return code;
     }
-    public List<GieglanFile> findByExtensionAndVisite(String libelle, Long idVisite){
+    public List<GieglanFile> findByExtensionAndVisite(String libelle, UUID idVisite){
         List<GieglanFile> gieglanfiles = gieglanFileRepository
                 .findByCategorieTestLibelleAndInspection_Visite_IdVisite(libelle, idVisite, PageRequest.of(0,1, Sort.by("id").ascending()));
         return gieglanfiles;
@@ -110,7 +110,7 @@ public class GieglanFileService {
         return gieglanfiles;
     }
 
-    public List<GieglanFile> findActiveByInspection(Long inspectionId){
+    public List<GieglanFile> findActiveByInspection(UUID inspectionId){
         List<GieglanFile> gieglanfiles = gieglanFileRepository
                 .findByInspection_IdInspectionAndActiveStatusTrue(inspectionId);
         return gieglanfiles;

@@ -2,10 +2,17 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,10 +24,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_controleur SET active_status=false WHERE id_controleur=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Controleur extends JournalData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idControleur;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idControleur;
     private String agremment;
     private double score=0;
 
@@ -34,72 +49,6 @@ public class Controleur extends JournalData {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "controleur")
     @JsonIgnore
     private Set<Inspection> inspections;
-
-    public Controleur() {
-
-    }
-
-
-    public Controleur(Long idControleur, String agremment, int score, Utilisateur utilisateur, Partenaire partenaire,
-                       Set<Inspection> inspections) {
-        super();
-        this.idControleur = idControleur;
-        this.agremment = agremment;
-        this.score = score;
-        this.utilisateur = utilisateur;
-        this.partenaire = partenaire;
-
-        this.inspections = inspections;
-    }
-
-
-    public Long getIdControleur() {
-        return idControleur;
-    }
-
-    public void setIdControleur(Long idControleur) {
-        this.idControleur = idControleur;
-    }
-
-    public String getAgremment() {
-        return agremment;
-    }
-
-    public void setAgremment(String agremment) {
-        this.agremment = agremment;
-    }
-
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
-    }
-
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
-    }
-
-    public Set<Inspection> getInspections() {
-        return inspections;
-    }
-
-    public void setInspections(Set<Inspection> inspections) {
-        this.inspections = inspections;
-    }
-
-    public Partenaire getPartenaire() {
-        return partenaire;
-    }
-
-    public void setPartenaire(Partenaire partenaire) {
-        this.partenaire = partenaire;
-    }
 
 
     @Override

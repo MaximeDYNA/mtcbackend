@@ -4,8 +4,9 @@ import com.catis.model.entity.Formule;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface FormuleRepository extends CrudRepository<Formule, Long> {
+public interface FormuleRepository extends CrudRepository<Formule, UUID> {
 
     List<Formule> findByActiveStatusTrue();
 }

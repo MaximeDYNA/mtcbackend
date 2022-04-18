@@ -15,7 +15,7 @@ import com.catis.service.VisiteService;
 
 public class Listview {
 
-    private Long id;
+    private UUID id;
     private Produit categorie;
     private String type;
     private String reference;
@@ -25,10 +25,10 @@ public class Listview {
     private LocalDateTime createdDate;
     private String statut;
     private int statutVisite;
-    private Long idVisite;
+    private UUID idVisite;
     private boolean contreVisite;
     private boolean encours = true;
-    private Long inspection;
+    private UUID inspection;
     private CarteGrise carteGrise;
     private boolean conformityTest;
     private int isConform;
@@ -122,7 +122,7 @@ public class Listview {
         }
     }
 
-    public GieglanFileIcon replaceIconIfNecessary(GieglanFileIcon categorieTest, Long idVisite){
+    public GieglanFileIcon replaceIconIfNecessary(GieglanFileIcon categorieTest, UUID idVisite){
         List<GieglanFile> gieglanFiles = gieglanFileService.findByExtensionAndVisite(categorieTest.getExtension(), idVisite);
         gieglanFiles.forEach(g -> {
                     if(g.getStatus().equals(GieglanFile.StatusType.VALIDATED)){
@@ -200,11 +200,11 @@ public class Listview {
     }
 
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -429,11 +429,11 @@ public class Listview {
         this.createdAt = createdAt;
     }
 
-    public Long getIdVisite() {
+    public UUID getIdVisite() {
         return idVisite;
     }
 
-    public void setIdVisite(Long idVisite) {
+    public void setIdVisite(UUID idVisite) {
         this.idVisite = idVisite;
     }
 
@@ -456,11 +456,11 @@ public class Listview {
     }
 
 
-    public Long getInspection() {
+    public UUID getInspection() {
         return inspection;
     }
 
-    public void setInspection(Long inspection) {
+    public void setInspection(UUID inspection) {
         this.inspection = inspection;
     }
 

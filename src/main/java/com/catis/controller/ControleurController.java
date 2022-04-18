@@ -28,6 +28,7 @@ import com.catis.service.ControleurService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -57,7 +58,7 @@ public class ControleurController {
 
 
     @GetMapping(value = "/api/v1/controleurinfo/{id}")
-    public ResponseEntity<Object> getInfosControleur(@PathVariable Long id) {
+    public ResponseEntity<Object> getInfosControleur(@PathVariable UUID id) {
 
         Controleur controleur = controleurService.findControleurById(id);
         KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
@@ -143,7 +144,7 @@ public class ControleurController {
     }
 
     @DeleteMapping("/api/v1/admin/controleurs/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             controleurService.delete(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

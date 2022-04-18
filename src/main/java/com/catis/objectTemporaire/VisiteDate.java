@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class VisiteDate {
 
-    private Long idVisite;
+    private UUID idVisite;
     private boolean contreVisite;
     private Date dateDebut;
     private Date dateFin;
@@ -48,11 +49,11 @@ public class VisiteDate {
                         .toInstant());
     }
 
-    public Long getIdVisite() {
+    public UUID getIdVisite() {
         return idVisite;
     }
 
-    public void setIdVisite(Long idVisite) {
+    public void setIdVisite(UUID idVisite) {
         this.idVisite = idVisite;
     }
 

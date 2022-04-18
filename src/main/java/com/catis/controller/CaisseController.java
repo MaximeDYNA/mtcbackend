@@ -1,9 +1,6 @@
 package com.catis.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //import org.keycloak.KeycloakSecurityContext;
 import com.catis.controller.message.Message;
@@ -68,7 +65,7 @@ public class CaisseController {
 
         for(Caisse c: caisses){
             caisse = new HashMap<>();
-            caisse.put("id", String.valueOf(c.getCaisse_id()));
+            caisse.put("id", String.valueOf(c.getCaisseId()));
             caisse.put("name", c.getLibelle() +" | "+ c.getOrganisation().getNom());
             caissesSelect.add(caisse);
         }
@@ -83,8 +80,8 @@ public class CaisseController {
 
         Caisse caisse = new Caisse();
         Organisation organisation = caissePOJO.getOrganisation() == null?
-                null : organisationService.findOrganisationById(caissePOJO.getOrganisation().getId());
-        caisse.setCaisse_id(caissePOJO.getCaisse_id());
+                null : organisationService.findOrganisationById(caissePOJO.getOrganisation());
+        caisse.setCaisseId(caissePOJO.getCaisse_id());
         caisse.setLibelle(caissePOJO.getLibelle() == null ? null : caissePOJO.getLibelle() );
         caisse.setDescription(caissePOJO.getDescription() == null ? null : caissePOJO.getDescription());
         caisse.setOrganisation(organisation);
@@ -95,7 +92,7 @@ public class CaisseController {
     }
 
     @DeleteMapping("/api/v1/admin/caisses/{id}")
-    public ResponseEntity<Object> delete (@PathVariable Long id) {
+    public ResponseEntity<Object> delete (@PathVariable UUID id) {
 
         caisseService.deleteCaisseById(id);
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",

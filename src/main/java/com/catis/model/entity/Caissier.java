@@ -2,10 +2,17 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,11 +24,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_caissier")
 @Audited
 @SQLDelete(sql = "UPDATE t_caissier SET active_status=false WHERE caissier_id=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Caissier extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long caissierId;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID caissierId;
 
     private String codeCaissier;
 
@@ -45,84 +60,6 @@ public class Caissier extends JournalData {
     @JsonIgnore
     private Set<Visite> visites;
 
-    public Caissier() {
-    }
-
-
-    public Caissier(Long caissierId, String codeCaissier, Partenaire partenaire,
-                    Caisse caisse, Utilisateur user, Set<SessionCaisse> sessionCaisses) {
-        super();
-        this.caissierId = caissierId;
-        this.codeCaissier = codeCaissier;
-
-        this.partenaire = partenaire;
-        this.caisse = caisse;
-        this.user = user;
-        this.sessionCaisses = sessionCaisses;
-    }
-
-
-    public Long getCaissierId() {
-        return caissierId;
-    }
-
-
-    public void setCaissierId(Long caissierId) {
-        this.caissierId = caissierId;
-    }
-
-
-    public String getCodeCaissier() {
-        return codeCaissier;
-    }
-
-    public void setCodeCaissier(String codeCaissier) {
-        this.codeCaissier = codeCaissier;
-    }
-
-    public Partenaire getPartenaire() {
-        return partenaire;
-    }
-
-    public void setPartenaire(Partenaire partenaire) {
-        this.partenaire = partenaire;
-    }
-
-    public Utilisateur getUser() {
-        return user;
-    }
-
-    public void setUser(Utilisateur user) {
-        this.user = user;
-    }
-
-
-    public Caisse getCaisse() {
-        return caisse;
-    }
-
-
-    public void setCaisse(Caisse caisse) {
-        this.caisse = caisse;
-    }
-
-
-    public Set<SessionCaisse> getSessionCaisses() {
-        return sessionCaisses;
-    }
-
-
-    public void setSessionCaisses(Set<SessionCaisse> sessionCaisses) {
-        this.sessionCaisses = sessionCaisses;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -132,11 +69,5 @@ public class Caissier extends JournalData {
         return Objects.equals(getCaissierId(), caissier.getCaissierId());
     }
 
-    public Set<Visite> getVisites() {
-        return visites;
-    }
 
-    public void setVisites(Set<Visite> visites) {
-        this.visites = visites;
-    }
 }

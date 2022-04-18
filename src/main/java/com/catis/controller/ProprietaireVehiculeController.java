@@ -67,10 +67,9 @@ public class ProprietaireVehiculeController {
     public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
             LOGGER.trace("Ajout d'un propriétaire...");
-            Organisation organisation =os.findByOrganisationId(Long
-                            .valueOf(UserInfoIn
+            Organisation organisation =os.findByOrganisationId(UserInfoIn
                                     .getUserInfo(request)
-                                    .getOrganisanionId()));
+                                    .getOrganisanionId());
 
             ProprietaireVehicule pv = new ProprietaireVehicule();
             Partenaire partenaire = new Partenaire();
@@ -168,7 +167,7 @@ public class ProprietaireVehiculeController {
         }
     }
     @DeleteMapping("/api/v1/admin/proprietaires/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             proprietaireVehiculeadresseService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

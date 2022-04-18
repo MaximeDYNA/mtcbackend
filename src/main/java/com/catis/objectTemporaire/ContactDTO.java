@@ -8,13 +8,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactDTO {
-    private Long contactId;
+    private UUID contactId;
     private String nom;
     private String prenom;
     private Date dateNaiss;

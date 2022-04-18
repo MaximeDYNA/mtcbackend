@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.objectTemporaire.DefectResponse;
 import com.catis.model.entity.Inspection;
@@ -47,7 +48,7 @@ public class MesureVisuelService {
     }
 
 
-    public List<String> ImagePathList(Long visiteId) {
+    public List<String> ImagePathList(UUID visiteId) {
 
         MesureVisuel m = mesurevisuel.findByGieglanFile_Inspection_VisiteIdVisite(visiteId);
         List<String> paths = new ArrayList<>();

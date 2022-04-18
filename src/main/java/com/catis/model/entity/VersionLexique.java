@@ -3,16 +3,16 @@ package com.catis.model.entity;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,11 +22,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class VersionLexique extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String libelle;
 
@@ -42,71 +50,5 @@ public class VersionLexique extends JournalData {
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 
-
-
-    public VersionLexique() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public VersionLexique(Long id, String libelle, Date date, Set<Lexique> lexiques,
-                          List<RapportDeVisite> rapportDeVisites) {
-
-        this.id = id;
-        this.libelle = libelle;
-        this.date = date;
-        this.lexiques = lexiques;
-        this.rapportDeVisites = rapportDeVisites;
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Set<Lexique> getLexiques() {
-        return lexiques;
-    }
-
-    public void setLexiques(Set<Lexique> lexiques) {
-        this.lexiques = lexiques;
-    }
-
-    public List<RapportDeVisite> getRapportDeVisites() {
-        return rapportDeVisites;
-    }
-
-    public void setRapportDeVisites(List<RapportDeVisite> rapportDeVisites) {
-        this.rapportDeVisites = rapportDeVisites;
-    }
-
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
 }

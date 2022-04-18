@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,8 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProprietaireDTO {
     // object de transfert proprietaire et controleur
-    private Long proprietaireVehiculeId;
-    private Long idControleur;
+    private UUID proprietaireVehiculeId;
+    private UUID idControleur;
     private String nom;
     private String prenom;
     private Date dateNaiss;
@@ -30,7 +31,7 @@ public class ProprietaireDTO {
     private Organisation organisation;
     private Long vehicule;
     private LocalDateTime createdDate;
-    private Long partenaireId;
+    private UUID partenaireId;
     private String agremment;
     private String login;
 }

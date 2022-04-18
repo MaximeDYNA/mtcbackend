@@ -2,16 +2,17 @@ package com.catis.model.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,11 +24,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_categorieproduit")
 @Audited
 @SQLDelete(sql = "UPDATE t_categorieproduit SET active_status=false WHERE categorie_produit_id=?")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class CategorieProduit extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categorieProduitId;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID categorieProduitId;
     private String libelle;
     private String description;
 
@@ -35,48 +44,6 @@ public class CategorieProduit extends JournalData {
     @JsonIgnore
     Set<Produit> produits;
 
-    public CategorieProduit() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public CategorieProduit(Long categorieProduitId, String libelle, String description, Set<Produit> produits) {
-        this.categorieProduitId = categorieProduitId;
-        this.libelle = libelle;
-        this.description = description;
-        this.produits = produits;
-    }
-
-    public Long getCategorieProduitId() {
-        return categorieProduitId;
-    }
-
-    public void setCategorieProduitId(Long categorieProduitId) {
-        this.categorieProduitId = categorieProduitId;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Produit> getProduits() {
-        return produits;
-    }
-
-    public void setProduits(Set<Produit> produits) {
-        this.produits = produits;
-    }
 
 
     @Override

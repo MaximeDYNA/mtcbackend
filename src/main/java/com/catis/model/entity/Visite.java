@@ -3,10 +3,17 @@ package com.catis.model.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.*;
 
 import com.catis.model.control.Control;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,17 +24,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_visite")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Visite extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVisite;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idVisite;
     private boolean contreVisite;
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;
     private int statut;
     private int isConform;
-
+    private String certidocsId;
 
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;
@@ -69,9 +84,6 @@ public class Visite extends JournalData {
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 
-    public Visite() {
-
-    }
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255) default 'PENDING'")
     private TestResult ripage;
@@ -95,121 +107,6 @@ public class Visite extends JournalData {
     public enum TestResult{
         PENDING, SUCCESS, ERROR
     };
-    public Control getControl() {
-        return control;
-    }
-
-    public void setControl(Control control) {
-        this.control = control;
-    }
-
-    public Visite(Long idVisite, boolean contreVisite, LocalDateTime dateDebut, LocalDateTime dateFin, int statut,
-                  boolean encours, Caissier caissier, Inspection inspection, VerbalProcess process,
-                  CarteGrise carteGrise, Control control, List<RapportDeVisite> rapportDeVisites) {
-        super();
-        this.idVisite = idVisite;
-        this.contreVisite = contreVisite;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.statut = statut;
-        this.encours = encours;
-        this.caissier = caissier;
-        this.inspection = inspection;
-        this.process = process;
-        this.carteGrise = carteGrise;
-        this.control = control;
-        this.rapportDeVisites = rapportDeVisites;
-    }
-
-
-    public boolean isContreVisite() {
-        return contreVisite;
-    }
-
-    public void setContreVisite(boolean contreVisite) {
-        this.contreVisite = contreVisite;
-    }
-
-    public Long getIdVisite() {
-        return idVisite;
-    }
-
-    public void setIdVisite(Long idVisite) {
-        this.idVisite = idVisite;
-    }
-
-    public LocalDateTime getDateDebut() {
-        return dateDebut;
-    }
-
-    public void setDateDebut(LocalDateTime dateDebut) {
-        this.dateDebut = dateDebut;
-    }
-
-    public LocalDateTime getDateFin() {
-        return dateFin;
-    }
-
-    public void setDateFin(LocalDateTime dateFin) {
-        this.dateFin = dateFin;
-    }
-
-    public int getStatut() {
-        return statut;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
-    public void setStatut(int statut) {
-        this.statut = statut;
-    }
-
-
-    public Inspection getInspection() {
-        return inspection;
-    }
-
-    public void setInspection(Inspection inspection) {
-        this.inspection = inspection;
-    }
-
-    public VerbalProcess getProcess() {
-        return process;
-    }
-
-    public void setProcess(VerbalProcess process) {
-        this.process = process;
-    }
-
-    public Caissier getCaissier() {
-        return caissier;
-    }
-
-    public void setCaissier(Caissier caissier) {
-        this.caissier = caissier;
-    }
-
-    public CarteGrise getCarteGrise() {
-        return carteGrise;
-    }
-
-    public void setCarteGrise(CarteGrise carteGrise) {
-        this.carteGrise = carteGrise;
-    }
-
-    public boolean isEncours() {
-        return encours;
-    }
-
-    public void setEncours(boolean encours) {
-        this.encours = encours;
-    }
 
     public String statutRender(int code) {
         if (code == 0) {
@@ -269,14 +166,6 @@ public class Visite extends JournalData {
 
     }
 
-    public int getIsConform() {
-        return isConform;
-    }
-
-    public void setIsConform(int isConform) {
-        this.isConform = isConform;
-    }
-
     public String typeRender() {
         if (this.contreVisite) {
             return "CV";
@@ -284,59 +173,5 @@ public class Visite extends JournalData {
             return "VI";
     }
 
-    public Vente getVente() {
-        return vente;
-    }
 
-    public void setVente(Vente vente) {
-        this.vente = vente;
-    }
-
-    public TestResult getRipage() {
-        return ripage;
-    }
-
-    public void setRipage(TestResult ripage) {
-        this.ripage = ripage;
-    }
-
-    public TestResult getSuspension() {
-        return suspension;
-    }
-
-    public void setSuspension(TestResult suspension) {
-        this.suspension = suspension;
-    }
-
-    public TestResult getFreinage() {
-        return freinage;
-    }
-
-    public void setFreinage(TestResult freinage) {
-        this.freinage = freinage;
-    }
-
-    public TestResult getPollution() {
-        return pollution;
-    }
-
-    public void setPollution(TestResult pollution) {
-        this.pollution = pollution;
-    }
-
-    public TestResult getReglophare() {
-        return reglophare;
-    }
-
-    public void setReglophare(TestResult reglophare) {
-        this.reglophare = reglophare;
-    }
-
-    public TestResult getVisuel() {
-        return visuel;
-    }
-
-    public void setVisuel(TestResult visuel) {
-        this.visuel = visuel;
-    }
 }

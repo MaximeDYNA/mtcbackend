@@ -1,27 +1,28 @@
 package com.catis.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Posales;
 
-public interface PosaleRepository extends CrudRepository<Posales, Long> {
+public interface PosaleRepository extends CrudRepository<Posales, UUID> {
 
-    List<Posales> findByHold_NumberAndSessionCaisse_SessionCaisseId(Long number, Long sessionCaisseId);
+    List<Posales> findByHold_NumberAndSessionCaisse_SessionCaisseId(Long number, UUID sessionCaisseId);
 
     List<Posales> findByHold_Number(Long number);
 
     List<Posales> findByStatusTrue();
-    List<Posales> findByStatusTrueAndSessionCaisse_SessionCaisseId(Long sessionCaisseId);
+    List<Posales> findByStatusTrueAndSessionCaisse_SessionCaisseId(UUID sessionCaisseId);
 
-    void deleteBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
+    void deleteBySessionCaisse_SessionCaisseId(UUID sessionCaisseId);
 
-    List<Posales> findBySessionCaisse_SessionCaisseId(Long sessionCaisseId);
+    List<Posales> findBySessionCaisse_SessionCaisseId(UUID sessionCaisseId);
 
-    void deleteByReferenceAndSessionCaisse_SessionCaisseId(String reference, Long sessionCaisseId);
+    void deleteByReferenceAndSessionCaisse_SessionCaisseId(String reference, UUID sessionCaisseId);
 
-    List<Posales> findByReferenceAndSessionCaisse_SessionCaisseId(String reference, Long sessionCaisseId);
+    List<Posales> findByReferenceAndSessionCaisse_SessionCaisseId(String reference, UUID sessionCaisseId);
 
-    List<Posales> findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_ProduitId(Long holdId, Long sessionCaisseId, Long produitId);
+    List<Posales> findByHold_HoldIdAndSessionCaisse_SessionCaisseIdAndProduit_Libelle(UUID holdId, UUID sessionCaisseId, String libelleProduit);
 }

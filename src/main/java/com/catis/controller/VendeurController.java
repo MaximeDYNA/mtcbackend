@@ -3,11 +3,7 @@ package com.catis.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +67,7 @@ public class VendeurController {
             partenaire.setPassport(clientPartenaire.getPassport());
             partenaire.setLieuDeNaiss(clientPartenaire.getLieuDeNaiss());
             partenaire.setPermiDeConduire(clientPartenaire.getPermiDeConduire());
-            partenaire.setOrganisation(os.findByOrganisationId(0L));
+            partenaire.setOrganisation(os.findByOrganisationId(UUID.randomUUID()));
             vendeur.setPartenaire(partenaireService.addPartenaire(partenaire));
             vendeur.setDescription(clientPartenaire.getVariants());
             vendeurService.addVendeur(vendeur);

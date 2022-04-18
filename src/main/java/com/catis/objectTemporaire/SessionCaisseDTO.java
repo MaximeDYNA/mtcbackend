@@ -7,18 +7,19 @@ import lombok.NoArgsConstructor;
 
 
 import java.util.Date;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor @Data
 public class SessionCaisseDTO {
 
-    private Long sessionCaisseId;
+    private UUID sessionCaisseId;
 
     private Date dateHeureOuverture;
 
     private Date dateHeureFermeture;
 
-    private Long caissierId;
+    private UUID caissierId;
 
     private double montantOuverture;
 

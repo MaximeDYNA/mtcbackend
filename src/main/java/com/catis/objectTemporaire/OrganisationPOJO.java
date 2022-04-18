@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganisationPOJO {
-      private Long id;
+      private UUID id;
       private String nom;
       private String adresse;
       private String lang;
@@ -20,5 +22,5 @@ public class OrganisationPOJO {
       private String tel1;
       private String tel2;
       private boolean parent;
-      private Long parentOrganisation;
+      private UUID parentOrganisation;
 }

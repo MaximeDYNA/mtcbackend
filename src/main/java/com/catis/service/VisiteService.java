@@ -87,11 +87,11 @@ public class VisiteService {
 
 
 
-    public List<Visite> findByReference(String ref, Long organisationId) {
+    public List<Visite> findByReference(String ref, UUID organisationId) {
         return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(ref, ref, organisationId);
     }
 
-    public Visite findById(Long i) {
+    public Visite findById(UUID i) {
         return visiteRepository.findById(i).get();
     }
 
@@ -107,7 +107,7 @@ public class VisiteService {
     }
 
     @Transactional
-    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, Long organisationId, Caissier caissier, String document) throws VisiteEnCoursException {
+    public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, UUID organisationId, Caissier caissier, String document, String certidocsId) throws VisiteEnCoursException {
         Visite visite = new Visite();
 
         Organisation organisation = os.findByOrganisationId(organisationId);
@@ -143,7 +143,7 @@ public class VisiteService {
             visite.setDateDebut(LocalDateTime.now());
         }
 
-        if (cg.getProduit().getProduitId() == 1) {
+        if (cg.getProduit().getLibelle()== "dec") {
             return visite;
         }
         visite.setCaissier(caissier);
@@ -155,7 +155,7 @@ public class VisiteService {
         visite.setPollution(Visite.TestResult.PENDING);
         visite.setVisuel(Visite.TestResult.PENDING);
         visite.setDocument(document);
-
+        visite.setCertidocsId(certidocsId);
         visite = visiteRepository.save(visite);
         final Visite v = visite;
         //dispatchNewVisit(visite);
@@ -175,34 +175,34 @@ public class VisiteService {
         return v;
     }
 
-    public boolean visiteEncours(String imCha, Long organisationId) {
+    public boolean visiteEncours(String imCha, UUID organisationId) {
         return !visiteRepository.findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(imCha, imCha, organisationId)
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
                 .isEmpty();
     }
-    public List<Visite> enCoursVisitList(Long orgId) {
+    public List<Visite> enCoursVisitList(UUID orgId) {
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
 
         return visiteEnCours;
     }
-    public List<Visite> getOrganisationVisiteWithTest(Long orgId, Pageable pageable) {
+    public List<Visite> getOrganisationVisiteWithTest(UUID orgId, Pageable pageable) {
         List<Visite> visiteEnCours = visiteRepository.getOrganisationVisiteWithTest(orgId, pageable);
 
         return visiteEnCours;
     }
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public List<Visite> enCoursVisitList(Long orgId, Pageable pageable) {
+    public List<Visite> enCoursVisitList(UUID orgId, Pageable pageable) {
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(orgId, pageable);
 
         return visiteEnCours;
     }
-    public Page<Visite> endedVisitList(Long orgId, Pageable pageable){
+    public Page<Visite> endedVisitList(UUID orgId, Pageable pageable){
         Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
         return visiteEnCours;
     }
 
-    public List<Visite> searchedVisitList(String search, Long orgId, Pageable pageable){
+    public List<Visite> searchedVisitList(String search, UUID orgId, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByRef(search, orgId, pageable);
         return visiteEnCours;
     }
@@ -210,21 +210,21 @@ public class VisiteService {
         List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(search,search,search,search,search,pageable);
         return visiteEnCours;
     }
-    public List<Visite> endedVisitList(Long orgId){
+    public List<Visite> endedVisitList(UUID orgId){
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
         return visiteEnCours;
     }
-    public List<Visite> enCoursVisitListForContext(Long orgId) {
+    public List<Visite> enCoursVisitListForContext(UUID orgId) {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
         return visiteEnCours;
     }
-    public List<Visite> AllVisitList(Long orgId) {
+    public List<Visite> AllVisitList(UUID orgId) {
         List<Visite> visiteEnCours = new ArrayList<>();
         visiteRepository.findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId).forEach(visiteEnCours::add);
         return visiteEnCours;
     }
 
-    public void terminerInspection(Long visiteId) throws IOException {
+    public void terminerInspection(UUID visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
         visite.setEncours(false);
@@ -237,11 +237,11 @@ public class VisiteService {
 
     }
 
-    public List<Visite> listParStatus(int status, Long orgId) {
+    public List<Visite> listParStatus(int status, UUID orgId) {
         return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
-    public List<KanBanSimpleData> listParStatusForkanban(int status, Long orgId) {
+    public List<KanBanSimpleData> listParStatusForkanban(int status, UUID orgId) {
         List<Visite> visites = visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
         List<KanBanSimpleData> kanBanSimpleDatas = new ArrayList<>();
 
@@ -266,7 +266,7 @@ public class VisiteService {
 
     }
 
-    public boolean isVisiteInitial(String ref, Long organisationId) throws VisiteEnCoursException {
+    public boolean isVisiteInitial(String ref, UUID organisationId) throws VisiteEnCoursException {
         List<Visite> visites = findByReference(ref, organisationId);
 
         Visite visite = visites.stream().filter(visite1 -> visite1.isActiveStatus()).max(Comparator.comparing(Visite::getCreatedDate))
@@ -295,7 +295,7 @@ public class VisiteService {
         return true;
     }
 
-    public boolean isVehiculeExist(String ref, Long organisationId) {
+    public boolean isVehiculeExist(String ref, UUID organisationId) {
         if (findByReference(ref, organisationId).isEmpty())
             return false;
         return true;
@@ -312,7 +312,7 @@ public class VisiteService {
         List<Visite> visites = visiteRepository.visitsOfTheDay();
         return visites;
     }
-    public List<Visite> findByOrganisationId(Long id){
+    public List<Visite> findByOrganisationId(UUID id){
         List<Visite> visites = new ArrayList<>();
         visiteRepository.findByOrganisation_OrganisationIdAndActiveStatusTrue(id).forEach(visites::add);
         return visites;
@@ -434,6 +434,7 @@ public class VisiteService {
                                 visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(),
                                 visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
                                 visite.getCreatedDate().format(SseController.dateTimeFormatter), true,  visite.getDocument())));
+
             }catch(IOException e){
                 emitters.remove(emitter);
             }
@@ -478,7 +479,7 @@ public class VisiteService {
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
         System.out.println("build visite +++++++++++++++"+ visite.getIdVisite());
         ProduitCategorieTest p = Utils.tests.stream()
-                .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
+                .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()))
                 .findFirst()
                 .get();
         List<GieglanFileIcon> icons =new ArrayList<>();

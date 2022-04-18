@@ -2,6 +2,7 @@ package com.catis.controller;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.controller.configuration.SessionData;
@@ -133,7 +134,7 @@ public class CarteGriseController {
     @PostMapping("/api/v1/cg/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
-        Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = SessionData.getOrganisationId(request);
         Organisation organisation = os.findByOrganisationId(orgId);
         try {
 
@@ -143,13 +144,11 @@ public class CarteGriseController {
 
         if(carteGriseR.getVehiculeId() == null){
             vehicule = new Vehicule(carteGriseR);
-
             if(carteGriseR.getEnergieId()==null)
                 vehicule.setEnergie(null);
             else
                 vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
             vehicule.setScore(100);
-            vehicule.setOrganisation(organisation);
             if(carteGriseR.getMarqueVehiculeId()==null)
                 vehicule.setMarqueVehicule(null);
             else
@@ -308,7 +307,7 @@ public class CarteGriseController {
         }
     }
     @DeleteMapping("/api/v1/admin/cartegrises/{id}")
-    public ResponseEntity<Object> energie(@PathVariable Long id) {
+    public ResponseEntity<Object> energie(@PathVariable UUID id) {
         try {
             cgs.deleteById(id);
             Message msg = msgRepo.findByCode("CG006");

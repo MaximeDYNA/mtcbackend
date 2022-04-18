@@ -1,10 +1,7 @@
 package com.catis.controller;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.objectTemporaire.*;
@@ -54,13 +51,13 @@ public class CategorieProduitController {
     private Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
 
     @RequestMapping("/api/v1/caisse/categorieproduits/{categorieId}/listesproduits")
-    public ResponseEntity<Object> listerLesProduits(@PathVariable String categorieId) throws IllegalArgumentException {
+    public ResponseEntity<Object> listerLesProduits(@PathVariable UUID categorieId) throws IllegalArgumentException {
         try {
             List<ProduitEtTaxe> pets = new ArrayList<>();
             List<Taxe> taxes;
             ProduitEtTaxe pet;
-            Long id = Long.valueOf(categorieId);
-            for (Produit produit : produitService.findByCategorieProduit(id).stream()
+            //Long id = Long.valueOf(categorieId);
+            for (Produit produit : produitService.findByCategorieProduit(categorieId).stream()
                     .filter(prod -> !prod.getLibelle().equalsIgnoreCase("cv"))
                     .collect(Collectors.toList())) {
                 pet = new ProduitEtTaxe();
@@ -178,7 +175,7 @@ public class CategorieProduitController {
 
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "/api/v1/categorieproduits/{id}")
-    public ResponseEntity<Object> deleteCategorieProduits(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteCategorieProduits(@PathVariable UUID id) {
 
         LOGGER.trace("suppression de la catégorie produit ID = "+ id);
 

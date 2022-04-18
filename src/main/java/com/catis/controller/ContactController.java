@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.model.entity.Message;
 import com.catis.model.entity.Organisation;
@@ -70,7 +71,7 @@ public class ContactController {
             } else
                 partenaire.setDateNaiss(null);
 
-            Long orgId = Long.valueOf(UserInfoIn.getUserInfo(request).getOrganisanionId());
+            UUID orgId = UserInfoIn.getUserInfo(request).getOrganisanionId();
             partenaire.setEmail(clientPartenaire.getEmail());
             partenaire.setTelephone(clientPartenaire.getTelephone());
             partenaire.setNom(clientPartenaire.getNom());
@@ -146,7 +147,7 @@ public class ContactController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", result);
     }
     @DeleteMapping("/api/v1/admin/contacts/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) throws ParseException {
+    public ResponseEntity<Object> delete(@PathVariable UUID id) throws ParseException {
         try {
             contactService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

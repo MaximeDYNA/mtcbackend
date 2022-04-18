@@ -13,10 +13,7 @@ import com.catis.controller.message.Message;
 import com.catis.model.entity.Energie;
 import com.catis.service.EnergieService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -79,7 +76,7 @@ public class EnergieController {
         }
     }
     @DeleteMapping("/api/v1/admin/energies/{id}")
-    public ResponseEntity<Object> energie(@PathVariable Long id) {
+    public ResponseEntity<Object> energie(@PathVariable UUID id) {
         try {
             energieService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"

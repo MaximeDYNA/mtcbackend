@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Pays;
 
-public interface PaysRepository extends CrudRepository<Pays, Long> {
+import java.util.UUID;
+
+public interface PaysRepository extends CrudRepository<Pays, UUID> {
 
 }

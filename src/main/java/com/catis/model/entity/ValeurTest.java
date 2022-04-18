@@ -13,22 +13,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.catis.model.control.GieglanFile;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.control.GieglanFile.StatusType;
 import com.catis.model.configuration.JournalData;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "t_valeurtest")
 @Audited
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class ValeurTest extends JournalData {
 
     @Id
-    @Column(name = "uuid")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idValeurTest;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID idValeurTest;
 
     private String code;
 
@@ -47,68 +62,5 @@ public class ValeurTest extends JournalData {
 
     @ManyToOne
     private Mesure mesure;
-
-    public ValeurTest() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Long getIdValeurTest() {
-        return idValeurTest;
-    }
-
-    public void setIdValeurTest(Long idValeurTest) {
-        this.idValeurTest = idValeurTest;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getValeur() {
-        return valeur;
-    }
-
-    public void setValeur(String valeur) {
-        this.valeur = valeur;
-    }
-
-    public Integer getCrc() {
-        return crc;
-    }
-
-    public void setCrc(Integer crc) {
-        this.crc = crc;
-    }
-
-    public StatusType getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusType status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-
-    public GieglanFile getGieglanFile() {
-        return gieglanFile;
-    }
-
-    public void setGieglanFile(GieglanFile gieglanFile) {
-        this.gieglanFile = gieglanFile;
-    }
 
 }

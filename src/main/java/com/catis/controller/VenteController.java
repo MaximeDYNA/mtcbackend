@@ -137,7 +137,7 @@ public class VenteController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/{id}/detailsvente/listview")
-    public ResponseEntity<Object> listVentes(@PathVariable Long id) {
+    public ResponseEntity<Object> listVentes(@PathVariable UUID id) {
         try {
             LOGGER.trace("Liste détails vente");
             Map<String, Object> venteListView;

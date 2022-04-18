@@ -1,6 +1,7 @@
 package com.catis.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class DetailVenteService {
         }
     }
 
-    public List<DetailVente> findByVente(Long id) {
+    public List<DetailVente> findByVente(UUID id) {
         return detailVenteRepository.findByVente_IdVente(id);
 
     }

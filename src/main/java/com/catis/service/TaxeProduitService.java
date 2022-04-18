@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class TaxeProduitService {
     @Autowired
     private TaxeProduitRepository taxeProduitRepository;
 
-    public List<TaxeProduit> findByProduitId(Long produitId) {
+    public List<TaxeProduit> findByProduitId(UUID produitId) {
         return taxeProduitRepository.findByProduit_ProduitId(produitId);
     }
 
@@ -23,11 +24,11 @@ public class TaxeProduitService {
         return taxeProduitRepository.findByProduit_LibelleIgnoreCase(reference);
     }
 
-    public void deleteBytaxeId(Long taxeId) {
+    public void deleteBytaxeId(UUID taxeId) {
          taxeProduitRepository.deleteById(taxeId);
     }
 
-    public Optional<TaxeProduit> findBytaxeIdAndProduitId(Long taxeId, Long produitId) {
+    public Optional<TaxeProduit> findBytaxeIdAndProduitId(UUID taxeId, UUID produitId) {
         return taxeProduitRepository.findByTaxe_taxeIdAndProduit_produitId(taxeId, produitId).stream().findFirst();
     }
 }

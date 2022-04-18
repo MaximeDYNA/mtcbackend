@@ -41,7 +41,7 @@ public class OrganisationService {
             AccessToken accessToken = kp.getKeycloakSecurityContext().getToken();
             System.out.println("******************"+ accessToken.getPreferredUsername() +"  "+accessToken
                     .getOtherClaims().toString() );
-            Long l = Long.valueOf(accessToken
+            UUID l = UUID.fromString(accessToken
                     .getOtherClaims()
                     .get("organisationId").toString());
 
@@ -53,7 +53,7 @@ public class OrganisationService {
         return  organisation;
     }
 
-    public Organisation findOrganisationById(Long id){
+    public Organisation findOrganisationById(UUID id){
         Optional<Organisation> o = organisationRepository.findById(id);
         if(o.isPresent()){
             return o.get();
@@ -81,7 +81,7 @@ public class OrganisationService {
         Page<OrganisationDTO> organisationDTOPage = new PageImpl<>(organisationDTOS,pageable,Long.valueOf(organisationDTOS.size()));
         return organisationDTOPage;
     }
-    public Page<OrganisationDTO> findAllChildren(Long idParent, Pageable pageable){
+    public Page<OrganisationDTO> findAllChildren(UUID idParent, Pageable pageable){
         List<OrganisationDTO> organisationDTOS = new ArrayList<>();
         OrganisationDTO oDTO;
         ModelForSelectDTO parentOrganisation;
@@ -119,7 +119,7 @@ public class OrganisationService {
         }
         return childKanbanDTOS;
     }
-    public List<ChildKanbanDTO> findChildren(Long id){
+    public List<ChildKanbanDTO> findChildren(UUID id){
         List<Organisation> orgs = organisationRepository.findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_OrganisationId(id);
         List<ChildKanbanDTO> childKanbanDTOS = new ArrayList<>();
         ChildKanbanDTO childKanbanDTO;
@@ -141,7 +141,7 @@ public class OrganisationService {
         organisationRepository.findByActiveStatusTrueAndParentFalse().forEach(orgs::add);
         return orgs;
     }
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         organisationRepository.deleteById(id);
     }
 
@@ -152,7 +152,7 @@ public class OrganisationService {
         organisationRepository.save(organisation);
     }
 
-    public Organisation findByOrganisationId(Long id) {
+    public Organisation findByOrganisationId(UUID id) {
         return organisationRepository.findById(id).get();
     }
 

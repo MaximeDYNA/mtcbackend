@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ClientPOJO {
 
-    private Long clientId;
+    private UUID clientId;
     private String nom;
     private String description;
     private String prenom;
@@ -25,5 +26,5 @@ public class ClientPOJO {
     private String cni;
     private String telephone;
     private String email;
-    private Long organisationId;
+    private UUID organisationId;
 }

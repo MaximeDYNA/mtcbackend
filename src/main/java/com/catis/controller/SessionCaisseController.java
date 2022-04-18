@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 import com.catis.model.entity.Caissier;
@@ -141,7 +142,7 @@ public class SessionCaisseController {
 
     @RequestMapping("/api/v1/sessioncaisses")
     public SessionCaisse sessionCaisse(@RequestBody SessionCaisse sessionCaisse) {
-        return sessionCaisseService.findSessionCaisseById(0);
+        return sessionCaisseService.findSessionCaisseById(UUID.randomUUID());
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/fermerSessionCaisse")

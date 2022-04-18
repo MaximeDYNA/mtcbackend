@@ -176,7 +176,7 @@ public class SseNotificationService implements NotificationService {
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
         System.out.println("build visite +++++++++++++++"+ visite.getIdVisite());
         ProduitCategorieTest p = Utils.tests.stream()
-                .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
+                .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()) )
                 .findFirst()
                 .get();
         List<GieglanFileIcon> icons =new ArrayList<>();

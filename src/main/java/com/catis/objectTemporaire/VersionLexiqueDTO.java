@@ -3,10 +3,11 @@ package com.catis.objectTemporaire;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class VersionLexiqueDTO {
 
-    private Long id;
+    private UUID id;
     private String libelle;
     private String version;
     private String createdDate;
@@ -62,11 +63,11 @@ public class VersionLexiqueDTO {
         this.modifiedDate = formattedString;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

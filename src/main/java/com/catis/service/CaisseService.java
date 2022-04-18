@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +36,11 @@ public class CaisseService {
         return caisses;
     }
 
-    public Caisse findCaisseById(Long idCaisse) {
+    public Caisse findCaisseById(UUID idCaisse) {
         return caisseRepository.findById(idCaisse).get();
     }
 
-    public void deleteCaisseById(Long idCaisse) {
+    public void deleteCaisseById(UUID idCaisse) {
         caisseRepository.deleteById(idCaisse);
     }
 

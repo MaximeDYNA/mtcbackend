@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganisationDTO {
-    private Long id;
+    private UUID id;
     private String nom;
     private String adresse;
     private String tel1;

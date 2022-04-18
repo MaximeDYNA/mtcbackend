@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class UtilisateurService {
         return utilisateurs;
     }
 
-    public Utilisateur findUtilisateurById(Long idUtilisateur) {
+    public Utilisateur findUtilisateurById(UUID idUtilisateur) {
         return utilisateurRepository.findById(idUtilisateur).get();
     }
 
@@ -43,7 +44,7 @@ public class UtilisateurService {
         return utilisateurRepository.findByKeycloakId(keycloakId);
     }
 
-    public void deleteUtilisateurById(Long id) {
+    public void deleteUtilisateurById(UUID id) {
         utilisateurRepository.deleteById(id);
     }
 

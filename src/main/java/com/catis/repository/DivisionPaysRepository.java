@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.DivisionPays;
 
-public interface DivisionPaysRepository extends CrudRepository<DivisionPays, Long> {
+import java.util.UUID;
+
+public interface DivisionPaysRepository extends CrudRepository<DivisionPays, UUID> {
 
 }

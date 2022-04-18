@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,8 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProprietairePOJO {
 
-    private Long proprietaireVehiculeId;
-    private Long idControleur;
+    private UUID proprietaireVehiculeId;
+    private UUID idControleur;
     private String nom;
     private String prenom;
     private Date dateNaiss;
@@ -26,6 +27,6 @@ public class ProprietairePOJO {
     private ObjectForSelect organisationId;
     private ObjectForSelect user;
     private String description;
-    private Long partenaireId;
+    private UUID partenaireId;
 
 }

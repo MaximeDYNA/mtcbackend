@@ -1,26 +1,27 @@
 package com.catis.objectTemporaire;
 
 import java.util.List;
+import java.util.UUID;
 
 public class LexiquePOJO {
 
-    private Long id;
+    private UUID id;
     private String code;
     private String libelle;
     private String parent;
     private String haschild;
     private String visual;
-    private Long classificationId;
-    private Long version;
-    private int categoryId;
+    private UUID classificationId;
+    private UUID version;
+    private UUID categoryId;
 
     public LexiquePOJO() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public LexiquePOJO(Long id, String code, String libelle, String parent, String haschild, String visual,
-                       Long version, int categoryId) {
+    public LexiquePOJO(UUID id, String code, String libelle, String parent, String haschild, String visual,
+                       UUID version, UUID categoryId) {
         super();
         this.id = id;
         this.code = code;
@@ -73,35 +74,35 @@ public class LexiquePOJO {
         this.visual = visual;
     }
 
-    public int getCategoryId() {
+    public UUID getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getVersion() {
+    public UUID getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(UUID version) {
         this.version = version;
     }
 
-    public Long getClassificationId() {
+    public UUID getClassificationId() {
         return classificationId;
     }
 
-    public void setClassificationId(Long classificationId) {
+    public void setClassificationId(UUID classificationId) {
         this.classificationId = classificationId;
     }
 

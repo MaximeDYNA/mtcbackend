@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import com.catis.model.entity.Organisation;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class OrganisationController {
@@ -39,7 +36,7 @@ public class OrganisationController {
     @GetMapping("/api/v1/organisation")
     public ResponseEntity<Object> connectedUserOrganisation() {
                 UserDTO u =UserInfoIn.getUserInfo(request);
-                Organisation organisation = os.findByOrganisationId(Long.valueOf(u.getOrganisanionId()));
+                Organisation organisation = os.findByOrganisationId(u.getOrganisanionId());
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", organisation);
         /*try {} catch (Exception e) {
@@ -64,7 +61,7 @@ public class OrganisationController {
     }*/
     
     @GetMapping("/api/v1/admin/organisations/{id}")
-    public ResponseEntity<Object> getOrganisation(@PathVariable Long id){
+    public ResponseEntity<Object> getOrganisation(@PathVariable UUID id){
 
         Organisation organisation = os.findOrganisationById(id);
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
@@ -76,7 +73,7 @@ public class OrganisationController {
         }*/
     }
     @DeleteMapping("/api/v1/admin/organisations/{id}")
-    public ResponseEntity<Object> deleteOrganisation(@PathVariable Long id){
+    public ResponseEntity<Object> deleteOrganisation(@PathVariable UUID id){
 
         os.deleteById(id);
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
@@ -103,7 +100,7 @@ public class OrganisationController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "OK", collModel);
     }
     @GetMapping(value = "/api/v1/organisations/children/{id}" ,params = { "page", "size" })
-    public ResponseEntity<Object> findChildPaginated(@PathVariable Long id, @RequestParam("page") int page,
+    public ResponseEntity<Object> findChildPaginated(@PathVariable UUID id, @RequestParam("page") int page,
                                                      @RequestParam("size") int size) throws Exception {
 
         Page<OrganisationDTO> resultPage = os.findAllChildren(id,PageRequest.of(page, size));

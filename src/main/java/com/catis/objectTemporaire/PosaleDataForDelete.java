@@ -1,11 +1,13 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class PosaleDataForDelete {
 
     private String reference;
-    private Long sessionCaisseId;
+    private UUID sessionCaisseId;
 
-    public PosaleDataForDelete(String reference, Long sessionCaisseId) {
+    public PosaleDataForDelete(String reference, UUID sessionCaisseId) {
         super();
         this.reference = reference;
         this.sessionCaisseId = sessionCaisseId;
@@ -24,11 +26,11 @@ public class PosaleDataForDelete {
         this.reference = reference;
     }
 
-    public Long getSessionCaisseId() {
+    public UUID getSessionCaisseId() {
         return sessionCaisseId;
     }
 
-    public void setSessionCaisseId(Long sessionCaisseId) {
+    public void setSessionCaisseId(UUID sessionCaisseId) {
         this.sessionCaisseId = sessionCaisseId;
     }
 

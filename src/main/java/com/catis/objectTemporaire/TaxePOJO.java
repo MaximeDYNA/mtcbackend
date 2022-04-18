@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 public class TaxePOJO {
 
-    private Long taxeId;
+    private UUID taxeId;
     private String nom;
     private String description;
     private double valeur;
     private List<ObjectForSelect> produits;
     private boolean incluse;
-    private Long organisationId;
+    private UUID organisationId;
 
 }

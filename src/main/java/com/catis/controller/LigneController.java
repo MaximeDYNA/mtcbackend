@@ -2,6 +2,7 @@ package com.catis.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.catis.controller.configuration.SessionData;
 import com.catis.model.entity.Organisation;
@@ -65,11 +66,11 @@ public class LigneController {
     public ResponseEntity<Object> ligneList() {
         LOGGER.trace("liste des lignes de l'organisation");
 
-
         try {
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
+            List<Ligne> lignes = ligneService.findActiveByorganisation(orgId);
 
-            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection", ligneService.findActiveByorganisation(orgId));
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, Message.OK_LIST_VIEW + "Inspection",lignes );
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, Message.ERREUR_LIST_VIEW + "Ligne", null);
         }
@@ -77,11 +78,11 @@ public class LigneController {
     }
 
     @GetMapping(value = "/api/v1/vehicules/lignes/{id}")
-    public ResponseEntity<Object> getCartegriseByLigne(@PathVariable Long id) {
+    public ResponseEntity<Object> getCartegriseByLigne(@PathVariable UUID id) {
 
 
             LOGGER.trace("liste des vehicules par ligne");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
 
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             for (CarteGrise cg : cgService.findByLigne(id, orgId)) {
@@ -142,7 +143,7 @@ public class LigneController {
     }
 
     @DeleteMapping("/api/v1/admin/lignes/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id){
+    public ResponseEntity<Object> deleteById(@PathVariable UUID id){
 
         try{
             ligneService.deleteById(id);

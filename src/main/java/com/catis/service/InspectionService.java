@@ -1,10 +1,7 @@
 package com.catis.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import com.catis.controller.SseController;
 import com.catis.controller.VisiteController;
@@ -40,12 +37,12 @@ public class InspectionService {
         return inspections;
     }
 
-    public Inspection findInspectionById(Long id) {
+    public Inspection findInspectionById(UUID id) {
 
         return inspectionR.findById(id).get();
     }
 
-    public Inspection findInspectionByVisite(Long idvisite) {
+    public Inspection findInspectionByVisite(UUID idvisite) {
         return inspectionR.findByVisite_IdVisite(idvisite);
     }
 
@@ -56,7 +53,7 @@ public class InspectionService {
         return inspection;
     }
 
-    public Inspection setSignature(Long id, String signature, Controleur controleur) throws IOException {
+    public Inspection setSignature(UUID id, String signature, Controleur controleur) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);
         Inspection inspection = findInspectionByVisite(id);
@@ -77,7 +74,7 @@ public class InspectionService {
 
     }
 
-    public void deleteInspection (Long id){
+    public void deleteInspection (UUID id){
         System.out.println(id +" to delete");
         inspectionR.deleteById(id);
     }

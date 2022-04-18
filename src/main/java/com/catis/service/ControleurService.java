@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class ControleurService {
         return controleurs;
     }
 
-    public List<Controleur> findAllByOrganisation(Long organisationId) {
+    public List<Controleur> findAllByOrganisation(UUID organisationId) {
         List<Controleur> controleurs = new ArrayList<>();
         controleurR.findByOrganisation_OrganisationId(organisationId).forEach(controleurs::add);
         return controleurs;
     }
 
-    public Controleur findControleurById(Long id) {
+    public Controleur findControleurById(UUID id) {
         return controleurR.findById(id).get();
     }
 
@@ -39,7 +40,7 @@ public class ControleurService {
         return controleurR.findByUtilisateur_keycloakId(keycloakId);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         controleurR.deleteById(id);
     }
 }

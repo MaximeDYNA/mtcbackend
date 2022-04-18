@@ -145,8 +145,9 @@ public class VisiteController {
     @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
                                                         @RequestParam("size") int size) {
+        log.info("recherche ---");
         try{
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
             if(search == "" ){
                 search=null;
             }
@@ -154,26 +155,26 @@ public class VisiteController {
 
             List<NewListView> newListViews = resultPage.stream().map(visite ->
 
-                    new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                            (visite.getCarteGrise().getVehicule()==null
-                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                            (visite.getCarteGrise().getProprietaireVehicule()
-                                    .getPartenaire()
-                                    .getNom()
-                                    == null
-                                    ? null : visite.getCarteGrise().getProprietaireVehicule()
-                                    .getPartenaire()
-                                    .getNom()),
-                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                            visite.getInspection() == null
-                                    ? 0 : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                            visite.getIsConform(),
-                            visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
-                            visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
-                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
-            ).collect(Collectors.toList());
+            new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                    (visite.getCarteGrise().getVehicule()==null
+                            ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                            ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                    (visite.getCarteGrise().getProprietaireVehicule()
+                            .getPartenaire()
+                            .getNom()
+                             == null
+                            ? null : visite.getCarteGrise().getProprietaireVehicule()
+                            .getPartenaire()
+                            .getNom()),
+                    Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                    getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                    visite.getInspection() == null
+                            ? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                    visite.getIsConform(),
+                    visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
+                    visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
+                    visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
+        ).collect(Collectors.toList());
 
             Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
             PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
@@ -194,32 +195,32 @@ public class VisiteController {
     @GetMapping(value = "/api/v1/all/visitesended", params = { "page", "size" })
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
-
         try{
-            Long orgId = SessionData.getOrganisationId(request);
+        UUID orgId = SessionData.getOrganisationId(request);
+
 
             Page<Visite> resultPage = visiteService.endedVisitList(orgId, PageRequest.of(page, size));//PageRequest.of(page, size)
             List<Listview> listVisit = new ArrayList<>();
 
-            List<NewListView> newListViews = resultPage.stream().map(visite ->
-                    new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                            (visite.getCarteGrise().getVehicule()==null
-                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                            (visite.getCarteGrise().getProprietaireVehicule()
-                                    .getPartenaire()
-                                    .getNom()
-                                    == null
-                                    ? null : visite.getCarteGrise().getProprietaireVehicule()
-                                    .getPartenaire()
-                                    .getNom()),
-                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                            visite.getIsConform(),
-                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
-            ).collect(Collectors.toList());
+        List<NewListView> newListViews = resultPage.stream().map(visite ->
+                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        (visite.getCarteGrise().getVehicule()==null
+                                ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                        (visite.getCarteGrise().getProprietaireVehicule()
+                                .getPartenaire()
+                                .getNom()
+                                == null
+                                ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                .getPartenaire()
+                                .getNom()),
+                        Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                        getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                        visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                        visite.getIsConform(),
+                        visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                        visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
+        ).collect(Collectors.toList());
 
         /*log.info("Liste des visites terminées");
         resultPage.forEach(visite ->
@@ -247,7 +248,7 @@ public class VisiteController {
     public ResponseEntity<Object> visiteByStatut(@PathVariable int status) {
         try {
             log.info("Liste des visites en cours");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
             Message msg = msgRepo.findByCode("VS005");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visiteService.listParStatus(status,orgId));
         } catch (Exception e) {
@@ -272,34 +273,33 @@ public class VisiteController {
     @GetMapping("/api/v1/visit/kanbanview")
     public ResponseEntity<Object> listforKabanView() {
 
-        try{
-            Long orgId = SessionData.getOrganisationId(request);
-            List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
-            List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
-            List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
-            List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2, orgId);
-            List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3, orgId);
-            List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4, orgId);
-            List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5, orgId);
-            List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6, orgId);
-            List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7, orgId);
-            List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8, orgId);
-            List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9, orgId);
-            List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10, orgId);
-            kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
-            kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
-            kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
-            kabanViewVisits.add(new KabanViewVisit("A signer", toSign, toSign.size()));
-            kabanViewVisits.add(new KabanViewVisit("En Attente conformité",  confirms, confirms.size()));
-            kabanViewVisits.add(new KabanViewVisit("Non conforme", unconforms, unconforms.size()));
-            kabanViewVisits.add(new KabanViewVisit("A imprimer", prints, prints.size()));
-            kabanViewVisits.add(new KabanViewVisit("Refusés", refused, refused.size()));
-            kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
-            kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
-            kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
+                try{
+                UUID orgId = SessionData.getOrganisationId(request);
+                List<KabanViewVisit> kabanViewVisits = new ArrayList<>();
+                List<KanBanSimpleData> majs = visiteService.listParStatusForkanban(0, orgId);
+                List<KanBanSimpleData> inspects = visiteService.listParStatusForkanban(1, orgId);
+                List<KanBanSimpleData> tests = visiteService.listParStatusForkanban(2, orgId);
+                List<KanBanSimpleData> toSign = visiteService.listParStatusForkanban(3, orgId);
+                List<KanBanSimpleData> confirms = visiteService.listParStatusForkanban(4, orgId);
+                List<KanBanSimpleData> unconforms = visiteService.listParStatusForkanban(5, orgId);
+                List<KanBanSimpleData> prints = visiteService.listParStatusForkanban(6, orgId);
+                List<KanBanSimpleData> refused = visiteService.listParStatusForkanban(7, orgId);
+                List<KanBanSimpleData> certifies = visiteService.listParStatusForkanban(8, orgId);
+                List<KanBanSimpleData> accepted = visiteService.listParStatusForkanban(9, orgId);
+                List<KanBanSimpleData> approuve = visiteService.listParStatusForkanban(10, orgId);
+                kabanViewVisits.add(new KabanViewVisit("maj", majs , majs.size()));
+                kabanViewVisits.add(new KabanViewVisit("A inspecter", inspects, inspects.size()));
+                kabanViewVisits.add(new KabanViewVisit("En cours test", tests, tests.size()));
+                kabanViewVisits.add(new KabanViewVisit("A signer", toSign, toSign.size()));
+                kabanViewVisits.add(new KabanViewVisit("En Attente conformité",  confirms, confirms.size()));
+                kabanViewVisits.add(new KabanViewVisit("Non conforme", unconforms, unconforms.size()));
+                kabanViewVisits.add(new KabanViewVisit("A imprimer", prints, prints.size()));
+                kabanViewVisits.add(new KabanViewVisit("Refusés", refused, refused.size()));
+                kabanViewVisits.add(new KabanViewVisit("A certifier", certifies, certifies.size()));
+                kabanViewVisits.add(new KabanViewVisit("Accepté", accepted, accepted.size()));
+                kabanViewVisits.add(new KabanViewVisit("A approuver", approuve, approuve.size()));
             Message msg = msgRepo.findByCode("VS007");
-            log.info("kanbanview visit");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, kabanViewVisits);
+            log.info("kanbanview visit");    return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, kabanViewVisits);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -314,8 +314,8 @@ public class VisiteController {
     @GetMapping("/api/v1/visite/graphview")
     public ResponseEntity<Object> listforGraphView() {
         try {
-
-            Long orgId = SessionData.getOrganisationId(request);
+            log.info("Graphe view visit");
+            UUID orgId = SessionData.getOrganisationId(request);
             List<Object> graphViews = new ArrayList<>();
             int[] datas = new int[9];
             for (int i = 0; i < datas.length; i++) {
@@ -346,14 +346,14 @@ public class VisiteController {
 
     @GetMapping("/api/v1/all/visite/listview")
     public ResponseEntity<Object> listforlistView() {
-        try{
-            log.info("list view visit");
-            List<Listview> listVisit = new ArrayList<>();
-            Long orgId = SessionData.getOrganisationId(request);
-            for (Visite visite : visiteService.listParStatus(0, orgId)) {
-                Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
-                lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
-                        .getNumImmatriculation()));
+try{
+        log.info("list view visit");
+        List<Listview> listVisit = new ArrayList<>();
+        UUID orgId = SessionData.getOrganisationId(request);
+        for (Visite visite : visiteService.listParStatus(0, orgId)) {
+            Listview lv = new Listview(visite, visiteService,gieglanFileService,catSer);
+            lv.setCategorie(ps.findByImmatriculation(visite.getCarteGrise()
+                    .getNumImmatriculation()));
 
                 if (venteService.findByVisite(visite.getIdVisite())
                         == null)
@@ -388,7 +388,7 @@ public class VisiteController {
     public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
         try{
             log.info("list view visit");
-            Long orgId = SessionData.getOrganisationId(request);
+            UUID orgId = SessionData.getOrganisationId(request);
             List<NewListView> listVisit = new ArrayList<>();
             visiteService.listParStatus(statutCode, orgId).forEach(
                     visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
@@ -416,7 +416,7 @@ public class VisiteController {
     }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
-    public ResponseEntity<Object> printPV(@PathVariable Long visiteId) throws ImpressionException, IOException, DocumentException {
+    public ResponseEntity<Object> printPV(@PathVariable UUID visiteId) throws ImpressionException, IOException, DocumentException {
 
         try{
             File f= new File(environment.getProperty("pv.path"));
@@ -485,7 +485,7 @@ public class VisiteController {
 
 
 
-    public String fillHtmlToValue(long id) {
+    public String fillHtmlToValue(UUID id) {
 
         Optional<Visite> visite = this.visiteRepo.findById(id);
         Taxe tp = taxeService.findByNom("TVA");
@@ -661,7 +661,7 @@ public class VisiteController {
     }
 
     @GetMapping(value = "/api/v1/visite/tests/{i}")
-    public ResponseEntity<Object> getInspectionTest(@PathVariable Long i) {
+    public ResponseEntity<Object> getInspectionTest(@PathVariable UUID i) {
 
         try {
 
@@ -692,7 +692,7 @@ public class VisiteController {
 
 
     @PostMapping("/api/v1/visite/{id}/status/{status}")
-    public ResponseEntity<Object> editStatus(@PathVariable Long id, @PathVariable int status) {
+    public ResponseEntity<Object> editStatus(@PathVariable UUID id, @PathVariable int status) {
 
         Visite v = visiteService.findById(id);
         v.setStatut(status);
@@ -739,7 +739,7 @@ public class VisiteController {
     public List<GieglanFileIcon> replaceIconIfNecessary(Visite visite){
         System.out.println("build visite +++++++++++++++"+ visite.getIdVisite());
         ProduitCategorieTest p = Utils.tests.stream()
-                .filter(produitCategorieTest -> produitCategorieTest.getProduitId()== visite.getCarteGrise().getProduit().getProduitId())
+                .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()))
                 .findFirst()
                 .get();
         List<GieglanFileIcon> icons =new ArrayList<>();
@@ -913,7 +913,7 @@ public class VisiteController {
     }
 
     @PostMapping(value = "/api/v1/admin/visites/reset/{id}")
-    public ResponseEntity<Object> reset(@PathVariable Long id) {
+    public ResponseEntity<Object> reset(@PathVariable UUID id) {
 
         Visite v = visiteService.findById(id);
 
@@ -945,7 +945,7 @@ public class VisiteController {
     }
 
     @GetMapping(value = "/api/v1/admin/visites/{id}")
-    public ResponseEntity<Object> getOneVisite(@PathVariable Long id) {
+    public ResponseEntity<Object> getOneVisite(@PathVariable UUID id) {
 
         Visite visite = visiteService.findById(id);
 
@@ -954,7 +954,7 @@ public class VisiteController {
     }
 
     @DeleteMapping(value = "/api/v1/admin/visites/{id}")
-    public ResponseEntity<Object> delVisite(@PathVariable Long id) {
+    public ResponseEntity<Object> delVisite(@PathVariable UUID id) {
 
         Visite visite = visiteService.findById(id);
         visite.getVente().getDetailventes().forEach(

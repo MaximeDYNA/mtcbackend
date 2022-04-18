@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin/taxes")
@@ -78,7 +79,7 @@ public class TaxeController {
 
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable UUID id){
         try {
             taxeService.deleteById(id);
             return ApiResponseHandler.generateResponse(HttpStatus.OK,

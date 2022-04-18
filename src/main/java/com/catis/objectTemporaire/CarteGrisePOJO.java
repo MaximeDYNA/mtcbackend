@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class CarteGrisePOJO {
 
-    private Long carteGriseId;
+    private UUID carteGriseId;
     private String numImmatriculation;
     private String preImmatriculation;
     private Date dateDebutValid;

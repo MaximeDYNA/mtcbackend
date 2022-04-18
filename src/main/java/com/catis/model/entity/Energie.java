@@ -1,59 +1,42 @@
 package com.catis.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.checkerframework.checker.units.qual.A;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.catis.objectTemporaire.CarteGriseReceived;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "t_energie")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_energie SET active_status=false WHERE energie_id=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Energie extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long energieId;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID energieId;
     private String libelle;
 
-    public Energie() {
-
-        // TODO Auto-generated constructor stub
-    }
-
-    public Energie(CarteGriseReceived cgr) {
-        this.energieId = cgr.getEnergieId();
-    }
-
-    public Energie(Long energieId, String libelle) {
-        this.energieId = energieId;
-        this.libelle = libelle;
-    }
-
-    public Long getEnergieId() {
-        return energieId;
-    }
-
-    public void setEnergieId(Long energieId) {
-        this.energieId = energieId;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
 
 }

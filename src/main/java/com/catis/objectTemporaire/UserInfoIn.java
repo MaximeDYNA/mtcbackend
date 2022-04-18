@@ -18,6 +18,7 @@ import com.catis.model.entity.Controleur;
 import org.springframework.core.env.Environment;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class UserInfoIn {
@@ -134,7 +135,7 @@ public class UserInfoIn {
             user.setEmail(accessToken.getEmail());
             AccessToken.Access realmAccess = accessToken.getRealmAccess();
             user.setRoles(realmAccess.getRoles());
-            user.setOrganisanionId(accessToken.getOtherClaims().get("organisationId").toString());
+            user.setOrganisanionId(UUID.fromString(accessToken.getOtherClaims().get("organisationId").toString()));
         }
         return  user;
     }

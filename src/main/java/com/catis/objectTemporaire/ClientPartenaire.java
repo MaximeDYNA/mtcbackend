@@ -2,11 +2,13 @@ package com.catis.objectTemporaire;
 
 import com.catis.model.entity.Partenaire;
 
+import java.util.UUID;
+
 public class ClientPartenaire {
-    private long clientId;
-    private long contactId;
+    private UUID clientId;
+    private UUID contactId;
     ;
-    private long vendeurId;
+    private UUID vendeurId;
     private String variants;
     private String nom;
     private String email;
@@ -20,7 +22,7 @@ public class ClientPartenaire {
     private Partenaire partenaire;
 
 
-    public ClientPartenaire(long clientId, long contactId, long vendeurId, String variants, String nom, String email,
+    public ClientPartenaire(UUID clientId, UUID contactId, UUID vendeurId, String variants, String nom, String email,
                             String prenom, String dateNaiss, String lieuDeNaiss, String passport, String permiDeConduire, String cni,
                             String telephone, Partenaire partenaire) {
         super();
@@ -45,11 +47,11 @@ public class ClientPartenaire {
         // TODO Auto-generated constructor stub
     }
 
-    public long getClientId() {
+    public UUID getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(UUID clientId) {
         this.clientId = clientId;
     }
 
@@ -133,19 +135,19 @@ public class ClientPartenaire {
         this.partenaire = partenaire;
     }
 
-    public long getContactId() {
+    public UUID getContactId() {
         return contactId;
     }
 
-    public void setContactId(long contactId) {
+    public void setContactId(UUID contactId) {
         this.contactId = contactId;
     }
 
-    public long getVendeurId() {
+    public UUID getVendeurId() {
         return vendeurId;
     }
 
-    public void setVendeurId(long vendeurId) {
+    public void setVendeurId(UUID vendeurId) {
         this.vendeurId = vendeurId;
     }
 

@@ -3,6 +3,7 @@ package com.catis.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -25,7 +26,7 @@ public class SessionCaisseService {
 
     }
 
-    public SessionCaisse findSessionCaisseById(long idSessionCaisse) {
+    public SessionCaisse findSessionCaisseById(UUID idSessionCaisse) {
         return sessionCaisseRepository.findBySessionCaisseId(idSessionCaisse);
     }
 
@@ -35,16 +36,16 @@ public class SessionCaisseService {
         return sessionCaisse;
     }
 
-    public SessionCaisse findSessionCaisseByUserId(long userId) {
+    public SessionCaisse findSessionCaisseByUserId(UUID userId) {
         return sessionCaisseRepository.findByActiveTrueAndCaissier_User_UtilisateurId(userId);
     }
 
-    public SessionCaisse findActiveSessionCaissierById(long caissierId) {
+    public SessionCaisse findActiveSessionCaissierById(UUID caissierId) {
         return sessionCaisseRepository.findByActiveTrueAndCaissierCaissierId(caissierId);
     }
 
     @Transactional
-    public SessionCaisse fermerSessionCaisse(Long sessionCaisseId, double montantFermeture) {
+    public SessionCaisse fermerSessionCaisse(UUID sessionCaisseId, double montantFermeture) {
         SessionCaisse sessionCaisse = sessionCaisseRepository.findBySessionCaisseId(sessionCaisseId);
 
         sessionCaisse.setMontantfermeture(montantFermeture);

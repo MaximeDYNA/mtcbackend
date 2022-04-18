@@ -1,17 +1,16 @@
 package com.catis.model.entity;
 
 import java.util.Set;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,11 +21,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_vendeur")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Vendeur extends JournalData {
     // entité capable d'avoir des commisions sur une vente
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vendeurId;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID vendeurId;
 
     private String description;
 
@@ -37,46 +44,6 @@ public class Vendeur extends JournalData {
     @JsonIgnore
     private Set<Vente> ventes;
 
-    public Vendeur() {
-    }
 
-    public Vendeur(long vendeurId, String description, Partenaire partenaire) {
-
-        this.vendeurId = vendeurId;
-        this.description = description;
-        this.partenaire = partenaire;
-    }
-
-    public Long getVendeurId() {
-        return vendeurId;
-    }
-
-    public void setVendeurId(Long vendeurId) {
-        this.vendeurId = vendeurId;
-    }
-
-    public Partenaire getPartenaire() {
-        return partenaire;
-    }
-
-    public void setPartenaire(Partenaire partenaire) {
-        this.partenaire = partenaire;
-    }
-
-    public Set<Vente> getVentes() {
-        return ventes;
-    }
-
-    public void setVentes(Set<Vente> ventes) {
-        this.ventes = ventes;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 }

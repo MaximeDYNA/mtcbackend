@@ -2,6 +2,7 @@ package com.catis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PartenaireService {
         return partenaires;
     }
 
-    public Partenaire findPartenaireById(Long idPartenaire) {
+    public Partenaire findPartenaireById(UUID idPartenaire) {
         return partenaireRepository.findById(idPartenaire).get();
     }
 
@@ -37,7 +38,7 @@ public class PartenaireService {
                 .findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
     }
 
-    public void deletePartenaireById(Long idPartenaire) {
+    public void deletePartenaireById(UUID idPartenaire) {
         partenaireRepository.deleteById(idPartenaire);
     }
 

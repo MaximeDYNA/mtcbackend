@@ -1,8 +1,10 @@
 package com.catis.objectTemporaire;
 
+import java.util.UUID;
+
 public class HoldData {
 
-    private Long sessionCaisseId;
+    private UUID sessionCaisseId;
     private Long number;
 
     public HoldData() {
@@ -10,17 +12,17 @@ public class HoldData {
         // TODO Auto-generated constructor stub
     }
 
-    public HoldData(Long sessionCaisseId, Long number) {
+    public HoldData(UUID sessionCaisseId, Long number) {
         super();
         this.sessionCaisseId = sessionCaisseId;
         this.number = number;
     }
 
-    public Long getSessionCaisseId() {
+    public UUID getSessionCaisseId() {
         return sessionCaisseId;
     }
 
-    public void setSessionCaisseId(Long sessionCaisseId) {
+    public void setSessionCaisseId(UUID sessionCaisseId) {
         this.sessionCaisseId = sessionCaisseId;
     }
 

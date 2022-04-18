@@ -1,10 +1,17 @@
 package com.catis.model.entity;
 
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,11 +23,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_contact SET active_status=false WHERE contact_id=?")
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class Contact extends JournalData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contactId;
+    @GeneratedValue(generator = "UUID")
+    @Type(type="uuid-char")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID contactId;
 
     private String description;
 
@@ -31,50 +46,6 @@ public class Contact extends JournalData {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
     @JsonIgnore
     private Set<Vente> ventes;
-
-    public Contact() {
-
-    }
-
-    public Contact(Long contactId, String description, Partenaire partenaire, Set<Vente> ventes) {
-        this.contactId = contactId;
-        this.description = description;
-        this.partenaire = partenaire;
-        this.ventes = ventes;
-    }
-
-    public Long getContactId() {
-        return contactId;
-    }
-
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Partenaire getPartenaire() {
-        return partenaire;
-    }
-
-    public void setPartenaire(Partenaire partenaire) {
-        this.partenaire = partenaire;
-    }
-
-    public Set<Vente> getVentes() {
-        return ventes;
-    }
-
-    public void setVentes(Set<Vente> ventes) {
-        this.ventes = ventes;
-    }
-
 
 
 }
