@@ -937,7 +937,7 @@ try{
         v.getInspection().getLexiques().forEach(lexique ->
                 lexique.setActiveStatus(false)
             );
-        v.getInspection().setVisiteIdReseted(v.getIdVisite());
+        v.getInspection().setVisiteIdReseted(v.getIdVisite().toString());
 
         v = visiteService.add(v);
 

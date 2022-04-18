@@ -43,8 +43,8 @@ public class PosaleService {
 
     }
 
-    public List<Posales> findByNumberSessionCaisse(Long number, UUID sessionCaisseId) {
-        return psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
+    public List<Posales> findByNumberSessionCaisse(UUID number, UUID sessionCaisseId) {
+        return psr.findByHold_HoldIdAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
     }
 
     public List<Posales> findByReferenceSessionCaisse(String reference, UUID sessionCaisseId) {

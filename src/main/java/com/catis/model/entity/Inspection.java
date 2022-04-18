@@ -57,7 +57,7 @@ public class Inspection extends JournalData {
 
     private String position;
 
-    private UUID visiteIdReseted;
+    private String visiteIdReseted;
 
     private double distancePercentage;
 

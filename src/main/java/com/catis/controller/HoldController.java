@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.catis.model.entity.Message;
 import com.catis.model.entity.SessionCaisse;
 import com.catis.objectTemporaire.HoldDTO;
+import com.catis.objectTemporaire.HoldDataSelectHold;
 import com.catis.repository.MessageRepository;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -81,7 +82,7 @@ public class HoldController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/deletehold")
-    public ResponseEntity<Object> supprimerOnglet(@RequestBody HoldData holdData) throws ParseException {
+    public ResponseEntity<Object> supprimerOnglet(@RequestBody HoldDataSelectHold holdData) throws ParseException {
         try {
             LOGGER.trace("suppression de l'onglet " + holdData.getNumber() + " demandé...");
             holdService.deleteHoldByNumber(holdData.getNumber(), holdData.getSessionCaisseId());
@@ -100,7 +101,7 @@ public class HoldController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/selecthold")
-    public ResponseEntity<Object> selectionnerOnglet(@RequestBody HoldData holdData) throws ParseException {
+    public ResponseEntity<Object> selectionnerOnglet(@RequestBody HoldDataSelectHold holdData) throws ParseException {
 
         try {
             LOGGER.trace("sélection de l'onglet " + holdData.getNumber() + " demandé...");
@@ -134,19 +135,18 @@ public class HoldController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/hold/refresh")
 
-    public ResponseEntity<Object> refreshHold(@RequestBody HoldData holdData) {
-
+    public ResponseEntity<Object> refreshHold(@RequestBody HoldDataSelectHold holdData) {
 
         LOGGER.trace("rafraichissement de l'onglet");
         System.out.println("Hold data ..."+ ToStringBuilder.reflectionToString(holdData));
         ps.deletePosale(holdData.getNumber(), holdData.getSessionCaisseId());
+
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "onglet de la session id " + holdData.getSessionCaisseId(), null);
 			 /*	try {} 
 			 catch (Exception e) { 
 				 return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false,
 						 	"Une erreur est survenue" + " bien vouloir contacter l'équipe CATIS", null);
 			  }*/
-
 
     }
 
