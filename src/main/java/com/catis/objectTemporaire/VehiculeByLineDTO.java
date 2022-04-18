@@ -8,6 +8,7 @@ public class VehiculeByLineDTO {
     private String ref;
     private UUID idInspection;
     private UUID idCategorie;
+    private String certidocsId;
 
 
     public VehiculeByLineDTO() {
@@ -59,6 +60,13 @@ public class VehiculeByLineDTO {
         this.idCategorie = idCategorie;
     }
 
+    public String getCertidocsId() {
+        return certidocsId;
+    }
+
+    public void setCertidocsId(String certidocsId) {
+        this.certidocsId = certidocsId;
+    }
 
     @Override
     public String toString() {

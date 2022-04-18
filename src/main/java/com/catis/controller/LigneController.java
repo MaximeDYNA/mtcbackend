@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.catis.controller.configuration.SessionData;
+import com.catis.model.entity.Inspection;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.LignePOJO;
 import com.catis.service.OrganisationService;
@@ -83,15 +84,16 @@ public class LigneController {
 
             LOGGER.trace("liste des vehicules par ligne");
             UUID orgId = SessionData.getOrganisationId(request);
-
+            Inspection inspection;
             List<VehiculeByLineDTO> vehicules = new ArrayList<>();
             for (CarteGrise cg : cgService.findByLigne(id, orgId)) {
+                inspection = inspectionService.findLastByRef(cg.getNumImmatriculation() == null ?
+                                cg.getVehicule().getChassis() : cg.getNumImmatriculation());
+
                 VehiculeByLineDTO v = new VehiculeByLineDTO();
                 v.setCarteGriseId(cg.getCarteGriseId());
-
-                v.setIdInspection(inspectionService.findLastByRef(cg.getNumImmatriculation() == null ?
-                        cg.getVehicule().getChassis() : cg.getNumImmatriculation())
-                        .getIdInspection());
+                v.setCertidocsId(inspection.getVisite().getCertidocsId());
+                v.setIdInspection(inspection.getIdInspection());
                 v.setRef(cg.getNumImmatriculation() == null ? cg.getVehicule().getChassis()
                         : cg.getNumImmatriculation());
                 v.setIdCategorie(cg.getProduit().getProduitId());
