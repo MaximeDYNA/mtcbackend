@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,6 +17,6 @@ public class DaschBoardLogDTO {
     private String author;
     private String action;
     private String entity;
-    private Long entityId;
+    private UUID entityId;
     private Date date;
 }
