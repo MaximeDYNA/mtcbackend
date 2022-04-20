@@ -100,7 +100,7 @@ public class EncaissementController {
                     vente.setClient(null);
                 }
                 else{
-                    partenaire.setPartenaireId(UUID.randomUUID());
+
                     partenaire.setNom(encaissement.getNomclient());
                     partenaire.setTelephone(encaissement.getNumeroclient());
                     partenaire.setOrganisation(organisation);
@@ -171,7 +171,7 @@ public class EncaissementController {
                     carteGrise.setNumImmatriculation(posale.getReference());
                     carteGrise.setProduit(produit);
                     carteGrise.setOrganisation(organisation);
-                    carteGrise.setCarteGriseId(UUID.randomUUID());
+
                     visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
                             encaissement.getMontantEncaisse(), orgId, caissier, encaissement.getDocument(), encaissement.getCertidocsId());
 
