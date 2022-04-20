@@ -106,7 +106,6 @@ public class EncaissementController {
                     partenaire.setOrganisation(organisation);
                     Client client =new Client();
                     client.setPartenaire(partenaire);
-                    client.setClientId(UUID.randomUUID());
                     client.setOrganisation(organisation);
                     vente.setClient(client);
                 }
