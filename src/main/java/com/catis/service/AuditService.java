@@ -66,7 +66,7 @@ public class AuditService {
         AuditReader auditReader = AuditReaderFactory.get(em);
         List<DaschBoardLogDTO> logs = new ArrayList<>();
         DaschBoardLogDTO simpleLog;
-        Long d;
+        UUID d;
         AuditQuery query = auditReader.createQuery().forRevisionsOfEntity(clazz, false, true);
         List a =  query.getResultList();
 
@@ -91,7 +91,7 @@ public class AuditService {
             simpleLog.setAuthor(audit.getUser());
             simpleLog.setEntity(clazz.getSimpleName());
             simpleLog.setDate(r1.getRevisionDate());
-            d = (Long) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e);
+            d = (UUID) em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e);
             //System.out.println("Id présumé a "+em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(e));
             simpleLog.setEntityId(d);
             System.out.println("id's "+d);
