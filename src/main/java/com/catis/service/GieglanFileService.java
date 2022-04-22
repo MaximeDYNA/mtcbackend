@@ -60,6 +60,13 @@ public class GieglanFileService {
         codeCgrises.put("0214", "");//modele du vehicule obligatoire
         codeCgrises.put("0215", "");
         codeCgrises.put("0216", this.carteGrise.getCarteGriseId().toString());
+        codeCgrises.put("7000", "1");
+        codeCgrises.put("7010", "1-1");
+        codeCgrises.put("7011", "01");
+        codeCgrises.put("7012", "0");
+        codeCgrises.put("7014", "00");
+        codeCgrises.put("7020", "1;0;1;1;1");
+        codeCgrises.put("7841", "");
         codeCgrises.forEach((key, value) -> {
             Integer crc = this.generateCrc(value);
             if (crc != null) {
