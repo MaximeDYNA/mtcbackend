@@ -87,8 +87,8 @@ public class SseNotificationService implements NotificationService {
                                 (visite.getCarteGrise().getVehicule() == null
                                         ? "" : (visite.getCarteGrise().getVehicule().getChassis() == null
                                         ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                                (visite.getVente().getClient() == null
-                                        ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom()),
+                                (visite.getVente()==null ? null : (visite.getVente().getClient() == null
+                                        ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom())),
                                 Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
                                 getHTML(visite), visite.getStatut(), visite.getIdVisite(), visite.isContreVisite(),
                                 visite.getInspection() == null ? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),

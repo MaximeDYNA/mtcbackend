@@ -4,6 +4,7 @@ import com.catis.model.entity.*;
 import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.repository.MessageRepository;
 import com.catis.service.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,7 @@ public class EncaissementController {
     @Transactional
     public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws Exception {
         LOGGER.info("ADDING A VISIT...");
+        LOGGER.info("Object received "+ ToStringBuilder.reflectionToString(encaissement));
         UUID orgId = UserInfoIn.getUserInfo(request).getOrganisanionId();
         String user = UserInfoIn.getUserInfo(request).getLogin();
         try {
