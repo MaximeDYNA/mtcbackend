@@ -36,7 +36,7 @@ public class Seuil extends JournalData {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    private String id;
 
     private double value;
 

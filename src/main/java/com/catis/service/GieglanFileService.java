@@ -39,13 +39,13 @@ public class GieglanFileService {
         file.setInspection(inspection);
         file.setOrganisation(inspection.getOrganisation());
         file.setFileCreatedAt(new Date());
-        file.setValeurTests(creategieglanforCardGrise(file));
+        file.setValeurTests(creategieglanforCardGrise(file,inspection));
         files.add(file);
         inspection.setGieglanFiles(files);
         this.gieglanFileRepository.save(file);
     }
 
-    private Set<ValeurTest> creategieglanforCardGrise(GieglanFile file) {
+    private Set<ValeurTest> creategieglanforCardGrise(GieglanFile file, Inspection inspection) {
 
         HashMap<String, String> codeCgrises = new HashMap<>();
         Set<ValeurTest> codeGieglans = new HashSet<>();
@@ -59,7 +59,7 @@ public class GieglanFileService {
         codeCgrises.put("0213", this.carteGrise.getVehicule().getMarqueVehicule().getLibelle());
         codeCgrises.put("0214", "");//modele du vehicule obligatoire
         codeCgrises.put("0215", "");
-        codeCgrises.put("0216", this.carteGrise.getCarteGriseId().toString());
+        codeCgrises.put("0216", inspection.getIdInspection().toString());
         codeCgrises.put("7000", "1");
         codeCgrises.put("7010", "1-1");
         codeCgrises.put("7011", "01");

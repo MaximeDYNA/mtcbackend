@@ -46,7 +46,7 @@ public class SeuilController {
         Lexique l = pojo.getLexique() == null ? null : ls.findById(pojo.getLexique().getId());
         Seuil seuil = new Seuil();
 
-        seuil.setId(pojo.getId());
+        seuil.setId(pojo.getId().toString());
         seuil.setCodeMessage(pojo.getCodeMessage());
         seuil.setDecision(pojo.isDecision());
         seuil.setFormule(f);

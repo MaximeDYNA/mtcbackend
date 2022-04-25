@@ -92,7 +92,7 @@ public class LexiqueController {
 
         for (Lexique l : lexiqueService.findByVersionLexique(id)) {
             LexiquePOJO pojo = new LexiquePOJO();
-            pojo.setId(l.getId());
+            pojo.setId(UUID.fromString(l.getId()));
             pojo.setCode(l.getCode());
             pojo.setLibelle(l.getLibelle());
             pojo.setParent(l.getParent() == null ? null : l.getParent().getCode());
@@ -125,12 +125,12 @@ public class LexiqueController {
             //le code recupère uniquement les parents et leurs enfants
             if (l.getParent() == null) {
                 LexiqueDTO lexiqueDTO = new LexiqueDTO();
-                lexiqueDTO.setId(l.getId());
+                lexiqueDTO.setId(UUID.fromString(l.getId()));
                 lexiqueDTO.setName(l.getCode() + " :" + l.getLibelle());
                 List<LexiqueChildDTO>  children = new ArrayList<>();
                 for (Lexique child : l.getChilds()) {
                     lexiqueChildDTO = new LexiqueChildDTO();
-                    lexiqueChildDTO.setId(child.getId());
+                    lexiqueChildDTO.setId(UUID.fromString(child.getId()));
                     lexiqueChildDTO.setName(child.getCode() + " :" + child.getLibelle());
                     children.add(lexiqueChildDTO);
                 }
