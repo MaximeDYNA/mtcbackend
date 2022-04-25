@@ -32,7 +32,7 @@ public class Formule extends JournalData {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    private String id;
 
     private String description;
 

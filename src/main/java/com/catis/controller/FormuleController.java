@@ -35,7 +35,7 @@ public class FormuleController {
         Organisation o = pojo.getOrganisationId() == null ? null : os.findByOrganisationId(pojo.getOrganisationId().getId());
         Formule formule = new Formule();
 
-        formule.setId(pojo.getId());
+        formule.setId(pojo.getId().toString());
         formule.setDescription(pojo.getDescription());
         formule.setOrganisation(o);
 
