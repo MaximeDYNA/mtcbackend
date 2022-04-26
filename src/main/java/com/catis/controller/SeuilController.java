@@ -42,8 +42,8 @@ public class SeuilController {
     @PostMapping
     public ResponseEntity<Object> addMachine(@RequestBody SeuilPOJO pojo){
         Organisation o = pojo.getOrganisationId() == null ? null : os.findByOrganisationId(pojo.getOrganisationId().getId());
-        Formule f = pojo.getFormule() == null ? null : fr.findById(pojo.getFormule().getId()).get();
-        Lexique l = pojo.getLexique() == null ? null : ls.findById(pojo.getLexique().getId());
+        Formule f = pojo.getFormule() == null ? null : fr.findById(pojo.getFormule().getId().toString()).get();
+        Lexique l = pojo.getLexique() == null ? null : ls.findById(pojo.getLexique().getId().toString());
         Seuil seuil = new Seuil();
 
         seuil.setId(pojo.getId().toString());
@@ -62,7 +62,7 @@ public class SeuilController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable UUID id){
+    public ResponseEntity<Object> deleteById(@PathVariable String id){
 
         try{
             sr.deleteById(id);

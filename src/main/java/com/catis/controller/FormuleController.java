@@ -46,7 +46,7 @@ public class FormuleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable UUID id){
+    public ResponseEntity<Object> deleteById(@PathVariable String id){
 
         try{
             fr.deleteById(id);
