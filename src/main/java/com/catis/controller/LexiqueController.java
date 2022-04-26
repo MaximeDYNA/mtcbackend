@@ -121,7 +121,8 @@ public class LexiqueController {
         LexiqueChildDTO lexiqueChildDTO;
         List<LexiqueDTO> parents = new ArrayList<>();
 
-        for (Lexique l : lexiqueService.findByVersionLexiqueAndCategorie(lexiqueAndCategorieDTO.getVersion(), lexiqueAndCategorieDTO.type)) {
+        for (Lexique l :
+                lexiqueService.findByVersionLexiqueAndCategorie(lexiqueAndCategorieDTO.getVersion(), lexiqueAndCategorieDTO.getType())) {
             //le code recupère uniquement les parents et leurs enfants
             if (l.getParent() == null) {
                 LexiqueDTO lexiqueDTO = new LexiqueDTO();
