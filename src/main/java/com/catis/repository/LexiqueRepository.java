@@ -12,6 +12,6 @@ public interface LexiqueRepository extends CrudRepository<Lexique, String> {
     Lexique findByCode(String code);
 
     List<Lexique> findByVersionLexique_id(UUID versionLexiqueId);
-    List<Lexique> findByVersionLexique_idAndCategorieVehicule_Id(UUID versionLexiqueId, UUID categorieVehiculeId);
+    List<Lexique> findByVersionLexique_idAndCategorieVehicule_id(UUID versionLexiqueId, UUID categorieVehiculeId);
     List<Lexique> findByActiveStatusTrue();
 }

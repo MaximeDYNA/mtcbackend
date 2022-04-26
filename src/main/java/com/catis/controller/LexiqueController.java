@@ -92,7 +92,7 @@ public class LexiqueController {
 
         for (Lexique l : lexiqueService.findByVersionLexique(id)) {
             LexiquePOJO pojo = new LexiquePOJO();
-            pojo.setId(UUID.fromString(l.getId()));
+            pojo.setId(l.getId());
             pojo.setCode(l.getCode());
             pojo.setLibelle(l.getLibelle());
             pojo.setParent(l.getParent() == null ? null : l.getParent().getCode());

@@ -37,7 +37,7 @@ public class LexiqueService {
     }
 
     public List<Lexique> findByVersionLexiqueAndCategorie(UUID versionLexiqueId, UUID categorie) {
-        return lexiqueRepository.findByVersionLexique_idAndCategorieVehicule_Id(versionLexiqueId, categorie);
+        return lexiqueRepository.findByVersionLexique_idAndCategorieVehicule_id(versionLexiqueId, categorie);
     }
 
     public Lexique editLexiqueByCode(Lexique lexique){
