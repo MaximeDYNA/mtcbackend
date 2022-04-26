@@ -27,12 +27,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Lexique extends JournalData {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @Type(type="uuid-char")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
