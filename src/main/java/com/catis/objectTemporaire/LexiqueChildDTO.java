@@ -1,43 +1,18 @@
 package com.catis.objectTemporaire;
 
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+@Data
+@AllArgsConstructor @NoArgsConstructor
 public class LexiqueChildDTO {
 
-    private UUID id;
+    private String id;
     private String name;
 
 
-    public LexiqueChildDTO() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-
-    public LexiqueChildDTO(UUID id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-
-
-    public UUID getId() {
-        return id;
-    }
-
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }
