@@ -103,6 +103,7 @@ public class PosaleController {
 
         catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'un produit dans le panier");
+            e.printStackTrace();
             Message msg = msgRepo.findByCode("PS003");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
         }
