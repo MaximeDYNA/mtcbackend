@@ -25,7 +25,7 @@ public class LexiqueService {
         return lexiqueRepository.findByCode(code);
     }
 
-    public Lexique findById(UUID id) {
+    public Lexique findById(String id) {
         Optional<Lexique> lexique = lexiqueRepository.findById(id);
         if(lexique.isPresent())
             return lexique.get();
