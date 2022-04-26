@@ -125,12 +125,12 @@ public class LexiqueController {
             //le code recupère uniquement les parents et leurs enfants
             if (l.getParent() == null) {
                 LexiqueDTO lexiqueDTO = new LexiqueDTO();
-                lexiqueDTO.setId(UUID.fromString(l.getId()));
+                lexiqueDTO.setId(l.getId());
                 lexiqueDTO.setName(l.getCode() + " :" + l.getLibelle());
                 List<LexiqueChildDTO>  children = new ArrayList<>();
                 for (Lexique child : l.getChilds()) {
                     lexiqueChildDTO = new LexiqueChildDTO();
-                    lexiqueChildDTO.setId(UUID.fromString(child.getId()));
+                    lexiqueChildDTO.setId(child.getId());
                     lexiqueChildDTO.setName(child.getCode() + " :" + child.getLibelle());
                     children.add(lexiqueChildDTO);
                 }

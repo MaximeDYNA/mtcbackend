@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class LexiqueDTO {
 
-    private UUID id;
+    private String id;
     private String name;
 
     private List<LexiqueChildDTO> children;
@@ -17,7 +17,7 @@ public class LexiqueDTO {
     }
 
 
-    public LexiqueDTO(UUID id, String name, List<LexiqueChildDTO> children) {
+    public LexiqueDTO(String id, String name, List<LexiqueChildDTO> children) {
         super();
         this.id = id;
         this.name = name;
@@ -25,12 +25,12 @@ public class LexiqueDTO {
     }
 
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
