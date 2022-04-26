@@ -29,12 +29,6 @@ import com.catis.model.configuration.JournalData;
 public class Seuil extends JournalData {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @Type(type="uuid-char")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
