@@ -55,7 +55,7 @@ public class GieglanFileService {
         codeCgrises.put("0209", "");
         codeCgrises.put("0210", "");
         codeCgrises.put("0211", "");
-        codeCgrises.put("0212", (this.carteGrise.getProduit().getCategorieVehicule().getType() == "VL") ? "VL" : "HV");
+        codeCgrises.put("0212", "VL".equals(this.carteGrise.getProduit().getCategorieVehicule().getType()) ? "LV" : "HV");
         codeCgrises.put("0213", this.carteGrise.getVehicule().getMarqueVehicule().getLibelle());
         codeCgrises.put("0214", "");//modele du vehicule obligatoire
         codeCgrises.put("0215", "");
