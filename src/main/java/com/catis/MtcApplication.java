@@ -39,7 +39,10 @@ public class MtcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... arg) {
-        try { storageService.init(); } catch (Exception e) {}
+        try {
+            System.err.println("tetst");
+            storageService.init();
+        } catch (Exception e) {}
     }
 
     //@PostConstruct
