@@ -206,6 +206,12 @@ public class VisiteService {
         List<Visite> visiteEnCours = visiteRepository.findByRef(search, orgId, pageable);
         return visiteEnCours;
     }
+
+    public List<Visite> searchedVisitListstatus(String search, UUID orgId, Long status, Pageable pageable){
+        List<Visite> visiteEnCours = visiteRepository.findByRefAndStatus(search, orgId, status, pageable);
+        return visiteEnCours;
+    }
+
     public List<Visite> visitListForAdmin(String search, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(search,search,search,search,search,pageable);
         return visiteEnCours;
@@ -237,6 +243,9 @@ public class VisiteService {
 
     }
 
+    public List<Visite> listParStatus(int status, UUID orgId, Pageable pageable) {
+        return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, pageable);
+    }
     public List<Visite> listParStatus(int status, UUID orgId) {
         return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }

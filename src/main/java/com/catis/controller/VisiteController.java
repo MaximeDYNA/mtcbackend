@@ -192,6 +192,70 @@ public class VisiteController {
 
     }
 
+    @GetMapping(value="/api/v1/all/visite/listview/{statutCode}", params = { "title", "page", "size" })
+    public ResponseEntity<Object> listforlistView(@PathVariable Long statutCode, @RequestParam("title") String search, @RequestParam("page") int page,
+    @RequestParam("size") int size) {
+        try{
+            log.info("list view visit");
+            UUID orgId = SessionData.getOrganisationId(request);
+            /*List<NewListView> listVisit = new ArrayList<>();
+            visiteService.listParStatus(statutCode, orgId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")).forEach(
+                    visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getVente()==null ? null : (visite.getVente().getClient() == null
+                                    ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom())),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
+            );*/
+            if(search == "" ){
+                search=null;
+            }
+            List<Visite> resultPage = visiteService.searchedVisitListstatus(search, orgId, statutCode, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")) );
+
+            List<NewListView> newListViews = resultPage.stream().map(visite ->
+
+                    new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            (visite.getCarteGrise().getVehicule()==null
+                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
+                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
+                            (visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()
+                                    == null
+                                    ? null : visite.getCarteGrise().getProprietaireVehicule()
+                                    .getPartenaire()
+                                    .getNom()),
+                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
+                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
+                            visite.getInspection() == null
+                                    ? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
+                            visite.getIsConform(),
+                            visite.getOrganisation().getNom() ,visite.getInspection() == null? "" : visite.getInspection().getBestPlate(),
+                            visite.getInspection() == null? 0 :visite.getInspection().getDistancePercentage(),
+                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())
+            ).collect(Collectors.toList());
+
+            Page<NewListView> pages = new PageImpl<>(newListViews, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+            PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler
+                    .toModel(pages);
+            log.info("Affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("erreur de l'affichage de la liste des visites");
+            Message msg = msgRepo.findByCode("VS002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+        }
+
+    }
+
     @GetMapping(value = "/api/v1/all/visitesended", params = { "page", "size" })
     public ResponseEntity<Object> getAllAcitveViset(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
@@ -384,37 +448,7 @@ try{
 
     }
 
-    @GetMapping("/api/v1/all/visite/listview/{statutCode}")
-    public ResponseEntity<Object> listforlistView(@PathVariable int statutCode) {
-        try{
-            log.info("list view visit");
-            UUID orgId = SessionData.getOrganisationId(request);
-            List<NewListView> listVisit = new ArrayList<>();
-            visiteService.listParStatus(statutCode, orgId).forEach(
-                    visite -> listVisit.add(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
-                            (visite.getCarteGrise().getVehicule()==null
-                                    ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
-                                    ? "" : visite.getCarteGrise().getVehicule().getChassis())),
-                            (visite.getVente()==null ? null : (visite.getVente().getClient() == null
-                                    ? visite.getVente().getContact().getPartenaire().getNom() : visite.getVente().getClient().getPartenaire().getNom())),
-                            Utils.parseDate(visite.getCreatedDate()), visite.getCreatedDate(),
-                            getHTML(visite), visite.getStatut(), visite.getIdVisite(),visite.isContreVisite(),
-                            visite.getInspection()==null? null : visite.getInspection().getIdInspection(), visite.getCarteGrise(), visite.getOrganisation().isConformity(),
-                            visite.getIsConform(),
-                            visite.getOrganisation().getNom() ,visite.getInspection()==null? null : visite.getInspection().getBestPlate(), visite.getInspection()==null? 0 : visite.getInspection().getDistancePercentage(),
-                            visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument()))
-            );
-            log.info("Affichage de la liste des visites");
-            Message msg = msgRepo.findByCode("VS001");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("erreur de l'affichage de la liste des visites");
-            Message msg = msgRepo.findByCode("VS002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
-        }
 
-    }
 
     @GetMapping("/api/v1/visites/imprimer/pv/{visiteId}")
     public ResponseEntity<Object> printPV(@PathVariable UUID visiteId) throws ImpressionException, IOException, DocumentException {
