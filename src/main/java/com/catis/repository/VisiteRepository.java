@@ -65,7 +65,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
             "and v.activeStatus = true " +
             "and v.encours = true " +
             "and v.statut = ?3")
-    List<Visite> findByRefAndStatus(String name, UUID organisationId, Long status, Pageable pageable);
+    List<Visite> findByRefAndStatus(String name, UUID organisationId, int status, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(String imma, String chassis, String caissier, String proprietaire, String organisation, Pageable pageable);
 
