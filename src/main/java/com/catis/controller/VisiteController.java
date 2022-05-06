@@ -193,7 +193,7 @@ public class VisiteController {
     }
 
     @GetMapping(value="/api/v1/all/visite/listview/{statutCode}", params = { "title", "page", "size" })
-    public ResponseEntity<Object> listforlistView(@PathVariable Long statutCode, @RequestParam("title") String search, @RequestParam("page") int page,
+    public ResponseEntity<Object> listforlistView(@PathVariable int statutCode, @RequestParam("title") String search, @RequestParam("page") int page,
     @RequestParam("size") int size) {
         try{
             log.info("list view visit");

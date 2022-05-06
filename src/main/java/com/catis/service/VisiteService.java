@@ -207,7 +207,7 @@ public class VisiteService {
         return visiteEnCours;
     }
 
-    public List<Visite> searchedVisitListstatus(String search, UUID orgId, Long status, Pageable pageable){
+    public List<Visite> searchedVisitListstatus(String search, UUID orgId, int status, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByRefAndStatus(search, orgId, status, pageable);
         return visiteEnCours;
     }
