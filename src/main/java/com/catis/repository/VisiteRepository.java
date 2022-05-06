@@ -57,6 +57,16 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
             "and v.encours = true")
     List<Visite> findByRef(String name, UUID organisationId, Pageable pageable);
 
+    @Query("select v from Visite v where " +
+            "(?1 is null " +
+            "or lower(v.carteGrise.proprietaireVehicule.partenaire.nom) like lower(concat('%', ?1,'%')) " +
+            "or lower(v.carteGrise.numImmatriculation) like lower(concat('%', ?1,'%'))) " +
+            "and v.organisation.organisationId = ?2 " +
+            "and v.activeStatus = true " +
+            "and v.encours = true " +
+            "and v.statut = ?3")
+    List<Visite> findByRefAndStatus(String name, UUID organisationId, Long status, Pageable pageable);
+
     List<Visite> findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(String imma, String chassis, String caissier, String proprietaire, String organisation, Pageable pageable);
 
     List<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
@@ -68,6 +78,8 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
     List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
     List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Sort sort);
+
+    List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteFalse();
 
