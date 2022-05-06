@@ -408,6 +408,7 @@ try{
             Message msg = msgRepo.findByCode("VS001");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, listVisit);
         }catch (Exception e){
+            e.printStackTrace();
             log.error("erreur de l'affichage de la liste des visites");
             Message msg = msgRepo.findByCode("VS002");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
