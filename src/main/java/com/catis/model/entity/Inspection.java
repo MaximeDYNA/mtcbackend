@@ -68,9 +68,6 @@ public class Inspection extends JournalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fileId;
 
-    @PrePersist private void prePersist() {
-        this.fileId++;
-    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Controleur controleur;
