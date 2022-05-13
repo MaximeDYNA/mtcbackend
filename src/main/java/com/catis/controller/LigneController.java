@@ -93,7 +93,7 @@ public class LigneController {
 
                 VehiculeByLineDTO v = new VehiculeByLineDTO();
                 v.setCarteGriseId(cg.getCarteGriseId());
-                v.setCertidocsId(inspection.getVisite().getCertidocsId());
+                v.setCertidocsId(String.valueOf(inspection.getFileId()));
                 v.setIdInspection(inspection.getIdInspection());
                 v.setRef(cg.getNumImmatriculation() == null ? cg.getVehicule().getChassis()
                         : cg.getNumImmatriculation());

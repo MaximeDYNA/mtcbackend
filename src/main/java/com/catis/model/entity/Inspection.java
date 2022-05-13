@@ -3,6 +3,7 @@ package com.catis.model.entity;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.catis.model.control.GieglanFile;
 import lombok.AllArgsConstructor;
@@ -62,6 +63,14 @@ public class Inspection extends JournalData {
     private double distancePercentage;
 
     private String bestPlate;
+
+    @Column(name="file_id",updatable=false,nullable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long fileId;
+
+    @PrePersist private void prePersist() {
+        this.fileId++;
+    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Controleur controleur;
