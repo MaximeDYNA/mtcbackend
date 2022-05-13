@@ -33,7 +33,7 @@ public class GieglanFileService {
         this.carteGrise = carteGrise;
         GieglanFile file = new GieglanFile();
         file.setActiveStatus(true);
-        file.setName(inspection.getIdInspection() + ".CG");
+        file.setName(inspection.getFileId() + ".CG");
         file.setType(FileType.CARD_REGISTRATION);
         file.setStatus(StatusType.INITIALIZED);
         file.setInspection(inspection);

@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.Inspection;
+import org.springframework.data.repository.query.Param;
 
 public interface InspectionRepository extends CrudRepository<Inspection, UUID> {
+
 
     Inspection findByVisite_IdVisite(UUID idvisite);
 

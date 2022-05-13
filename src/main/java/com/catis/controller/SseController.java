@@ -27,7 +27,7 @@ public class SseController {
     @Autowired
     HttpServletRequest request;
 
-    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
 
