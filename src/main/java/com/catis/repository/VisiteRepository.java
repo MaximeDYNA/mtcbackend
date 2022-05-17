@@ -79,7 +79,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
 
     List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Sort sort);
 
-    List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Pageable pageable);
+    Page<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Pageable pageable);
 
     List<Visite> findByActiveStatusTrueAndContreVisiteFalse();
 

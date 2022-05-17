@@ -243,7 +243,7 @@ public class VisiteService {
 
     }
 
-    public List<Visite> listParStatus(int status, UUID orgId, Pageable pageable) {
+    public Page<Visite> listParStatus(int status, UUID orgId, Pageable pageable) {
         return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, pageable);
     }
     public List<Visite> listParStatus(int status, UUID orgId) {
@@ -374,7 +374,7 @@ public class VisiteService {
         for(SseEmitter emitter:emitters){
             try{
                 log.info("-----sse----");
-                if(visite.getStatut()==1){
+                if(visite.getStatut() >=1){
                     emitter.send(SseEmitter.event().name("edit_visit").data(
                             new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                     (visite.getCarteGrise().getVehicule()==null
@@ -397,7 +397,7 @@ public class VisiteService {
                 }
                 else{
 
-                    emitter.send(SseEmitter.event().name("edit_visit").data(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                    emitter.send(SseEmitter.event().name("new_visit").data(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                             (visite.getCarteGrise().getVehicule()==null
                                     ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
                                     ? "" : visite.getCarteGrise().getVehicule().getChassis())),
