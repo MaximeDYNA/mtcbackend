@@ -104,6 +104,8 @@ public class VisiteController {
     @Autowired
     private PagedResourcesAssembler<NewListView> pagedResourcesAssembler;
     @Autowired
+    private PagedResourcesAssembler<Visite> pagedResourcesAssemblerVisite;
+    @Autowired
     private MessageRepository msgRepo;
     @Autowired
     private NotificationService notificationService;
@@ -308,13 +310,18 @@ public class VisiteController {
 
     }
 
-    @GetMapping("/api/v1/visite/codestatut/{status}")
-    public ResponseEntity<Object> visiteByStatut(@PathVariable int status) {
+    @GetMapping(value="/api/v1/visite/codestatut/{status}", params = { "page", "size" })
+    public ResponseEntity<Object> visiteByStatut(@PathVariable int status,
+                                                 @RequestParam("page") int page,
+                                                 @RequestParam("size") int size) {
         try {
             log.info("Liste des visites en cours");
             UUID orgId = SessionData.getOrganisationId(request);
+            Page<Visite> resultPage = visiteService.listParStatus(status,orgId, PageRequest.of(page, size));
+            PagedModel<EntityModel<Visite>> result = pagedResourcesAssemblerVisite
+                    .toModel(resultPage);
             Message msg = msgRepo.findByCode("VS005");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visiteService.listParStatus(status,orgId));
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
         } catch (Exception e) {
             e.printStackTrace();
             Message msg = msgRepo.findByCode("VS006");
