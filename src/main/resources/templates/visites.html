@@ -163,8 +163,7 @@
                         <span style="font-weight: bold">
                        Propriétaire / Owner:
                     </span>
-                        <span style="color: gray;" th:utext="${v.carteGrise.proprietaireVehicule.partenaire.nom +' '+
-                                                    (v.carteGrise.proprietaireVehicule.partenaire.prenom == null? '': v.carteGrise.proprietaireVehicule.partenaire.prenom)}"></span><br/>
+                        <span style="color: gray;" th:utext="${owner.length() >= 26 ? owner.substring(0, 25) + '[...]': owner}"></span><br/>
 
 
                 </div>
@@ -207,8 +206,13 @@
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
-                                <li th:each="lexique : ${majorDefault}">
-                                    <span style="color: gray;" th:text="${lexique.libelle}"></span>
+                                <li th:each="lexique,index : ${majorDefault}">
+                                    <div th:if="${index} <= 5">
+                                        <span style="color: gray;" th:text="${lexique.libelle}"></span>
+                                    </div>
+                                    <div th:if="${index} == 6">
+                                        <span style="color: gray;">[...]</span>
+                                    </div>
                                 </li>
                             </ol>
                         </div>
@@ -216,8 +220,13 @@
                             <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
-                                <li th:each="lexique : ${minorDefault}">
-                                    <span style="color: gray;" th:text="${lexique.libelle}"> </span>
+                                <li th:each="lexique, index : ${minorDefault}">
+                                    <div th:if="${index} <= 5">
+                                        <span style="color: gray;" th:text="${lexique.libelle}"> </span>
+                                    </div>
+                                    <div th:if="${index} == 6">
+                                        <span style="color: gray;">[...]</span>
+                                    </div>
                                 </li>
                             </ol>
                         </div>
