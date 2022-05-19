@@ -500,7 +500,7 @@ try{
 
            Visite visite2 = visiteService.add(visite);
             visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
-                notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, false);
+                notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite2, true);
             });
             //Openaplr to know if the car is in the center
        /* String uri = environment.getProperty("endpoint.openalpr") ;
@@ -584,6 +584,8 @@ try{
             context.setVariable("v", v);
             context.setVariable("tp", tp);
             context.setVariable("prod", prod);
+            context.setVariable("owner", v.getCarteGrise().getProprietaireVehicule().getPartenaire().getNom() +' '+
+                    (v.getCarteGrise().getProprietaireVehicule().getPartenaire().getPrenom() == null? "": v.getCarteGrise().getProprietaireVehicule().getPartenaire().getPrenom()));
 
             context.setVariable("minorDefault", minorDefault);
             context.setVariable("majorDefault", majorDefault);
