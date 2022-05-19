@@ -207,10 +207,10 @@
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
                                 <li th:each="lexique,indx : ${majorDefault}">
-                                    <div th:if="${indx.index} <= 5">
+                                    <div th:if="${indx.index} <= 3">
                                         <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                     </div>
-                                    <div th:if="${indx} == 6">
+                                    <div th:if="${indx.index} == 4">
                                         <span style="color: gray;">[...]</span>
                                     </div>
                                 </li>
@@ -221,10 +221,10 @@
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
                                 <li th:each="lexique, indx : ${minorDefault}">
-                                    <div th:if="${indx.index} <= 5">
+                                    <div th:if="${indx.index} <= 3">
                                         <span style="color: gray;" th:text="${lexique.libelle}"> </span>
                                     </div>
-                                    <div th:if="${indx.index} == 6">
+                                    <div th:if="${indx.index} == 4">
                                         <span style="color: gray;">[...]</span>
                                     </div>
                                 </li>
