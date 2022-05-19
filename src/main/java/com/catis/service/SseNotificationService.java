@@ -83,7 +83,7 @@ public class SseNotificationService implements NotificationService {
                                         visite.getCreatedDate().format(SseController.dateTimeFormatter), true, visite.getDocument())));
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("controleur_visit").data(visite));
                     } else {
-                        emitterRepository.get(memberId).get().send(SseEmitter.event().name("edit_visit").data(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("edit_visit").data(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                 (visite.getCarteGrise().getVehicule() == null
                                         ? "" : (visite.getCarteGrise().getVehicule().getChassis() == null
                                         ? "" : visite.getCarteGrise().getVehicule().getChassis())),
