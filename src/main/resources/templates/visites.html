@@ -206,11 +206,11 @@
                             <span>DEFAUTS SOUSMIS A CONTRE VISITE /<br/>
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
-                                <li th:each="lexique,index : ${majorDefault}">
-                                    <div th:if="${index} <= 5">
+                                <li th:each="lexique,indx : ${majorDefault}">
+                                    <div th:if="${indx.index} <= 5">
                                         <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                     </div>
-                                    <div th:if="${index} == 6">
+                                    <div th:if="${indx} == 6">
                                         <span style="color: gray;">[...]</span>
                                     </div>
                                 </li>
@@ -220,11 +220,11 @@
                             <span>DEFAUTS A REPARER DES QUE POSSIBLE /<br/>
                                 DEFECTS TO BE REPAIRED AS SOON AS POSSIBLE</span>
                             <ol class="text-left font-weight-bold">
-                                <li th:each="lexique, index : ${minorDefault}">
-                                    <div th:if="${index} <= 5">
+                                <li th:each="lexique, indx : ${minorDefault}">
+                                    <div th:if="${indx.index} <= 5">
                                         <span style="color: gray;" th:text="${lexique.libelle}"> </span>
                                     </div>
-                                    <div th:if="${index} == 6">
+                                    <div th:if="${indx.index} == 6">
                                         <span style="color: gray;">[...]</span>
                                     </div>
                                 </li>
