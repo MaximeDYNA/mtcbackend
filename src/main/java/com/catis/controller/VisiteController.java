@@ -317,7 +317,7 @@ public class VisiteController {
         try {
             log.info("Liste des visites en cours");
             UUID orgId = SessionData.getOrganisationId(request);
-            Page<Visite> resultPage = visiteService.listParStatus(status,orgId, PageRequest.of(page, size));
+            Page<Visite> resultPage = visiteService.listParStatus(status,orgId, PageRequest.of(page, size, Sort.Direction.DESC, "createdDate"));
             PagedModel<EntityModel<Visite>> result = pagedResourcesAssemblerVisite
                     .toModel(resultPage);
             Message msg = msgRepo.findByCode("VS005");
