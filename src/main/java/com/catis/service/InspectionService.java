@@ -6,6 +6,8 @@ import java.util.*;
 import com.catis.controller.SseController;
 import com.catis.controller.VisiteController;
 import com.catis.model.entity.Controleur;
+import com.catis.model.entity.Visite;
+import com.catis.repository.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class InspectionService {
     private VisiteService visiteService;
     @Autowired
     private ProduitService ps;
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private CategorieTestVehiculeService cat;
@@ -68,8 +72,11 @@ public class InspectionService {
         inspection.setControleur(controleur);
 
         inspection = inspectionR.save(inspection);
+        Visite visite = inspection.getVisite();
 
-        visiteService.dispatchEdit(inspection.getVisite());
+        inspection.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+            notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite, true);
+        });
         return inspection;
 
     }
