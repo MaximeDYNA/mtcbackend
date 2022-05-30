@@ -98,6 +98,7 @@ public class SseNotificationService implements NotificationService {
                                 visite.getCreatedDate().format(SseController.dateTimeFormatter), false, visite.getDocument())));
                     }
                 } catch (IOException | IllegalStateException e) {
+                    e.printStackTrace();
                     log.info("Error while sending visite to member for member: {} - exception: {}", memberId, e);
                     emitterRepository.remove(memberId);
                 }
