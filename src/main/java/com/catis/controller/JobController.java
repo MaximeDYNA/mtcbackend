@@ -7,7 +7,9 @@ import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.FraudeJobPOJO;
 import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.repository.FraudeTypeRepository;
+import com.catis.repository.NotificationService;
 import com.catis.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin
+@Slf4j
 public class JobController {
     @Autowired
     private FraudeTypeRepository fraudeTypeRepository;
@@ -30,6 +33,8 @@ public class JobController {
     private CategorieTestVehiculeService catSer;
     @Autowired
     private ControleurService controleurService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping(value = "/public/controleurs/{organisationId}")
     public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable UUID organisationId) {
@@ -143,10 +148,14 @@ public class JobController {
 
             Visite visite = vs.findById(id);
         try {
-            vs.dispatchEdit(visite);
-            System.out.println("le Job a effectué un chanqement sur la visite n°"+id+", le statut de la visite est "+visite.getStatut() +" :)");
+
+            visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
+                notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite, true);
+            });
+            log.info("le Job a effectué un chanqement sur la visite n°"+id+", le statut de la visite est "+visite.getStatut() +" :)");
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Erreur survenur lors de la notification du Job");
         }
     }
