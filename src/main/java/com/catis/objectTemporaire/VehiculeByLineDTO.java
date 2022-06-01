@@ -9,6 +9,7 @@ public class VehiculeByLineDTO {
     private UUID idInspection;
     private UUID idCategorie;
     private String certidocsId;
+    private boolean inspected;
 
 
     public VehiculeByLineDTO() {
@@ -25,6 +26,13 @@ public class VehiculeByLineDTO {
         this.idCategorie = idCategorie;
     }
 
+    public boolean isInspected() {
+        return inspected;
+    }
+
+    public void setInspected(boolean inspected) {
+        this.inspected = inspected;
+    }
 
     public UUID getCarteGriseId() {
         return carteGriseId;
