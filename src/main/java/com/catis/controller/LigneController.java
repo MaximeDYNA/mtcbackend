@@ -98,6 +98,7 @@ public class LigneController {
                 v.setRef(cg.getNumImmatriculation() == null ? cg.getVehicule().getChassis()
                         : cg.getNumImmatriculation());
                 v.setIdCategorie(cg.getProduit().getProduitId());
+                v.setInspected(inspection.isVisibleToTab());
                 vehicules.add(v);
                 LOGGER.info(v.toString());
             }
