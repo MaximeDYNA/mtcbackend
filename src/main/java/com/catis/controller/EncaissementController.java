@@ -142,12 +142,13 @@ public class EncaissementController {
             Visite visite;
             ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
             proprietaireVehicule.setPartenaire(contact.getPartenaire());
-
+            DetailVente detailVente;
+            CarteGrise carteGrise;
             proprietaireVehicule.setOrganisation(organisation);
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
-                DetailVente detailVente = new DetailVente();
+                detailVente = new DetailVente();
                 Produit produit = produitService.findById(posale.getProduit().getProduitId());
-                CarteGrise carteGrise = new CarteGrise();
+                carteGrise = new CarteGrise();
 
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
@@ -169,7 +170,6 @@ public class EncaissementController {
                         }
 
                     }
-
                     carteGrise.setNumImmatriculation(posale.getReference());
                     carteGrise.setProduit(produit);
                     carteGrise.setOrganisation(organisation);
