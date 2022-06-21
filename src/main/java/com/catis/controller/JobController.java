@@ -146,9 +146,12 @@ public class JobController {
     @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable UUID id){
 
-            Visite visite = vs.findById(id);
+            final Visite visite = vs.findById(id);
         try {
-
+            if(visite.getStatut() == 3){
+                visite.getInspection().setDateFin(new Date());
+                vs.add(visite);
+            }
             visite.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
                 notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite, true);
             });

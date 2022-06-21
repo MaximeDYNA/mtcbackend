@@ -72,7 +72,7 @@ public class VisiteService {
     }
 
 
-
+    @Transactional
     public Visite add(Visite visite) {
         return visiteRepository.save(visite);
     }
@@ -93,6 +93,9 @@ public class VisiteService {
 
     public Visite findById(UUID i) {
         return visiteRepository.findById(i).get();
+    }
+    public Visite enregistrer(Visite i) {
+        return visiteRepository.save(i);
     }
 
     public boolean viensPourContreVisite(String imCha) {
