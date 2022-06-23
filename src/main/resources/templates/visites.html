@@ -317,7 +317,7 @@
                                     <tr>
                                         <td style="border-left: none ; border-bottom: none ;"></td>
                                         <td align="center" style="color: gray;" th:utext="${r0401 + ' mm/m'}"></td>
-                                        <td align="center" style="color: gray;" th:utext="${r0402 + ' mm/m'}"></td>
+                                        <td align="center" style="color: gray;" th:utext="${r0402 == null ? 'fas fa-exclamation-triangle' : r0402 + ' mm/m'}"></td>
                                     </tr>
                                 </table>
                                 <br/>
