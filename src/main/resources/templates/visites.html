@@ -210,10 +210,10 @@
                                 DEFECTS SUBJECT TO COUNTER INSPECTION</span>
                             <ol>
                                 <li th:each="lexique,indx : ${majorDefault}">
-                                    <div th:if="${indx.index} <= 7">
+                                    <div th:if="${indx.index} <= 5">
                                         <span style="color: gray;" th:text="${lexique.libelle}"></span>
                                     </div>
-                                    <div  th:if="${indx.index} == 8">
+                                    <div  th:if="${indx.index} == 6">
                                         <span style="color: gray;">[...]</span>
                                     </div>
                                 </li>
@@ -293,12 +293,33 @@
                                     </tr>
                                     <tr>
                                         <td style="border-left: none ; border-bottom: none ;"></td>
-                                        <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0410, 1)+' %'}"></td>
-                                        <td align="center"  style="color: gray;" th:utext="${#numbers.formatInteger(r0411, 1)+' %'}"></td>
-                                        <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0413, 1)+' %'}"></td>
-                                        <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0414, 1)+' %' }"></td>
-                                        <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0412, 1)+' %' }"></td>
-                                        <td align="center" style="color: gray;"  th:utext="${#numbers.formatInteger(r0415, 1)+' %'}"></td>
+                                        <td align="center"  style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0410, 1) == null ? '' : #numbers.formatInteger(r0410, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0410, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                        </td>
+                                        <td align="center"  style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0411, 1) == null ? '' : #numbers.formatInteger(r0411, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0411, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                        </td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0413, 1) == null ? '' : #numbers.formatInteger(r0413, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0413, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                        </td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0414, 1) == null ? '' : #numbers.formatInteger(r0414, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0414, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+
+                                        </td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0412, 1) == null ? '' : #numbers.formatInteger(r0412, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0412, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+
+                                        </td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${#numbers.formatInteger(r0415, 1) == null ? '' : #numbers.formatInteger(r0415, 1) + ' %'}"></span>
+                                            <img th:if="${#numbers.formatInteger(r0415, 1) == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+
+                                        </td>
                                     </tr>
                                 </table>
                                 <br/>
@@ -316,7 +337,10 @@
                                     </tr>
                                     <tr>
                                         <td style="border-left: none ; border-bottom: none ;"></td>
-                                        <td align="center" style="color: gray;" th:utext="${r0401 + ' mm/m'}"></td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${r0401 == null ? '' : r0401 + ' mm/m'}"></span>
+                                            <img th:if="${r0401 == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                        </td>
                                         <td align="center" style="color: gray;">
                                             <span th:utext="${r0402 == null ? '' : r0402 + ' mm/m'}"></span>
                                             <img th:if="${r0402 == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
@@ -332,7 +356,11 @@
                                         <td align="center" style=" width:36%; border: solid thin; font-weight: bold; font-size: 7px;">
                                             Opacité<br/>Opacity
                                         </td>
-                                        <td align="center" style="color: gray;" th:utext="${#strings.replace(r0538, '.0', '')+' m-1' }"></td>
+                                        <td align="center" style="color: gray;">
+                                            <span th:utext="${#strings.replace(r0538, '.0', '')== null ? '' : #strings.replace(r0538, '.0', '')+' m-1'}"></span>
+                                            <img th:if="${#strings.replace(r0538, '.0', '') == null}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+
+                                        </td>
                                     </tr>
                                 </table>
                                 <br/>
@@ -354,10 +382,17 @@
                                     <tr>
                                         <td style="border-left: none ; border-bottom: none ;">
                                         </td>
-                                        <td align="center"  style="border-bottom: solid thin;"
-                                            th:utext="${#numbers.formatInteger(r0490,1)==1 ? 'Correct': 'Unknown'}"></td>
-                                        <td align="center"  style=" border-bottom: solid thin;"
-                                            th:utext="${#numbers.formatInteger(r0492,1)==1 ? 'Correct': 'Unknown'}"></td>
+                                        <td align="center"  style="border-bottom: solid thin;">
+                                            <span th:if="${#numbers.formatInteger(r0490,1)==1}">Correct</span>
+                                            <img th:unless="${#numbers.formatInteger(r0490,1)==1}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                        </td>
+                                        <td align="center"  style=" border-bottom: solid thin;">
+                                            <span th:if="${#numbers.formatInteger(r0492,1)==1}">Correct</span>
+                                            <img th:unless="${#numbers.formatInteger(r0492,1)==1}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+
+
+                                        </td>
+
                                     </tr>
                                 </table>
                                 <br/>
@@ -552,6 +587,15 @@
                                     </td>
                                 </tr>
                             </table>
+                            <div>
+                                <label for="description">
+                                    <img th:unless="${#numbers.formatInteger(r0490,1)==1}" style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/>
+                                </label>
+                                <span id="description">
+                                    Valeur non mésuré / Unmeasured value
+                                </span>
+                            </div>
+
                         </div>
                     </div>
                 </div>
