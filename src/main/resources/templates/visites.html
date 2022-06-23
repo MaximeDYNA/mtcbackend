@@ -595,12 +595,15 @@
             </td>
 
         </tr>
+        <tr valign="top">
+            <div style="vertical-align:top">
+                <img style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/> :<span id="description">Valeur non mésuré / Unmeasured value</span>
+            </div>
+        </tr>
         <tr valign="bottom">
 
             <td th:style="${v.process.status} ? 'border-bottom: none; border-left: none; border-right: none; height: 268px;':'border-bottom: none; border-left: none; border-right: none; height: 234px;'">
-                <div style="vertical-align:top">
-                    <img style="height:10px; width: 10px;" th:src="@{classpath:static/images/picto_pv_ignored.png}"  alt="danger"/> :<span id="description">Valeur non mésuré / Unmeasured value</span>
-                </div>
+
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
