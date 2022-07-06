@@ -575,11 +575,11 @@ try{
                 PageRequest.of(0,1)
             );
 
-            HashMap<Integer, String> phareTest = new HashMap<Integer, String>();
-            phareTest.put(0,"Trop haut / Too high");
-            phareTest.put(1,"Correct");
-            phareTest.put(2,"Trop bas / Too low");
-            phareTest.put(9,"-");
+            HashMap<String, String> phareTest = new HashMap<String, String>();
+            phareTest.put("0","Trop haut / Too high");
+            phareTest.put("1","Correct");
+            phareTest.put("2","Trop bas / Too low");
+            phareTest.put("9","-");
             Produit prod = v.getCarteGrise().getProduit();
 
             context.setVariable("phareTest", phareTest);
