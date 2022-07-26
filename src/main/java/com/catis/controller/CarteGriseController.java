@@ -81,7 +81,7 @@ public class CarteGriseController {
 
         }
     }
-    @GetMapping("/api/v1/search/cartegrise/assurance/imma/{imma}")
+    @GetMapping("/public/search/cartegrise/assurance/imma/{imma}")
     public ResponseEntity<Object> searchForAssuranceByImma(@PathVariable String imma) {
         LOGGER.trace("Recherche carte grise...");
         try {
@@ -93,7 +93,7 @@ public class CarteGriseController {
 
         }
     }
-    @GetMapping("/api/v1/search/cartegrise/assurance/visite/{imma}")
+    @GetMapping("/public/cartegrise/assurance/visite/{imma}")
     public ResponseEntity<Object> isCGhasValidVisite(@PathVariable String imma) {
         LOGGER.trace("visite...");
         try {
