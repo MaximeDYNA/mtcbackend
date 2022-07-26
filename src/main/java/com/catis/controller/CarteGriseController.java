@@ -68,7 +68,7 @@ public class CarteGriseController {
         }
     }
 
-    @GetMapping("/api/v1/search/cartegrise/assurance/{imma}")
+    @GetMapping("/public/search/cartegrise/assurance/{imma}")
     public ResponseEntity<Object> searchForAssurance(@PathVariable String imma) {
         LOGGER.trace("Recherche carte grise...");
         try {
