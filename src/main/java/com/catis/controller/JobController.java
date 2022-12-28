@@ -146,7 +146,7 @@ public class JobController {
     @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable UUID id){
 
-            final Visite visite = vs.findById(id);
+            Visite visite = vs.findById(id);
         try {
             if(visite.getStatut() == 3){
                 visite.getInspection().setDateFin(new Date());

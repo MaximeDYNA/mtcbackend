@@ -69,7 +69,7 @@ public class KeycloakService {
             userDTO.setRole(userRole);
             userDTO.setOrganisationId(
                     u.getAttributes() == null ?
-                    null : Long.valueOf(u.getAttributes().get("organisationId").get(0)));
+                    null : u.getAttributes().get("organisationId").get(0));
             if(u.getAttributes() == null ?
                     false : (u.getAttributes().get("ditrosct") == null ? false :  Boolean.valueOf(u.getAttributes().get("ditrosct").get(0))))
             userDTOs.add(userDTO);
