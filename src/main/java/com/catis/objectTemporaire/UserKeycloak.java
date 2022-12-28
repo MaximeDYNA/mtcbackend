@@ -16,5 +16,5 @@ public class UserKeycloak {
     private String email;
     private String username;
     private String role;
-    private Long organisationId;
+    private String organisationId;
 }

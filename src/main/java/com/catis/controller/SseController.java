@@ -39,7 +39,6 @@ public class SseController {
     @GetMapping(value="/public/subscribe/{memberId}",consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribeToEvents(@PathVariable String memberId) {
         SseEmitter emitter = emitterService.createEmitter(memberId);
-
         try{
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
