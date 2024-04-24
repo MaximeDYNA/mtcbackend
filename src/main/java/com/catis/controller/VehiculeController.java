@@ -57,11 +57,11 @@ public class VehiculeController {
     @GetMapping("/api/v1/all/search/vehicules/{chassis}")
     public ResponseEntity<Object> searchVehicule(@PathVariable String chassis) {
         try {
-
             LOGGER.trace("recherche de véhicule...");
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès", vehiculeService.findByChassis(chassis));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
         }

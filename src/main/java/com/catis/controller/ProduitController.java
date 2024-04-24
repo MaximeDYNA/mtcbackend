@@ -126,7 +126,6 @@ public class ProduitController {
                     produits.add(cg.getProduit());
                 }
 
-
                 if (visiteService.isVisiteInitial(imCha,
                         UserInfoIn.getUserInfo(request).getOrganisanionId())) {
                     if (!cgs.isCarteGriseExist(imCha)) {

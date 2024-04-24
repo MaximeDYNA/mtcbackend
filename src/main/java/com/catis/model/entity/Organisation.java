@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SQLDelete(sql = "UPDATE t_organisation SET active_status=false WHERE organisation_id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
-public class Organisation {
+public class Organisation implements Serializable {
     @Id
     @GeneratedValue(generator = "UUID")
     @Type(type="uuid-char")

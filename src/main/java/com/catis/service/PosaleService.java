@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.catis.model.entity.Posales;
 import com.catis.repository.PosaleRepository;
 
+// @CacheConfig(cacheNames={"posaleCache"})
 @Service
 public class PosaleService {
 
@@ -33,7 +34,6 @@ public class PosaleService {
          );
 
     }
-
     public void deletePosale(Long number, UUID sessionCaisseId) {
         desactivateAll();
          List<Posales> posales = psr.findByHold_NumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
@@ -42,19 +42,15 @@ public class PosaleService {
          }
 
     }
-
     public List<Posales> findByNumberSessionCaisse(UUID number, UUID sessionCaisseId) {
         return psr.findByHold_HoldIdAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
     }
-
     public List<Posales> findByReferenceSessionCaisse(String reference, UUID sessionCaisseId) {
         return psr.findByReferenceAndSessionCaisse_SessionCaisseId(reference, sessionCaisseId);
     }
-
     public List<Posales> findBySessionCaisse(UUID sessionCaisseId) {
         return psr.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
-
     public List<Posales> findActivePosaleBySessionId(UUID sessionId) {
         return psr.findByStatusTrueAndSessionCaisse_SessionCaisseId(sessionId);
     }

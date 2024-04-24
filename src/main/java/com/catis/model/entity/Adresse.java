@@ -21,7 +21,7 @@ import java.util.UUID;
 @Audited
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
-public class Adresse extends JournalData {
+public class Adresse extends JournalData  {
 
     @Id
     @GeneratedValue(generator = "UUID")

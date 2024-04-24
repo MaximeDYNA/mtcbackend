@@ -1,0 +1,22 @@
+# cluster.name: my_cluster
+# node.name: elasticsearch
+# path.data: /var/lib/elasticsearch
+# path.logs: /var/log/elasticsearch
+network.host: 0.0.0.0
+http.port: 9200
+
+# Memory Settings
+bootstrap.memory_lock: true
+discovery.type: single-node
+
+ES_JAVA_OPTS: -Xms512m -Xmx512m
+
+# Index Optimization
+index.refresh_interval: 30s
+indices.store.throttle.max_bytes_per_sec: 50mb
+indices.memory.index_buffer_size: 30%
+indices.fielddata.cache.size: 20%
+indices.queries.cache.size: 10%
+
+# Network Settings
+http.max_content_length: 100mb

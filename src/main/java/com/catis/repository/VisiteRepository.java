@@ -54,7 +54,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
             "or lower(v.carteGrise.numImmatriculation) like lower(concat('%', ?1,'%'))) " +
             "and v.organisation.organisationId = ?2 " +
             "and v.activeStatus = true " +
-            "and v.encours = true")
+            "and v.encours = true ")
     List<Visite> findByRef(String name, UUID organisationId, Pageable pageable);
 
     @Query("select v from Visite v where " +

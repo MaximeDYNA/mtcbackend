@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Audited
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class CategorieVehicule extends JournalData {
+public class CategorieVehicule extends JournalData{
 
     @Id
     @GeneratedValue(generator = "UUID")

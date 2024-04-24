@@ -134,13 +134,17 @@ public class ClientController {
             LOGGER.trace("Recherche clients...");
             List<ClientPartenaire> clientPartenaires = new ArrayList<>();
             ClientPartenaire cp;
+            
             for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
-                if (clientService.findByPartenaire(p.getPartenaireId()) != null) {
+                System.out.println("ClientPartenaire0: " + p.toString());
+                // if (clientService.findByPartenaire(p.getPartenaireId()) != null) {
+                if (p.getClientId()!= null) {
                     cp = new ClientPartenaire();
                     cp.setNom(p.getNom());
                     cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
-                    cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
+                    cp.setClientId(p.getClientId());
+                    // cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
                     clientPartenaires.add(cp);
                 }
 

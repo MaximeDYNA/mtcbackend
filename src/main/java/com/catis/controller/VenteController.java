@@ -81,7 +81,7 @@ public class VenteController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
         LOGGER.info("before ticket search");
-        List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size))
+        List<Ticketdto> ticketdtos = venteService.findByRef(title, PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "createdDate")))
                 .stream().map(vente -> new Ticketdto(vente.getNumFacture(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getNom():vente.getClient().getPartenaire().getNom(),
                         vente.getClient() == null? vente.getContact().getPartenaire().getTelephone():vente.getClient().getPartenaire().getTelephone(),
@@ -100,7 +100,8 @@ public class VenteController {
                         vente.getMontantHT()))
                 .collect(Collectors.toList());
         LOGGER.info("After ticket search");
-        Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
+        Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size),300);
+        // Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")),300);
         PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler
                 .toModel(pages);
 

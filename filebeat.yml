@@ -1,0 +1,26 @@
+filebeat.inputs:
+- type: docker
+  combine_partial: true
+  processors:
+    - add_docker_metadata: ~
+  containers:
+    path: "/var/lib/docker/containers"
+    stream: "stdout"
+    ids:
+      - "*"
+    exclude_files:
+      - "/var/lib/docker/containers/*_kibana_1/*"
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+
+# filebeat.inputs:
+# - type: container
+#   paths:
+#   - '/var/lib/docker/containers/*/*.log'
+#   processors:
+#   - add_docker_metadata: ~
+# output.elasticsearch:
+#   hosts: ["http://elasticsearch:9200"]
+  # username: "elastic_username"
+  # password: "elastic_password"

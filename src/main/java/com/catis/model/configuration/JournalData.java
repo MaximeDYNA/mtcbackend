@@ -1,10 +1,12 @@
 package com.catis.model.configuration;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
 
 import com.catis.model.entity.Organisation;
 import org.springframework.data.annotation.CreatedBy;
@@ -13,7 +15,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @MappedSuperclass
-public class JournalData {
+public class JournalData implements Serializable {
+    private static final long serialVersionUID = 1113799434508676095L;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate

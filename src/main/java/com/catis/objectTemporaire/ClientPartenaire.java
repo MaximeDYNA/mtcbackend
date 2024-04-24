@@ -4,10 +4,13 @@ import com.catis.model.entity.Partenaire;
 
 import java.util.UUID;
 
+// import org.springframework.data.elasticsearch.annotations.Document;
+
+// @Document(indexName = "clientpartenaireindex")
 public class ClientPartenaire {
     private UUID clientId;
     private UUID contactId;
-    ;
+    
     private UUID vendeurId;
     private String variants;
     private String nom;

@@ -15,6 +15,9 @@ import com.catis.repository.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import static com.catis.controller.SseController.emitters;
 
 @Service
+@CacheConfig(cacheNames={"VisiteCache"})
 public class VisiteService {
 
     @Autowired
@@ -46,18 +50,15 @@ public class VisiteService {
 
 
     private static Logger log = LoggerFactory.getLogger(VisiteService.class);
-
     public List<Visite> findActiveVI(){
         return visiteRepository.findByActiveStatusTrueAndContreVisiteFalse();
     }
     public List<Visite> findActiveCV(){
         return visiteRepository.findByActiveStatusTrueAndContreVisiteTrue();
     }
-
     public List<Visite> findActiveVisites(){
         return visiteRepository.findByActiveStatusTrue();
     }
-
     public List<Visite> findbyProduit(Produit produit){
         return visiteRepository.findByActiveStatusTrueAndCarteGriseProduit(produit);
     }
@@ -73,31 +74,30 @@ public class VisiteService {
 
 
     @Transactional
+    @CacheEvict(allEntries = true)
     public Visite add(Visite visite) {
         return visiteRepository.save(visite);
     }
 
-
-
+    @Cacheable
     public List<Visite> findAll() {
         List<Visite> visites = new ArrayList<Visite>();
         visiteRepository.findAll().forEach(visites::add);
         return visites;
     }
 
-
-
     public List<Visite> findByReference(String ref, UUID organisationId) {
         return visiteRepository.findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(ref, ref, organisationId);
     }
 
+   
     public Visite findById(UUID i) {
         return visiteRepository.findById(i).get();
     }
+    @CacheEvict(allEntries = true)
     public Visite enregistrer(Visite i) {
         return visiteRepository.save(i);
     }
-
     public boolean viensPourContreVisite(String imCha) {
         try {
             return !visiteRepository.findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(imCha, imCha)
@@ -109,6 +109,7 @@ public class VisiteService {
         }
     }
 
+    @CacheEvict(allEntries = true)
     @Transactional
     public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, UUID organisationId, Caissier caissier, String document, String certidocsId) throws VisiteEnCoursException {
         Visite visite = new Visite();
@@ -169,7 +170,10 @@ public class VisiteService {
 
         return visite;
     }
-
+    
+    
+    
+    @CacheEvict(allEntries = true)
     public Visite modifierVisite(Visite visite) throws IOException {
         Visite v = visiteRepository.save(visite);
         v.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
@@ -177,7 +181,6 @@ public class VisiteService {
         });
         return v;
     }
-
     public boolean visiteEncours(String imCha, UUID organisationId) {
         return !visiteRepository.findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(imCha, imCha, organisationId)
                 .stream().filter(visites -> visites.getDateFin() == null).collect(Collectors.toList())
@@ -200,39 +203,44 @@ public class VisiteService {
 
         return visiteEnCours;
     }
+    @Cacheable
     public Page<Visite> endedVisitList(UUID orgId, Pageable pageable){
         Page<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId, pageable);
         return visiteEnCours;
     }
 
+    @Cacheable
     public List<Visite> searchedVisitList(String search, UUID orgId, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByRef(search, orgId, pageable);
         return visiteEnCours;
     }
-
+    @Cacheable
     public List<Visite> searchedVisitListstatus(String search, UUID orgId, int status, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByRefAndStatus(search, orgId, status, pageable);
         return visiteEnCours;
     }
-
+    @Cacheable
     public List<Visite> visitListForAdmin(String search, Pageable pageable){
         List<Visite> visiteEnCours = visiteRepository.findByActiveStatusTrueAndCarteGrise_NumImmatriculationContainingIgnoreCaseOrCarteGrise_Vehicule_ChassisContainingIgnoreCaseOrCaissier_Partenaire_NomContainingIgnoreCaseOrCarteGrise_ProprietaireVehicule_Partenaire_NomContainingIgnoreCaseAndOrganisation_NomContainingIgnoreCaseOrderByCreatedDateDesc(search,search,search,search,search,pageable);
         return visiteEnCours;
     }
+    @Cacheable
     public List<Visite> endedVisitList(UUID orgId){
         List<Visite> visiteEnCours = visiteRepository.findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
         return visiteEnCours;
     }
+    @Cacheable
     public List<Visite> enCoursVisitListForContext(UUID orgId) {
         List<Visite> visiteEnCours = visiteRepository.findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId);
         return visiteEnCours;
     }
+    @Cacheable
     public List<Visite> AllVisitList(UUID orgId) {
         List<Visite> visiteEnCours = new ArrayList<>();
         visiteRepository.findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(orgId).forEach(visiteEnCours::add);
         return visiteEnCours;
     }
-
+   
     public void terminerInspection(UUID visiteId) throws IOException {
         Visite visite = new Visite();
         visite = visiteRepository.findById(visiteId).get();
@@ -245,14 +253,16 @@ public class VisiteService {
         });
 
     }
-
+   
     public Page<Visite> listParStatus(int status, UUID orgId, Pageable pageable) {
         return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, pageable);
     }
+    @Cacheable
     public List<Visite> listParStatus(int status, UUID orgId) {
         return visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
+    @Cacheable
     public List<KanBanSimpleData> listParStatusForkanban(int status, UUID orgId) {
         List<Visite> visites = visiteRepository.findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(status, orgId, Sort.by(Sort.Direction.DESC, "createdDate"));
         List<KanBanSimpleData> kanBanSimpleDatas = new ArrayList<>();
@@ -266,6 +276,7 @@ public class VisiteService {
         }
         return kanBanSimpleDatas;
     }
+    @CacheEvict(allEntries = true)
     public Visite commencerInspection(Visite visite) throws IOException {
 
         visite.setDateFin(LocalDateTime.now());

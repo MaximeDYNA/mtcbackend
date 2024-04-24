@@ -1,20 +1,22 @@
 package com.catis;
 
 import com.catis.repository.FilesStorageService;
-import com.catis.service.VisiteService;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.concurrent.Executor;
+
 import javax.annotation.Resource;
+
 
 
 @SpringBootApplication
@@ -54,6 +56,18 @@ public class MtcApplication implements CommandLineRunner {
                         .getProperty("control.service.ip");
         Object response = r.postForObject(urlDuFou + 1,null , Object.class);
         System.out.println("Post reussi voici la reponse "+ ToStringBuilder.reflectionToString(response));
+    }
+
+    @Bean("threadPoolTaskExecutor")
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(1000);
+        executor.setQueueCapacity(500);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setThreadNamePrefix("mtcqueue-");
+        executor.initialize();
+        return executor;
     }
 
 

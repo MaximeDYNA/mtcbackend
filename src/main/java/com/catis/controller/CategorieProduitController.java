@@ -49,14 +49,14 @@ public class CategorieProduitController {
     private PagedResourcesAssembler<CategorieProduit> pagedResourcesAssembler;
 
     private Logger LOGGER = LoggerFactory.getLogger(CategorieProduitController.class);
-
+    
     @RequestMapping("/api/v1/caisse/categorieproduits/{categorieId}/listesproduits")
     public ResponseEntity<Object> listerLesProduits(@PathVariable UUID categorieId) throws IllegalArgumentException {
         try {
             List<ProduitEtTaxe> pets = new ArrayList<>();
             List<Taxe> taxes;
             ProduitEtTaxe pet;
-            //Long id = Long.valueOf(categorieId);
+            
             for (Produit produit : produitService.findByCategorieProduit(categorieId).stream()
                     .filter(prod -> !prod.getLibelle().equalsIgnoreCase("cv"))
                     .collect(Collectors.toList())) {
@@ -77,7 +77,6 @@ public class CategorieProduitController {
         }
 
     }
-
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/catproducts")
     public ResponseEntity<Object> categorieProduits() {
         try {
@@ -85,6 +84,7 @@ public class CategorieProduitController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", cateProduitService.listeCategorieProduit());
         } catch (Exception e) {
             LOGGER.error("Erreur lors de l'ajout d'une catégorie.");
+            LOGGER.error(e.toString());
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "false", null);
         }
 

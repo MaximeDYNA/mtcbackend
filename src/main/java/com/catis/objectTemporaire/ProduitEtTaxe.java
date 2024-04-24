@@ -1,11 +1,13 @@
 package com.catis.objectTemporaire;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.catis.model.entity.Produit;
 import com.catis.model.entity.Taxe;
 
-public class ProduitEtTaxe {
+
+public class ProduitEtTaxe{
 
     private Produit produit;
 

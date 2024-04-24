@@ -7,17 +7,29 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.catis.model.entity.Partenaire;
+import com.catis.model.mapper.PartenaireMapper;
+import com.catis.objectTemporaire.PartenaireSearch;
 import com.catis.repository.PartenaireRepository;
 
 @Service
 public class PartenaireService {
+
+    @Autowired
+    private PartenaireSearchService partenaireElasticService;
+
+    @Autowired
+    private PartenaireMapper partenaireMapper;
+    
+
     @Autowired
     private PartenaireRepository partenaireRepository;
 
     public Partenaire addPartenaire(Partenaire partenaire) {
         return partenaireRepository.save(partenaire);
     }
+
 
     public void updatePartenaire(Partenaire partenaire) {
         partenaireRepository.save(partenaire);
@@ -34,8 +46,17 @@ public class PartenaireService {
     }
 
     public List<Partenaire> findPartenaireByNom(String nom) {
-        return partenaireRepository
-                .findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
+        System.out.println("Searching in elastic search index partenaire_index");
+        List<PartenaireSearch> searchResults = partenaireElasticService.findPartenaireByNom(nom);
+        // if (searchResults.isEmpty()) {
+        //     System.out.println("Elastic search did not return data, falling back to mysql search");
+        //     return partenaireRepository
+        //     .findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
+        // }
+        System.out.println("Search results returned" );
+        return searchResults.stream()
+                .map(partenaireMapper::fromPartenaireSearch)
+                .collect(Collectors.toList());
     }
 
     public void deletePartenaireById(UUID idPartenaire) {

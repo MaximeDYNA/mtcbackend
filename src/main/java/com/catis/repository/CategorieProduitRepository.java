@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
+
 import com.catis.model.entity.CategorieProduit;
 
 public interface CategorieProduitRepository extends CrudRepository<CategorieProduit, UUID> {

@@ -1,5 +1,6 @@
 package com.catis.model.entity;
 
+
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_categorieproduit")
@@ -26,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SQLDelete(sql = "UPDATE t_categorieproduit SET active_status=false WHERE categorie_produit_id=?")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class CategorieProduit extends JournalData {
+public class CategorieProduit extends JournalData{
 
     @Id
     @GeneratedValue(generator = "UUID")

@@ -149,34 +149,33 @@ public class EncaissementController {
                 detailVente = new DetailVente();
                 Produit produit = produitService.findById(posale.getProduit().getProduitId());
                 carteGrise = new CarteGrise();
-
+                
                 if (produit.getLibelle().equalsIgnoreCase("cv")) {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument(), encaissement.getCertidocsId());
+                    encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument(), encaissement.getCertidocsId());
                 } else {
                     produit.setProduitId(posale.getProduit().getProduitId());
                     if (!encaissement.getClientId().equals("") )
-                        carteGrise.setProprietaireVehicule(
-                                pvs.addClientToProprietaire(clientService.findCustomerById(UUID.fromString(encaissement.getClientId()))));
-                    else{
-                        if(encaissement.getContactId().equals("")){
-
-                            carteGrise.setProprietaireVehicule(proprietaireVehicule);
-                        }
+                    carteGrise.setProprietaireVehicule(
+                        pvs.addClientToProprietaire(clientService.findCustomerById(UUID.fromString(encaissement.getClientId()))));
                         else{
-                            carteGrise.setProprietaireVehicule(
+                            if(encaissement.getContactId().equals("")){
+                                
+                                carteGrise.setProprietaireVehicule(proprietaireVehicule);
+                            }
+                            else{
+                                carteGrise.setProprietaireVehicule(
                                     pvs.addContactToProprietaire(contactService.findById(UUID.fromString(encaissement.getContactId()))));
-                        }
-
-                    }
-                    carteGrise.setNumImmatriculation(posale.getReference());
-                    carteGrise.setProduit(produit);
-                    carteGrise.setOrganisation(organisation);
-
+                                }
+                                
+                            }
+                            carteGrise.setNumImmatriculation(posale.getReference());
+                            carteGrise.setProduit(produit);
+                            carteGrise.setOrganisation(organisation);
                     visite = visiteService.ajouterVisite(cgs.addCarteGrise(carteGrise), encaissement.getMontantTotal(),
-                            encaissement.getMontantEncaisse(), orgId, caissier, encaissement.getDocument(), encaissement.getCertidocsId());
-
+                    encaissement.getMontantEncaisse(), orgId, caissier, encaissement.getDocument(), encaissement.getCertidocsId());
+                    
                 }
                 /*-----------------Visite-----------------*/
 
@@ -211,7 +210,6 @@ public class EncaissementController {
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
             op = ocs.addOperationCaisse(op);
-
 
             EncaissementResponse e = new EncaissementResponse(op,
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());

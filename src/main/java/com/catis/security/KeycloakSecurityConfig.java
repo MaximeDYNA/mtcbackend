@@ -45,6 +45,21 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
+    private static final String[] SWAGGER_WHITELIST = {
+        "/v2/api-docs",
+        "/swagger-resources",
+        "/swagger-resources/**",
+        "/configuration/ui",
+        "/configuration/security",
+        "/swagger-ui.html",
+        "/webjars/**",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+    };
+
     /**
      * If you don't want to use the keycloak.json file, then uncomment this bean.
      * <p>
@@ -96,12 +111,12 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         super.configure(http);
         //ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.cors() //
         http.httpBasic().disable().cors()
-                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests()
+        .and()
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().authorizeRequests()
+        .antMatchers(SWAGGER_WHITELIST).permitAll()
                 /*.antMatchers("/**").permitAll()
-                .antMatchers("/api/v1/caisse**").permitAll()
                 //.antMatchers("/visites**").permitAll()
                 .antMatchers("/pdf-resources**").permitAll()
                 .antMatchers("/download-pdf**").permitAll()

@@ -35,15 +35,13 @@ public class VenteService {
         venteRepository.findByActiveStatusTrue(pageable).forEach(ventes::add);
         return ventes;
     }
-
     public Vente findById(UUID id) {
         return venteRepository.findById(id).get();
     }
-
     public Vente findByVisite(UUID id) {
         return venteRepository.findByVisite_IdVisite(id);
     }
-
+    
     public List<Vente> findByRef(String ref, Pageable pageable){
         return venteRepository.findByRef(ref, pageable);
     }
@@ -57,7 +55,6 @@ public class VenteService {
 
         return start;
     }
-
     public List<Vente> recap(UUID caissierId, LocalDateTime start, LocalDateTime end) {
 
         List<Vente> ventes = venteRepository.findBySessionCaisseCaissierCaissierIdAndCreatedDateGreaterThanOrderByCreatedDateDesc(caissierId, start)
