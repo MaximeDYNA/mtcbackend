@@ -23,6 +23,8 @@ import com.catis.service.MarqueService;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @CrossOrigin
 public class MarqueController {
@@ -49,6 +51,7 @@ public class MarqueController {
 
     /*Admin*/
 
+    @Transactional
     @GetMapping(value="/api/v1/admin/marques", params ={"page", "size"})
     public ResponseEntity<Object> listAdminMarque(@RequestParam("page") int page,
                                                   @RequestParam("size") int size) {
@@ -66,7 +69,7 @@ public class MarqueController {
 
         }
     }
-
+    @Transactional
     @PostMapping("/api/v1/admin/marques")
     public ResponseEntity<Object> addMarque(@RequestBody MarquePOJO marque) {
         LOGGER.trace("List des marques...");
@@ -96,6 +99,7 @@ public class MarqueController {
 
         }
     }
+    @Transactional
     @GetMapping("/api/v1/admin/marques/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

@@ -2,6 +2,9 @@ package com.catis.objectTemporaire;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CategorieproduitProduitPOJO {
     private UUID categorieProduitId;
     private String libelle;

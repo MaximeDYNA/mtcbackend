@@ -38,15 +38,15 @@ public class CategorieVehicule extends JournalData{
 
     private String type;
 
-    @OneToMany(mappedBy = "categorieVehicule")
+    @OneToMany(mappedBy = "categorieVehicule",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Ligne> lignes;
 
-    @OneToMany(mappedBy = "categorieVehicule")
+    @OneToMany(mappedBy = "categorieVehicule",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Lexique> lexique;
 
-    @OneToMany(mappedBy = "categorieVehicule")
+    @OneToMany(mappedBy = "categorieVehicule",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Produit> produits;
 

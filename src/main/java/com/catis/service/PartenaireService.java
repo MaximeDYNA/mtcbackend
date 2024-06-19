@@ -3,9 +3,11 @@ package com.catis.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Partenaire;
@@ -48,15 +50,25 @@ public class PartenaireService {
     public List<Partenaire> findPartenaireByNom(String nom) {
         System.out.println("Searching in elastic search index partenaire_index");
         List<PartenaireSearch> searchResults = partenaireElasticService.findPartenaireByNom(nom);
-        // if (searchResults.isEmpty()) {
-        //     System.out.println("Elastic search did not return data, falling back to mysql search");
-        //     return partenaireRepository
-        //     .findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
-        // }
+        //     // if (searchResults.isEmpty()) {
+        //     //     System.out.println("Elastic search did not return data, falling back to mysql search");
+        //     //     return partenaireRepository
+        //     //     .findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(nom, nom, nom, nom);
+        //     // }
         System.out.println("Search results returned" );
         return searchResults.stream()
                 .map(partenaireMapper::fromPartenaireSearch)
                 .collect(Collectors.toList());
+    }
+    @Async("taskExecutorForHeavyTasks")
+    public CompletableFuture<List<Partenaire>> findPartenaireByNomAsync(String nom) {
+        System.out.println("Searching in elastic search index partenaire_index");
+        List<PartenaireSearch> searchResults = partenaireElasticService.findPartenaireByNom(nom);
+        System.out.println("Search results returned" );
+        List<Partenaire> partenaires = searchResults.stream()
+                .map(partenaireMapper::fromPartenaireSearch)
+                .collect(Collectors.toList());
+        return CompletableFuture.completedFuture(partenaires);
     }
 
     public void deletePartenaireById(UUID idPartenaire) {

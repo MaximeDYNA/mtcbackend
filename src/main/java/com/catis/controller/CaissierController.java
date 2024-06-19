@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @CrossOrigin
 @RequestMapping("api/v1/admin/caissiers")
@@ -39,6 +41,7 @@ public class CaissierController {
     @Autowired
     private PagedResourcesAssembler<CaissierDTO> pagedResourcesAssembler;
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> enregistrer(@RequestBody CaissierPOJO caissierPOJO){
         Caissier caissier = new Caissier();
@@ -72,6 +75,8 @@ public class CaissierController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",
                 caissier);
     }
+
+    @Transactional
     @GetMapping(params = {"page", "size"})
     public ResponseEntity<Object> list(@RequestParam("page") int page,
                                        @RequestParam("size") int size){
@@ -121,7 +126,7 @@ public class CaissierController {
                     true, "KO", null);
         }
     }
-
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value="/api/v1/admin/caissiers/select")
     public ResponseEntity<Object> getLexiquesOfMtcforSelect(){
 

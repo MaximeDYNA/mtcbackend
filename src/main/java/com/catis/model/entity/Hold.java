@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "t_hold")
@@ -37,10 +38,11 @@ public class Hold extends JournalData {
     private UUID holdId;
 
     private Long number;
-
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private SessionCaisse sessionCaisse;
 

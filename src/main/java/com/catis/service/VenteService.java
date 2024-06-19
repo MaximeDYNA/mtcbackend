@@ -7,26 +7,47 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.catis.model.entity.DetailVente;
+import com.catis.model.entity.TaxeProduit;
 import com.catis.model.entity.Vente;
 import com.catis.objectTemporaire.DetailDTO;
 import com.catis.objectTemporaire.OpCaisseDTO;
+import com.catis.objectTemporaire.ProduitTicketdto;
+import com.catis.objectTemporaire.TaxeTicketdto;
+import com.catis.objectTemporaire.Ticketdto;
 import com.catis.repository.VenteRepository;
 
+import pl.allegro.finance.tradukisto.ValueConverters;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @Service
+@CacheConfig(cacheNames={"ticketCache"})
 public class VenteService {
 
     @Autowired
     private VenteRepository venteRepository;
+    Logger logger = LoggerFactory.getLogger(VenteService.class);
 
+    @CacheEvict(allEntries = true)
     public Vente addVente(Vente vente) {
+        logger.info("SAVING VENTE");
         return venteRepository.save(vente);
     }
 
@@ -35,17 +56,76 @@ public class VenteService {
         venteRepository.findByActiveStatusTrue(pageable).forEach(ventes::add);
         return ventes;
     }
+    
     public Vente findById(UUID id) {
         return venteRepository.findById(id).get();
     }
     public Vente findByVisite(UUID id) {
         return venteRepository.findByVisite_IdVisite(id);
     }
-    
+
     public List<Vente> findByRef(String ref, Pageable pageable){
         return venteRepository.findByRef(ref, pageable);
     }
+    
+    @Transactional
+    @Cacheable(key = "'ticket-' + #pageable.toString()")
+    public Page<Ticketdto> findByRefMain(String title, Pageable pageable, String lang) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+        List<Ticketdto> ticketdtos = venteRepository.findByRef(title, pageable)
+                .stream()
+                .map(vente -> new Ticketdto(
+                        vente.getNumFacture(),
+                        vente.getClient() == null ? vente.getContact().getPartenaire().getNom() : vente.getClient().getPartenaire().getNom(),
+                        vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone() : vente.getClient().getPartenaire().getTelephone(),
+                        vente.getCreatedDate().format(formatter),
+                        vente.getDetailventes().stream()
+                                .map(detailVente1 -> new ProduitTicketdto(
+                                        detailVente1.getReference(),
+                                        detailVente1.getProduit().getLibelle(),
+                                        detailVente1.getPrix(),
+                                        getPrix(detailVente1.getPrix(), detailVente1.getProduit().getTaxeProduit()),
+                                        detailVente1.getProduit().getDescription(),
+                                        detailVente1.getProduit().getTaxeProduit().stream()
+                                                .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+                                                .collect(Collectors.toList())
+                                ))
+                                .collect(Collectors.toList()),
+                        vente.getMontantTotal(),
+                        convert(lang, vente.getMontantTotal()),
+                        vente.getMontantHT()
+                ))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(ticketdtos, pageable, 300);
+    }
+    
+     public double getPrix(double prixTTC, Set<TaxeProduit> taxeProduits){
+
+        double sum = taxeProduits.stream()
+                .map(taxeTicketdto -> new Double(taxeTicketdto.getTaxe().getValeur()))
+                .reduce((a,b) -> a+b)
+                .get();
+        double prix = prixTTC * 100/(100+ sum);
+        return prix;
+    }
+    public String convert(String lang, double price){
+        ValueConverters converter;
+        if (lang.equalsIgnoreCase("fr")) {
+            converter = ValueConverters.FRENCH_INTEGER;
+        } else
+            converter = ValueConverters.ENGLISH_INTEGER;
+
+        return converter.asWords((int) price);
+    }
+
+    // @Async("taskExecutorForHeavyTasks")
+    // public CompletableFuture<List<Vente>> findByRefAsync(String ref, Pageable pageable) {
+    //     logger.info("get list of ticket by " + Thread.currentThread().getName());
+    //     return CompletableFuture.supplyAsync(() -> venteRepository.findByRef(ref, pageable));
+    // }
+    
     public String genererNumFacture() {
         Date now = new Date();
         DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");

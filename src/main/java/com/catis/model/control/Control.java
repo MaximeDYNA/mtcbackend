@@ -46,10 +46,11 @@ public class Control extends JournalData {
 
     private LocalDateTime validityAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private CarteGrise carteGrise;
 
-    @OneToMany(mappedBy = "control", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "control", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Visite> visites = new ArrayList<>();
 

@@ -2,6 +2,9 @@ package com.catis.objectTemporaire;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CategorieProduitView {
 
     private String nom;

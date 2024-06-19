@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.KeycloakPrincipal;
@@ -37,6 +38,7 @@ public class UserInfo {
     private String clientId = "realm-management";
     private String clientSecret = "380ca94c-1909-4b8c-9754-4846d647cc09";
 
+    @Transactional
     @GetMapping("/api/v1/controleurs")
     public List<ControleurDTO> userInfoController() {
 

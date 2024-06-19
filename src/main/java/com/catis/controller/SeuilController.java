@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/seuils")
 public class SeuilController {
@@ -30,6 +32,7 @@ public class SeuilController {
     private LexiqueService ls;
 
 
+    @Transactional
     @GetMapping
     public ResponseEntity<Object> getAll(){
 
@@ -39,6 +42,7 @@ public class SeuilController {
 
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> addMachine(@RequestBody SeuilPOJO pojo){
         Organisation o = pojo.getOrganisationId() == null ? null : os.findByOrganisationId(pojo.getOrganisationId().getId());
@@ -61,6 +65,7 @@ public class SeuilController {
 
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable String id){
 

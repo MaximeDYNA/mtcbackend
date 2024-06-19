@@ -51,10 +51,13 @@ public class Vehicule extends JournalData {
     private int cylindre; // cm3
     private double score;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MarqueVehicule marqueVehicule;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Energie energie;
+
+   
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
+    private Energie energie;    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vehicule")
     @JsonIgnore
     Set<CarteGrise> carteGrise;

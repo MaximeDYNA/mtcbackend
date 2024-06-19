@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/dashboard")
 public class DashboardController {
@@ -26,6 +28,7 @@ public class DashboardController {
     @Autowired
     private AuditService as;
 
+    @Transactional
     @GetMapping("/business")
     public ResponseEntity<Object> getBusinessData() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException, URISyntaxException {
         //as.getAllRevision();

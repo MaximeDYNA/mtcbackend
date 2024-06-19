@@ -15,4 +15,5 @@ public interface RapportDeVisiteRepo extends JpaRepository<RapportDeVisite, UUID
             + "left join fetch s.lexique l left join fetch l.classification cl "
             + "join fetch s.formule f join fetch f.mesures m where r.visite = ?1")
     List<RapportDeVisite> getRapportDeVisite(Visite visite);
+
 }

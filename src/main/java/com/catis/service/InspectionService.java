@@ -9,12 +9,15 @@ import com.catis.model.entity.Controleur;
 import com.catis.model.entity.Visite;
 import com.catis.repository.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Inspection;
 import com.catis.repository.InspectionRepository;
 
 @Service
+@CacheConfig(cacheNames={"VisiteCache"})
 public class InspectionService {
 
     @Autowired
@@ -56,7 +59,7 @@ public class InspectionService {
                 .orElse(null);
         return inspection;
     }
-
+    @CacheEvict(allEntries = true)
     public Inspection setSignature(UUID id, String signature, Controleur controleur) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);
@@ -71,12 +74,15 @@ public class InspectionService {
 
         inspection.setControleur(controleur);
 
+
         inspection = inspectionR.save(inspection);
+        System.out.println("saved inpection signature");
         Visite visite = inspection.getVisite();
 
         inspection.getOrganisation().getUtilisateurs().forEach(utilisateur -> {
             notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), visite, true);
         });
+        System.out.println("notification service is complete");
         return inspection;
 
     }

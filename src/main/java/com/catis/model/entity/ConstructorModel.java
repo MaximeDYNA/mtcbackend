@@ -36,10 +36,11 @@ public class ConstructorModel extends JournalData {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Constructor constructor;
 
-    @OneToMany(mappedBy = "constructorModel")
+    @OneToMany(mappedBy = "constructorModel",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Machine> machines;
 }

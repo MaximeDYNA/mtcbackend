@@ -39,7 +39,7 @@ public class Utilisateur extends JournalData {
 
     private String login;
 
-    @OneToOne(mappedBy = "utilisateur")
+    @OneToOne(mappedBy = "utilisateur",fetch = FetchType.LAZY)
     @JsonIgnore
     private Controleur controleur;
 

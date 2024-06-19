@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -22,6 +25,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.catis.objectTemporaire.CarteGriseReceived;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "t_cartegrise")
@@ -43,11 +48,8 @@ public class CarteGrise extends JournalData {
     private UUID carteGriseId;
 
     private String numImmatriculation;
-
     private String preImmatriculation;// immatriculation précédente
-
     private Date dateDebutValid; // debut de validité
-
     private Date dateFinValid;// fin de validité
     private String ssdt_id;
     private String commune;
@@ -60,20 +62,22 @@ public class CarteGrise extends JournalData {
     private String lieuDedelivrance;// lieu de délivrance
     private String centre_ssdt;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE },fetch = FetchType.LAZY)
     private ProprietaireVehicule proprietaireVehicule;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Vehicule vehicule;
 
-    @ManyToOne
+   
+    @ManyToOne(fetch = FetchType.LAZY)
     private Produit produit;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "carteGrise")
     @JsonIgnore
     Set<Visite> visites;
 
-    @OneToMany(mappedBy = "carteGrise")
+    @OneToMany(mappedBy = "carteGrise",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Control> controls;
 

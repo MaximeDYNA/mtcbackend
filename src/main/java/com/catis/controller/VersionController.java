@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class VersionController {
     @Autowired
     private VersionLexiqueService vls;
 
+    @Transactional
     @GetMapping("/api/v1/admin/versionlists")
     public ResponseEntity<Object> versionList() {
 
@@ -44,6 +47,7 @@ public class VersionController {
 
     }
 
+    @Transactional
     @GetMapping("/api/v1/admin/versionlists/{id}")
     public ResponseEntity<Object> getVersion(@PathVariable UUID id) {
 

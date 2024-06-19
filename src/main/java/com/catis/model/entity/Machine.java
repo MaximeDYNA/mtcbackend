@@ -50,10 +50,10 @@ public class Machine extends JournalData {
     @JsonIgnore
     private Set<CategorieTestMachine> categorieTestMachine;
 
-    @OneToMany(mappedBy = "machine")
+    @OneToMany(mappedBy = "machine",fetch = FetchType.LAZY)
     private Set<GieglanFile> gieglanFiles;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ConstructorModel constructorModel;
 
 }

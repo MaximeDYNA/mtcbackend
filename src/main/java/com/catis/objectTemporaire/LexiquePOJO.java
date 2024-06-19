@@ -6,8 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Data @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LexiquePOJO {
 
     private String id;

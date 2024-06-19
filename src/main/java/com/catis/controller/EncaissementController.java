@@ -77,7 +77,9 @@ public class EncaissementController {
         LOGGER.info("ADDING A VISIT...");
         LOGGER.info("Object received "+ ToStringBuilder.reflectionToString(encaissement));
         UUID orgId = UserInfoIn.getUserInfo(request).getOrganisanionId();
+        LOGGER.info("ORGANISATION ID OBTAINED.");
         String user = UserInfoIn.getUserInfo(request).getLogin();
+        LOGGER.info("USER OBTAINED.");
         try {
         Caissier caissier = caissierService.findBylogin(user);
         if(caissier==null)
@@ -139,11 +141,13 @@ public class EncaissementController {
             vente.setMontantHT(encaissement.getMontantHT());
             vente.setNumFacture(venteService.genererNumFacture());
             /* -------------------------- */
+            LOGGER.info("PROCESS LAUNCHED TO CREATE VISIT.");
             Visite visite;
             ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
             proprietaireVehicule.setPartenaire(contact.getPartenaire());
             DetailVente detailVente;
             CarteGrise carteGrise;
+            LOGGER.info("USING RECEIVED POSALE");
             proprietaireVehicule.setOrganisation(organisation);
             for (Posales posale : posaleService.findActivePosaleBySessionId(encaissement.getSessionCaisseId())) {
                 detailVente = new DetailVente();
@@ -154,6 +158,7 @@ public class EncaissementController {
                     carteGrise = cgs.findLastByImmatriculationOuCarteGrise(posale.getReference());
                     visite = visiteService.ajouterVisite(carteGrise, encaissement.getMontantTotal(),
                     encaissement.getMontantEncaisse(), orgId,caissier, encaissement.getDocument(), encaissement.getCertidocsId());
+                    LOGGER.info("PROCESSED CONTROL VISISTE");
                 } else {
                     produit.setProduitId(posale.getProduit().getProduitId());
                     if (!encaissement.getClientId().equals("") )
@@ -183,11 +188,15 @@ public class EncaissementController {
 
                 /*------------------------------------------*/
 
+                LOGGER.info("PROCESSING VISITE VENTE");
+
                 vente.setVisite(visite);
                 vente.setOrganisation(organisation);
 
                 vente = venteService.addVente(vente);
                 /*------------------------------------------*/
+
+                LOGGER.info("USING RECEIVED TASK");
 
                 taxedetail = 0;
                 for (TaxeProduit t : produit.getTaxeProduit())
@@ -210,6 +219,8 @@ public class EncaissementController {
             op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
             op = ocs.addOperationCaisse(op);
+
+            LOGGER.info("USING RECEIVED DATA TO CREATE ENCAISSEMENT");
 
             EncaissementResponse e = new EncaissementResponse(op,
                     detailVenteService.findByVente(op.getVente().getIdVente()), encaissement.getLang());

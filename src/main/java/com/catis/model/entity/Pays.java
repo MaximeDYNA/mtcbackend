@@ -36,7 +36,7 @@ public class Pays extends JournalData {
     private String nomPays;
     private String description;
 
-    @OneToMany(mappedBy = "pays")
+    @OneToMany(mappedBy = "pays",fetch = FetchType.LAZY)
     @JsonIgnore
     Set<DivisionPays> divisionPays;
 

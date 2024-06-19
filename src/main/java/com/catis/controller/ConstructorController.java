@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/constructors")
 public class ConstructorController {
@@ -66,7 +68,7 @@ public class ConstructorController {
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "failed", null);
         }
     }
-
+    @Transactional
     @GetMapping("/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

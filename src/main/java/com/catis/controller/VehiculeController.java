@@ -2,6 +2,8 @@ package com.catis.controller;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import com.catis.objectTemporaire.VehiculePOJO;
 import com.catis.service.EnergieService;
 import com.catis.service.MarqueService;
@@ -79,7 +81,7 @@ public class VehiculeController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
         }
     }
-
+    @Transactional
     @PostMapping("/api/v1/admin/vehicules")
     public ResponseEntity<Object> addAdminVehicule(@RequestBody VehiculePOJO vehiculePOJO) {
         try {
@@ -123,6 +125,7 @@ public class VehiculeController {
         }
     }
 
+    @Transactional
     @GetMapping("/api/v1/admin/vehicules/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

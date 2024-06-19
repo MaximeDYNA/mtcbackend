@@ -42,7 +42,7 @@ public class CategorieProduit extends JournalData{
     private String libelle;
     private String description;
 
-    @OneToMany(mappedBy = "categorieProduit")
+    @OneToMany(mappedBy = "categorieProduit",fetch = FetchType.LAZY)
     @JsonIgnore
     Set<Produit> produits;
 

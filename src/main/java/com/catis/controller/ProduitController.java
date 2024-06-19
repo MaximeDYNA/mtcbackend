@@ -34,6 +34,7 @@ import com.catis.service.TaxeService;
 import com.catis.service.VisiteService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -110,7 +111,8 @@ public class ProduitController {
     }
 
 
-    @RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
+    // @Transactional
+    // @RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
     public ResponseEntity<Object> listeDesProduitsParReference(@PathVariable String imCha) throws VisiteEnCoursException {
         try {
                 if(imCha.equalsIgnoreCase(null))
@@ -177,6 +179,80 @@ public class ProduitController {
 
     }
 
+   
+    // the method above returns 500 when imcha is not found by methods in the try block, so flemming provide the version below to solve the issue
+
+    @Transactional
+    @RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
+    public ResponseEntity<Object> MainlisteDesProduitsParReference(@PathVariable String imCha) {
+    try {
+        if (imCha == null) {
+            imCha = "";
+        }
+
+        if (visiteService.visiteEncours(imCha, UserInfoIn.getUserInfo(request).getOrganisanionId())) {
+            throw new VisiteEnCoursException("Une visite est déjà en cours");
+        }
+
+        LOGGER.trace("liste des catégories...");
+        List<Produit> produits = new ArrayList<>();
+        for (CarteGrise cg : cgs.findByImmatriculationOuCarteGrise(imCha)) {
+            System.out.println("produit de carte grise");
+            produits.add(cg.getProduit());
+        }
+
+        if (visiteService.isVisiteInitial(imCha, UserInfoIn.getUserInfo(request).getOrganisanionId())) {
+            if (!cgs.isCarteGriseExist(imCha)) {
+                List<ProduitEtTaxe> pets = new ArrayList<>();
+                List<Taxe> taxes;
+                ProduitEtTaxe pet;
+                for (Produit produit : produitService.findProduitWithoutContreVisite()) {
+                    pet = new ProduitEtTaxe();
+                    pet.setProduit(produit);
+                    taxes = new ArrayList<>();
+                    for (TaxeProduit tp : tps.findByProduitId(produit.getProduitId())) {
+                        taxes.add(tp.getTaxe());
+                    }
+                    pet.setTaxe(taxes);
+                    pets.add(pet);
+                }
+                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
+            } else {
+                List<ProduitEtTaxe> pets = new ArrayList<>();
+                Produit produit = produitService.findByImmatriculation(imCha);
+                if (produit == null) {
+                    return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets); // Return empty list if no product is found
+                }
+
+                ProduitEtTaxe pet = new ProduitEtTaxe();
+                List<Taxe> taxes = new ArrayList<>();
+                pet.setProduit(produit);
+                pet.setTaxe(taxeService.taxListByLibelle(produitService.findByLibelle("cv").getLibelle()));
+                pets.add(pet);
+                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
+            }
+        } else {
+            List<ProduitEtTaxe> pets = new ArrayList<>();
+            Produit produit = produitService.findByLibelle("cv");
+            if (produit == null) {
+                return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets); // Return empty list if no product is found
+            }
+
+            ProduitEtTaxe pet = new ProduitEtTaxe(produit, taxeService.taxListByLibelle("cv"));
+            pets.add(pet);
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", pets);
+        }
+    } catch (VisiteEnCoursException vece) {
+        LOGGER.error("visite déjà en cours! Veuillez vérifier la liste des visites en cours");
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une visite est actuellement en cours pour ce véhicule", null);
+    } catch (Exception e) {
+        LOGGER.error("Veuillez signaler cette erreur à Franck");
+        return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
+    }
+}
+
+
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/produits/listview")
     public ResponseEntity<Object> listViewProduits() {
         LOGGER.trace("Liste des produits");
@@ -214,6 +290,7 @@ public class ProduitController {
                 .toModel(pages);
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
     }
+    @Transactional
     @GetMapping(value = "/api/v1/admin/produits/select")
     public ResponseEntity<Object> produitListForSelect() {
         try {

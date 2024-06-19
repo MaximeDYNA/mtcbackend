@@ -1,0 +1,126 @@
+# filter {
+#   if "vehicule" in [tags]{
+#   jdbc_streaming {
+#   jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+#   jdbc_driver_class => "com.mysql.jdbc.Driver"
+#   jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+#   jdbc_user => "root"
+# 	jdbc_password => "root"
+# 	statement => "select * from t_organisation o where o.Id = :organisation_id"
+# 	parameters => {"organisation_id" => "organisation_id"}
+# 	target => "organisation"
+# 	}
+#   jdbc_streaming {
+#   jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+#   jdbc_driver_class => "com.mysql.jdbc.Driver"
+#   jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+#   jdbc_user => "root"
+# 	jdbc_password => "root"
+# 	statement => "select * from t_energie e where e.Id = :energie_id"
+# 	parameters => {"energie_id" => "energie_id"}
+# 	target => "energie"
+# 	}
+#   jdbc_streaming {
+#   jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+#   jdbc_driver_class => "com.mysql.jdbc.Driver"
+#   jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+#   jdbc_user => "root"
+# 	jdbc_password => "root"
+# 	statement => "select * from t_marquevehicule m where m.Id = :marque_vehicule_id"
+# 	parameters => {"marque_vehicule_id" => "marque_vehicule_id"}
+# 	target => "marquevehicule"
+# 	}
+#   }
+#   mutate {
+#     remove_field => ["@timestamp", "tags", "@version"]
+#   }
+# }
+
+
+# if "visite" in [tags]{
+  
+  # jdbc_streaming {
+  # jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+  # jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+  # jdbc_driver_class => "com.mysql.jdbc.Driver"
+  # jdbc_user => "root"
+	# jdbc_password => "root"
+	# statement => "select * from t_cartegrise cg where cg.Id = :carte_grise_id"
+	# parameters => {"carte_grise_id" => "carte_grise_id"}
+	# target => "carteGrise"
+  # add_field => { "[carteGrise][organisation]" => {}}
+  # add_field => { "[carteGrise][vehicule]" => {}}
+  # add_field => { "[carteGrise][proprietaireVehicule]" => {}}
+  # add_field => { "[carteGrise][proprietaireVehicule][organisation]" => {}}
+  # add_field => { "[carteGrise][proprietaireVehicule][partenaire]" => {}}
+  # add_field => { "[carteGrise][proprietaireVehicule][partenaire][organisation]" => {}}
+  # add_field => { "[carteGrise][produit]" => {}}
+  # add_field => { "[carteGrise][produit]" => {}}
+  # add_field => { "[carteGrise][produit][categorieVehicule]" => {}}
+  # add_field => { "[carteGrise][produit][categorieProduit]" => {}}
+	# }
+
+
+    # jdbc {
+	#   clean_run => false
+  #   jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+  #   jdbc_driver_class => "com.mysql.jdbc.Driver"
+  #   jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+  #   jdbc_user => "root"
+	# jdbc_password => "root"
+	# tags => ["vehicule"]
+  # statement => "SELECT * FROM t_vehicule WHERE modified_date > :sql_last_value ORDER BY modified_date ASC"
+  #   schedule => "*/1 * * * *"
+  #   use_column_value => true
+  #   jdbc_paging_enabled => true
+  #   tracking_column_type => "timestamp"
+	#   tracking_column => "modified_date"
+  #   last_run_metadata_path => "/usr/share/logstash/metadata/vehicule_last_run.yml"
+    
+  # }
+	# jdbc {
+	#   clean_run => false
+  #   jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+  #   jdbc_driver_class => "com.mysql.jdbc.Driver"
+  #   jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+  #   jdbc_user => "root"
+  #   jdbc_password => "root"
+  #   tags => ["visite"]
+  #   statement => "SELECT * FROM t_visite WHERE modified_date > :sql_last_value ORDER BY modified_date ASC"
+  #   schedule => "*/1 * * * *"
+  #   use_column_value => true
+  #   jdbc_paging_enabled => true
+  #   # jdbc_fetch_size => 1000 
+  #   tracking_column_type => "timestamp"
+	#   tracking_column => "modified_date"
+  #   last_run_metadata_path => "/usr/share/logstash/metadata/visite_last_run.yml"
+  # }
+
+  # jdbc_streaming {
+  # jdbc_driver_library => "/usr/share/logstash/mysql-connector-j-8.3.0.jar"
+  # jdbc_driver_class => "com.mysql.jdbc.Driver"
+  # jdbc_connection_string => "jdbc:mysql://db:3306/uuidstring"
+  # jdbc_user => "root"
+	# jdbc_password => "root"
+	# statement => "select * from t_organisation o where o.Id = :organisation_id"
+  # target => "[carteGrise][organisation]"
+  # parameters => {"organisation_id" => "%{[carteGrise][organisation_id]}"}
+	# }
+  # }
+  # mutate {
+  #   remove_field => ["@timestamp", "tags", "@version"]
+  # }
+# if "visite" in [tags] {
+  #   elasticsearch {
+  #     hosts => ["http://elasticsearch:9200"]
+  #     index => "visite_index"
+	#     document_id => "%{id}"
+  #   }
+  # }
+  # if "vehicule" in [tags] {
+  #   elasticsearch {
+  #     hosts => ["http://elasticsearch:9200"]
+  #     index => "vehicule_index"
+	#     document_id => "%{id}"
+  #   }
+  # }

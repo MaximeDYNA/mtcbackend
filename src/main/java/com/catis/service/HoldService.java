@@ -16,6 +16,12 @@ import com.catis.model.entity.Posales;
 import com.catis.repository.HoldRepository;
 import com.catis.repository.PosaleRepository;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 @Service
 public class HoldService {
 
@@ -25,6 +31,9 @@ public class HoldService {
     private PosaleRepository posaleRepository;
     @Autowired
     private SessionCaisseService scs;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Hold addHold(Hold hold) {
         return holdRepository.save(hold);
@@ -66,9 +75,53 @@ public class HoldService {
         return holdRepository.findBySessionCaisse_SessionCaisseId(sessionCaisseId);
     }
 
+    // flemming implimented
+    public Hold findHoldByNumberAndSessionCaisseId(Long number, UUID sessionCaisseId) {
+        String queryStr = String.format(
+            "SELECT JSON_OBJECT(" +
+            "'active_status', CASE h.active_status WHEN b'1' THEN 1 ELSE 0 END, " +
+            "'number', h.number, " +
+            "'holdId', h.id" +
+            ") as json " +
+            "FROM t_hold h " +
+            "WHERE h.session_caisse_id='%s' AND h.number = %d",
+            sessionCaisseId.toString() ,number);
+
+        Query query = entityManager.createNativeQuery(queryStr);
+
+        try {
+            String jsonString = (String) query.getSingleResult();
+            return parseJsonToHold(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Hold parseJsonToHold(String jsonString) {
+        // Use your preferred JSON library to parse jsonString
+        // Here is an example using Jackson:
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+            Hold hold = new Hold();
+            hold.setActiveStatus(jsonNode.get("active_status").asInt() == 1);
+            hold.setNumber(jsonNode.get("number").asLong());
+            hold.setHoldId(UUID.fromString(jsonNode.get("holdId").asText()));
+            return hold;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    // oldversion
     public Hold findByNumberSessionCaisse(Long number, UUID sessionCaisseId) {
         return holdRepository.findByNumberAndSessionCaisse_SessionCaisseId(number, sessionCaisseId);
     }
+
+
 
     public Hold findByHoldId(UUID holdId) {
         if (holdId == null) {

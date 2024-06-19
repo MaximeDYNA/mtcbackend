@@ -12,14 +12,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -40,24 +44,30 @@ public class Vente extends JournalData {
     private double montantTotal;
     private double montantHT;
     private int statut;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+
+   
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Vendeur vendeur;
 
-    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE },fetch = FetchType.LAZY)
     private Contact contact;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Visite visite;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private SessionCaisse sessionCaisse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente")
     @JsonIgnore
     private Set<OperationCaisse> operationCaisse;
 
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vente", cascade = CascadeType.ALL)
     private Set<DetailVente> detailventes;
 

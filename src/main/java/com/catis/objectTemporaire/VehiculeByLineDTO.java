@@ -1,8 +1,9 @@
 package com.catis.objectTemporaire;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class VehiculeByLineDTO {
+public class VehiculeByLineDTO implements Serializable {
 
     private UUID carteGriseId;
     private String ref;

@@ -4,16 +4,21 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 
 import com.catis.model.entity.Organisation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @MappedSuperclass
 public class JournalData implements Serializable {
     private static final long serialVersionUID = 1113799434508676095L;
@@ -36,7 +41,8 @@ public class JournalData implements Serializable {
     @LastModifiedBy
     private String modifiedBy;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Organisation organisation;
 
     public LocalDateTime getCreatedDate() {

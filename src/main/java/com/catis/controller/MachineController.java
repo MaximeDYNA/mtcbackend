@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/machines")
 public class MachineController {
@@ -35,6 +37,7 @@ public class MachineController {
 
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> addMachine(@RequestBody MachinePOJO pojo){
         ConstructorModel cm = pojo.getConstructorModel() == null ? null : constructorModelRepo.findById(pojo.getConstructorModel().getId()).get();

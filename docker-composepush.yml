@@ -1,0 +1,271 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7
+    command: --max_allowed_packet=32505856
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: catisdb
+    volumes:
+      - "./db:/var/lib/mysql"
+    ports:
+      - "3308:3306"
+    networks:
+      - backend
+
+  redis-server:
+    image: redis:latest
+    restart: always
+    container_name: redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis-server
+    networks:
+      - backend
+
+  Elasticsearch:
+    image: elasticsearch:7.16.2
+    container_name: elasticsearch
+    restart: always
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data/
+    environment:
+      - bootstrap.memory_lock=true
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1 
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    networks:
+      - elk
+  
+  filebeat:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.filebeat
+    container_name: filebeat
+    hostname: mydockerhost
+    restart: unless-stopped
+    labels:
+      co.elastic.logs/enabled: "false"
+    networks:
+      - elk
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /var/lib/docker
+        target: /var/lib/docker
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+  
+  Logstash:
+    image: logstash:7.16.2
+    container_name: logstash
+    restart: always
+    volumes:
+      - ./logstash/:/logstash_dir
+      - ./metadata/:/usr/share/logstash/metadata
+      - ./mysql-connector-j-8.3.0.jar:/usr/share/logstash/mysql-connector-j-8.3.0.jar
+    command: logstash -f /logstash_dir/logstash.conf --config.reload.automatic
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+      - "4560:4560"
+    depends_on:
+      - Elasticsearch
+      - db
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
+    networks:
+      - elk
+      - backend
+
+  Kibana:
+    image: kibana:7.16.2
+    container_name: kibana
+    restart: always       
+    ports:
+    - '5601:5601'
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200  
+    depends_on:
+      - Elasticsearch  
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+    networks:
+      - elk
+
+  admin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      UPLOAD_LIMIT: 1000M
+    ports:
+      - "8084:80"
+    networks:
+      - backend
+
+  keycloak:
+    container_name: keycloak
+    user: root
+    depends_on:
+      - db
+    links:
+      - db
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile
+    environment:
+#      KEYCLOAK_USER: admin
+#     KEYCLOAK_PASSWORD: admin
+      DB_DATABASE: keycloak
+      DB_VENDOR: MYSQL
+      DB_ADDR: 51.195.11.201
+      DB_PORT: 3308
+      DB_USER: root
+      DB_PASSWORD: root
+    restart: always
+    volumes:
+      - keycloak-data:/var/lib/keycloak/data
+      - ./imports:/opt/jboss/keycloak/imports
+    command:  
+      - "-b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled"
+    ports:
+      - 8090:8080
+      - 8443:8443
+    networks:
+      - backend
+  
+  caisse:
+    build:
+      context: ./mtcBackend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - keycloak
+      - redis-server
+      - Elasticsearch
+      
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://51.195.11.201:3308/uuidstring?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_KEYCLOAK_AUTH: http://51.195.11.201:8090/auth
+      SPRING_KEYCLOAK_SECRET: 33a80056-95fb-4857-84b7-91c16fe2f9c5
+      SPRING_REDIS_HOST: redis
+      SPRING_ELASTICSEARCH_CLUSTER_NODES: elasticsearch
+    ports:
+      - "8086:8080"
+    networks:
+      - backend 
+      - elk   
+  front: 
+    build:
+      context: ./mtcFrontEnd
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - caisse
+      - keycloak
+    ports:
+      - "8085:8080"
+    networks:
+      - frontend
+    environment:
+     VUE_APP_SERVER_URL: 51.195.11.201
+     VUE_APP_MTC_PORT: 8086
+     VUE_APP_HOME_PORT: 8085
+     VUE_APP_KEYCLOAK_PORT: 8090
+     VUE_APP_KEYCLOAK_URL: 51.195.11.201
+     VUE_APP_REPORTING_URL: 51.195.11.201
+     VUE_APP_REPORTING_PORT: 8080
+     VUE_APP_CLIENT_URL: 51.195.11.201
+  
+  adminfront:
+    build:
+      context: ./adminDitros
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - caisse
+    ports:
+      - "8094:8080"
+    networks:
+      - frontendadmin
+    environment:
+     VUE_APP_SERVER_URL: 51.195.11.201
+     VUE_APP_MTC_PORT: 8086
+     VUE_APP_HOME_PORT: 8094
+     VUE_APP_KEYCLOAK_PORT: 8090
+     VUE_APP_KEYCLOAK_URL: 51.195.11.201 
+     VUE_APP_REPORTING_URL: 51.195.11.201
+     VUE_APP_REPORTING_PORT: 8080
+  controller:
+    build:
+      context: ./controllerService
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://51.195.11.201:3308/uuidstring?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+      - caisse
+    ports:
+      - "8089:8080"
+    networks:
+      - backend
+  
+volumes:
+  keycloak-data:
+  DITROS-VT:
+  elastic_data: {}
+  redis_data: {}
+networks:
+  backend:
+  frontend:
+  frontendass:
+  frontendadmin:
+  elk:
+    driver: bridge

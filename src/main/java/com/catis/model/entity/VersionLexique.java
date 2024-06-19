@@ -42,11 +42,11 @@ public class VersionLexique extends JournalData {
 
     private String version;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "versionLexique",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Lexique> lexiques;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visite",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 

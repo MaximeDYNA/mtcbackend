@@ -27,6 +27,11 @@ public class GieglanFileService {
     @Autowired
     private GieglanFileRepository gieglanFileRepository;
 
+    // flemming added 
+    public void updateGieglanFileIsAcceptByInspectionId(UUID inspectionId) {
+        gieglanFileRepository.updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(inspectionId);
+    }
+
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
 
         Set<GieglanFile> files = new HashSet<>();
@@ -85,6 +90,7 @@ public class GieglanFileService {
         return codeGieglans;
     }
 
+    @Transactional
     public List<GieglanFile> getGieglanFileFailed(Visite v) {
         return gieglanFileRepository.getGieglanFileFailed(v.getControl(), v);
     }

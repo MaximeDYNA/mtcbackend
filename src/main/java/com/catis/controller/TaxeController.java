@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/taxes")
 public class TaxeController {
@@ -51,6 +53,7 @@ public class TaxeController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", result );
 
     }
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody TaxePOJO taxePOJO){
         Taxe taxe = new Taxe();

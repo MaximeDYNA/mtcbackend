@@ -86,8 +86,14 @@ public class InspectionController {
                 throw new Exception("Une inspection est déjà en cours pour cette visite");
             inspection.setVisite(visite);
             visite.setInspection(inspection);
+            
             visite = visiteService.commencerInspection(visite);
-
+            
+            // flemming added this conditional statement
+            if(visite.isContreVisite()){
+                LOGGER.info("contreVisite, resetting is_accepted of visuel('.json' file) gieglan to 0");
+                this.gieglanFileService.updateGieglanFileIsAcceptByInspectionId(visite.getInspection().getIdInspection());
+            }
             //inspection = inspectionService.addInspection(inspection);
 
 
@@ -108,6 +114,7 @@ public class InspectionController {
 
     }
 
+    @Transactional
     @PostMapping(value = "/api/v1/controleur/upload/signature")
     public ResponseEntity<Object> uploadImage2(@RequestBody SignatureDTO signatureDTO) throws Exception {
 
@@ -149,6 +156,7 @@ public class InspectionController {
             Inspection inspection = inspectionService
                     .setSignature(signatureDTO.getVisiteId(), signatureDTO.getVisiteId()
                             + ".png", u.getControleur());
+                            
             Message msg = msgRepo.findByCode("IP003");
 
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, inspection);

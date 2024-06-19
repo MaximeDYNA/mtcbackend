@@ -4,6 +4,8 @@ package com.catis.controller;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import com.catis.objectTemporaire.*;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
@@ -77,6 +79,7 @@ public class CategorieProduitController {
         }
 
     }
+    
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/catproducts")
     public ResponseEntity<Object> categorieProduits() {
         try {
@@ -90,6 +93,7 @@ public class CategorieProduitController {
 
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/catproducts/listview")
     public ResponseEntity<Object> catProduits() {
 
@@ -134,6 +138,8 @@ public class CategorieProduitController {
         }
 
     }
+
+    @Transactional
     @GetMapping("/api/v1/admin/catproducts/forselect")
     public List<CatProductForSelectDTO> catProductForSelectDTOS() {
         try {
@@ -151,7 +157,9 @@ public class CategorieProduitController {
         }
 
     }
+
     /***admin**/
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/categorieproduits")
     public ResponseEntity<Object> addCategorieProduits(@RequestBody CategorieproduitProduitPOJO categorieProduit) {
 
@@ -187,6 +195,8 @@ public class CategorieProduitController {
         }*/
 
     }
+
+    @Transactional
     @GetMapping("/api/v1/categorieproduits/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

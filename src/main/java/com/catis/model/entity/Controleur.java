@@ -39,10 +39,12 @@ public class Controleur extends JournalData {
     private String agremment;
     private double score=0;
 
-    @OneToOne(optional = true) // id utilisateur optionel
+    @OneToOne(optional = true, fetch = FetchType.LAZY) // id utilisateur optionel
+    @JsonIgnore
     private Utilisateur utilisateur;
 
-    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Partenaire partenaire;
 
 

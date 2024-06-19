@@ -36,6 +36,7 @@ import com.catis.service.SessionCaisseService;
 import com.catis.service.UtilisateurService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -60,7 +61,23 @@ public class SessionCaisseController {
 
     private static Logger LOGGER = Logger.getLogger(SessionCaisseController.class);
 
-    @RequestMapping(value = "/api/v1/caisse/sessioncaisseexist/{userId}")
+
+
+    @Transactional
+    @GetMapping("/api/v1/caisse/sessioncaisseexist/{userId}")
+    public ResponseEntity<Object> CheckifSessionCaisseActive(@PathVariable String userId) {
+        Optional<SessionCaisse> c = sessionCaisseService.MainfindSessionCaisseByKeycloakId(userId);
+        if (c.isPresent()) {
+            SessionCaisse sessionCaisse = c.get();
+            System.out.println(sessionCaisse.getSessionCaisseId());
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", sessionCaisse);
+        } else {
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Aucune session active pour cet utilisateur", null);
+        }
+    }
+   
+    // @RequestMapping(value = "/api/v1/caisse/sessioncaisseexist/{userId}")
+    @Transactional
     public ResponseEntity<Object> isSessionCaisseActive(@PathVariable String userId) {
         SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
         if (c != null) {
@@ -74,6 +91,7 @@ public class SessionCaisseController {
 
     }
 
+    @Transactional
     @RequestMapping(value = "/api/v1/connexion/log")
     public ResponseEntity<Object> logConnexion(@PathVariable String userId) {
         SessionCaisse c = sessionCaisseService.findSessionCaisseByKeycloakId(userId);
@@ -88,6 +106,7 @@ public class SessionCaisseController {
 
     }
 
+    @Transactional
     @PostMapping("/api/v1/caisse/ouverturecaisse")
     public ResponseEntity<Object> ouvertureCaisse(@RequestBody OpenData openData) {
         //MDC.put("user", UserInfoIn.getUserInfo(request).getNom() +" | "+UserInfoIn.getUserInfo(request).getId());
@@ -145,6 +164,7 @@ public class SessionCaisseController {
         return sessionCaisseService.findSessionCaisseById(UUID.randomUUID());
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/fermerSessionCaisse")
     public ResponseEntity<Object> fermerSessionCaisse(@RequestBody CloseSessionData closeSessionData) throws IOException {
 
@@ -165,6 +185,7 @@ public class SessionCaisseController {
 
     //Admin session de caisse
 
+    @Transactional
     @GetMapping(value="/api/v1/admin/sessioncaisses",  params = {"page", "size"})
     public ResponseEntity<Object> sessionCaisse(@RequestParam("page") int page,
                                                 @RequestParam("size") int size) {

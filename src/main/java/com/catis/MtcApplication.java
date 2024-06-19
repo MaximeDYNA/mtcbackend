@@ -1,26 +1,28 @@
 package com.catis;
 
 import com.catis.repository.FilesStorageService;
+import com.catis.service.VenteService;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.concurrent.Executor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 
 
-
-@SpringBootApplication
 @EnableAsync
+@SpringBootApplication
 public class MtcApplication implements CommandLineRunner {
 
 
@@ -34,6 +36,8 @@ public class MtcApplication implements CommandLineRunner {
 
     @Autowired
     private Environment env;
+
+    Logger log = LoggerFactory.getLogger(MtcApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(MtcApplication.class, args);
@@ -58,17 +62,30 @@ public class MtcApplication implements CommandLineRunner {
         System.out.println("Post reussi voici la reponse "+ ToStringBuilder.reflectionToString(response));
     }
 
-    @Bean("threadPoolTaskExecutor")
-    public Executor taskExecutor() {
+    @Primary
+    @Bean(name = "taskExecutorDefault")
+    public ThreadPoolTaskExecutor taskExecutorDefault() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(20);
-        executor.setMaxPoolSize(1000);
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(4);
         executor.setQueueCapacity(500);
+        executor.setRejectedExecutionHandler((r, executor1) -> log.warn("Task rejected, thread pool is full and queue is also full"));
         executor.setWaitForTasksToCompleteOnShutdown(true);
-        executor.setThreadNamePrefix("mtcqueue-");
+        executor.setThreadNamePrefix("MainAsync-");
         executor.initialize();
         return executor;
     }
-
-
+    
+    @Bean(name = "taskExecutorForHeavyTasks")
+    public ThreadPoolTaskExecutor taskExecutorRegistration() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(25);
+        executor.setThreadNamePrefix("taskthread-");
+        executor.setRejectedExecutionHandler((r, executor1) -> log.warn("heavy Task rejected, thread pool is full and queue is also full"));
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+         executor.initialize();
+         return executor;
+        }
 }

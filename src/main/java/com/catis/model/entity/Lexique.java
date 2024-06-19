@@ -32,32 +32,33 @@ public class Lexique extends JournalData {
 
     private Boolean Visuel;
 
-    @ManyToMany(mappedBy = "lexiques")
+
+    @ManyToMany(mappedBy = "lexiques",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Client> clients;
 
-    @OneToMany(mappedBy = "lexique")
+    @OneToMany(mappedBy = "lexique", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Seuil> seuils;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CategorieVehicule categorieVehicule;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private VersionLexique versionLexique;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Lexique> childs;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Lexique parent;
 
-    @ManyToMany(mappedBy = "lexiques")
+    @ManyToMany(mappedBy = "lexiques",fetch = FetchType.LAZY)
     private List<Inspection> inspections;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Classification classification;
 
     private Boolean haschild;

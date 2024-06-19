@@ -25,8 +25,8 @@ import lombok.Setter;
 @Document(indexName = "partenaire_index")
 public class PartenaireSearch {
     @Id
-    @Field(type = FieldType.Keyword, name = "id")
     private String id;
+    // @Field(type = FieldType.Keyword, name = "id")
 
     @Field(type = FieldType.Text, name = "clientid")
     private UUID clientId;

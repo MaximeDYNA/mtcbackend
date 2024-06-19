@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 //import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 
 import org.slf4j.Logger;
@@ -43,6 +45,7 @@ public class AdresseController {
 			}*/
     }
 
+    @Transactional
     @GetMapping("/api/v1/adresse/listview")
     public ResponseEntity<Object> adressListView() {
 

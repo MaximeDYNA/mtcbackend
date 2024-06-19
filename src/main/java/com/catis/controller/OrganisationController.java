@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import com.catis.model.entity.Organisation;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+
 import java.util.*;
 
 @RestController
@@ -114,6 +116,7 @@ public class OrganisationController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "OK", collModel);
     }
+    @Transactional
     @GetMapping("/api/v1/admin/organisations/kanban")
     public ResponseEntity<Object> listforKanbanView(){
         try {
@@ -133,6 +136,7 @@ public class OrganisationController {
         }
 
     }
+    @Transactional
     @GetMapping("/api/v1/admin/organisations/graphview")
     public ResponseEntity<Object> listforGraphView() {
         try {
@@ -155,6 +159,7 @@ public class OrganisationController {
         }
 
     }
+    @Transactional
     @GetMapping("/api/v1/admin/organisation/select")
     public ResponseEntity<Object> findAllForSelect(){
         try {
@@ -174,6 +179,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+    @Transactional
     @GetMapping("/api/v1/admin/organisation/child/select")
     public ResponseEntity<Object> findAllChildForSelect(){
         try {
@@ -193,6 +199,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+    @Transactional
     @GetMapping("/api/v1/admin/organisations/parents")
     public ResponseEntity<Object> findParent(){
         try {
@@ -208,6 +215,7 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+    @Transactional
     @PostMapping ("/api/v1/admin/organisations")
     public ResponseEntity<Object> enregistrer(@RequestBody OrganisationPOJO organisationPOJO){
         try {

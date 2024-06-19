@@ -37,7 +37,7 @@ public class Vendeur extends JournalData {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Partenaire partenaire;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "vendeur")

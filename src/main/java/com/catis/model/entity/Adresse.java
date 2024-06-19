@@ -12,6 +12,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.UUID;
 
@@ -36,13 +37,16 @@ public class Adresse extends JournalData  {
     private String description;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Partenaire partenaire;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Pays pays;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private DivisionPays divisionPays;
 
 

@@ -96,7 +96,7 @@
                         </td>
                         <td valign="bottom" style="width:20%;padding: 0px;">
 
-                            <img alt="QRcode" th:src="@{'http://localhost:8080/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
+                            <img alt="QRcode" th:src="@{'http://localhost:8086/public/visites/qrcode/'+${v.idVisite}}" style="float: right;
                                                                                                                    display: block;
                                                                                                                   width: 20%;
                                                                                                                     padding: 0px;
@@ -244,7 +244,7 @@
                             NOM et visa du contrôleur /<br/>
                             Operator name and signature: <span style="color: gray;" th:text="${controlleurName}"></span>
                         </p>
-                        <img style="height: 150px; width: 150px; float: right;" th:src="@{${'http://localhost:8080/uploaded/signatures/'+v.inspection.signature}}"/>
+                        <img style="height: 150px; width: 150px; float: right;" th:src="@{${'http://localhost:8086/uploaded/signatures/'+v.inspection.signature}}"/>
                     </div>
                 </div>
             </td>

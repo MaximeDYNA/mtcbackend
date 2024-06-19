@@ -8,29 +8,40 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// @AllArgsConstructor
-// @NoArgsConstructor
-// @Data
-// @Document(indexName = "visite_index")
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Document(indexName = "visite_index")
 public class VisiteSearchService {
     @Id
     @Field(type = FieldType.Text, name = "id")
     private UUID id;
 
-
-    @Field(type = FieldType.Boolean)
-    private boolean conformityTest;
-
-
-    @Field(type = FieldType.Integer)
+    @Field(type = FieldType.Integer, name="is_conform")
     private int isConform;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Integer, name="is_conform")
+    private int statutVisite;
+
+    @Field(type = FieldType.Text, name="organisation")
     private String organisation;
+
+    @Field(type = FieldType.Boolean, name = "contre_visite")
+    @JsonSerialize(using = ActiveStatusSerializer.class)
+    private boolean contreVisite;
+
+
+
+
+    // @Field(type = FieldType.Boolean)
+    // private boolean conformityTest;
+
 
     @Field(type = FieldType.Text)
     private String bestPlate;

@@ -1,6 +1,8 @@
 package com.catis.objectTemporaire;
 
-public class GraphView {
+import java.io.Serializable;
+
+public class GraphView implements Serializable {
 
     private String name;
     private int value;

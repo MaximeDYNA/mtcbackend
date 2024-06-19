@@ -53,7 +53,7 @@ public class MesureVisuel extends JournalData {
 
     private UUID gieglanFileDeleted;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private GieglanFile gieglanFile;
 

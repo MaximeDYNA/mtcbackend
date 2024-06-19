@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 @EntityListeners(AuditingEntityListener.class)
@@ -44,39 +45,52 @@ public class Partenaire extends JournalData {
 
     private String nom;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String prenom;
     @Column(nullable = true)
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date dateNaiss; // date de naissance
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String lieuDeNaiss; // lieu de naissance
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String passport;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String permiDeConduire;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String cni;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String telephone;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String email;
     @Column(unique = true)
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String numeroContribuable;
 
-    @OneToOne(mappedBy = "partenaire")
+    
+   
+    @OneToOne(mappedBy = "partenaire",fetch = FetchType.LAZY)
     @JsonIgnore
     private Client client;
 
-    @OneToOne(mappedBy = "partenaire")
+
+    @OneToOne(mappedBy = "partenaire",fetch = FetchType.LAZY)
     @JsonIgnore
     private Contact contact;
 
-    @OneToOne(mappedBy = "partenaire")
+   
+    @OneToOne(mappedBy = "partenaire",fetch = FetchType.LAZY)
     @JsonIgnore
     private ProprietaireVehicule proprietaireVehicule;
 
-    @OneToOne(mappedBy = "partenaire")
+    @OneToOne(mappedBy = "partenaire",fetch = FetchType.LAZY)
     @JsonIgnore
     private Controleur controleur;
 
@@ -96,7 +110,7 @@ public class Partenaire extends JournalData {
     @JsonIgnore
     Set<Controleur> controleurs;
 
-    @OneToMany(mappedBy = "partenaire")
+    @OneToMany(mappedBy = "partenaire",fetch = FetchType.LAZY)
     @JsonIgnore
     Set<Caissier> caissiers;
 

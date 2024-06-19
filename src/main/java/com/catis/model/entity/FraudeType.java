@@ -40,7 +40,7 @@ public class FraudeType extends JournalData {
     private String fraude;
     private String description;
 
-    @OneToMany(mappedBy = "fraudeType")
+    @OneToMany(mappedBy = "fraudeType",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Intervenant_fraudeType> intervenant_fraudeTypes;
 }

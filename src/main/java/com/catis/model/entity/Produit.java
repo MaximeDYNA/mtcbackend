@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -20,6 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "t_produit")
@@ -51,7 +55,7 @@ public class Produit extends JournalData {
 
     private String img;
 
-    @OneToMany(mappedBy = "produit")
+    @OneToMany(mappedBy = "produit",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<CategorieTestProduit> categorieTestProduits = new HashSet<>();
 
@@ -67,17 +71,17 @@ public class Produit extends JournalData {
     @JsonIgnore
     private Set<TaxeProduit> taxeProduit;
 
-    @OneToMany(mappedBy = "produit")
+    @OneToMany(mappedBy = "produit",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Posales> posales;
 
     @ManyToOne
     private CategorieProduit categorieProduit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CategorieVehicule categorieVehicule;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Seuil> seuils = new HashSet<>();
 

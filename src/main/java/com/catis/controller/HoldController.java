@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -100,6 +101,23 @@ public class HoldController {
 
     }
 
+    // flemming implimented
+    // @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/selecthold")
+    // public ResponseEntity<Object> MainselectionnerOnglet(@RequestBody HoldDataSelectHold holdData) throws ParseException {
+    //     try {
+    //         LOGGER.trace("Sélection de l'onglet " + holdData.getNumber() + " demandé...");
+    //         ps.activatePosale(holdData.getNumber(), holdData.getSessionCaisseId());
+    //         Hold hold = holdService.findHoldByNumberAndSessionCaisseId(holdData.getNumber(), holdData.getSessionCaisseId());
+    //         Message msg = msgRepo.findByCode("HL007");
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, hold);
+    //     } catch (Exception e) {
+    //         Message msg = msgRepo.findByCode("HL008");
+    //         e.printStackTrace();
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.INTERNAL_SERVER_ERROR, false, msg, null);
+    //     }
+    // }
+
+    // old controller 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/selecthold")
     public ResponseEntity<Object> selectionnerOnglet(@RequestBody HoldDataSelectHold holdData) throws ParseException {
 

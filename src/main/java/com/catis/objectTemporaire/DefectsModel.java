@@ -1,11 +1,13 @@
 package com.catis.objectTemporaire;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.envers.Audited;
 
 import java.util.UUID;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DefectsModel {
 
     public String id;

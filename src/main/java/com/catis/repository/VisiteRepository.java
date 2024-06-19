@@ -6,25 +6,29 @@ import java.util.UUID;
 
 import com.catis.model.control.Control;
 import com.catis.model.entity.Produit;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.catis.model.entity.Visite;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface VisiteRepository extends CrudRepository<Visite, UUID> {
 
+@Repository
+public interface VisiteRepository extends CrudRepository<Visite, UUID>{
+    
+
+    List<Visite> findByContreVisiteFalse();
 
     List<Visite> findByCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, UUID id);
 
     List<Visite> findByActiveStatusTrueAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCaseAndOrganisation_OrganisationId(String imOrCha, String imOrCha2, UUID id);
 
-    List<Visite> findByContreVisiteFalse();
 
     List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrue(UUID id);
 
@@ -34,6 +38,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
 
     List<Visite> findByActiveStatusTrueAndCarteGriseProduit(Produit produit);
 
+   
     List<Visite> findByContreVisiteFalseAndCarteGriseNumImmatriculationIgnoreCaseOrCarteGrise_Vehicule_ChassisIgnoreCase(String imOrCha, String imOrCha2);
 
     @Query("select v from Visite v inner join fetch v.carteGrise c " +
@@ -45,6 +50,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
     List<Visite> getOrganisationVisiteWithTest(UUID orgId, Pageable pageable);
 
     List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrue(UUID orgId, Pageable pageable);
+
 
     Page<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId, Pageable pageable);
 
@@ -72,15 +78,31 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
     List<Visite> findByOrganisation_OrganisationIdAndEncoursFalseAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
     List<Visite> findByOrganisation_OrganisationIdAndEncoursTrueAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
-
     List<Visite> findByEncoursTrueAndOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
-
     List<Visite> findByOrganisation_OrganisationIdAndActiveStatusTrueOrderByCreatedDateDesc(UUID orgId);
 
+      //flemming added
+
+       @Query("SELECT v.statut, COUNT(v) AS count " +
+       "FROM Visite v " +
+       "WHERE v.activeStatus = true AND v.encours = true AND v.organisation.organisationId = ?1 " +
+       "GROUP BY v.statut")
+       List<Object[]> getVisiteStatusCountByOrganisation(UUID organisationId);
+
+       @Query(value = "SELECT cg.numImmatriculation " +
+       "FROM Visite v " +
+       "JOIN CarteGrise cg ON v.carteGrise.id = cg.id " +
+       "WHERE v.statut = 2 AND v.organisation.organisationId = ?1 ")
+       List<String> getEnCoursTestNumImmatriculation(UUID organisationId,Pageable pageable);
+
+       // end flemming added
+    
+//     the method above is to replace the long running redundant queries below
     List<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Sort sort);
 
     Page<Visite> findByActiveStatusTrueAndEncoursTrueAndStatutAndOrganisation_OrganisationId(int status, UUID orgId, Pageable pageable);
 
+  
     List<Visite> findByActiveStatusTrueAndContreVisiteFalse();
 
     @Query(value = "select v from Visite v join fetch v.rapportDeVisites r "
@@ -88,6 +110,7 @@ public interface VisiteRepository extends CrudRepository<Visite, UUID> {
             + "join fetch r.gieglanFile g where v.control = ?1 and v <> ?2 and g.isAccept = true "
             + "and g.status = 'VALIDATED' order by v.createdDate desc")
     List<Visite> getLastVisiteWithTestIsOk(Control control, Visite visite);
+
 
     @Query(value = "select v from Visite v join fetch v.inspection i "
             + "join fetch i.gieglanFiles f where v.control = ?1  and v <> ?2 "

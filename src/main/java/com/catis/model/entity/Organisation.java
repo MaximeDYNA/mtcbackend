@@ -25,6 +25,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "t_organisation")
@@ -33,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @SQLDelete(sql = "UPDATE t_organisation SET active_status=false WHERE organisation_id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Organisation implements Serializable {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -257,6 +259,7 @@ public class Organisation implements Serializable {
     @JsonIgnore
     private Set<ProprietaireVehicule> proprietaireVehicule;
 
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organisation")
     @JsonIgnore
     private Set<Utilisateur> utilisateurs;
@@ -310,6 +313,7 @@ public class Organisation implements Serializable {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
+
 
     private String patente;
     private String statutJurique;

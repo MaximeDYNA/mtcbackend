@@ -11,15 +11,20 @@ import com.catis.repository.NotificationService;
 import com.catis.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @CrossOrigin
 @Slf4j
+@CacheConfig(cacheNames={"VisiteCache"})
 public class JobController {
     @Autowired
     private FraudeTypeRepository fraudeTypeRepository;
@@ -36,6 +41,7 @@ public class JobController {
     @Autowired
     private NotificationService notificationService;
 
+    @Transactional
     @GetMapping(value = "/public/controleurs/{organisationId}")
     public ResponseEntity<Object> getControleurOfOrganisation(@PathVariable UUID organisationId) {
 
@@ -64,6 +70,7 @@ public class JobController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", ps);
     }
 
+    @Transactional
     @RequestMapping(method=RequestMethod.POST, value="/public/fraudes")
     public ResponseEntity<Object> isThereAfraud(@RequestBody FraudeJobPOJO fraudeJobPOJO) throws Exception {
         if(fraudeJobPOJO.getCode() == null){
@@ -142,7 +149,9 @@ public class JobController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, "Erreur", null);
     }
-
+    
+    @CacheEvict(allEntries = true)
+    @Transactional
     @GetMapping("/public/maj/{id}")
     public void majvisiteEvent(@PathVariable UUID id){
 

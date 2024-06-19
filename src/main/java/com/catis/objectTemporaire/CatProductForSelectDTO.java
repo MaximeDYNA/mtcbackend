@@ -2,6 +2,9 @@ package com.catis.objectTemporaire;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CatProductForSelectDTO {
     private UUID Id;
     private String name;

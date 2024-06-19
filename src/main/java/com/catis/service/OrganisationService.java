@@ -141,13 +141,16 @@ public class OrganisationService {
         organisationRepository.findByActiveStatusTrueAndParentFalse().forEach(orgs::add);
         return orgs;
     }
+
     public void deleteById(UUID id){
         organisationRepository.deleteById(id);
     }
 
+   
     public Organisation enregistrer(Organisation organisation){
         return organisationRepository.save(organisation);
     }
+
     public void addOrgansiation(Organisation organisation) {
         organisationRepository.save(organisation);
     }

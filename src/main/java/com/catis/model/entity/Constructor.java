@@ -35,7 +35,7 @@ public class Constructor extends JournalData {
 
     private String name;
 
-    @OneToMany(mappedBy = "constructor")
+    @OneToMany(mappedBy = "constructor", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<ConstructorModel> constructorModels;
 }

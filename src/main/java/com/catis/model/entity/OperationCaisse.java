@@ -12,6 +12,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.UUID;
 
@@ -34,13 +35,14 @@ public class OperationCaisse extends JournalData {
     private int type;
     private double montant;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
     private Vente vente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Taxe taxe;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private SessionCaisse sessionCaisse;
 
     private String numeroTicket;

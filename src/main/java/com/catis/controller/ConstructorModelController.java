@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/constructorModels")
 public class ConstructorModelController {
@@ -51,6 +53,7 @@ public class ConstructorModelController {
         }
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody ContructorModelPOJO constructorPOJO){
 

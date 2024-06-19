@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ public class  OperationCaisseController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(OperationCaisseController.class);
 
+    @Transactional
     @GetMapping("/api/v1/operationcaisse/{code}/listview")
     public ResponseEntity<Object> reglementListView(@PathVariable int code) {
 
@@ -61,6 +64,7 @@ public class  OperationCaisseController {
         }*/
     }
 
+    
     @PostMapping("/api/v1/operationcaisse/recap")
     public ResponseEntity<Object> recap(@RequestBody RecapDTO recapDTO) {
 

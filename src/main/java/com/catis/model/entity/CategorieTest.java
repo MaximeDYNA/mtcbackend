@@ -47,11 +47,12 @@ public class CategorieTest extends JournalData {
     @JsonIgnore
     private Set<CategorieTestMachine> categorieTestMachines;
 
-    @OneToMany(mappedBy = "categorieTest")
+    @OneToMany(mappedBy = "categorieTest",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<CategorieTestProduit> categorieTestVehicules;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categorieTest")
+    // @OneToMany(fetch = FetchType.EAGER, mappedBy = "categorieTest")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categorieTest")
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles;
 

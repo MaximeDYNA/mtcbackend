@@ -1,11 +1,14 @@
 package com.catis.objectTemporaire;
 
 import com.catis.objectTemporaire.DefectsModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.envers.Audited;
 
 import java.util.List;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DefectResponse{
 
     private UUID idinspection;

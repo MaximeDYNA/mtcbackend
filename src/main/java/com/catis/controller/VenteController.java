@@ -1,12 +1,15 @@
 package com.catis.controller;
 
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import com.catis.model.entity.TaxeProduit;
 import com.catis.objectTemporaire.*;
+
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +76,74 @@ public class VenteController {
 			return ApiResponseHandler.generateResponse(HttpStatus.OK, true , Message.ERREUR_LIST_VIEW +"Vente", null );
 		}*/
     //}
-    @GetMapping( value = "/api/v1/search/ventes", params ={"page", "size", "title", "lang"})
+//     @GetMapping(value = "/api/v1/search/ventes", params = {"page", "size", "title", "lang"})
+//     public ResponseEntity<Object> getTickets(@RequestParam(required = false) int page,
+//                                           @RequestParam(required = false) int size,
+//                                           @RequestParam(required = false) String title,
+//                                           @RequestParam(required = false) String lang) {
+//     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+//     LOGGER.info("before ticket search");
+
+//     // Using CompletableFuture to execute the method asynchronously
+//     CompletableFuture<List<Vente>> futureVentes = venteService.findByRef(title, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")));
+
+//     // Handling the completion of the CompletableFuture
+//     CompletableFuture<List<Ticketdto>> futureTicketdtos = futureVentes.thenApply(ventes ->
+//             ventes.stream()
+//                     .map(vente -> new Ticketdto(
+//                             vente.getNumFacture(),
+//                             vente.getClient() == null ? vente.getContact().getPartenaire().getNom() : vente.getClient().getPartenaire().getNom(),
+//                             vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone() : vente.getClient().getPartenaire().getTelephone(),
+//                             vente.getCreatedDate().format(formatter),
+//                             vente.getDetailventes().stream()
+//                                     .map(detailVente1 -> new ProduitTicketdto(
+//                                             detailVente1.getReference(),
+//                                             detailVente1.getProduit().getLibelle(),
+//                                             detailVente1.getPrix(),
+//                                             getPrix(detailVente1.getPrix(), detailVente1.getProduit().getTaxeProduit()),
+//                                             detailVente1.getProduit().getDescription(),
+//                                             detailVente1.getProduit().getTaxeProduit().stream()
+//                                                     .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+//                                                     .collect(Collectors.toList())
+//                                     ))
+//                                     .collect(Collectors.toList()),
+//                             vente.getMontantTotal(),
+//                             convert(lang, vente.getMontantTotal()),
+//                             vente.getMontantHT()
+//                     ))
+//                     .collect(Collectors.toList())
+//     );
+
+//     LOGGER.info("After ticket search");
+
+//     // Handling the completion of the CompletableFuture to construct the Page
+//     CompletableFuture<Page<Ticketdto>> futurePages = futureTicketdtos.thenApply(ticketdtos ->
+//             new PageImpl<>(ticketdtos, PageRequest.of(page, size), 300)
+//     );
+
+//     // Getting the result from CompletableFuture
+//     Page<Ticketdto> pages = futurePages.join();
+
+//     PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler.toModel(pages);
+
+//     // Return ResponseEntity
+//     return ResponseEntity.ok(result);
+// }
+
+@GetMapping(value = "/api/v1/search/ventes", params = {"page", "size", "title", "lang"})
+public ResponseEntity<Object> getTicketsView(@RequestParam(required = false) int page,
+                                         @RequestParam(required = false) int size,
+                                         @RequestParam(required = false) String title,
+                                         @RequestParam(required = false) String lang) {
+    Page<Ticketdto> pages = venteService.findByRefMain(title, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")), lang);
+    PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler.toModel(pages);
+
+    return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", result);
+}
+
+    // @Transactional
+    // @GetMapping( value = "/api/v1/search/ventes", params ={"page", "size", "title", "lang"})
     public ResponseEntity<Object> getTickets(@RequestParam(required = false) int page,
                                              @RequestParam(required = false) int size,
                                              @RequestParam(required = false) String title,
@@ -107,6 +177,55 @@ public class VenteController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", result);
     }
+
+  
+    // @GetMapping(value = "/api/v1/search/ventes", params = {"page", "size", "title", "lang"})
+    // public CompletableFuture<ResponseEntity<Object>> getTicketsAsync(@RequestParam(required = false) int page,
+    //                                                                   @RequestParam(required = false) int size,
+    //                                                                   @RequestParam(required = false) String title,
+    //                                                                   @RequestParam(required = false) String lang) {
+    //     return venteService.findByRefAsync(title, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")))
+    //             .thenApply(ventes -> {
+    //                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    //                 List<ProduitTicketdto> produitTicketdtos = new ArrayList<>();
+    //                 LOGGER.info("Before ticket search");
+    //                 List<Ticketdto> ticketdtos = ventes.stream().map(vente -> new Ticketdto(vente.getNumFacture(),
+    //                         vente.getClient() == null ? vente.getContact().getPartenaire().getNom() : vente.getClient().getPartenaire().getNom(),
+    //                         vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone() : vente.getClient().getPartenaire().getTelephone(),
+    //                         vente.getCreatedDate().format(formatter),
+    //                         vente.getDetailventes().stream()
+    //                                 .map(detailVente1 -> new ProduitTicketdto(detailVente1.getReference(), detailVente1.getProduit().getLibelle(),
+    //                                         detailVente1.getPrix(), getPrix(detailVente1.getPrix(),
+    //                                         detailVente1.getProduit().getTaxeProduit()), detailVente1.getProduit().getDescription(),
+    //                                         detailVente1.getProduit()
+    //                                                 .getTaxeProduit()
+    //                                                 .stream()
+    //                                                 .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+    //                                                 .collect(Collectors.toList()))).collect(Collectors.toList()),
+    //                         vente.getMontantTotal(),
+    //                         convert(lang, vente.getMontantTotal()),
+    //                         vente.getMontantHT()))
+    //                         .collect(Collectors.toList());
+    //                 LOGGER.info("After ticket search");
+    //                 Page<Ticketdto> pages = new PageImpl<>(ticketdtos, PageRequest.of(page, size), 300);
+                    
+                    
+    //                  // Extract content from Page<Ticketdto>
+    //                 List<EntityModel<Ticketdto>> content = pages.getContent().stream()
+    //                 .map(EntityModel::of)
+    //                 .collect(Collectors.toList());
+
+    //                 // Create PagedModel using extracted content and metadata
+    //                 PagedModel<EntityModel<Ticketdto>> result = PagedModel.of(content, new PagedModel.PageMetadata(pages.getSize(), pages.getNumber(), pages.getTotalElements()));
+
+    //                 //PagedModel<EntityModel<Ticketdto>> result = pagedResourcesAssembler.toModel(pages);
+    //                 return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Tickets", result);
+    //             });
+    // }
+    
+    
+   
+    @Transactional
     @GetMapping( value = "/api/v1/ventes/tickets", params ={"lang", "page", "size"})
     public ResponseEntity<Object> getAllTickets(@RequestParam("lang") String lang, @RequestParam("page") int page,
                                                 @RequestParam("size") int size){
@@ -137,6 +256,7 @@ public class VenteController {
     }
 
 
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/ventes/{id}/detailsvente/listview")
     public ResponseEntity<Object> listVentes(@PathVariable UUID id) {
         try {

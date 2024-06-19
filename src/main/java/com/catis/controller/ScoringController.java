@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/score")
 public class ScoringController {
@@ -30,6 +32,7 @@ public class ScoringController {
     private Intervenant_fraudeTypeRepository iftr;
 
 
+    @Transactional
     @GetMapping("/intervenants")
     public ResponseEntity<Object> getIntervenants(){
         List<IntervenantFraude> intervenantFraudes = intervenantFraudeRepository.findByActiveStatusTrue();
@@ -46,6 +49,7 @@ public class ScoringController {
 
     }
 
+    @Transactional
     @GetMapping("/fraudes")
     public ResponseEntity<Object> getfraudes(){
         List<FraudeType> fraudeTypes = fraudeTypeRepository.findByActiveStatusTrue();
@@ -62,6 +66,7 @@ public class ScoringController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,true,"OK", catsSelect);
     }
 
+    @Transactional
     @PostMapping("/fraudes")
     public ResponseEntity<Object> savefraude(@RequestBody FraudePOJO fraudePOJO){
 
@@ -88,6 +93,7 @@ public class ScoringController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", null );
     }
 
+    @Transactional
     @GetMapping("/regles/{id}")
     public ResponseEntity<Object> getRules(@PathVariable Long id){
 
@@ -119,6 +125,7 @@ public class ScoringController {
 
 
 
+    @Transactional
     @PostMapping("/regles")
     public ResponseEntity<Object> setIntervenantFraud(@RequestBody Intervenant_fraudeTypePOJO intervenant_fraudeType){
         System.out.println("Received data "+ ToStringBuilder.reflectionToString(intervenant_fraudeType));

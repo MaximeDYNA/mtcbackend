@@ -2,19 +2,23 @@ package com.catis.objectTemporaire;
 
 import com.catis.model.entity.CarteGrise;
 import com.catis.model.entity.Produit;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class NewListView {
-    private UUID id;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class NewListView implements Serializable {
     private Produit categorie;
+    private UUID id;
     private String type;
     private String reference;
     private String chassis;
@@ -59,7 +63,7 @@ public class NewListView {
         this.date = date;
         System.out.println("Traitement de la visite N°"+this.id);
     }
-    public NewListView(UUID id, Produit categorie, String type, String reference,
+    public NewListView(UUID id,Produit categorie, String type, String reference,
                        String chassis, String client, String createdAt, LocalDateTime createdDate,
                        String statut, int statutVisite, UUID idVisite, boolean contreVisite,
                        UUID inspection, CarteGrise carteGrise, boolean conformityTest, int isConform,

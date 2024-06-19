@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.catis.model.entity.Produit;
 import com.catis.model.entity.Taxe;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
 
     private String reference;

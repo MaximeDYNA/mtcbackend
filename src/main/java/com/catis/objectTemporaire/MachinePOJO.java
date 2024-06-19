@@ -7,10 +7,13 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MachinePOJO {
     private UUID idMachine;
     private String numSerie; // numéro de série

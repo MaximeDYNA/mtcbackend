@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.objectTemporaire.CarteGriseReceived;
@@ -131,30 +132,37 @@ public class CarteGriseController {
         }
     }
 
+    @Transactional
     @PostMapping("/api/v1/cg/cartegrise")
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
         UUID orgId = SessionData.getOrganisationId(request);
         Organisation organisation = os.findByOrganisationId(orgId);
+        LOGGER.info("ORGANISATION FETCHED");
         try {
 
         CarteGrise carteGrise = new CarteGrise(carteGriseR);
         Vehicule vehicule;
+
+        LOGGER.info("CARTE GRISE AND VEHICULE INSTANCES CREATED");
         //initialise le vehicule avec les éléments reçus par la vue
 
         if(carteGriseR.getVehiculeId() == null){
+            LOGGER.info("CARTE GRISE HAS NO VEHICULE ASSOCATION SO WE CREATE ONE");
             vehicule = new Vehicule(carteGriseR);
             if(carteGriseR.getEnergieId()==null)
-                vehicule.setEnergie(null);
+            vehicule.setEnergie(null);
             else
-                vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
+            vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
             vehicule.setScore(100);
             if(carteGriseR.getMarqueVehiculeId()==null)
-                vehicule.setMarqueVehicule(null);
+            vehicule.setMarqueVehicule(null);
             else
-                vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
-        }
-        else{
+            vehicule.setMarqueVehicule(ms.findById(carteGriseR.getMarqueVehiculeId()));
+            LOGGER.info("CREATED NEW VEHICLE FOR CARTE GRISE");
+            }
+            else{
+            LOGGER.info("carte GRISE has vehicule, reassociation");
             vehicule = vehiculeService.findById(carteGriseR.getVehiculeId());
             vehicule.setTypeVehicule(carteGriseR.getTypeVehicule());
             vehicule.setCarrosserie(carteGriseR.getCarrosserie());
@@ -174,10 +182,10 @@ public class CarteGriseController {
             else
                 vehicule.setEnergie(energieService.findEnergie(carteGriseR.getEnergieId()));
         }
-
         // retrouve l'objet visite en bd
         if(carteGriseR.getVisiteId()==null)
-            throw new Exception("Prière de choisir une visite");
+        throw new Exception("Prière de choisir une visite");
+        LOGGER.info("searching visite based on carteGrise received");
         Visite visite = visiteService.findById(carteGriseR.getVisiteId());
         vehicule.setOrganisation(visite.getOrganisation());
         //récupère l'id de la cg
@@ -187,8 +195,9 @@ public class CarteGriseController {
         carteGrise.setProduit(ps.findById(carteGriseR.getProduitId()));
         carteGrise.setVehicule(vehicule);
         carteGrise.setOrganisation(organisation);
-
+        LOGGER.info("associating cartgrise to visite");
         visite.setCarteGrise(carteGrise);
+        LOGGER.info("associated cartgrise to visite");
         if (visite.getStatut()<1)
             visite.setStatut(1);
 
@@ -210,6 +219,7 @@ public class CarteGriseController {
 			return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null );
 		}
     }
+    @Transactional
     @GetMapping("/api/v1/cartegrise/listview")
     public ResponseEntity<Object> carteGriseListView() {
         LOGGER.trace("Recherche carte grise...");
@@ -256,6 +266,7 @@ public class CarteGriseController {
         }
     }
 
+    @Transactional
     @PostMapping("/api/v1/admin/cartegrises")
     public ResponseEntity<Object> saveCGforAdmin(@RequestBody CarteGrisePOJO c) {
         LOGGER.trace("Add CG...");
@@ -323,6 +334,7 @@ public class CarteGriseController {
         }
     }
 
+    @Transactional
     @GetMapping("/api/v1/admin/cartegrises/select")
     public ResponseEntity<Object> getLexiquesOfMtcforSelect(){
 

@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "t_contact")
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Contact extends JournalData {
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Id
     @GeneratedValue(generator = "UUID")
     @Type(type="uuid-char")
@@ -39,7 +40,7 @@ public class Contact extends JournalData {
 
     private String description;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private Partenaire partenaire;
 
 

@@ -2,6 +2,8 @@ package com.catis.controller;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 //import org.keycloak.KeycloakSecurityContext;
 import com.catis.controller.message.Message;
 import com.catis.model.entity.Organisation;
@@ -54,6 +56,7 @@ public class CaisseController {
     }
 
 
+    @Transactional
     @GetMapping("/api/v1/admin/caisses/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 
@@ -73,8 +76,7 @@ public class CaisseController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, Message.ListOK + " Caisses", caissesSelect);
     }
-
-
+    @Transactional
     @PostMapping("/api/v1/admin/caisses")
     public ResponseEntity<Object> save(@RequestBody CaissePOJO caissePOJO) {
 

@@ -7,6 +7,8 @@ import java.util.List;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.MessageRepository;
+
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import com.catis.service.TaxeProduitService;
 import com.catis.service.VisiteService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -52,6 +55,7 @@ public class PosaleController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(PosaleController.class);
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/posales")
     public ResponseEntity<Object> ajouterPosales(@RequestBody PosaleData posaleData) {
 
@@ -109,6 +113,8 @@ public class PosaleController {
         }
     }
 
+    
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/posaleslist")
     public ResponseEntity<Object> listPosales(@RequestBody HoldData holdData) {
         try {
@@ -143,6 +149,7 @@ public class PosaleController {
 
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/deleteposale")
     public ResponseEntity<Object> deletePosales(@RequestBody PosaleDataForDelete posaleData) {
 
@@ -166,6 +173,7 @@ public class PosaleController {
 
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/posale/decaissement")
     public ResponseEntity<Object> ajoutDecaissement(@RequestBody PosaleData posaleData) {
 

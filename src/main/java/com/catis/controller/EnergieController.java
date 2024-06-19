@@ -15,6 +15,8 @@ import com.catis.service.EnergieService;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @CrossOrigin
 public class EnergieController {
@@ -87,6 +89,7 @@ public class EnergieController {
         }
     }
 
+    @Transactional
     @GetMapping("/api/v1/admin/energies/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

@@ -47,7 +47,8 @@ public class Inspection extends JournalData {
 
     private String signature; // chemin image signature du controleur
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Produit produit;
 
     private double kilometrage;
@@ -69,20 +70,24 @@ public class Inspection extends JournalData {
     private Long fileId;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private Controleur controleur;
 
-    @ManyToOne
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ligne ligne;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Visite visite;
 
     @OneToMany(mappedBy = "inspection", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<GieglanFile> gieglanFiles =new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Lexique> lexiques;
 

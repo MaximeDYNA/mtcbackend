@@ -12,6 +12,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Objects;
 import java.util.Set;
@@ -37,15 +38,20 @@ public class CategorieTestMachine extends JournalData {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private CategorieTest categorieTest;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Machine machine;
 
-    @OneToMany(mappedBy = "categorieTestMachine")
+    @OneToMany(mappedBy = "categorieTestMachine",fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Pattern> patterns;
 
-    @ManyToOne
+   
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private RapportMachine rapportMachine;
 
 

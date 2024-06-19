@@ -3,6 +3,9 @@ package com.catis.objectTemporaire;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LexiqueReceived {
 
     private UUID id;

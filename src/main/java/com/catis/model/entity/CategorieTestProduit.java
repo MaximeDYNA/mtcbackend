@@ -39,14 +39,15 @@ public class CategorieTestProduit extends JournalData {
     private UUID id;
     private String type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private CategorieTest categorieTest;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Produit produit;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Mesure> mesures;
 

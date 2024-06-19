@@ -37,10 +37,10 @@ public class DetailVente extends JournalData {
     private String reference;
     private double prix;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Produit produit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Vente vente;
 

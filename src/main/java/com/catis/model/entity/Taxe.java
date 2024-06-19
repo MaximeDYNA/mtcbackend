@@ -42,7 +42,7 @@ public class Taxe extends JournalData {
 
     private boolean incluse;
 
-    @OneToMany(mappedBy = "taxe", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "taxe", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<TaxeProduit> taxeProduit;
 

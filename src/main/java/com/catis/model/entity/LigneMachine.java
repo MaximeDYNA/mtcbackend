@@ -31,10 +31,10 @@ public class LigneMachine extends JournalData {
     )
     @Column(name = "id", updatable = false, nullable = false)
     private UUID ligneMachine;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Machine machine;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ligne ligne;
 
 

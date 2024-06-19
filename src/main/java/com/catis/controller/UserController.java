@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @RestController
 @CrossOrigin
 @RequestMapping("api/v1/users")
@@ -39,6 +41,7 @@ public class UserController {
     @Autowired
     private PagedResourcesAssembler<Utilisateur> pagedResourcesAssembler;
 
+    @Transactional
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUsersOfOrganisation(@PathVariable UUID id){
 
@@ -54,6 +57,7 @@ public class UserController {
                 true, Message.ListOK + " Users", userDTOList);
     }
 
+    @Transactional
     @GetMapping("/select")
     public ResponseEntity<Object> getUsersOfMtcforSelect(){
 
@@ -70,6 +74,7 @@ public class UserController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, Message.ListOK + " Users", users);
     }
+    @Transactional
     @GetMapping("/system/select")
     public ResponseEntity<Object> getUsersOfBdforSelect(){
 
@@ -87,6 +92,7 @@ public class UserController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, Message.ListOK + " Users", usersList);
     }
+
 
     @GetMapping(params = {"page", "size"})
     public ResponseEntity<Object> getUsersOfMtc(@RequestParam("page") int page,
@@ -109,6 +115,7 @@ public class UserController {
         }
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<Object> enregistrer(@RequestBody UserData userData) {
         try {

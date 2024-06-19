@@ -3,6 +3,7 @@ package com.catis.model.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
@@ -44,6 +47,7 @@ public class Posales extends JournalData {
     private UUID posalesId;
 
 
+    // @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     private Produit produit;
 
@@ -51,11 +55,11 @@ public class Posales extends JournalData {
     private boolean status;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SessionCaisse sessionCaisse;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Hold hold;
 
 

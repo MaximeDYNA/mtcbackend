@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @AllArgsConstructor
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CarteGriseReceived {
     private UUID carteGriseId;
     private UUID visiteId;

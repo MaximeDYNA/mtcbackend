@@ -1,6 +1,7 @@
 package com.catis.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import com.catis.model.entity.Organisation;
 import com.catis.model.entity.Partenaire;
@@ -81,7 +82,7 @@ public class ControleurController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
 
     }
-
+    @Transactional
     @GetMapping(value = "/api/v1/admin/controleurs")
     public ResponseEntity<Object> getAll() {
         try{

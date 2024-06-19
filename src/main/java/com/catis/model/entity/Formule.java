@@ -30,11 +30,11 @@ public class Formule extends JournalData {
 
     private String description;
 
-    @OneToMany(mappedBy = "formule")
+    @OneToMany(mappedBy = "formule",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Mesure> mesures;
 
-    @OneToMany(mappedBy = "formule", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "formule", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Seuil> seuils;
 

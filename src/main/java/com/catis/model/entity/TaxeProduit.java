@@ -32,9 +32,13 @@ public class TaxeProduit extends JournalData {
     )
     @Column(name = "id", updatable = false, nullable = false)
     private UUID TaxeProduitId;
+    
+    
     @ManyToOne
     private Taxe taxe;
-    @ManyToOne
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Produit produit;
 
 

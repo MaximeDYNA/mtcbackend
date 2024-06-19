@@ -31,6 +31,6 @@ public class RapportMachine extends JournalData {
 
     private String name;
 
-    @OneToMany(mappedBy = "rapportMachine")
+    @OneToMany(mappedBy = "rapportMachine",fetch = FetchType.LAZY)
     private Set<CategorieTestMachine> categorieTestMachines;
 }

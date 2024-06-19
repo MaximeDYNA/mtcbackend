@@ -1,6 +1,8 @@
 package com.catis.objectTemporaire;
 
 import com.catis.model.entity.Organisation;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,10 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProprietaireDTO {
     // object de transfert proprietaire et controleur
+    
     private UUID proprietaireVehiculeId;
     private UUID idControleur;
     private String nom;

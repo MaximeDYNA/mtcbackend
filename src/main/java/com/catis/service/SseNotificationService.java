@@ -60,10 +60,11 @@ public class SseNotificationService implements NotificationService {
         if(edited) {
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
+                    // visite.getCarteGrise().getProduit(), 
                     log.info("Sending edited visite: {} for member: {}", visite.getIdVisite(), memberId);
                     if (visite.getStatut() == 0) {
                         emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("new_visit").data(
-                                new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                                new NewListView(visite.getIdVisite(),visite.getCarteGrise().getProduit(),visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                         (visite.getCarteGrise().getVehicule() == null
                                                 ? "" : (visite.getCarteGrise().getVehicule().getChassis() == null
                                                 ? "" : visite.getCarteGrise().getVehicule().getChassis())),
@@ -83,7 +84,8 @@ public class SseNotificationService implements NotificationService {
                                         visite.getCreatedDate().format(SseController.dateTimeFormatter), true, visite.getDocument())));
                         emitterRepository.get(memberId).get().send(SseEmitter.event().name("controleur_visit").data(visite));
                     } else {
-                        emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("edit_visit").data(new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                        // visite.getCarteGrise().getProduit(),
+                        emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("edit_visit").data(new NewListView(visite.getIdVisite(),visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                 (visite.getCarteGrise().getVehicule() == null
                                         ? "" : (visite.getCarteGrise().getVehicule().getChassis() == null
                                         ? "" : visite.getCarteGrise().getVehicule().getChassis())),
@@ -108,9 +110,10 @@ public class SseNotificationService implements NotificationService {
         }else{
             if (emitterRepository.get(memberId).isPresent()) {
                 try {
+                    // visite.getCarteGrise().getProduit(), 
                     log.info("Sending new visite: {} for member: {}", visite.getIdVisite(), memberId);
                         emitterRepository.get(memberId).get().send(SseEmitter.event().id(String.valueOf(visite.getIdVisite())).name("new_visit").data(
-                            new NewListView(visite.getIdVisite(), visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
+                            new NewListView(visite.getIdVisite(),visite.getCarteGrise().getProduit(), visite.typeRender(), visite.getCarteGrise().getNumImmatriculation(),
                                 (visite.getCarteGrise().getVehicule()==null
                                         ? "": (visite.getCarteGrise().getVehicule().getChassis()==null
                                         ? "" : visite.getCarteGrise().getVehicule().getChassis())),

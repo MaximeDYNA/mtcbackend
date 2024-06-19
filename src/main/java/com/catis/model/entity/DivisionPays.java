@@ -15,6 +15,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -34,16 +35,23 @@ public class DivisionPays extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID divisionPaysId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Pays pays;
-    @OneToMany(mappedBy = "divisionPays")
+
+    @OneToMany(mappedBy = "divisionPays", fetch = FetchType.LAZY)
+    @JsonIgnore
     Set<Adresse> adresses;
+
     private String libelle;
     private String description;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<DivisionPays> childs;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private DivisionPays parent;
 
 

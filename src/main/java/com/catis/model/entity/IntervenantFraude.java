@@ -35,7 +35,7 @@ public class IntervenantFraude extends JournalData {
     private UUID id;
     private String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Intervenant_fraudeType> intervenant_fraudeTypes;
 }

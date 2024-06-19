@@ -31,6 +31,7 @@ import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -49,6 +50,7 @@ public class ClientController {
     private PagedResourcesAssembler<ClientDTO> pagedResourcesAssembler;
     private static Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/clients")
     public ResponseEntity<Object> ajouterClient(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 
@@ -98,7 +100,7 @@ public class ClientController {
         LOGGER.trace("liste des clients...");
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientService.findAllCustomer());
     }
-
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/clients/listview")
     public ResponseEntity<Object> listeDesClientsView() {
         LOGGER.trace("listview clients...");
@@ -128,37 +130,70 @@ public class ClientController {
 
     }
 
+    //sync search method replaced with async method below it
+
+    // @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/clients/{keyword}")
+    // public ResponseEntity<Object> search(@PathVariable String keyword) {
+    //     try{
+    //         LOGGER.trace("Recherche clients...");
+    //         List<ClientPartenaire> clientPartenaires = new ArrayList<>();
+    //         ClientPartenaire cp;
+            
+    //         for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
+    //             System.out.println("ClientPartenaire0: " + p.toString());
+    //             // if (clientService.findByPartenaire(p.getPartenaireId()) != null) {
+    //             if (p.getClientId()!= null) {
+    //                 cp = new ClientPartenaire();
+    //                 cp.setNom(p.getNom());
+    //                 cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
+    //                 cp.setTelephone(p.getTelephone());
+    //                 cp.setClientId(p.getClientId());
+    //                 // cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
+    //                 clientPartenaires.add(cp);
+    //             }
+
+    //         }
+    //         com.catis.model.entity.Message message = msgRepo.findByCode("CL004");
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message, clientPartenaires);
+    //     }catch(Exception e){
+    //         e.printStackTrace();
+    //         com.catis.model.entity.Message message = msgRepo.findByCode("CL005");
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message, null);
+    //     }
+
+    // }
+
+    
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/clients/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
-        try{
+        try {
             LOGGER.trace("Recherche clients...");
             List<ClientPartenaire> clientPartenaires = new ArrayList<>();
             ClientPartenaire cp;
-            
-            for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
+
+            // Call the async method and wait for completion
+            List<Partenaire> partenaires = partenaireService.findPartenaireByNomAsync(keyword).join();
+
+            for (Partenaire p : partenaires) {
                 System.out.println("ClientPartenaire0: " + p.toString());
-                // if (clientService.findByPartenaire(p.getPartenaireId()) != null) {
-                if (p.getClientId()!= null) {
+                if (p.getClientId() != null) {
                     cp = new ClientPartenaire();
                     cp.setNom(p.getNom());
                     cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
                     cp.setClientId(p.getClientId());
-                    // cp.setClientId(clientService.findByPartenaire(p.getPartenaireId()).getClientId());
                     clientPartenaires.add(cp);
                 }
-
             }
             com.catis.model.entity.Message message = msgRepo.findByCode("CL004");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message, clientPartenaires);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             com.catis.model.entity.Message message = msgRepo.findByCode("CL005");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, message, null);
         }
-
     }
-
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/clients")
     public ResponseEntity<Object> addClient(@RequestBody ClientPOJO clientPOJO) throws ParseException {
         try {
@@ -198,7 +233,7 @@ public class ClientController {
 
 
     }
-
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/admin/clients", params = {"page", "size"})
     public ResponseEntity<Object> getClients(@RequestParam("page") int page,
                                              @RequestParam("size") int size) {

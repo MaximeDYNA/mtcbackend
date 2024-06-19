@@ -39,14 +39,15 @@ public class Mesure extends JournalData {
     private String code;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Formule formule;
 
-    @ManyToMany(mappedBy = "mesures")
+    
+    @ManyToMany(mappedBy = "mesures",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<CategorieTestProduit> categorieTestProduits;
 
-    @OneToMany(mappedBy = "mesure")
+    @OneToMany(mappedBy = "mesure",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ValeurTest> valeurTests = new ArrayList<>();
 }

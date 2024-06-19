@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
@@ -17,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "t_sessioncaisse")
@@ -36,12 +40,14 @@ public class SessionCaisse extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID sessionCaisseId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date dateHeureOuverture;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date dateHeureFermeture;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Caissier caissier;
 
     private double montantOuverture;

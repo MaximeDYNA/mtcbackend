@@ -2,6 +2,8 @@ package com.catis.controller;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.catis.model.entity.MesureVisuel;
 import com.catis.service.InspectionService;
 import org.slf4j.Logger;
@@ -40,6 +42,7 @@ public class MesureVisuelController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(MesureVisuelController.class);
 
+    @Transactional
     @PostMapping("/api/v1/mesurevisuel")
     public ResponseEntity<Object> addMesureVisuel(@RequestBody DefectResponse defectrespons) {
 
@@ -67,6 +70,7 @@ public class MesureVisuelController {
     }
 
 
+    @Transactional
     @PostMapping("/api/v1/controleur/signature")
     public ResponseEntity<Object> recordSignature(@RequestBody DefectResponse defectResponse){
 

@@ -41,7 +41,7 @@ public class Classification extends JournalData {
 
     private String code;
 
-    @OneToMany(mappedBy = "classification")
+    @OneToMany(mappedBy = "classification",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Lexique> lexiques;
 

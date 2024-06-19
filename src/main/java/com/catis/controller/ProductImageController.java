@@ -17,17 +17,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping(value = "/images/")
 public class ProductImageController {
     private final ResourceLoader resourceLoader;
+    Logger logger = LoggerFactory.getLogger(ProductImageController.class);
 
     public ProductImageController(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
-    @Async("threadPoolTaskExecutor")
+    @Async("taskExecutorDefault")
     @GetMapping("/{imageName}")
     public CompletableFuture<ResponseEntity<byte[]>> getImage(@PathVariable String imageName) {
         return CompletableFuture.supplyAsync(() -> {

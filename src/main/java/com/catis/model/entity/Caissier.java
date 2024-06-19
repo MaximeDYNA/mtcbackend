@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -18,6 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -38,18 +42,23 @@ public class Caissier extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID caissierId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String codeCaissier;
 
     private String nom;
 
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private Partenaire partenaire;
 
-    @OneToOne (cascade = CascadeType.PERSIST)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnore
+    @OneToOne (cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private Caisse caisse;
 
-    @ManyToOne(optional = true,  cascade = CascadeType.PERSIST) // id utilisateur optionel
+    @ManyToOne(optional = true,  cascade = CascadeType.PERSIST,fetch = FetchType.LAZY) 
+    @JsonIgnore// id utilisateur optionel
     private Utilisateur user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "caissier")

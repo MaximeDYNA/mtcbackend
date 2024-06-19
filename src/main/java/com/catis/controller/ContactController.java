@@ -33,6 +33,7 @@ import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -53,7 +54,7 @@ public class ContactController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
-
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/caisse/contacts")
     public ResponseEntity<Object> addContact(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
 
@@ -116,6 +117,7 @@ public class ContactController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", contactService.getContacts());
     }
+    @Transactional
     @GetMapping(value="/api/v1/admin/contacts", params = {"page", "size"})
     private ResponseEntity<Object> getAdminContacts(@RequestParam("page") int page,
                                                     @RequestParam("size") int size) {
@@ -159,6 +161,7 @@ public class ContactController {
         }
 
     }
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/admin/contacts")
     public ResponseEntity<Object> addClient(@RequestBody ContactPOJO contactPOJO) throws ParseException {
         try {
@@ -215,6 +218,34 @@ public class ContactController {
 
     }*/
 
+    // @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/contacts/{keyword}")
+    // public ResponseEntity<Object> search(@PathVariable String keyword) {
+    //     LOGGER.trace("Recherche contacts...");
+    //     try {
+    //         List<ClientPartenaire> clientPartenaires = new ArrayList<>();
+    //         ClientPartenaire cp;
+
+    //         for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
+    //             cp = new ClientPartenaire();
+    //             // if (contactService.getContactByPartenaireId(p.getPartenaireId()) != null) {
+    //                 if(p.getContactId()!= null) {
+    //                 cp.setNom(p.getNom());
+    //                 cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
+    //                 cp.setTelephone(p.getTelephone());
+    //                 cp.setContactId(p.getContactId());
+    //                 // cp.setContactId(contactService.getContactByPartenaireId(p.getPartenaireId()).getContactId());
+    //                 clientPartenaires.add(cp);
+    //             }
+    //         }
+    //         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
+    //     } catch (Exception e) {
+    //         return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Une erreur est survenue", null);
+
+    //     }
+
+
+    // }
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/contacts/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
         LOGGER.trace("Recherche contacts...");
@@ -222,26 +253,22 @@ public class ContactController {
             List<ClientPartenaire> clientPartenaires = new ArrayList<>();
             ClientPartenaire cp;
 
-            for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
+            // Call the async method and wait for completion
+            List<Partenaire> partenaires = partenaireService.findPartenaireByNomAsync(keyword).join();
+
+            for (Partenaire p : partenaires) {
                 cp = new ClientPartenaire();
-                // if (contactService.getContactByPartenaireId(p.getPartenaireId()) != null) {
-                    if(p.getContactId()!= null) {
+                if (p.getContactId() != null) {
                     cp.setNom(p.getNom());
                     cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
                     cp.setContactId(p.getContactId());
-                    // cp.setContactId(contactService.getContactByPartenaireId(p.getPartenaireId()).getContactId());
                     clientPartenaires.add(cp);
                 }
             }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Une erreur est survenue", null);
-
         }
-
-
     }
-
-
 }

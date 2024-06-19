@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.CarteGrise;
@@ -25,12 +26,14 @@ public class CarteGriseService {
                 carteGrise.getNumImmatriculation()).isEmpty())
             return cgr.save(carteGrise);
         else
+            System.out.println("returning existing carteGrise");
             return cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(carteGrise.getNumImmatriculation(),
 
                     carteGrise.getNumImmatriculation()).get(0);
     }
 
     public CarteGrise save(CarteGrise c){
+        System.out.println("saving carteGrise");
         c = cgr.save(c);
 
         return c;
@@ -86,8 +89,10 @@ public class CarteGriseService {
 
     public List<CarteGrise> findByLigne(UUID idLigne, UUID orgId) {
         List<CarteGrise> cgs = new ArrayList<>();
-        for (Inspection inspection : inpectionR.inspectionbyligneAndOrganisation_OrganisationId(2, idLigne, orgId)) {
-
+        // flemming added page request to this method
+        PageRequest pageable = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+        // for (Inspection inspection : inpectionR.inspectionbyligneAndOrganisation_OrganisationId(2, idLigne, orgId)) {
+        for (Inspection inspection : inpectionR.inspectionbyligneAndOrganisation_OrganisationId(2, idLigne, orgId, pageable)) {
             cgs.add(inspection.getVisite().getCarteGrise());
             System.out.println("inspection "+ inspection.getIdInspection()+" visite "+inspection.getVisite().getIdVisite() +" immatriculation "+inspection.getVisite().getCarteGrise().getNumImmatriculation());
         }

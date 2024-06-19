@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
@@ -20,6 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+// @ToString
 @Entity
 @Table(name = "t_visite")
 @EntityListeners(AuditingEntityListener.class)
@@ -47,29 +51,35 @@ public class Visite extends JournalData {
     @Column(columnDefinition = "bit default 1")
     private boolean encours = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Caissier caissier;
 
-    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private Inspection inspection;
 
 
-    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "visite", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private Vente vente;
 
     private String document;
 
-    @OneToOne(mappedBy = "visite")
+
+    @OneToOne(mappedBy = "visite",fetch = FetchType.LAZY)
     @JsonIgnore
     private VerbalProcess process;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+ 
+  
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @JsonIgnore
     private CarteGrise carteGrise;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private Control control;
 
     public List<RapportDeVisite> getRapportDeVisites() {
@@ -80,7 +90,7 @@ public class Visite extends JournalData {
         this.rapportDeVisites = rapportDeVisites;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<RapportDeVisite> rapportDeVisites;
 

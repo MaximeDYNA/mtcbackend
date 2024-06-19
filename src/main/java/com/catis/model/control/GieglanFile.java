@@ -15,7 +15,6 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -44,6 +43,7 @@ public class GieglanFile extends JournalData {
 
     private Date fileCreatedAt;
 
+
     private Boolean isAccept;
 
     @Enumerated(EnumType.STRING)
@@ -54,17 +54,19 @@ public class GieglanFile extends JournalData {
     @Column(columnDefinition = "varchar(255) default 'INITIALIZED'")
     private StatusType status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private Inspection inspection;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private Machine machine;
 
     @OneToMany(mappedBy = "gieglanFile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<ValeurTest> valeurTests;
 
-    @OneToMany(mappedBy = "gieglanFile")
+    @OneToMany(mappedBy = "gieglanFile",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
@@ -72,7 +74,7 @@ public class GieglanFile extends JournalData {
     @JsonIgnore
     private MesureVisuel mesureVisuel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private CategorieTest categorieTest;
 

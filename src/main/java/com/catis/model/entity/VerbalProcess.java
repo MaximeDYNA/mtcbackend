@@ -41,10 +41,10 @@ public class VerbalProcess extends JournalData {
 
     private boolean status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Visite visite;
 
-    @OneToMany(mappedBy = "verbalProcess")
+    @OneToMany(mappedBy = "verbalProcess",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 

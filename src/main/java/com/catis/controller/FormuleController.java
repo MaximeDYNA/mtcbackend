@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/api/v1/admin/formules")
 public class FormuleController {
@@ -59,6 +61,7 @@ public class FormuleController {
         }
     }
 
+    @Transactional
     @GetMapping("/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

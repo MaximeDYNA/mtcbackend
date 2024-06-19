@@ -32,6 +32,6 @@ public class Pattern extends JournalData {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CategorieTestMachine categorieTestMachine;
 }

@@ -25,6 +25,7 @@ import com.catis.service.InspectionService;
 import com.catis.service.LigneService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -79,6 +80,7 @@ public class LigneController {
 
     }
 
+    @Transactional
     @GetMapping(value = "/api/v1/vehicules/lignes/{id}")
     public ResponseEntity<Object> getCartegriseByLigne(@PathVariable UUID id) {
 
@@ -123,6 +125,7 @@ public class LigneController {
         }
 
     }
+    @Transactional
     @PostMapping(value = "/api/v1/admin/lignes")
     public ResponseEntity<Object> add(@RequestBody LignePOJO lignePOJO) {
 

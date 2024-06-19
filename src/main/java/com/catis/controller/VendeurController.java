@@ -86,6 +86,7 @@ public class VendeurController {
 
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/vendeurs/listview")
     public ResponseEntity<Object> listeDesClientsView() {
         LOGGER.trace("listview vendeurs...");
@@ -115,6 +116,7 @@ public class VendeurController {
 
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/vendeurs/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
         LOGGER.trace("Recherche vendeurs...");

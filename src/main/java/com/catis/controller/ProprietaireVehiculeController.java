@@ -24,6 +24,7 @@ import com.catis.service.PartenaireService;
 import com.catis.service.ProprietaireVehiculeService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @RestController
 @CrossOrigin
@@ -40,6 +41,7 @@ public class ProprietaireVehiculeController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
+    @Transactional
     @GetMapping("/api/v1/all/search/proprietaires/{nom}")
     public ResponseEntity<Object> proprioList(@PathVariable String nom) {
         try {
@@ -63,6 +65,7 @@ public class ProprietaireVehiculeController {
         }
     }
 
+    @Transactional
     @PostMapping("/api/v1/cg/proprietaires")
     public ResponseEntity<Object> addProprio(@RequestBody ClientPartenaire clientPartenaire) throws ParseException {
         try {
@@ -106,6 +109,7 @@ public class ProprietaireVehiculeController {
 
     /**Admin**/
 
+    @Transactional
     @GetMapping("/api/v1/admin/proprietaires")
     public ResponseEntity<Object> proprioAdminList() {
         try {
@@ -140,6 +144,7 @@ public class ProprietaireVehiculeController {
         }
     }
 
+    @Transactional
     @PostMapping("/api/v1/admin/proprietaires")
     public ResponseEntity<Object> addproprioAdmin(@RequestBody ProprietairePOJO proprietairePOJO) {
         try {
@@ -179,6 +184,7 @@ public class ProprietaireVehiculeController {
         }
     }
 
+    @Transactional
     @GetMapping("/api/v1/admin/proprietaires/select")
     public ResponseEntity<Object> getCaissesOfMtcforSelect(){
 

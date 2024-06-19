@@ -47,7 +47,7 @@ public class Ligne extends JournalData {
     @JsonIgnore
     private Set<LigneMachine> ligneMachines;
 
-    @OneToMany(mappedBy = "ligne")
+    @OneToMany(mappedBy = "ligne",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Inspection> inspections;
 

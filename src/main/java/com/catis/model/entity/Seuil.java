@@ -40,17 +40,17 @@ public class Seuil extends JournalData {
 
     private boolean decision;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seuil",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<RapportDeVisite> rapportDeVisites;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Lexique lexique;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Formule formule;
 
-    @ManyToMany(mappedBy = "seuils")
+    @ManyToMany(mappedBy = "seuils",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Produit> produits = new HashSet<>();
 

@@ -2,8 +2,9 @@ package com.catis.objectTemporaire;
 
 import java.util.Date;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InpectionReceived {
 
     private UUID idInspection;

@@ -42,17 +42,17 @@ public class RapportDeVisite extends JournalData {
 
     private String codeMessage;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Visite visite;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Seuil seuil;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private GieglanFile gieglanFile;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private VerbalProcess verbalProcess;
 
 

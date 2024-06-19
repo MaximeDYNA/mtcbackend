@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -37,8 +38,10 @@ public class Caisse extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID caisseId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String libelle;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "caisse")

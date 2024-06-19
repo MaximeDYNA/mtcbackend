@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -30,4 +33,21 @@ public interface GieglanFileRepository extends CrudRepository<GieglanFile, UUID>
             + "order by v.createdDate desc"
     )
     List<GieglanFile> getGieglanFileFailed(Control control, Visite visite);
+
+
+//     flemming add
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE GieglanFile g "
+                + "SET g.isAccept = 0 "
+                + "WHERE g.inspection.id = ?1 "
+                + "AND g.name LIKE '%json' ")
+    void updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(UUID inspectionId);
+
+
+// @Modifying
+// @Transactional
+// @Query("UPDATE GieglanFile g SET g.isAccept = 0 WHERE g.inspection.idInspection = :inspectionId AND g.name LIKE %:suffix")
+// void updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(@Param("inspectionId") UUID inspectionId, @Param("suffix") String suffix);
+
 }
