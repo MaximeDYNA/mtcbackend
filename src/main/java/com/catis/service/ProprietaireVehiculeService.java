@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.catis.dtoprojections.ProprietaireVehiculeDTO;
 import com.catis.model.entity.Client;
 import com.catis.model.entity.Contact;
 import com.catis.model.entity.Partenaire;
@@ -26,6 +28,17 @@ public class ProprietaireVehiculeService {
         List<ProprietaireVehicule> proprietaires = new ArrayList<>();
         pvr.findByActiveStatusTrue().forEach(proprietaires::add);
         return proprietaires;
+    }
+
+
+    public List<ProprietaireVehicule> findAllPage(Pageable pageable) {
+        List<ProprietaireVehicule> proprietaires = new ArrayList<>();
+        pvr.findByActiveStatusTrue(pageable).forEach(proprietaires::add);
+        return proprietaires;
+    }
+    // flemming implimented
+    public List<ProprietaireVehiculeDTO> findSearchPage(String keyword, Pageable pageable) {
+        return pvr.findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCase(keyword, pageable);
     }
 
     public List<ProprietaireVehicule> searchProprio(String nom) {

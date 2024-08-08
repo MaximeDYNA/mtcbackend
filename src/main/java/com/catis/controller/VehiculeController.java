@@ -11,10 +11,19 @@ import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.catis.dtoprojections.VehiculeDTO;
+import com.catis.model.entity.Energie;
 import com.catis.model.entity.Vehicule;
 import com.catis.service.VehiculeService;
 
@@ -30,6 +39,9 @@ public class VehiculeController {
     private MarqueService marqueService;
     @Autowired
     private OrganisationService os;
+
+    @Autowired
+    private PagedResourcesAssembler<Vehicule> pagedResourcesAssembler;
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(VehiculeController.class);
@@ -70,17 +82,40 @@ public class VehiculeController {
     }
 
     /**Admin*/
-    @GetMapping("/api/v1/admin/vehicules")
-    public ResponseEntity<Object> vehiculeAdminList() {
+    // @GetMapping("/api/v1/admin/vehicules")
+    // public ResponseEntity<Object> vehiculeAdminList() {
+    //     try {
+    //         List<Vehicule> vehicules = vehiculeService.vehiculeList();
+    //         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+    //                 , vehicules);
+    //     } catch (Exception e) {
+    //         LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+    //         return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
+    //     }
+    // }
+    // flemming implimented
+    @GetMapping(value="/api/v1/admin/vehicules",params = {"search","page", "size"})
+    public ResponseEntity<Object> vehiculeAdminList(@RequestParam("search") String search, @RequestParam("page") int page,
+    @RequestParam("size") int size) {
+        if(search==null){
+            search = "";
+        }
         try {
-            List<Vehicule> vehicules = vehiculeService.vehiculeList();
+            
+            Page<Vehicule> vehicules = vehiculeService.vehiculeListSearchPage(search, PageRequest.of(page, size, Sort.by("createdDate").descending()));
+            
+            PagedModel<EntityModel<Vehicule>> result = pagedResourcesAssembler
+            .toModel(vehicules);
+            
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-                    , vehicules);
+            , result);
         } catch (Exception e) {
-            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            e.printStackTrace();
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des vehicule");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
         }
     }
+
     @Transactional
     @PostMapping("/api/v1/admin/vehicules")
     public ResponseEntity<Object> addAdminVehicule(@RequestBody VehiculePOJO vehiculePOJO) {
@@ -145,5 +180,24 @@ public class VehiculeController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, "Select catégorie produit OK", catsSelect);
     }
+    // flemming implimented
+    @GetMapping(value="/api/v1/admin/vehicules/select/{keyword}")
+    public ResponseEntity<Object> getCaissesOfMtcforSelect(@PathVariable String keyword){
 
+        List<VehiculeDTO> cats = vehiculeService.getVehicules(keyword, PageRequest.of(0, 15, Sort.by("createdDate").descending()));
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+
+        Map<String, String> cat;
+
+        for(VehiculeDTO c: cats){
+            cat = new HashMap<>();
+            
+            cat.put("id", String.valueOf(c.getVehiculeId()));
+            cat.put("name", c.getChassis() +" | " + c.getOrganisationNom());
+            catsSelect.add(cat);
+        }
+
+        return ApiResponseHandler.generateResponse(HttpStatus.OK,
+                true, "Select catégorie produit OK", catsSelect);
+    }
 }

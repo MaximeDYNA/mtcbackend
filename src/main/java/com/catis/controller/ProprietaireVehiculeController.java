@@ -7,15 +7,24 @@ import java.util.*;
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.objectTemporaire.ProprietairePOJO;
+import com.catis.objectTemporaire.ProprietairePOJOCreate;
 import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.controller.message.Message;
+import com.catis.dtoprojections.ProprietaireVehiculeDTO;
 import com.catis.model.entity.Partenaire;
 import com.catis.model.entity.ProprietaireVehicule;
 import com.catis.objectTemporaire.ClientPartenaire;
@@ -38,6 +47,9 @@ public class ProprietaireVehiculeController {
     private OrganisationService os;
     @Autowired
     HttpServletRequest request;
+
+    @Autowired
+    private PagedResourcesAssembler<ProprietaireDTO> pagedResourcesAssembler;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
 
@@ -110,7 +122,7 @@ public class ProprietaireVehiculeController {
     /**Admin**/
 
     @Transactional
-    @GetMapping("/api/v1/admin/proprietaires")
+    // @GetMapping("/api/v1/admin/proprietaires")
     public ResponseEntity<Object> proprioAdminList() {
         try {
 
@@ -144,8 +156,53 @@ public class ProprietaireVehiculeController {
         }
     }
 
+    // flemming implimented
+    @Transactional
+    @GetMapping(value="/api/v1/admin/proprietaires",params = {"page", "size"})
+    public ResponseEntity<Object> proprioAdminListPage(@RequestParam("page") int page,
+    @RequestParam("size") int size) {
+        try {
+
+            LOGGER.trace("List des propriétaires des vehicules...");
+            List<ProprietaireVehicule> props = proprietaireVehiculeadresseService.findAllPage(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+            List<ProprietaireDTO> ps = new ArrayList<>();
+            ProprietaireDTO pro;
+            for(ProprietaireVehicule p : props){
+                pro = new ProprietaireDTO();
+                pro.setProprietaireVehiculeId(p.getProprietaireVehiculeId());
+                pro.setNom(p.getPartenaire().getNom());
+                pro.setPrenom(p.getPartenaire().getPrenom());
+                pro.setDateNaiss(p.getPartenaire().getDateNaiss());
+                pro.setEmail(p.getPartenaire().getEmail());
+                pro.setLieuDeNaiss(p.getPartenaire().getLieuDeNaiss());
+                pro.setOrganisation(p.getOrganisation());
+                pro.setPassport(p.getPartenaire().getPassport());
+                pro.setPermiDeConduire(p.getPartenaire().getPermiDeConduire());
+                pro.setTelephone(p.getPartenaire().getTelephone());
+                pro.setCreatedDate(p.getPartenaire().getCreatedDate());
+                pro.setCni(p.getPartenaire().getCni());
+                pro.setDescription(p.getDescription());
+                pro.setPartenaireId(p.getPartenaire().getPartenaireId());
+                ps.add(pro);
+            }
+            Page<ProprietaireDTO> pages = new PageImpl<>(ps, PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+
+            PagedModel<EntityModel<ProprietaireDTO>> result = pagedResourcesAssembler
+            .toModel(pages);
+
+            return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+                    ,result);
+        } catch (Exception e) {
+            LOGGER.error("Une erreur est survenu lors de l'accès à la liste des adresses");
+            return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
+        }
+    }
+
+    
+    
     @Transactional
     @PostMapping("/api/v1/admin/proprietaires")
+    // public ResponseEntity<Object> addproprioAdmin(@RequestBody ProprietairePOJOCreate proprietairePOJO) {
     public ResponseEntity<Object> addproprioAdmin(@RequestBody ProprietairePOJO proprietairePOJO) {
         try {
 
@@ -153,6 +210,7 @@ public class ProprietaireVehiculeController {
             ProprietaireVehicule proprio = new ProprietaireVehicule();
             Date date = proprietairePOJO.getDateNaiss() == null ? null:
                     proprietairePOJO.getDateNaiss();
+            // Organisation organisation = proprietairePOJO.getOrganisationId()==null ? null : os.findByOrganisationId(proprietairePOJO.getOrganisationId());
             Organisation organisation = proprietairePOJO.getOrganisationId()==null ? null : os.findByOrganisationId(proprietairePOJO.getOrganisationId().getId());
 
             Partenaire partenaire = new Partenaire(proprietairePOJO);
@@ -203,5 +261,22 @@ public class ProprietaireVehiculeController {
 
         return ApiResponseHandler.generateResponse(HttpStatus.OK,
                 true, "Select catégorie produit OK", catsSelect);
+    }
+
+    // flemming implimented 
+    @GetMapping(value="/api/v1/admin/proprietaires/select/{keyword}")
+    public ResponseEntity<Object> getCaissesOfMtcforSelectSearch(@PathVariable String keyword) {
+        List<ProprietaireVehiculeDTO> cats = proprietaireVehiculeadresseService.findSearchPage(keyword, PageRequest.of(0, 15, Sort.by("createdDate").descending()));
+        List<Map<String, String>> catsSelect = new ArrayList<>();
+    
+        for (ProprietaireVehiculeDTO c : cats) {
+            Map<String, String> cat = new HashMap<>();
+            cat.put("id", String.valueOf(c.getProprietaireVehiculeId()));
+            String partnerName = c.getNom() + " " + (c.getPrenom() != null ? c.getPrenom() : "");
+            cat.put("name", partnerName);
+            catsSelect.add(cat);
+        }
+    
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Search propertaire OK", catsSelect);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.catis.model.entity.Energie;
@@ -34,7 +35,15 @@ public class EnergieService {
         energieRepo.findByActiveStatusTrue().forEach(energies::add);
         return energies;
     }
-    @CacheEvict(key = "#id")
+    // flemming implimented
+    @Cacheable
+    public List<Energie> energieListPage(Pageable pageable) {
+        List<Energie> energies = new ArrayList<>();
+        energieRepo.findByActiveStatusTrue(pageable).forEach(energies::add);
+        return energies;
+    }
+
+    @CacheEvict(allEntries = true)
     public void deleteById(UUID id){
         energieRepo.deleteById(id);
     }

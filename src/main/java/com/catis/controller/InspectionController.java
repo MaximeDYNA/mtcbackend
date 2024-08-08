@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.UUID;
 import java.util.List;
+import java.util.Set;
 
 import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.WrongConfigurationException;
@@ -15,7 +16,10 @@ import com.catis.model.entity.Message;
 import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserInfoIn;
+import com.catis.repository.GieglanFileRepository;
+import com.catis.repository.InspectionRepository;
 import com.catis.repository.MessageRepository;
+import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
 import org.apache.commons.codec.binary.Base64;
 
@@ -29,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.Inspection;
 import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
@@ -39,6 +44,9 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @CrossOrigin
 public class InspectionController {
+
+    @Autowired
+    private VisiteRepository visiteRepository;
 
     @Autowired
     HttpServletRequest request;
@@ -63,9 +71,59 @@ public class InspectionController {
     @Autowired
     private MessageRepository msgRepo;
 
+    @Autowired
+    private GieglanFileRepository gieglanFileRepository;
+
+    @Autowired
+    private InspectionRepository inspectionRepository;
+
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
+
+
+    @DeleteMapping(value="/api/v1/controleur/{inspectionId}")
+     @Transactional
+    public ResponseEntity<Object> revertInspection(@PathVariable UUID inspectionId) {
+        try {
+
+            Visite visite = visiteRepository.findByInspection_IdInspection(inspectionId);
+            if(visite == null) {
+                LOGGER.info("NO VISITE FOUND WITH THAT INSPCETION...");
+            }
+            if(visite != null) {
+                // Detach Visite from the Inspection
+                LOGGER.info("VISITE FOUND WITH THAT INSPCETION...");
+                visite.setInspection(null);
+                LOGGER.info("INSPECTION RESET DONE");
+                visite.resetState(); // Reset state to pending
+                LOGGER.info("VISITE STATE RESET DONE");
+                visite.clearProcessAndRapports(); // Clear process and rapports
+                visite.setStatut(1);
+                LOGGER.info("VISITE RAPPORTS RESET DONE");
+                visiteRepository.save(visite);
+                LOGGER.info("VISITE UPDATE DONE");
+            }
+            Inspection inspection = inspectionRepository.findById(inspectionId).orElse(null);
+            // Inspection inspection = inspectionRepository.findById(inspectionId).orElseThrow(() -> new RuntimeException("Inspection not found"));
+            if (inspection == null) {
+                LOGGER.info("NO INSPECTION FOUND WITH THAT ID...");
+            } else {
+                LOGGER.info("INSPECTION FOUND WITH THAT ID...");
+                inspection.setVisite(null);
+                LOGGER.info("VISITE RESET DONE");
+                inspectionRepository.save(inspection);
+                LOGGER.info("INSPECTION UPDATE DONE");
+            }
+            Message msg = msgRepo.findByCode("IP001");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visite);
+
+        } catch (Exception e) {
+            Message msg = msgRepo.findByCode("IP002");
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
+        }
+    }
+
 
     @PostMapping(value = "/api/v1/controleur/inspections")
     @Transactional
@@ -92,7 +150,8 @@ public class InspectionController {
             // flemming added this conditional statement
             if(visite.isContreVisite()){
                 LOGGER.info("contreVisite, resetting is_accepted of visuel('.json' file) gieglan to 0");
-                this.gieglanFileService.updateGieglanFileIsAcceptByInspectionId(visite.getInspection().getIdInspection());
+                this.gieglanFileService.updateGieglanFileStatus(visite.getControl().getId(), visite.getIdVisite());
+                // this.gieglanFileService.updateGieglanFileIsAcceptByInspectionId(visite.getInspection().getIdInspection());
             }
             //inspection = inspectionService.addInspection(inspection);
 

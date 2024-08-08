@@ -15,6 +15,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +56,11 @@ public class CarteGriseController {
     private MessageRepository msgRepo;
     @Autowired
     HttpServletRequest request;
+
+    @Autowired
+    private PagedResourcesAssembler<CarteGrise> pagedResourcesAssembler;
+
+
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
 
@@ -249,20 +261,43 @@ public class CarteGriseController {
 
     }
     /*Admin*/
-    @GetMapping("/api/v1/admin/cartegrises")
-    public ResponseEntity<Object> findAllforAdmin() {
+    // @GetMapping("/api/v1/admin/cartegrises")
+    // public ResponseEntity<Object> findAllforAdmin() {
+    //     LOGGER.trace("Recherche carte grise...");
+    //     try {
+    //         List<CarteGrise> cs = cgs.findAll();
+    //         Message msg = msgRepo.findByCode("CG003");
+    //         LOGGER.info("Affichage de la liste des cartes grises réussi");
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, cs);
+    //     } catch (Exception e) {
+    //         List<CarteGrise> cs = cgs.findAll();
+    //         Message msg = msgRepo.findByCode("CG004");
+    //         LOGGER.info("Erreur lors de l'affichage de la liste des cartes grises");
+    //         return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
+
+    //     }
+    // }
+    // flemming implimnted
+    @GetMapping(value="/api/v1/admin/cartegrises",params = {"search","page", "size"})
+    public ResponseEntity<Object> findAllforAdmin(@RequestParam("search") String search, @RequestParam("page") int page,
+    @RequestParam("size") int size) {
         LOGGER.trace("Recherche carte grise...");
+        if(search==null){
+            search = "";
+        }
         try {
-            List<CarteGrise> cs = cgs.findAll();
+            Page<CarteGrise> cs = cgs.findAllPage(search, PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+            PagedModel<EntityModel<CarteGrise>> result = pagedResourcesAssembler
+            .toModel(cs);
+  
             Message msg = msgRepo.findByCode("CG003");
             LOGGER.info("Affichage de la liste des cartes grises réussi");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, cs);
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
         } catch (Exception e) {
-            List<CarteGrise> cs = cgs.findAll();
             Message msg = msgRepo.findByCode("CG004");
             LOGGER.info("Erreur lors de l'affichage de la liste des cartes grises");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);
-
         }
     }
 
@@ -317,6 +352,7 @@ public class CarteGriseController {
 
         }
     }
+    @Transactional
     @DeleteMapping("/api/v1/admin/cartegrises/{id}")
     public ResponseEntity<Object> energie(@PathVariable UUID id) {
         try {

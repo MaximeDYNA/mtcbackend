@@ -5,12 +5,20 @@ import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.controller.message.Message;
 import com.catis.model.entity.Energie;
+import com.catis.model.entity.Utilisateur;
 import com.catis.service.EnergieService;
 
 import java.util.*;
@@ -25,6 +33,9 @@ public class EnergieController {
     private EnergieService energieService;
     @Autowired
     private OrganisationService os;
+
+    @Autowired
+    private PagedResourcesAssembler<Energie> pagedResourcesAssembler;
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(AdresseController.class);
@@ -44,20 +55,41 @@ public class EnergieController {
 
     /*Admin*/
 
-    @GetMapping("/api/v1/admin/energies")
-    public ResponseEntity<Object> adminEnergieList() {
+    @GetMapping(value="/api/v1/admin/energies",params = {"page", "size"})
+    public ResponseEntity<Object> adminEnergieList(@RequestParam("page") int page,
+    @RequestParam("size") int size) {
         try {
 
-            List<Energie> energies = energieService.energieList();
+            List<Energie> energies = energieService.energieListPage(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+            Page<Energie> pages = new PageImpl<>(energies, PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdDate")),300);
+
+            PagedModel<EntityModel<Energie>> result = pagedResourcesAssembler
+                    .toModel(pages);
 
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
-                    , energies);
+                    , result);
         } catch (Exception e) {
             LOGGER.error("Une erreur est survenu lors de l'accès à la liste des energies");
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
                     + "l'ajout d'un client", null);
         }
     }
+    // old method no pagination enabled
+    // @GetMapping("/api/v1/admin/energies")
+    // public ResponseEntity<Object> adminEnergieList() {
+    //     try {
+
+    //         List<Energie> energies = energieService.energieList();
+
+    //         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "succès"
+    //                 , energies);
+    //     } catch (Exception e) {
+    //         LOGGER.error("Une erreur est survenu lors de l'accès à la liste des energies");
+    //         return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu lors de "
+    //                 + "l'ajout d'un client", null);
+    //     }
+    // }
     @PostMapping("/api/v1/admin/energies")
     public ResponseEntity<Object> energie(@RequestBody EnergiePOJO energiePOJO) {
         try {

@@ -9,9 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.catis.model.entity.CarteGrise;
+import com.catis.repository.nativeQueries.CarteGriseCustomRepository;
+
 import org.springframework.data.repository.query.Param;
 
-public interface CarteGriseRepository extends CrudRepository<CarteGrise, UUID> {
+public interface CarteGriseRepository extends CrudRepository<CarteGrise, UUID>, CarteGriseCustomRepository {
 
     List<CarteGrise> findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(String immatriculation, String Chassis);
 
@@ -38,4 +40,6 @@ public interface CarteGriseRepository extends CrudRepository<CarteGrise, UUID> {
     Optional<CarteGrise> findCGWithOrderedValidControl(String immatriculation);
 
     List<CarteGrise> findByActiveStatusTrue();
+
+    List<CarteGrise> findByActiveStatusTrue(Pageable pageable);
 }

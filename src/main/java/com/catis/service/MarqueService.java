@@ -33,7 +33,7 @@ public class MarqueService {
         marqueRepo.findByActiveStatusTrue(pageable).forEach(marques::add);
         return marques;
     }
-    @Cacheable(key = "#id")
+    @CacheEvict(allEntries = true)
     public MarqueVehicule findById(UUID id) {
 
         return marqueRepo.findById(id).get();
@@ -43,7 +43,7 @@ public class MarqueService {
         MarqueVehicule marqueVehicule = marqueRepo.save(marque);
         return marqueVehicule;
     }
-    @CacheEvict(key = "#id")
+    @CacheEvict(allEntries = true)
     public void deleteById(UUID id){
         marqueRepo.deleteById(id);
     }

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_vehicule")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
-@SQLDelete(sql = "UPDATE t_vehicule SET active_status=false WHERE vehicule_id=?")
+@SQLDelete(sql = "UPDATE t_vehicule SET active_status=false WHERE id=?")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter

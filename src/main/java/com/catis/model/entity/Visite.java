@@ -118,6 +118,31 @@ public class Visite extends JournalData {
         PENDING, SUCCESS, ERROR
     };
 
+
+    // flemming added
+    public void resetState() {
+        this.ripage = TestResult.PENDING;
+        this.suspension = TestResult.PENDING;
+        this.freinage = TestResult.PENDING;
+        this.pollution = TestResult.PENDING;
+        this.reglophare = TestResult.PENDING;
+        this.visuel = TestResult.PENDING;
+    }
+
+    // flemming added
+    public void clearProcessAndRapports() {
+        if (this.process != null) {
+            this.process.setVisite(null);
+            this.process = null;
+        }
+        if (this.rapportDeVisites != null) {
+            for (RapportDeVisite rapport : this.rapportDeVisites) {
+                rapport.setVisite(null);
+            }
+            this.rapportDeVisites.clear();
+        }
+    }
+
     public String statutRender(int code) {
         if (code == 0) {
             return "maj";

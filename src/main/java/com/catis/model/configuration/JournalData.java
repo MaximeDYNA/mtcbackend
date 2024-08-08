@@ -41,7 +41,7 @@ public class JournalData implements Serializable {
     @LastModifiedBy
     private String modifiedBy;
 
-    @JsonIgnore
+    // @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Organisation organisation;
 

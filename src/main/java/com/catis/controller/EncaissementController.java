@@ -139,7 +139,10 @@ public class EncaissementController {
             /* ---------vente------------ */
             vente.setMontantTotal(encaissement.getMontantTotal());
             vente.setMontantHT(encaissement.getMontantHT());
-            vente.setNumFacture(venteService.genererNumFacture());
+            // flemming added
+            String numfacture = venteService.genererNumFacture();
+            vente.setNumFacture(numfacture);
+            // vente.setNumFacture(venteService.genererNumFacture());
             /* -------------------------- */
             LOGGER.info("PROCESS LAUNCHED TO CREATE VISIT.");
             Visite visite;
@@ -216,7 +219,9 @@ public class EncaissementController {
             op.setOrganisation(organisation);
 
             op.setSessionCaisse(scs.findSessionCaisseById(encaissement.getSessionCaisseId()));
-            op.setNumeroTicket(ocs.genererTicket());
+            // flemming added
+            op.setNumeroTicket(numfacture);
+            // op.setNumeroTicket(ocs.genererTicket());
             op.setVente(vente);
             op = ocs.addOperationCaisse(op);
 

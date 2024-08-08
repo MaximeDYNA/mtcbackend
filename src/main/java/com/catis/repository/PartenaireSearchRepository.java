@@ -32,8 +32,4 @@ public interface PartenaireSearchRepository extends ElasticsearchRepository<Part
     List<PartenaireSearch> findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(String nom, String prenom, String passport, String telephone);
 
 
-    // List<PartenaireSearch> findByNomStartsWithIgnoreCaseOrPrenomStartsWithIgnoreCaseOrPassportStartsWithIgnoreCaseOrTelephoneStartsWithIgnoreCase(String nom, String prenom, String passport, String telephone);
-
-
-
 }

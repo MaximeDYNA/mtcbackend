@@ -3,3 +3,9 @@ spring:
     properties:
       hibernate:
         max_fetch_depth: 0
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: [ "prometheus" ]

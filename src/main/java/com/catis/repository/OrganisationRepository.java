@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.catis.dtoprojections.OrganisationDataDTO;
 import com.catis.model.entity.Organisation;
 
 import java.util.List;
@@ -20,6 +21,11 @@ public interface OrganisationRepository extends CrudRepository<Organisation, UUI
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_OrganisationId(UUID id, Pageable pageable);
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_OrganisationId(UUID id);
     List<Organisation> findByActiveStatusTrueAndParentOrganisation_ActiveStatusTrueAndParentOrganisation_Nom(String nomOrganisation);
-
-
+    
+    // flemming implimented
+    @Query("SELECT o.organisationId AS organisationId, o.nom AS nom " +
+    "FROM Organisation o " +
+    "WHERE o.activeStatus = true AND o.nom LIKE ?1%")
+    List<OrganisationDataDTO> findByActiveStatusTrueAndParentFalse(String nom, Pageable pageable);
+    // AND o.parent = false
 }

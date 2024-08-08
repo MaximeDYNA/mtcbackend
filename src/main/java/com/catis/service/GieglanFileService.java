@@ -2,9 +2,14 @@ package com.catis.service;
 
 import java.util.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.persistence.Query;
 
 import com.catis.model.entity.Visite;
+
+import org.checkerframework.checker.units.qual.g;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,10 +31,28 @@ public class GieglanFileService {
 
     @Autowired
     private GieglanFileRepository gieglanFileRepository;
+   
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    // flemming added 
-    public void updateGieglanFileIsAcceptByInspectionId(UUID inspectionId) {
-        gieglanFileRepository.updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(inspectionId);
+
+
+
+
+    @Transactional
+    public void updateGieglanFileStatus(UUID controlId, UUID visiteId) {
+        String updateQuery = String.format("UPDATE gieglan_file g " +
+                             "INNER JOIN t_inspection i ON g.inspection_id = i.id  " +
+                             "INNER JOIN t_visite v ON i.visite_id = v.id " +
+                             "SET g.is_accept = 0  " +
+                             "WHERE v.control_id = '%s' " +
+                             "AND v.id <> '%s' " +
+                             "AND g.type = 'MEASURE' " +
+                             "AND g.status = 'VALIDATED' " +
+                             "AND g.name LIKE '%%json'", controlId.toString(), visiteId.toString());
+
+        Query query = entityManager.createNativeQuery(updateQuery);
+        query.executeUpdate();
     }
 
     public void createFileGieglanOfCgrise(CarteGrise carteGrise, Inspection inspection) {
@@ -90,9 +113,26 @@ public class GieglanFileService {
         return codeGieglans;
     }
 
+    // old method allows dupliacted icons
+    // @Transactional
+    // public List<GieglanFile> getGieglanFileFailed(Visite v) {
+    //     return gieglanFileRepository.getGieglanFileFailed(v.getControl(), v);
+    // }
+
+    // flemming implimented
     @Transactional
     public List<GieglanFile> getGieglanFileFailed(Visite v) {
-        return gieglanFileRepository.getGieglanFileFailed(v.getControl(), v);
+        // Fetch the list from the repository
+        List<GieglanFile> gieglanFiles = gieglanFileRepository.getGieglanFileFailed(v.getControl(), v);
+        
+        // Convert the list to a set to remove duplicates
+        Set<GieglanFile> uniqueGieglanFiles = new HashSet<>(gieglanFiles);
+        
+        // Convert the set back to a list
+        List<GieglanFile> uniqueGieglanFileList = new ArrayList<>(uniqueGieglanFiles);
+        
+        // Return the list without duplicates
+        return uniqueGieglanFileList;
     }
 
     /**

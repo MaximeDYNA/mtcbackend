@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_proprietairevehicule")
 @Audited
-@SQLDelete(sql = "UPDATE t_proprietairevehicule SET active_status=false WHERE proprietaire_vehicule_id=?")
+@SQLDelete(sql = "UPDATE t_proprietairevehicule SET active_status=false WHERE id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class ProprietaireVehicule extends JournalData {
@@ -43,7 +43,7 @@ public class ProprietaireVehicule extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID proprietaireVehiculeId;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"organisation"})
     private Partenaire partenaire;
 

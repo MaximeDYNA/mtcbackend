@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.catis.dtoprojections.OrganisationDataDTO;
 import com.catis.model.entity.Organisation;
 import com.catis.repository.OrganisationRepository;
 
@@ -140,6 +141,11 @@ public class OrganisationService {
         List<Organisation> orgs = new ArrayList<>();
         organisationRepository.findByActiveStatusTrueAndParentFalse().forEach(orgs::add);
         return orgs;
+    }
+
+    // flemming implimnted
+    public List<OrganisationDataDTO> findOrganisations(String nom, Pageable pageable) {
+        return organisationRepository.findByActiveStatusTrueAndParentFalse(nom, pageable);
     }
 
     public void deleteById(UUID id){

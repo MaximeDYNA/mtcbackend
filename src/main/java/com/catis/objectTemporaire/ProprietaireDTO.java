@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 // @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProprietaireDTO {
+public class ProprietaireDTO  implements Serializable{
     // object de transfert proprietaire et controleur
     
     private UUID proprietaireVehiculeId;

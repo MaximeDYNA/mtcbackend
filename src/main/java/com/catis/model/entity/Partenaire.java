@@ -9,11 +9,14 @@ import javax.persistence.*;
 import com.catis.objectTemporaire.CaissierPOJO;
 import com.catis.objectTemporaire.PartenaireSearch;
 import com.catis.objectTemporaire.ProprietairePOJO;
+import com.catis.objectTemporaire.ProprietairePOJOCreate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -30,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Audited
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
+@SQLDelete(sql = "UPDATE t_partenaire SET active_status=false WHERE id=?")
 public class Partenaire extends JournalData {
 
     @Id
@@ -140,6 +144,22 @@ public class Partenaire extends JournalData {
         this.email = caissierPOJO == null ? null : caissierPOJO.getEmail();
     }
     public Partenaire(ProprietairePOJO caissierPOJO){
+
+        this.nom = caissierPOJO == null ? null : caissierPOJO.getNom();
+
+        this.prenom = caissierPOJO== null ? null : caissierPOJO.getPrenom();
+        this.lieuDeNaiss = caissierPOJO== null ? null : caissierPOJO.getLieuDeNaiss();
+        this.permiDeConduire = caissierPOJO== null ?null: caissierPOJO.getPermiDeConduire();
+        this.passport = caissierPOJO == null ? null : caissierPOJO.getPassport();
+        this.cni = caissierPOJO == null ? null : caissierPOJO.getCni();
+        this.telephone = caissierPOJO== null ? null : caissierPOJO.getTelephone();
+        this.email = caissierPOJO == null ? null : caissierPOJO.getEmail();
+        this.partenaireId
+                = caissierPOJO == null ? null :
+                caissierPOJO
+                        .getPartenaireId();
+    }
+    public Partenaire(ProprietairePOJOCreate caissierPOJO){
 
         this.nom = caissierPOJO == null ? null : caissierPOJO.getNom();
 

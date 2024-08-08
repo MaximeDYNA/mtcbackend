@@ -34,20 +34,4 @@ public interface GieglanFileRepository extends CrudRepository<GieglanFile, UUID>
     )
     List<GieglanFile> getGieglanFileFailed(Control control, Visite visite);
 
-
-//     flemming add
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE GieglanFile g "
-                + "SET g.isAccept = 0 "
-                + "WHERE g.inspection.id = ?1 "
-                + "AND g.name LIKE '%json' ")
-    void updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(UUID inspectionId);
-
-
-// @Modifying
-// @Transactional
-// @Query("UPDATE GieglanFile g SET g.isAccept = 0 WHERE g.inspection.idInspection = :inspectionId AND g.name LIKE %:suffix")
-// void updateGieglanFileIsAcceptByInspectionIdAndNameContainsJson(@Param("inspectionId") UUID inspectionId, @Param("suffix") String suffix);
-
 }

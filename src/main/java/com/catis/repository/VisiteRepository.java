@@ -15,13 +15,17 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.catis.model.entity.Visite;
+import com.catis.repository.nativeQueries.VisiteNativeQueryRepository;
 
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface VisiteRepository extends CrudRepository<Visite, UUID>{
+public interface VisiteRepository extends CrudRepository<Visite, UUID>, VisiteNativeQueryRepository{
     
+
+
+    Visite findByInspection_IdInspection(UUID inspectionId);
 
     List<Visite> findByContreVisiteFalse();
 

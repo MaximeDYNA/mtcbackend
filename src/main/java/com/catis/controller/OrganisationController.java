@@ -1,6 +1,7 @@
 package com.catis.controller;
 
 import com.catis.controller.message.Message;
+import com.catis.dtoprojections.OrganisationDataDTO;
 import com.catis.objectTemporaire.*;
 import com.catis.service.OrganisationService;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -199,6 +201,21 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+
+    @GetMapping(value="/api/v1/admin/organisation/select/{keyword}")
+    public ResponseEntity<Object> getOrganisationsForSelectSearch(@PathVariable String keyword) {
+    List<OrganisationDataDTO> organisations = os.findOrganisations(keyword, PageRequest.of(0, 15, Sort.by("createdDate").descending()));
+    List<Map<String, String>> organisationsSelect = new ArrayList<>();
+
+    for (OrganisationDataDTO o : organisations) {
+        Map<String, String> org = new HashMap<>();
+        org.put("id", String.valueOf(o.getOrganisationId()));
+        org.put("name", o.getNom());
+        organisationsSelect.add(org);
+    }
+
+    return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "Search organisation OK", organisationsSelect);
+}
     @Transactional
     @GetMapping("/api/v1/admin/organisations/parents")
     public ResponseEntity<Object> findParent(){

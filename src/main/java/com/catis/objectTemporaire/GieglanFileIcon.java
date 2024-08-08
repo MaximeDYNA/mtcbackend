@@ -1,5 +1,7 @@
 package com.catis.objectTemporaire;
 
+import java.util.Objects;
+
 public class GieglanFileIcon {
     public String extension;
     public String icon;
@@ -26,5 +28,18 @@ public class GieglanFileIcon {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GieglanFileIcon that = (GieglanFileIcon) o;
+        return Objects.equals(extension, that.extension);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(extension);
     }
 }

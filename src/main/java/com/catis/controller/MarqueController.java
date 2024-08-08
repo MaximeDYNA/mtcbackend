@@ -57,12 +57,11 @@ public class MarqueController {
                                                   @RequestParam("size") int size) {
         LOGGER.trace("List des marques...");
         try {
-            List<MarqueVehicule> marqueVehiculeList = marqueService.marqueList(PageRequest.of(page, size));
+            List<MarqueVehicule> marqueVehiculeList = marqueService.marqueList(PageRequest.of(page, size, Sort.by("createdDate").descending()));
 
             Page<MarqueVehicule> pages = new PageImpl<>(marqueVehiculeList, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate")),300);
             PagedModel<EntityModel<MarqueVehicule>> result = pagedResourcesAssemblerVente
                     .toModel(pages);
-
             return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success",result );
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenue", null);
@@ -75,7 +74,7 @@ public class MarqueController {
         LOGGER.trace("List des marques...");
         System.out.println(ToStringBuilder.reflectionToString(marque));
         MarqueVehicule marqueVehicule = new MarqueVehicule();
-        marqueVehicule.setMarqueVehiculeId(marque.getMarqueVehiculeId());
+        // marqueVehicule.setMarqueVehiculeId(marque.getMarqueVehiculeId());
         marqueVehicule.setDescription(marque.getDescription());
         marqueVehicule.setLibelle(marque.getLibelle());
         marqueVehicule.setOrganisation(marque.getOrganisationId() == null ? null : os.findByOrganisationId(marque.getOrganisationId()));

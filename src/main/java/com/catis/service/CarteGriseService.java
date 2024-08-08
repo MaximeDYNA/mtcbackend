@@ -3,7 +3,9 @@ package com.catis.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,16 @@ public class CarteGriseService {
         cgr.findByActiveStatusTrue().forEach(carteGrises::add);
         return carteGrises;
     }
+    // flemming implimented
+    public Page<CarteGrise> findAllPage(String search, Pageable pageable) {
+        return cgr.findByActiveStatusTrueAndSearch(search, pageable);
+    }
+    // flemming implimented
+    // public List<CarteGrise> findAllPage(Pageable pageable) {
+    //     List<CarteGrise> carteGrises = new ArrayList<>();
+    //     cgr.findByActiveStatusTrue(pageable).forEach(carteGrises::add);
+    //     return carteGrises;
+    // }
 
     public CarteGrise findCarteGriseById(UUID carteGriseId) {
         return cgr.findById(carteGriseId).get();

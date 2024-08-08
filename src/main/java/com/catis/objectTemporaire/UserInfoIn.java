@@ -133,6 +133,8 @@ public class UserInfoIn {
             user.setPrenom(accessToken.getNickName());
             user.setLogin(accessToken.getPreferredUsername());
             user.setEmail(accessToken.getEmail());
+            System.out.println("User Roles");
+            System.out.println(accessToken.getRealmAccess().getRoles().toString());
             AccessToken.Access realmAccess = accessToken.getRealmAccess();
             user.setRoles(realmAccess.getRoles());
             user.setOrganisanionId(UUID.fromString(accessToken.getOtherClaims().get("organisationId").toString()));

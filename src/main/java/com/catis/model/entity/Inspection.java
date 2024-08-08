@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_inspection")
 @Audited
-@SQLDelete(sql = "UPDATE t_inspection SET active_status=false WHERE idInspection=?")
+@SQLDelete(sql = "UPDATE t_inspection SET active_status=false WHERE id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Inspection extends JournalData {

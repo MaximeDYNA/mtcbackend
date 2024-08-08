@@ -122,6 +122,17 @@ public class VisiteController {
 
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
+    @Autowired
+    private VisiteSearch searchservice;
+
+
+
+    // @GetMapping(value="/api/v1/all/visites/search")
+    // public ResponseEntity<List<VisiteSearchService>> findVisiteByChassisOrByCarteGriseImmatriculationOrByPartnerName(@RequestParam String searchTerm) {
+    //     List<VisiteSearchService> results = searchservice.findVisiteBYChassisORByCarteGriseImmatriculationOrByPartnerNom(searchTerm);
+    //     return new ResponseEntity<>(results, HttpStatus.OK);
+    // }
+
 
     // @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
     public ResponseEntity<Object> listDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page,
@@ -406,7 +417,6 @@ public class VisiteController {
     @RequestParam("size") int size) {
         try {
             UUID orgId = SessionData.getOrganisationId(request);
-
             Page<NewListView> resultPage = visiteService.MainlistParStatus(status, orgId, PageRequest.of(page, size, Sort.Direction.DESC, "createdDate"));
             PagedModel<EntityModel<NewListView>> result = pagedResourcesAssembler.toModel(resultPage);
 
@@ -725,27 +735,28 @@ try{
             log.info("current rapport size" +  rapports.size());
             long startTime23 = System.currentTimeMillis();
 
-            List<Visite> visites = visiteService.getLastVisiteWithTestIsOkDirectQuery(visite.get().getControl().getId(), visite.get().getIdVisite());
-            log.info("visite query service size" + visites.size());
+            Visite visitemain = visite.get();
+
+            if(visitemain.isContreVisite()){
+                log.info("processing control visite");
+                List<Visite> visites = visiteService.getLastVisiteWithTestIsOkDirectQuery(visitemain.getControl().getId(), visitemain.getIdVisite());
+                visites.forEach(visite1 -> {
+                    List<RapportDeVisite> rapportDeVisite = visite1.getRapportDeVisites();
+                    if(rapportDeVisite.isEmpty()){
+                        log.info("no rapport de visite found for visite");
+                    }
+                    else{
+                        rapports.addAll(rapportDeVisite);
+                    }
+                });
+                log.info("visite query service size" + visites.size());
+            }
+
+
            
             // this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get())
             //     .forEach(visite1 -> 
             //      rapports.addAll(visite1.getRapportDeVisites()));
-
-            // List<Visite> visites = this.visiteRepo.getLastVisiteWithTestIsOk(visite.get().getControl(), visite.get());
-            visites.forEach(visite1 -> {
-                if(visite1.getRapportDeVisites().isEmpty()){
-                    log.info("no rapport de visite found for visite");
-                }
-                else{
-                    List<RapportDeVisite> rapportDeVisite = visite1.getRapportDeVisites();
-                    rapportDeVisite.forEach(r ->{
-                        String index = r.getSeuil().getFormule().getMesures().stream().findFirst().get().getCode();
-                        log.info("code from old visite " + index);
-                    });
-                    rapports.addAll(rapportDeVisite);
-                }
-            });
             long endTime33 = System.currentTimeMillis();
             double durationSecond33 = (endTime33 - startTime23) / 1000.0;
             log.info("query for  get last rapports took " + durationSecond33 + "seconds");
@@ -771,7 +782,7 @@ try{
                     minorDefault.add(rapport.getSeuil().getLexique());
             });
 
-            visite.get().getInspection().getLexiques().forEach(lexique -> {
+            visitemain.getInspection().getLexiques().forEach(lexique -> {
                 log.info("Lexique" +  lexique);
                 if ("majeure".equalsIgnoreCase(lexique.getClassification().getCode()))
                     majorDefault.add(lexique);
@@ -779,7 +790,7 @@ try{
                     minorDefault.add(lexique);
             });
 
-            UserDTO user = UserInfoIn.getInfosControleur(visite.get().getInspection().getControleur(), environment);
+            UserDTO user = UserInfoIn.getInfosControleur(visitemain.getInspection().getControleur(), environment);
 
             ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
             templateResolver.setSuffix(".html");
@@ -1108,7 +1119,8 @@ try{
                 .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()))
                 .findFirst()
                 .get();
-        List<GieglanFileIcon> icons =new ArrayList<>();
+        Set<GieglanFileIcon> icons = new HashSet<>();
+        // List<GieglanFileIcon> icons =new ArrayList<>();
         List<GieglanFileIcon> gieglanFileIcons  =p.getTest().stream().map(
                 testNew -> new GieglanFileIcon(testNew.getExtension(), testNew.getIcon())
         ).collect(Collectors.toList());
@@ -1228,7 +1240,8 @@ try{
 
 
         }
-        return icons;
+        return new ArrayList<>(icons);
+        // return icons;
 
     }
 
@@ -1280,7 +1293,7 @@ try{
     }
 
 
-
+    // logic to reset visite from en line to inspections 
     @Transactional
     @PostMapping(value = "/api/v1/admin/visites/reset/{id}")
     public ResponseEntity<Object> reset(@PathVariable UUID id) {

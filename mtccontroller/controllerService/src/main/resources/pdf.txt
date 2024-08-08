@@ -1,0 +1,50 @@
+EURO SYSTEM
+ F090507        Version 6
+Prochaine calibration 15.10.2003
+cemex douala entree johannesburg
+Werbezeile 2
+Werbezeile 3
+Werbezeile 4
+Client  
+Rue 
+Ville  
+Téléphone 
+Immatriculation LT712EF
+Constructeur TOYOTA
+Modèle véhicule    LV
+Kilomètrage 
+Mesures du:       Heure Date :  07.09.2020   Heure:  12:07
+Valeurs tests Limites RésultatsRipage
+Essieu avant:   0,0 m/km AV en ordre
+Essieu arrière:   0,0 m/km AR en ordre
+faible    8 ok  
+    8-    9Limite
+fort    9 déf.
+Suspension Gauche Droit Dissymètrie Pesée Gauche Droit
+Essieu avant: 58 % 68 %  14 % 35 Mm 27 Mm1086 daN
+AV GA en ordre
+AV DR en ordre
+Essieu arrière: 61 % 70 %  12 % 43 Mm 33 Mm 719 daN
+AR GA en ordre
+AR DR en ordre
+Essieu avant: 
+>    40 %  en ordre
+<    40 % faible
+<    30 % défect.
+Essieu arrière: 
+>    40 %  en ordre
+<    40 % faible
+<    30 % défect.
+Pesée globale: 1805 daN
+Freinage Gliss.: 25 % Gauche Droit Déséquilibre Efficacité Echauf. Progres.
+Essieu avant:     (simplifiée) 270 daN 320 daN 15 %  54 % Manuel Autom. Désé. AV en ordre
+Diff. roues simultannées --- daN --- daN -- %
+Essieu station.:  (simplifiée) 179 daN 231 daN 22 % Autom. Manuel Désé. STA en ordre
+Diff. roues simultannées --- daN --- daN -- %
+Essieu arrière:   (simplifiée) 188 daN 235 daN 20 %  58 % Manuel Manuel Désé. AR en ordre
+Diff. roues simultannées --- daN --- daN -- %
+Bilan global:     Type véhi.: VP > 01.56
+Forces totales frein de service : 1013 daN Efficacité  56 % Limite: 50 % Taux SER en ordre
+Forces totales frein de station.:  410 daN Efficacité  22 % Limite: 18 % Taux STA en ordre
+Arrêts déclenchés AV Auto. AR Manu. ST Manu.
+UTAC32.DLL  (Version 6) Werbezeile 5

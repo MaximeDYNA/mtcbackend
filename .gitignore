@@ -5,6 +5,9 @@ remoting/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /db
+/mtccontroller
+/mtcfrontend
+mysql-connector-j-8.3.0.jar
 
 ### STS ###
 .apt_generated

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Optional;
@@ -49,6 +50,8 @@ public class SessionCaisseService {
     }
     // Flemming implimented 
     public Optional<SessionCaisse> MainfindSessionCaisseByKeycloakId(String keycloakId) {
+
+        try {
         String queryStr = String.format(
                 "SELECT JSON_OBJECT(" +
                         "'active', CASE s.active WHEN b'1' THEN 1 ELSE 0 END, " +
@@ -79,8 +82,20 @@ public class SessionCaisseService {
 
         Query query = entityManager.createNativeQuery(queryStr);
 
-        Object result = query.getSingleResult();
-        return Optional.ofNullable(parseResultToSessionCaisse(result));
+        List<Object> result = query.getResultList();
+
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        // Assuming there's only one result as the query should return a unique result
+        return Optional.ofNullable(parseResultToSessionCaisse(result.get(0)));
+        // Object result = query.getSingleResult();
+
+      } catch (NoResultException e) {
+            // This catch block is now redundant since getResultList() does not throw NoResultException
+            return Optional.empty();
+        }
+        // return Optional.ofNullable(parseResultToSessionCaisse(result));
     }
 
      private SessionCaisse parseResultToSessionCaisse(Object result) {
