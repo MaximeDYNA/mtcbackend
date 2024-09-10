@@ -18,5 +18,5 @@ public class CaissePOJO {
     private UUID caisse_id;
     private String libelle;
     private String description;
-    private UUID organisation;
+    private ObjectForSelect organisation;
 }

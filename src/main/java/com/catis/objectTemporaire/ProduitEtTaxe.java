@@ -1,6 +1,6 @@
 package com.catis.objectTemporaire;
 
-import java.io.Serializable;
+
 import java.util.List;
 
 import com.catis.model.entity.Produit;

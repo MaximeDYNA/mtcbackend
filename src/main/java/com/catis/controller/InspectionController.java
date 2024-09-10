@@ -8,16 +8,13 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.UUID;
 import java.util.List;
-import java.util.Set;
 
-import com.catis.controller.configuration.SessionData;
+
 import com.catis.controller.exception.WrongConfigurationException;
 import com.catis.model.entity.Message;
 import com.catis.model.entity.Utilisateur;
 import com.catis.objectTemporaire.UserDTO;
 import com.catis.objectTemporaire.UserInfoIn;
-import com.catis.repository.GieglanFileRepository;
-import com.catis.repository.InspectionRepository;
 import com.catis.repository.MessageRepository;
 import com.catis.repository.VisiteRepository;
 import com.catis.service.*;
@@ -33,12 +30,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.model.control.GieglanFile;
+
 import com.catis.model.entity.Inspection;
+import com.catis.model.entity.Ligne;
 import com.catis.model.entity.Visite;
 import com.catis.objectTemporaire.InpectionReceived;
+import com.catis.objectTemporaire.LigneDTO;
 import com.catis.objectTemporaire.SignatureDTO;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -71,56 +71,47 @@ public class InspectionController {
     @Autowired
     private MessageRepository msgRepo;
 
-    @Autowired
-    private GieglanFileRepository gieglanFileRepository;
 
-    @Autowired
-    private InspectionRepository inspectionRepository;
+  
 
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(InspectionController.class);
 
-
-    @DeleteMapping(value="/api/v1/controleur/{inspectionId}")
-     @Transactional
-    public ResponseEntity<Object> revertInspection(@PathVariable UUID inspectionId) {
+    
+    @GetMapping("/api/v1/controleur/{id}/ligne")
+    public ResponseEntity<LigneDTO> getLigneByInspectionId(@PathVariable("id") UUID inspectionId) {
         try {
+            // Fetch the Ligne associated with the given Inspection ID
+            Ligne ligne = inspectionService.getLigneByInspectionId(inspectionId);
 
-            Visite visite = visiteRepository.findByInspection_IdInspection(inspectionId);
-            if(visite == null) {
-                LOGGER.info("NO VISITE FOUND WITH THAT INSPCETION...");
-            }
-            if(visite != null) {
-                // Detach Visite from the Inspection
-                LOGGER.info("VISITE FOUND WITH THAT INSPCETION...");
-                visite.setInspection(null);
-                LOGGER.info("INSPECTION RESET DONE");
-                visite.resetState(); // Reset state to pending
-                LOGGER.info("VISITE STATE RESET DONE");
-                visite.clearProcessAndRapports(); // Clear process and rapports
-                visite.setStatut(1);
-                LOGGER.info("VISITE RAPPORTS RESET DONE");
-                visiteRepository.save(visite);
-                LOGGER.info("VISITE UPDATE DONE");
-            }
-            Inspection inspection = inspectionRepository.findById(inspectionId).orElse(null);
-            // Inspection inspection = inspectionRepository.findById(inspectionId).orElseThrow(() -> new RuntimeException("Inspection not found"));
-            if (inspection == null) {
-                LOGGER.info("NO INSPECTION FOUND WITH THAT ID...");
-            } else {
-                LOGGER.info("INSPECTION FOUND WITH THAT ID...");
-                inspection.setVisite(null);
-                LOGGER.info("VISITE RESET DONE");
-                inspectionRepository.save(inspection);
-                LOGGER.info("INSPECTION UPDATE DONE");
-            }
-            Message msg = msgRepo.findByCode("IP001");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visite);
+            // Map the Ligne entity to LigneDTO
+            LigneDTO ligneDTO = new LigneDTO(ligne.getIdLigne(), ligne.getNom(), ligne.getDescription());
 
+            return ResponseEntity.ok(ligneDTO);
+        } catch (EntityNotFoundException e) {
+            // Return 404 if the Inspection is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
-            Message msg = msgRepo.findByCode("IP002");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, e.getMessage());
+            // Return 500 in case of any other errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping("/api/v1/controleur/{id}/ligne")
+    public ResponseEntity<Inspection> updateInspectionLigne(
+            @PathVariable("id") UUID inspectionId,
+            @RequestParam("ligneId") UUID ligneId) {
+        try {
+            // Update the Ligne for the given Inspection
+            Inspection updatedInspection = inspectionService.updateInspectionLigne(inspectionId, ligneId);
+            return ResponseEntity.ok(updatedInspection);
+        } catch (EntityNotFoundException e) {
+            // Return 404 if either the Inspection or Ligne is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            // Return 500 in case of any other errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.catis.controller.SseController;
 import com.catis.model.control.Control;
-import com.catis.model.control.Control.StatusType;
 import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.CarteGrise;
 import com.catis.model.entity.CategorieProduit;
@@ -51,7 +50,6 @@ import com.catis.objectTemporaire.NewListView;
 import com.catis.objectTemporaire.ProduitCategorieTest;
 import com.catis.objectTemporaire.Utils;
 import com.catis.service.GieglanFileService;
-import com.catis.service.VisiteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -1299,7 +1297,7 @@ public class VisiteNativeQueryRepositoryImpl implements VisiteNativeQueryReposit
                 if(visite.getProcess().isStatus())
                     return  "<span class=\"badge badge-info\"> ACCEPTE " + visite.statutRender() + "</span>";
                 else
-                    return  "<span class=\"badge badge-info\"> REFUSE " + visite.statutRender() + "</span>";
+                    return  "<span class=\"badge badge-danger\"> REFUSE " + visite.statutRender() + "</span>";
 
             case "A imprimer":
                 return "<span class=\"badge badge-success\">" + visite.statutRender() + "</span>";
@@ -1322,7 +1320,6 @@ public class VisiteNativeQueryRepositoryImpl implements VisiteNativeQueryReposit
                 .filter(produitCategorieTest -> produitCategorieTest.getProduitId().equals(visite.getCarteGrise().getProduit().getProduitId()))
                 .findFirst()
                 .get();
-        // List<GieglanFileIcon> icons =new ArrayList<>();
         Set<GieglanFileIcon> icons = new HashSet<>();
         List<GieglanFileIcon> gieglanFileIcons  =p.getTest().stream().map(
                 testNew -> new GieglanFileIcon(testNew.getExtension(), testNew.getIcon())
@@ -1444,12 +1441,6 @@ public class VisiteNativeQueryRepositoryImpl implements VisiteNativeQueryReposit
 
         }
         return new ArrayList<>(icons);
-        // return icons;
-
     }
 
-
-
-
-    
 }

@@ -218,34 +218,6 @@ public class ContactController {
 
     }*/
 
-    // @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/contacts/{keyword}")
-    // public ResponseEntity<Object> search(@PathVariable String keyword) {
-    //     LOGGER.trace("Recherche contacts...");
-    //     try {
-    //         List<ClientPartenaire> clientPartenaires = new ArrayList<>();
-    //         ClientPartenaire cp;
-
-    //         for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
-    //             cp = new ClientPartenaire();
-    //             // if (contactService.getContactByPartenaireId(p.getPartenaireId()) != null) {
-    //                 if(p.getContactId()!= null) {
-    //                 cp.setNom(p.getNom());
-    //                 cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
-    //                 cp.setTelephone(p.getTelephone());
-    //                 cp.setContactId(p.getContactId());
-    //                 // cp.setContactId(contactService.getContactByPartenaireId(p.getPartenaireId()).getContactId());
-    //                 clientPartenaires.add(cp);
-    //             }
-    //         }
-    //         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
-    //     } catch (Exception e) {
-    //         return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Une erreur est survenue", null);
-
-    //     }
-
-
-    // }
-    @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/caisse/search/contacts/{keyword}")
     public ResponseEntity<Object> search(@PathVariable String keyword) {
         LOGGER.trace("Recherche contacts...");
@@ -253,22 +225,23 @@ public class ContactController {
             List<ClientPartenaire> clientPartenaires = new ArrayList<>();
             ClientPartenaire cp;
 
-            // Call the async method and wait for completion
-            List<Partenaire> partenaires = partenaireService.findPartenaireByNomAsync(keyword).join();
-
-            for (Partenaire p : partenaires) {
+            for (Partenaire p : partenaireService.findPartenaireByNom(keyword)) {
                 cp = new ClientPartenaire();
-                if (p.getContactId() != null) {
+                if (contactService.getContactByPartenaireId(p.getPartenaireId()) != null) {
                     cp.setNom(p.getNom());
                     cp.setPrenom(p.getPrenom() == null ? "" : p.getPrenom());
                     cp.setTelephone(p.getTelephone());
-                    cp.setContactId(p.getContactId());
+                    cp.setContactId(contactService.getContactByPartenaireId(p.getPartenaireId()).getContactId());
                     clientPartenaires.add(cp);
                 }
             }
             return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "success", clientPartenaires);
         } catch (Exception e) {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Une erreur est survenue", null);
+
         }
+
+
     }
+  
 }

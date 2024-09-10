@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.catis.dtoprojections.ProprietaireVehiculeDTO;
 import com.catis.model.entity.Client;
@@ -22,6 +28,41 @@ public class ProprietaireVehiculeService {
     private ProprietaireVehiculeRepository pvr;
     @Autowired
     private PartenaireService partenaireService;
+
+
+
+
+
+    @Transactional
+    public ProprietaireVehicule updatePartenaireDetails(UUID proprietaireVehiculeId, String nom, String prenom) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            System.out.println("user: " + auth.getName());
+            System.out.println("Roles: " + auth.getAuthorities());
+        }
+        // Fetch the ProprietaireVehicule by its ID
+        ProprietaireVehicule proprietaireVehicule = pvr.findById(proprietaireVehiculeId)
+                .orElseThrow(() -> new EntityNotFoundException("ProprietaireVehicule not found with id " + proprietaireVehiculeId));
+
+        // Fetch the associated Partenaire
+        Partenaire partenaire = proprietaireVehicule.getPartenaire();
+
+        if (partenaire == null) {
+            throw new EntityNotFoundException("Partenaire not found for ProprietaireVehicule with id " + proprietaireVehiculeId);
+        }
+
+        // Update the Partenaire's details
+        partenaire.setNom(nom);
+        partenaire.setPrenom(prenom);
+        // Save the updated Partenaire and ProprietaireVehicule
+        partenaireService.updatePartenaire(partenaire);
+        return proprietaireVehicule;
+    }
+
+
+    public Page<ProprietaireVehicule> searchProprio(String nom, Pageable pageable) {
+        return pvr.findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCaseOrPartenaire_PrenomStartsWithIgnoreCase(nom,nom, pageable);
+    }
 
 
     public List<ProprietaireVehicule> findAll() {

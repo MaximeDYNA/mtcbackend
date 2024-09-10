@@ -8,7 +8,7 @@ import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.MessageRepository;
 
-import org.hibernate.Hibernate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

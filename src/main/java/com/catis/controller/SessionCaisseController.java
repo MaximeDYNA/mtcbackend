@@ -8,7 +8,6 @@ import java.util.UUID;
 
 
 import com.catis.model.entity.Caissier;
-import com.catis.model.entity.Produit;
 import com.catis.objectTemporaire.SessionCaisseDTO;
 import com.catis.repository.CaissierRepository;
 //import org.apache.log4j.Logger;
@@ -126,16 +125,24 @@ public class SessionCaisseController {
         Optional<Caissier> c = cr.findByUser_KeycloakId(openData.getUserId()).stream().findFirst();
         if(c.isPresent()){
             sessionCaisse.setCaissier(c.get());
+            System.out.println("user is already a caissier");
         }
-        else
+        else{
+            System.out.println("user is not a caissier");
             sessionCaisse.setCaissier(null);
+        }
 
         SessionCaisse sessionAlreadyOpen = sessionCaisseService
                 .findSessionCaisseByKeycloakId(openData.getUserId());
-        if( sessionAlreadyOpen == null)
+        
+        if( sessionAlreadyOpen == null){
+            System.out.println("session caisse is not open for current user");
             sessionCaisse = sessionCaisseService.enregistrerSessionCaisse(sessionCaisse);
-        else
+        }
+        else{
+            System.out.println("session caisse is already open for current user");
             sessionCaisse = sessionAlreadyOpen;
+        }
 
         Hold hold = new Hold();
 

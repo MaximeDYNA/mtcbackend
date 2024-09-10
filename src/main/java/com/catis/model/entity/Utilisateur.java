@@ -21,7 +21,7 @@ import java.util.UUID;
 @Table(name = "t_utilisateur")
 @Audited
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE t_utilisateur SET active_status=false WHERE utilisateur_id=?")
+@SQLDelete(sql = "UPDATE t_utilisateur SET active_status=false WHERE id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Utilisateur extends JournalData {

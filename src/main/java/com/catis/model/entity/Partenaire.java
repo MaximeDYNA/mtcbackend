@@ -7,7 +7,6 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import com.catis.objectTemporaire.CaissierPOJO;
-import com.catis.objectTemporaire.PartenaireSearch;
 import com.catis.objectTemporaire.ProprietairePOJO;
 import com.catis.objectTemporaire.ProprietairePOJOCreate;
 
@@ -19,7 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
@@ -122,12 +120,6 @@ public class Partenaire extends JournalData {
     @JsonIgnore
     Set<Vendeur> vendeurs;
 
-    @Transient
-    private UUID clientId;
-
-    @Transient
-    private UUID contactId;
-
     public void setPartenaireId(UUID partenaireId) {
         this.partenaireId = partenaireId;
     }
@@ -175,39 +167,4 @@ public class Partenaire extends JournalData {
                 caissierPOJO
                         .getPartenaireId();
     }
-
-    public Partenaire(PartenaireSearch document) {
-        UUID uuid = UUID.fromString(document.getId());
-        this.partenaireId = uuid;
-        this.nom = document.getNom();
-        this.prenom = document.getPrenom();
-        this.passport = document.getPassport();
-        this.permiDeConduire = document.getPermiDeConduire();
-        this.cni = document.getCni();
-        this.telephone = document.getTelephone();
-        this.email = document.getEmail();
-        this.clientId = document.getClientId();
-        this.contactId = document.getContactId();
-    }
-
-
-    @Override
-    public String toString() {
-        return "PartenaireDocument{" +
-                "partenaireId=" + partenaireId +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", dateNaiss=" + dateNaiss +
-                ", lieuDeNaiss='" + lieuDeNaiss + '\'' +
-                ", passport='" + passport + '\'' +
-                ", permiDeConduire='" + permiDeConduire + '\'' +
-                ", cni='" + cni + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", email='" + email + '\'' +
-                ", numeroContribuable='" + numeroContribuable + '\'' +
-                ", clientId=" + clientId +
-                ", contactId=" + contactId +
-                '}';
-    }
-
 }

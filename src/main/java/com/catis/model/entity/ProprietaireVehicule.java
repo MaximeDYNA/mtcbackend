@@ -11,8 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -22,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.catis.model.configuration.JournalData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

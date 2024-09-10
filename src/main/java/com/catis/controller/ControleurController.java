@@ -15,6 +15,7 @@ import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,31 +58,66 @@ public class ControleurController {
     }
 
 
-
     @GetMapping(value = "/api/v1/controleurinfo/{id}")
-    public ResponseEntity<Object> getInfosControleur(@PathVariable UUID id) {
+public ResponseEntity<Object> getInfosControleur(@PathVariable UUID id) {
 
-        Controleur controleur = controleurService.findControleurById(id);
-        KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-        Keycloak keycloak = KeycloakBuilder
-                .builder()
-                .serverUrl(serverUrl)
-                .realm(realm)
-                .authorization(context.getTokenString())
-                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-                .build();
-        UserResource userResource = keycloak.realm(realm).users().get(controleur.getUtilisateur().getKeycloakId());
+    // Fetch the Controleur object based on the provided ID
+    Controleur controleur = controleurService.findControleurById(id);
 
-
-        UserDTO user = new UserDTO();
-        user.setNom(userResource.toRepresentation().getLastName());
-        user.setPrenom(userResource.toRepresentation().getFirstName());
-        user.setLogin(userResource.toRepresentation().getUsername());
-        user.setEmail(userResource.toRepresentation().getEmail());
-
-        return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
-
+    // Get the KeycloakSecurityContext from the request
+    KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    
+    if (context == null) {
+        return ApiResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED, false, "Keycloak security context is missing", null);
     }
+
+    // Retrieve the AccessToken from the KeycloakSecurityContext
+    AccessToken accessToken = context.getToken();
+    
+    // Extract user information from the AccessToken
+    UserDTO user = new UserDTO();
+    user.setId(accessToken.getSubject());
+    user.setNom(accessToken.getName());
+    user.setPrenom(accessToken.getGivenName());
+    user.setLogin(accessToken.getPreferredUsername());
+    user.setEmail(accessToken.getEmail());
+    
+    // You might want to add more fields if they're available in the token
+
+    // Return the user information wrapped in an ApiResponseHandler response
+    return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
+}
+
+
+    // flemming edited
+    // no need to make a request to get user information 
+    // @GetMapping(value = "/api/v1/controleurinfo/{id}")
+    // public ResponseEntity<Object> getInfosControleur(@PathVariable UUID id) {
+
+    //     Controleur controleur = controleurService.findControleurById(id);
+    //     KeycloakSecurityContext context = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    //     Keycloak keycloak = KeycloakBuilder
+    //             .builder()
+    //             .serverUrl(serverUrl)
+    //             .realm(realm)
+    //             .authorization(context.getTokenString())
+    //             .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+    //             .build();
+    //     UserResource userResource = keycloak.realm(realm).users().get(controleur.getUtilisateur().getKeycloakId());
+
+
+    //     UserDTO user = new UserDTO();
+    //     user.setNom(userResource.toRepresentation().getLastName());
+    //     user.setPrenom(userResource.toRepresentation().getFirstName());
+    //     user.setLogin(userResource.toRepresentation().getUsername());
+    //     user.setEmail(userResource.toRepresentation().getEmail());
+
+    //     return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "success", user);
+
+    // }
+
+
+
     @Transactional
     @GetMapping(value = "/api/v1/admin/controleurs")
     public ResponseEntity<Object> getAll() {

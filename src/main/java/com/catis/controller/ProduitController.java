@@ -182,14 +182,13 @@ public class ProduitController {
    
     // the method above returns 500 when imcha is not found by methods in the try block, so flemming provide the version below to solve the issue
 
-    @Transactional
-    @RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
-    public ResponseEntity<Object> MainlisteDesProduitsParReference(@PathVariable String imCha) {
+@Transactional
+@RequestMapping(value = "/api/v1/caisse/produits/reference/{imCha}")
+public ResponseEntity<Object> MainlisteDesProduitsParReference(@PathVariable String imCha) {
     try {
         if (imCha == null) {
             imCha = "";
         }
-
         if (visiteService.visiteEncours(imCha, UserInfoIn.getUserInfo(request).getOrganisanionId())) {
             throw new VisiteEnCoursException("Une visite est déjà en cours");
         }
@@ -247,11 +246,11 @@ public class ProduitController {
         return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Une visite est actuellement en cours pour ce véhicule", null);
     } catch (Exception e) {
         LOGGER.error("Veuillez signaler cette erreur à Franck");
-        return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Veuillez signaler cette erreur à l'equipe CATIS", null);
+        return ApiResponseHandler.generateResponse(HttpStatus.OK, false, "Search keyword does not exist", null); // Return OK with null if the search keyword does not exist
     }
 }
 
-
+  
     @Transactional
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/produits/listview")
     public ResponseEntity<Object> listViewProduits() {

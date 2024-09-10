@@ -1,5 +1,7 @@
 package com.catis.security;
 
+import java.util.stream.Collectors;
+
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -29,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -178,3 +181,9 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 
 
 }
+
+
+
+
+
+

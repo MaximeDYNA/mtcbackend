@@ -6,7 +6,6 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
 import java.text.AttributedString;
 import java.time.*;
 import java.util.*;
@@ -19,27 +18,23 @@ import com.catis.controller.configuration.SessionData;
 import com.catis.controller.exception.ImpressionException;
 import com.catis.controller.pdfhandler.MediaReplacedElementFactory;
 import com.catis.controller.pdfhandler.PdfGenaratorUtil;
-import com.catis.model.control.GieglanFile;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.*;
 import com.catis.repository.*;
 import com.catis.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.PagedModel.PageMetadata;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,8 +50,11 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 @CrossOrigin
@@ -100,6 +98,7 @@ public class VisiteController {
     @Autowired
     private ProduitService ps;
 
+
     @Autowired
     private GieglanFileService gieglanFileService;
     @Autowired
@@ -122,8 +121,6 @@ public class VisiteController {
 
     static List<SseEmitter> emitters= new CopyOnWriteArrayList<>();
 
-    @Autowired
-    private VisiteSearch searchservice;
 
 
 
@@ -203,7 +200,7 @@ public class VisiteController {
     }
 
 
-    // Flemming implimeted
+    // Flemming implimented
     @GetMapping(value = "/api/v1/all/visites", params = { "title", "page", "size" })
     public ResponseEntity<Object> llistDesVisitesEncours(@RequestParam("title") String search, @RequestParam("page") int page, @RequestParam("size") int size) {
         try {
@@ -715,7 +712,12 @@ try{
 
 
     }   
+    
+    
+    
+    
     public String fillHtmlToValue(UUID id) {
+    // public String fillHtmlToValue(UUID id) {
         Optional<Visite> visite = this.visiteRepo.findById(id);
         log.info("visite data " + visite.get().toString());
 
@@ -790,7 +792,8 @@ try{
                     minorDefault.add(lexique);
             });
 
-            UserDTO user = UserInfoIn.getInfosControleur(visitemain.getInspection().getControleur(), environment);
+            // UserDTO user = UserInfoIn.getInfosControleur(visitemain.getInspection().getControleur(), environment);
+            UserDTO user = UserInfoIn.getUserInfo(request);
 
             ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
             templateResolver.setSuffix(".html");
@@ -1293,7 +1296,6 @@ try{
     }
 
 
-    // logic to reset visite from en line to inspections 
     @Transactional
     @PostMapping(value = "/api/v1/admin/visites/reset/{id}")
     public ResponseEntity<Object> reset(@PathVariable UUID id) {

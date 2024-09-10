@@ -67,9 +67,16 @@ public class KeycloakService {
             userDTO.setLastName(u.getUsername());
             userDTO.setEmail(u.getEmail());
             userDTO.setRole(userRole);
-            userDTO.setOrganisationId(
-                    u.getAttributes() == null ?
-                    null : u.getAttributes().get("organisationId").get(0));
+            String organisationId = null;
+
+            if (u.getAttributes() != null) {
+                List<String> organisationIds = u.getAttributes().get("organisationId");
+                if (organisationIds != null && !organisationIds.isEmpty()) {
+                        organisationId = organisationIds.get(0);
+                }
+           }
+           userDTO.setOrganisationId(organisationId);
+        //     userDTO.setOrganisationId(u.getAttributes() == null ? null : u.getAttributes().get("organisationId").get(0));
             if(u.getAttributes() == null ?
                     false : (u.getAttributes().get("ditrosct") == null ? false :  Boolean.valueOf(u.getAttributes().get("ditrosct").get(0))))
             userDTOs.add(userDTO);

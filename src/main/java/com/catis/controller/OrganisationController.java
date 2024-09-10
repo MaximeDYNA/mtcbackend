@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -201,6 +202,25 @@ public class OrganisationController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "OK", null);
         }
     }
+
+    // flemming implimented
+    // @GetMapping("/organisation/child/select")
+    // public ResponseEntity<Object> findAllChildForSelect(
+    //         @RequestParam(name = "search", defaultValue = "") String search) {
+    //     try {
+    //         // Define a fixed pagination of 10 elements per page
+    //         Pageable pageable = PageRequest.of(0, 10, Sort.by("nom").ascending());
+
+    //         // Call service to get the paginated results
+    //         List<OrganisationDataDTO> result = os.findOrganisations(search, pageable);
+
+    //         // Return the paginated response
+    //         return ApiResponseHandler.generateResponse(HttpStatus.OK, true, "OK", result);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Error occurred", null);
+    //     }
+    // }
 
     @GetMapping(value="/api/v1/admin/organisation/select/{keyword}")
     public ResponseEntity<Object> getOrganisationsForSelectSearch(@PathVariable String keyword) {

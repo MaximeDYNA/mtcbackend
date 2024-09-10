@@ -1,6 +1,5 @@
 package com.catis.objectTemporaire;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +13,7 @@ public class UserDTO {
     private String tel;
     private UUID organisanionId;
     private Set<String> roles;
+
 
 
     public UserDTO() {

@@ -13,8 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.catis.controller.exception.ContactVideException;
-import com.catis.controller.exception.VisiteEnCoursException;
+
 import com.catis.objectTemporaire.Encaissement;
 import com.catis.objectTemporaire.EncaissementResponse;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -45,8 +44,6 @@ public class EncaissementController {
     @Autowired
     private ClientService clientService;
     @Autowired
-    private VendeurService vendeurService;
-    @Autowired
     private ContactService contactService;
     @Autowired
     private ProduitService produitService;
@@ -59,10 +56,6 @@ public class EncaissementController {
     @Autowired
     private ProprietaireVehiculeService pvs;
     @Autowired
-    private GieglanFileService gieglanFileService;
-    @Autowired
-    private CategorieTestVehiculeService catSer;
-    @Autowired
     private MessageRepository msgRepo;
     @Autowired
     private CaissierService caissierService;
@@ -71,8 +64,8 @@ public class EncaissementController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(EncaissementController.class);
 
-    @PostMapping("/api/v1/caisse/encaissements")
     @Transactional
+    @PostMapping("/api/v1/caisse/encaissements")
     public ResponseEntity<Object> save(@RequestBody Encaissement encaissement) throws Exception {
         LOGGER.info("ADDING A VISIT...");
         LOGGER.info("Object received "+ ToStringBuilder.reflectionToString(encaissement));
@@ -84,6 +77,7 @@ public class EncaissementController {
         Caissier caissier = caissierService.findBylogin(user);
         if(caissier==null)
             throw new Exception("Please enter a correct login");
+
         if(!caissier.getSessionCaisses().stream().anyMatch(
                 sessionCaisse -> sessionCaisse.isActive()
         ))

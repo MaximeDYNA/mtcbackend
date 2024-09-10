@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.checker.units.qual.A;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -14,7 +13,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
-import com.catis.objectTemporaire.CarteGriseReceived;
+
 
 import java.util.UUID;
 
@@ -23,7 +22,6 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Audited
 @SQLDelete(sql = "UPDATE t_energie SET active_status=false WHERE id=?")
-// @SQLDelete(sql = "UPDATE t_energie SET active_status=false WHERE energie_id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Energie extends JournalData {

@@ -37,6 +37,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -138,46 +139,97 @@ public class VisiteService {
     }
 
     @CacheEvict(allEntries = true)
-    @Transactional
+    @Transactional(rollbackFor = VisiteEnCoursException.class)
     public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, UUID organisationId, Caissier caissier, String document, String certidocsId) throws VisiteEnCoursException {
         Visite visite = new Visite();
+
+        log.info("adding visite");
 
         Organisation organisation = os.findByOrganisationId(organisationId);
         if (montantEncaisse < montantTotal) {
             visite.setStatut(9);
-        } else
+        } else{
             visite.setStatut(0);
+        }
 
-        if (isVisiteInitial(cg.getNumImmatriculation(), organisationId)) {
+        // Merged isVisiteInitial logic
+        List<Visite> visites = findByReference(cg.getNumImmatriculation(), organisationId);
+        log.info("found " + visites.size() + "  previous visites for this cartegrise");
+        Visite latestVisite = visites.stream()
+        .filter(v -> v.isActiveStatus())
+        .max(Comparator.comparing(Visite::getCreatedDate))
+        .orElse(null);
+
+        log.info("check for previous visite completed");
+
+        boolean isInitial = true;
+        if (latestVisite != null) {
+            log.info("latestVisite is not null, ID: " + latestVisite.getIdVisite());
+            long start = System.currentTimeMillis();
+            Control latestControl = latestVisite.getControl();
+            long end = System.currentTimeMillis();
+            log.info("Control retrieval took " + (end - start) + "ms");
+            if(latestControl != null) {
+                log.info("latestControl is not null, Status: " + latestControl.getStatus());
+                log.info("Comparing: " + latestControl.getStatus() + " with " + StatusType.INITIALIZED);
+                log.info("Comparison result: " + latestControl.getStatus().equals(StatusType.INITIALIZED));
+                if (latestControl.getStatus().equals(StatusType.INITIALIZED)) {
+    
+                    throw new VisiteEnCoursException();
+                }
+                if (latestControl.getStatus().equals(StatusType.VALIDATED)) {
+                    isInitial = true;
+                }
+                if (latestControl.getStatus().equals(StatusType.REJECTED)) {
+                    LocalDateTime now = LocalDateTime.now();
+    
+                    if (latestControl.getContreVDelayAt().isAfter(now)) {
+                        isInitial = false;
+                    }
+                    if (latestControl.getContreVDelayAt().isBefore(now) || latestControl.getContreVDelayAt().equals(now)) {
+                        isInitial = true;
+                    }
+                 }
+            }else {
+                log.error("latestControl is null");
+            }
+            }else {
+                log.error("latestVisite is null");
+            }
+
+        log.info("isInitial visited test was set to " + isInitial);
+
+        if (isInitial) {
             visite.setContreVisite(false);
             visite.setEncours(true);
             visite.setCarteGrise(cg);
             visite.setDateDebut(LocalDateTime.now());
             Control control = new Control();
-            List<Visite> visites = new ArrayList<>();
-            visites.add(visite);
+            List<Visite> visiteList = new ArrayList<>();
+            visiteList.add(visite);
             control.setCarteGrise(cg);
             control.setStatus(StatusType.INITIALIZED);
-            control.setVisites(visites);
+            control.setVisites(visiteList);
             control.setOrganisation(organisation);
             visite.setControl(control);
             log.info("processed visite initial");
-            
-        } else {
+    
+        }
+        else {
             log.info("processing contre visite");
             visite.setContreVisite(true);
             visite.setStatut(1);
-            List<Visite> vi =visiteRepository.getBeforeLastVisiteWithHisControl(cg.getNumImmatriculation(), PageRequest.of(0,1));
-            if(!vi.isEmpty()) {
+            List<Visite> vi = visiteRepository.getBeforeLastVisiteWithHisControl(cg.getNumImmatriculation(), PageRequest.of(0, 1));
+            if (!vi.isEmpty()) {
                 visite.setControl(vi.get(0).getControl());
             }
-
+    
             visite.setEncours(true);
             visite.setCarteGrise(cg);
             visite.setDateDebut(LocalDateTime.now());
         }
 
-        if (cg.getProduit().getLibelle()== "dec") {
+        if (cg.getProduit().getLibelle().equals("dec")) {
             return visite;
         }
         visite.setCaissier(caissier);
@@ -200,6 +252,72 @@ public class VisiteService {
         log.info("RETURNING VISITE");
         return visite;
     }
+    
+    
+    // old method cause occasional duplicates due to lack of transaction boundaries
+    // @CacheEvict(allEntries = true)
+    // @Transactional
+    // public Visite ajouterVisite(CarteGrise cg, double montantTotal, double montantEncaisse, UUID organisationId, Caissier caissier, String document, String certidocsId) throws VisiteEnCoursException {
+    //     Visite visite = new Visite();
+
+    //     Organisation organisation = os.findByOrganisationId(organisationId);
+    //     if (montantEncaisse < montantTotal) {
+    //         visite.setStatut(9);
+    //     } else
+    //         visite.setStatut(0);
+
+    //     if (isVisiteInitial(cg.getNumImmatriculation(), organisationId)) {
+    //         visite.setContreVisite(false);
+    //         visite.setEncours(true);
+    //         visite.setCarteGrise(cg);
+    //         visite.setDateDebut(LocalDateTime.now());
+    //         Control control = new Control();
+    //         List<Visite> visites = new ArrayList<>();
+    //         visites.add(visite);
+    //         control.setCarteGrise(cg);
+    //         control.setStatus(StatusType.INITIALIZED);
+    //         control.setVisites(visites);
+    //         control.setOrganisation(organisation);
+    //         visite.setControl(control);
+    //         log.info("processed visite initial");
+            
+    //     } else {
+    //         log.info("processing contre visite");
+    //         visite.setContreVisite(true);
+    //         visite.setStatut(1);
+    //         List<Visite> vi =visiteRepository.getBeforeLastVisiteWithHisControl(cg.getNumImmatriculation(), PageRequest.of(0,1));
+    //         if(!vi.isEmpty()) {
+    //             visite.setControl(vi.get(0).getControl());
+    //         }
+
+    //         visite.setEncours(true);
+    //         visite.setCarteGrise(cg);
+    //         visite.setDateDebut(LocalDateTime.now());
+    //     }
+
+    //     if (cg.getProduit().getLibelle()== "dec") {
+    //         return visite;
+    //     }
+    //     visite.setCaissier(caissier);
+    //     visite.setOrganisation(organisation);
+    //     visite.setReglophare(Visite.TestResult.PENDING);
+    //     visite.setRipage(Visite.TestResult.PENDING);
+    //     visite.setFreinage(Visite.TestResult.PENDING);
+    //     visite.setSuspension(Visite.TestResult.PENDING);
+    //     visite.setPollution(Visite.TestResult.PENDING);
+    //     visite.setVisuel(Visite.TestResult.PENDING);
+    //     visite.setDocument(document);
+    //     visite.setCertidocsId(certidocsId);
+    //     log.info("SAVING VISITE");
+    //     visite = visiteRepository.save(visite);
+    //     final Visite v = visite;
+    //     dispatchNewVisit(visite);
+    //     organisation.getUtilisateurs().forEach(utilisateur -> {
+    //         notificationService.dipatchVisiteToMember(utilisateur.getKeycloakId(), v, false);
+    //     });
+    //     log.info("RETURNING VISITE");
+    //     return visite;
+    // }
     
     
     
@@ -570,7 +688,9 @@ public class VisiteService {
         return visite2;
     }
 
+    // @Transactional
     public boolean isVisiteInitial(String ref, UUID organisationId) throws VisiteEnCoursException {
+        log.info("isVisiteInitial check for organisation ongoing");
         List<Visite> visites = findByReference(ref, organisationId);
 
         Visite visite = visites.stream().filter(visite1 -> visite1.isActiveStatus()).max(Comparator.comparing(Visite::getCreatedDate))
@@ -598,6 +718,8 @@ public class VisiteService {
         }
         return true;
     }
+
+
 
     public boolean isVehiculeExist(String ref, UUID organisationId) {
         if (findByReference(ref, organisationId).isEmpty())

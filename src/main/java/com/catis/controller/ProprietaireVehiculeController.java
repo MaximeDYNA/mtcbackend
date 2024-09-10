@@ -4,14 +4,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
 import com.catis.model.entity.Organisation;
 import com.catis.objectTemporaire.ProprietaireDTO;
 import com.catis.objectTemporaire.ProprietairePOJO;
-import com.catis.objectTemporaire.ProprietairePOJOCreate;
 import com.catis.objectTemporaire.UserInfoIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,10 +29,12 @@ import com.catis.dtoprojections.ProprietaireVehiculeDTO;
 import com.catis.model.entity.Partenaire;
 import com.catis.model.entity.ProprietaireVehicule;
 import com.catis.objectTemporaire.ClientPartenaire;
+import com.catis.objectTemporaire.PaginationResponse;
 import com.catis.service.OrganisationService;
 import com.catis.service.PartenaireService;
 import com.catis.service.ProprietaireVehiculeService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
@@ -52,6 +55,24 @@ public class ProprietaireVehiculeController {
     private PagedResourcesAssembler<ProprietaireDTO> pagedResourcesAssembler;
 
     private static Logger LOGGER = LoggerFactory.getLogger(ProprietaireVehiculeController.class);
+
+
+    @Transactional
+    @CacheEvict(value = "VisiteCache", allEntries = true)
+    @PutMapping("/api/v1/all/{id}/partenaire")
+    public ResponseEntity<Object> updatePartenaireDetails(
+            @PathVariable("id") UUID proprietaireVehiculeId,
+            @RequestParam String nom,
+            @RequestParam String prenom) {
+        try {
+            ProprietaireVehicule updatedProprietaireVehicule = proprietaireVehiculeadresseService.updatePartenaireDetails(proprietaireVehiculeId, nom, prenom);
+            return ResponseEntity.ok().body(updatedProprietaireVehicule);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the partenaire details.");
+        }
+    }
 
     @Transactional
     @GetMapping("/api/v1/all/search/proprietaires/{nom}")
@@ -76,6 +97,110 @@ public class ProprietaireVehiculeController {
             return ApiResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, "Une erreur est survenu", null);
         }
     }
+
+    @Transactional
+    @GetMapping("/api/v1/all/search/proprietaires")
+    public ResponseEntity<Object> searchProprietaires(
+            @RequestParam String nom,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            LOGGER.trace("List des propriétaires des véhicules...");
+    
+            // Create pageable object, sorting by related Partenaire's 'nom' field
+            PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "partenaire.nom"));
+    
+            // Fetch data with pagination
+            Page<ProprietaireVehicule> proprietairePage = proprietaireVehiculeadresseService.searchProprio(nom, pageable);
+            
+            List<Map<String, Object>> maps = new ArrayList<>();
+            for (ProprietaireVehicule p : proprietairePage.getContent()) {
+                Map<String, Object> proprio = new HashMap<>();
+                proprio.put("id", p.getProprietaireVehiculeId());
+                proprio.put("nom", p.getPartenaire().getNom());
+                proprio.put("prenom", p.getPartenaire().getPrenom() == null ? "" : p.getPartenaire().getPrenom());
+                maps.add(proprio);
+            }
+            // Return paginated response
+            return ApiResponseHandler.generateResponse(
+                    HttpStatus.OK, 
+                    true, 
+                    "Succès", 
+                    new PaginationResponse(maps, proprietairePage.getTotalElements(), page, size)
+            );
+    
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            LOGGER.error("Une erreur est survenue lors de l'accès à la liste des propriétaires");
+            return ApiResponseHandler.generateResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR, 
+                    false, 
+                    "Une erreur est survenue", 
+                    null
+            );
+        }
+    }
+
+    
+    // flemming implimented
+
+    // @Transactional
+    // @GetMapping("/api/v1/all/search/proprietaires")
+    // public ResponseEntity<Object> searchProprietaires(
+    //         @RequestParam String nom,
+    //         @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "10") int size) {
+    //     try {
+    //         LOGGER.trace("List des propriétaires des véhicules...");
+    
+    //         // Create pageable object, sorting by related Partenaire's 'nom' field
+    //         PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "partenaire.nom"));
+    
+    //         // Fetch data with pagination
+    //         Page<ProprietaireVehicule> proprietairePage = proprietaireVehiculeadresseService.searchProprio(nom, pageable);
+            
+    //         List<Map<String, Object>> maps = new ArrayList<>();
+    //         for (ProprietaireVehicule p : proprietairePage.getContent()) {
+    //             Map<String, Object> proprio = new HashMap<>();
+    //             proprio.put("id", p.getProprietaireVehiculeId());
+    //             proprio.put("nom", p.getPartenaire().getNom());
+    //             proprio.put("prenom", p.getPartenaire().getPrenom() == null ? "" : p.getPartenaire().getPrenom());
+    
+    //             // Collect CarteGrise details
+    //             List<Map<String, Object>> carteGrises = p.getCartegrises().stream()
+    //                 .map(carteGrise -> {
+    //                     Map<String, Object> carteGriseMap = new HashMap<>();
+    //                     carteGriseMap.put("cartegriseId", carteGrise.getCarteGriseId().toString()); // Ensure this is a string
+    //                     carteGriseMap.put("numImmatriculation", carteGrise.getNumImmatriculation()); // Adjust as per your method
+    //                     return carteGriseMap;
+    //                 })
+    //                 .collect(Collectors.toList());
+    //             proprio.put("cartegrises", carteGrises);
+    
+    //             maps.add(proprio);
+    //         }
+    
+    //         // Return paginated response
+    //         return ApiResponseHandler.generateResponse(
+    //                 HttpStatus.OK, 
+    //                 true, 
+    //                 "Succès", 
+    //                 new PaginationResponse(maps, proprietairePage.getTotalElements(), page, size)
+    //         );
+    
+    //     } catch (Exception e) {
+    //         System.out.println(e.toString());
+    //         LOGGER.error("Une erreur est survenue lors de l'accès à la liste des propriétaires");
+    //         return ApiResponseHandler.generateResponse(
+    //                 HttpStatus.INTERNAL_SERVER_ERROR, 
+    //                 false, 
+    //                 "Une erreur est survenue", 
+    //                 null
+    //         );
+    //     }
+    // }
+
+
 
     @Transactional
     @PostMapping("/api/v1/cg/proprietaires")

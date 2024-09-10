@@ -24,7 +24,6 @@ import com.catis.model.entity.ProprietaireVehicule;
 import com.catis.model.entity.Vehicule;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.domain.PageImpl;
 
 @Repository
 public class CarteGriseCustomRepositoryImpl implements CarteGriseCustomRepository {
@@ -109,67 +108,173 @@ public class CarteGriseCustomRepositoryImpl implements CarteGriseCustomRepositor
         String formattedDate = outputFormat.format(date);
         return outputFormat.parse(formattedDate);
     }
+
+
     private CarteGrise parseCarteGriseJson(String json, ObjectMapper objectMapper) {
         try {
             JsonNode jsonNode = objectMapper.readTree(json);
             CarteGrise carteGrise = new CarteGrise();
-            carteGrise.setActiveStatus(jsonNode.get("activeStatus").asBoolean());
-            carteGrise.setModifiedBy(jsonNode.get("modifiedBy").asText());
-            carteGrise.setCarteGriseId(UUID.fromString(jsonNode.get("carteGriseId").asText()));
-            carteGrise.setNumImmatriculation(jsonNode.get("numImmatriculation").asText());
-            carteGrise.setPreImmatriculation(jsonNode.get("preImmatriculation").asText());
-            carteGrise.setSsdt_id(jsonNode.get("ssdt_id").asText());
-            carteGrise.setCommune(jsonNode.get("commune").asText());
-            carteGrise.setMontantPaye(jsonNode.get("montantPaye").asDouble());
-            carteGrise.setVehiculeGage(jsonNode.get("vehiculeGage").asBoolean());
-            carteGrise.setGenreVehicule(jsonNode.get("genreVehicule").asText());
-            carteGrise.setEnregistrement(jsonNode.get("enregistrement").asText());
-            carteGrise.setType(jsonNode.get("type").asText());
-            carteGrise.setLieuDedelivrance(jsonNode.get("lieuDedelivrance").asText());
-            carteGrise.setCentre_ssdt(jsonNode.get("centre_ssdt").asText());
-
-            JsonNode vehiculeNode = jsonNode.get("vehicule");
-            if (vehiculeNode != null && !vehiculeNode.isNull()) {
+    
+            carteGrise.setActiveStatus(
+                jsonNode.path("activeStatus").asBoolean()
+            );
+    
+            carteGrise.setModifiedBy(
+                jsonNode.path("modifiedBy").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("modifiedBy").asText()
+            );
+    
+            carteGrise.setCarteGriseId(
+                safeUUIDFromString(jsonNode.path("carteGriseId").asText())
+            );
+    
+            carteGrise.setNumImmatriculation(
+                jsonNode.path("numImmatriculation").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("numImmatriculation").asText()
+            );
+    
+            carteGrise.setPreImmatriculation(
+                jsonNode.path("preImmatriculation").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("preImmatriculation").asText()
+            );
+    
+            carteGrise.setSsdt_id(
+                jsonNode.path("ssdt_id").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("ssdt_id").asText()
+            );
+    
+            carteGrise.setCommune(
+                jsonNode.path("commune").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("commune").asText()
+            );
+    
+            carteGrise.setMontantPaye(
+                jsonNode.path("montantPaye").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("montantPaye").asDouble()
+            );
+    
+            carteGrise.setVehiculeGage(
+                jsonNode.path("vehiculeGage").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("vehiculeGage").asBoolean()
+            );
+    
+            carteGrise.setGenreVehicule(
+                jsonNode.path("genreVehicule").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("genreVehicule").asText()
+            );
+    
+            carteGrise.setEnregistrement(
+                jsonNode.path("enregistrement").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("enregistrement").asText()
+            );
+    
+            carteGrise.setType(
+                jsonNode.path("type").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("type").asText()
+            );
+    
+            carteGrise.setLieuDedelivrance(
+                jsonNode.path("lieuDedelivrance").isMissingNode() 
+                    ? null 
+                    : jsonNode.path("lieuDedelivrance").asText()
+            );
+    
+            JsonNode vehiculeNode = jsonNode.path("vehicule");
+            if (!vehiculeNode.isMissingNode() && !vehiculeNode.isNull()) {
                 Vehicule vehicule = new Vehicule();
-                vehicule.setVehiculeId(UUID.fromString(vehiculeNode.get("id").asText()));
-                vehicule.setChassis(vehiculeNode.get("chassis").asText());
+                vehicule.setVehiculeId(
+                    safeUUIDFromString(vehiculeNode.path("id").asText())
+                );
+                vehicule.setChassis(
+                    vehiculeNode.path("chassis").isMissingNode() 
+                        ? null 
+                        : vehiculeNode.path("chassis").asText()
+                );
                 carteGrise.setVehicule(vehicule);
             }
-
-            JsonNode proprietaireVehiculeNode = jsonNode.get("proprietaireVehicule");
-            if (proprietaireVehiculeNode != null && !proprietaireVehiculeNode.isNull()) {
+    
+            JsonNode proprietaireVehiculeNode = jsonNode.path("proprietaireVehicule");
+            if (!proprietaireVehiculeNode.isMissingNode() && !proprietaireVehiculeNode.isNull()) {
                 ProprietaireVehicule proprietaireVehicule = new ProprietaireVehicule();
-                proprietaireVehicule.setProprietaireVehiculeId(UUID.fromString(proprietaireVehiculeNode.get("id").asText()));
-                JsonNode partenaireNode = proprietaireVehiculeNode.get("partenaire");
-                if (partenaireNode != null && !partenaireNode.isNull()) {
+                proprietaireVehicule.setProprietaireVehiculeId(
+                    safeUUIDFromString(proprietaireVehiculeNode.path("id").asText())
+                );
+                JsonNode partenaireNode = proprietaireVehiculeNode.path("partenaire");
+                if (!partenaireNode.isMissingNode() && !partenaireNode.isNull()) {
                     Partenaire partenaire = new Partenaire();
-                    partenaire.setPartenaireId(UUID.fromString(partenaireNode.get("id").asText()));
-                    partenaire.setNom(partenaireNode.get("nom").asText());
-                    partenaire.setPrenom(partenaireNode.get("prenom").asText());
+                    partenaire.setPartenaireId(
+                        safeUUIDFromString(partenaireNode.path("id").asText())
+                    );
+                    partenaire.setNom(
+                        partenaireNode.path("nom").isMissingNode() 
+                            ? null 
+                            : partenaireNode.path("nom").asText()
+                    );
+                    partenaire.setPrenom(
+                        partenaireNode.path("prenom").isMissingNode() 
+                            ? null 
+                            : partenaireNode.path("prenom").asText()
+                    );
                     proprietaireVehicule.setPartenaire(partenaire);
                 }
                 carteGrise.setProprietaireVehicule(proprietaireVehicule);
             }
-
-            JsonNode produitNode = jsonNode.get("produit");
-            if (produitNode != null && !produitNode.isNull()) {
+    
+            JsonNode produitNode = jsonNode.path("produit");
+            if (!produitNode.isMissingNode() && !produitNode.isNull()) {
                 Produit produit = new Produit();
-                produit.setProduitId(UUID.fromString(produitNode.get("id").asText()));
-                produit.setLibelle(produitNode.get("libelle").asText());
+                produit.setProduitId(
+                    safeUUIDFromString(produitNode.path("id").asText())
+                );
+                produit.setLibelle(
+                    produitNode.path("libelle").isMissingNode() 
+                        ? null 
+                        : produitNode.path("libelle").asText()
+                );
                 carteGrise.setProduit(produit);
             }
-
-            JsonNode organisationNode = jsonNode.get("org");
-            if (organisationNode != null && !organisationNode.isNull()) {
+    
+            JsonNode organisationNode = jsonNode.path("org");
+            if (!organisationNode.isMissingNode() && !organisationNode.isNull()) {
                 Organisation organisation = new Organisation();
-                organisation.setOrganisationId(UUID.fromString(organisationNode.get("id").asText()));
-                organisation.setNom(organisationNode.get("name").asText());
+                organisation.setOrganisationId(
+                    safeUUIDFromString(organisationNode.path("id").asText())
+                );
+                organisation.setNom(
+                    organisationNode.path("name").isMissingNode() 
+                        ? null 
+                        : organisationNode.path("name").asText()
+                );
                 carteGrise.setOrganisation(organisation);
             }
-
+    
             return carteGrise;
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             throw new RuntimeException("Failed to parse JSON", e);
         }
     }
+    
+    private UUID safeUUIDFromString(String uuidString) {
+        if (uuidString == null || uuidString.trim().isEmpty() || "null".equals(uuidString)) {
+            return null;
+        }
+        try {
+            return UUID.fromString(uuidString);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid UUID string: " + uuidString, e);
+        }
+    }
+    
+
 }

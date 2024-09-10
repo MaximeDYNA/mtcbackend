@@ -14,7 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.catis.model.configuration.JournalData;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity

@@ -11,8 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -27,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_caissier")
 @Audited
-@SQLDelete(sql = "UPDATE t_caissier SET active_status=false WHERE caissier_id=?")
+@SQLDelete(sql = "UPDATE t_caissier SET active_status=false WHERE id=?")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Caissier extends JournalData {

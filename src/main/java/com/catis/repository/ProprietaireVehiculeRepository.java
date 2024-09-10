@@ -3,6 +3,7 @@ package com.catis.repository;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,6 +18,9 @@ public interface ProprietaireVehiculeRepository extends CrudRepository<Proprieta
     List<ProprietaireVehicule> findByActiveStatusTrue();
     // flemming added
     List<ProprietaireVehicule> findByActiveStatusTrue(Pageable pageable);
+
+    Page<ProprietaireVehicule> findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCaseOrPartenaire_PrenomStartsWithIgnoreCase(String nom, String prenom, Pageable pageable);
+
 
     List<ProprietaireVehicule> findByActiveStatusTrueAndPartenaire_NomStartsWithIgnoreCase(String nom);
     

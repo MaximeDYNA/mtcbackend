@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.*;
 
-import com.catis.model.control.GieglanFile;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

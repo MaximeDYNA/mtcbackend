@@ -2,21 +2,19 @@ package com.catis.controller;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.*;
 import java.util.stream.Collectors;
 
 import com.catis.controller.configuration.SessionData;
 import com.catis.model.entity.*;
 import com.catis.objectTemporaire.CarteGrisePOJO;
-import com.catis.objectTemporaire.UserInfoIn;
 import com.catis.repository.MessageRepository;
 import com.catis.service.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -28,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.catis.objectTemporaire.CarteGriseReceived;
+import com.catis.objectTemporaire.UpdateCartegrise;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,6 +62,16 @@ public class CarteGriseController {
 
 
     private static Logger LOGGER = LoggerFactory.getLogger(CarteGriseController.class);
+
+
+    
+    @CacheEvict(value = "VisiteCache", allEntries = true)
+    @PutMapping("/api/v1/cartegrise/updateProprietaire")
+    public ResponseEntity<Void> updateProprietaire(
+            @RequestBody UpdateCartegrise updateDTO) {
+        cgs.updateProprietaireVehicule(updateDTO.getCarteGriseId(), updateDTO.getNewProprietaireVehiculeId());
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/api/v1/cartegrise/search/{imCha}")
     public ResponseEntity<Object> search(@PathVariable String imCha) {
@@ -144,8 +153,9 @@ public class CarteGriseController {
         }
     }
 
-    @Transactional
     @PostMapping("/api/v1/cg/cartegrise")
+    @Transactional
+    @CacheEvict(value = "VisiteCache", allEntries = true)
     public ResponseEntity<Object> misajour(@RequestBody CarteGriseReceived carteGriseR) throws IOException {
         LOGGER.trace("mise à jour demandé...");
         UUID orgId = SessionData.getOrganisationId(request);
@@ -222,7 +232,8 @@ public class CarteGriseController {
             visite = visiteService.modifierVisite(visite);
             Message msg = msgRepo.findByCode("CG001");
             LOGGER.info("Enregistrement "+ carteGriseR.getNumImmatriculation()+" carte grise réussi");
-            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visite.getCarteGrise() );
+            return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, null );
+            // return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, visite.getCarteGrise() );
         }
 		catch(Exception e){
             e.printStackTrace();
@@ -295,6 +306,7 @@ public class CarteGriseController {
             LOGGER.info("Affichage de la liste des cartes grises réussi");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, true, msg, result);
         } catch (Exception e) {
+            e.printStackTrace();
             Message msg = msgRepo.findByCode("CG004");
             LOGGER.info("Erreur lors de l'affichage de la liste des cartes grises");
             return ApiResponseHandler.generateResponseWithAlertLevel(HttpStatus.OK, false, msg, null);

@@ -10,7 +10,6 @@ import javax.persistence.MappedSuperclass;
 
 
 import com.catis.model.entity.Organisation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.springframework.data.annotation.CreatedBy;

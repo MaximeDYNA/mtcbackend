@@ -1,21 +1,21 @@
-package com.catis.service;
+// package com.catis.service;
 
-import java.util.List;
+// import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 
-import com.catis.objectTemporaire.VisiteSearchService;
-import com.catis.repository.VisiteSearchRespository;
+// import com.catis.objectTemporaire.VisiteSearchService;
+// import com.catis.repository.VisiteSearchRespository;
 
-@Service
-public class VisiteSearch {
+// @Service
+// public class VisiteSearch {
 
-    @Autowired
-    private VisiteSearchRespository  searchservice;
+//     @Autowired
+//     private VisiteSearchRespository  searchservice;
 
-    public List<VisiteSearchService> findVisiteBYChassisORByCarteGriseImmatriculationOrByPartnerNom(String nom) {
-        return searchservice.findVisiteByRegexpFields(nom);
-    }
+//     public List<VisiteSearchService> findVisiteBYChassisORByCarteGriseImmatriculationOrByPartnerNom(String nom) {
+//         return searchservice.findVisiteByRegexpFields(nom);
+//     }
     
-}
+// }

@@ -3,37 +3,62 @@ package com.catis.service;
 import java.io.IOException;
 import java.util.*;
 
-import com.catis.controller.SseController;
-import com.catis.controller.VisiteController;
+import javax.persistence.EntityNotFoundException;
+
 import com.catis.model.entity.Controleur;
 import com.catis.model.entity.Visite;
 import com.catis.repository.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.catis.model.entity.Inspection;
+import com.catis.model.entity.Ligne;
 import com.catis.repository.InspectionRepository;
+import com.catis.repository.LigneRepository;
 
 @Service
-@CacheConfig(cacheNames={"VisiteCache"})
 public class InspectionService {
 
     @Autowired
     private InspectionRepository inspectionR;
-    @Autowired
-    private VisiteService visiteService;
-    @Autowired
-    private ProduitService ps;
+    
+
     @Autowired
     private NotificationService notificationService;
 
     @Autowired
-    private CategorieTestVehiculeService cat;
-    @Autowired
-    private GieglanFileService gieglanFileService;
+    private LigneRepository ligneRepository;
+
+
+    public Ligne getLigneByInspectionId(UUID inspectionId) throws EntityNotFoundException {
+        // Fetch the Inspection entity by its ID
+        Inspection inspection = inspectionR.findById(inspectionId)
+                .orElseThrow(() -> new EntityNotFoundException("Inspection not found"));
+
+        // Return the Ligne associated with the Inspection
+        return inspection.getLigne();
+    }
+
+    
+    public Inspection updateInspectionLigne(UUID inspectionId, UUID ligneId) throws EntityNotFoundException {
+        // Fetch the Inspection entity by its ID
+        Inspection inspection = inspectionR.findById(inspectionId)
+                .orElseThrow(() -> new EntityNotFoundException("Inspection not found"));
+
+        // Fetch the Ligne entity by its ID
+        Ligne ligne = ligneRepository.findById(ligneId)
+                .orElseThrow(() -> new EntityNotFoundException("Ligne not found"));
+
+        // Set the new Ligne for the Inspection
+        inspection.setLigne(ligne);
+
+        // Save and return the updated Inspection
+        return inspectionR.save(inspection);
+    }
+
+    
 
     public Inspection addInspection(Inspection inspection) {
         return inspectionR.save(inspection);
@@ -60,7 +85,7 @@ public class InspectionService {
                 .orElse(null);
         return inspection;
     }
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "VisiteCache", allEntries = true)
     public Inspection setSignature(UUID id, String signature, Controleur controleur) throws IOException {
 
         System.out.println("id visite " + id + " signature " + signature);

@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.catis.dtoprojections.VehiculeDTO;
 import com.catis.model.entity.Vehicule;
-import com.catis.objectTemporaire.VehicleSearch;
 import com.catis.repository.VehiculeRepository;
-import com.catis.repository.VehiculeSearchService;
+
 
 
 @Service
@@ -21,10 +20,6 @@ public class VehiculeService {
 
     @Autowired
     private VehiculeRepository vehiculeRepo;
-
-
-    @Autowired
-    private VehiculeSearchService vehiculesearch;
 
     public List<Vehicule> vehiculeList() {
         List<Vehicule> vehicules = new ArrayList<>();
@@ -72,13 +67,8 @@ public class VehiculeService {
         return vehiculeRepo.findById(id).get();
     }
 
-    // public List<Vehicule> findByChassis(String chassis) {
-    public List<VehicleSearch> findByChassis(String chassis) {
-        System.out.println("findByCha in vehicule index elastic search");
-        List<VehicleSearch> searchresults = vehiculesearch.findByChassisStartsWithIgnoreCase(chassis);
-        System.out.println("elastic results: " + searchresults.toString());
-        return searchresults;
-        // return vehiculeRepo.findByChassisStartsWithIgnoreCase(chassis);
+    public List<Vehicule> findByChassis(String chassis) {
+        return vehiculeRepo.findByChassisStartsWithIgnoreCase(chassis);
     }
 
 }

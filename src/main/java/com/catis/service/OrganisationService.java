@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.catis.dtoprojections.OrganisationDataDTO;
 import com.catis.model.entity.Organisation;
@@ -20,6 +21,7 @@ import com.catis.repository.OrganisationRepository;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
+@Transactional
 public class OrganisationService {
 
     @Autowired

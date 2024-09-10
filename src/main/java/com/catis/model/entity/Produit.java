@@ -13,8 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -29,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "t_produit")
 @EntityListeners(AuditingEntityListener.class)
 @Audited
-@SQLDelete(sql = "UPDATE t_produit SET active_status=false WHERE produit_id=?")
+@SQLDelete(sql = "UPDATE t_produit SET active_status=false WHERE id=?")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter

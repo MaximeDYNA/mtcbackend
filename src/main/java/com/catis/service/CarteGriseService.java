@@ -2,16 +2,22 @@ package com.catis.service;
 
 import java.util.*;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.catis.model.entity.CarteGrise;
 import com.catis.model.entity.Inspection;
+import com.catis.model.entity.ProprietaireVehicule;
 import com.catis.repository.CarteGriseRepository;
+import com.catis.repository.ProprietaireVehiculeRepository;
 import com.catis.repository.InspectionRepository;
 
 @Service
@@ -23,6 +29,26 @@ public class CarteGriseService {
     @Autowired
     private InspectionRepository inpectionR;
 
+    @Autowired
+    private ProprietaireVehiculeRepository pvr;
+
+    // flemming added
+    @Transactional
+    public void updateProprietaireVehicule(UUID carteGriseId, UUID newProprietaireVehiculeId) {
+        // Fetch the CarteGrise entity
+        CarteGrise carteGrise = cgr.findById(carteGriseId)
+            .orElseThrow(() -> new EntityNotFoundException("CarteGrise not found"));
+
+        // Fetch the new ProprietaireVehicule entity
+        ProprietaireVehicule newProprietaireVehicule = pvr.findById(newProprietaireVehiculeId)
+        .orElseThrow(() -> new EntityNotFoundException("ProprietaireVehicule not found"));
+
+        // Update the ProprietaireVehicule of the CarteGrise
+        carteGrise.setProprietaireVehicule(newProprietaireVehicule);
+        cgr.save(carteGrise);
+    }
+
+    // @Transactional(isolation = Isolation.SERIALIZABLE)
     public CarteGrise addCarteGrise(CarteGrise carteGrise) {
         if (cgr.findByNumImmatriculationIgnoreCaseOrVehicule_ChassisIgnoreCase(carteGrise.getNumImmatriculation(),
                 carteGrise.getNumImmatriculation()).isEmpty())

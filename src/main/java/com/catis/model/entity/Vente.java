@@ -21,9 +21,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 import com.catis.model.configuration.JournalData;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

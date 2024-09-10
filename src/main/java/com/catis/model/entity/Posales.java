@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -46,8 +45,6 @@ public class Posales extends JournalData {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID posalesId;
 
-
-    // @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     private Produit produit;
 

@@ -30,7 +30,6 @@ public class ProductImageController {
         this.resourceLoader = resourceLoader;
     }
 
-    @Async("taskExecutorDefault")
     @GetMapping("/{imageName}")
     public CompletableFuture<ResponseEntity<byte[]>> getImage(@PathVariable String imageName) {
         return CompletableFuture.supplyAsync(() -> {

@@ -67,6 +67,79 @@ public class VenteService {
     public List<Vente> findByRef(String ref, Pageable pageable){
         return venteRepository.findByRef(ref, pageable);
     }
+
+
+@Transactional
+@Cacheable(key = "'ticket-' + #organisationId.toString() + '-' + #pageable.toString()")
+public Page<Ticketdto> findByRefMain(String title, UUID organisationId, Pageable pageable, String lang) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    Page<Vente> ventePage = venteRepository.findByRefAndOrganisationId(title, organisationId, pageable);
+
+    List<Ticketdto> ticketdtos = ventePage.getContent()
+            .stream()
+            .map(vente -> new Ticketdto(
+                    vente.getNumFacture(),
+                    vente.getClient() == null ? vente.getContact().getPartenaire().getNom() : vente.getClient().getPartenaire().getNom(),
+                    vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone() : vente.getClient().getPartenaire().getTelephone(),
+                    vente.getCreatedDate().format(formatter),
+                    vente.getDetailventes().stream()
+                            .map(detailVente1 -> new ProduitTicketdto(
+                                    detailVente1.getReference(),
+                                    detailVente1.getProduit().getLibelle(),
+                                    detailVente1.getPrix(),
+                                    getPrix(detailVente1.getPrix(), detailVente1.getProduit().getTaxeProduit()),
+                                    detailVente1.getProduit().getDescription(),
+                                    detailVente1.getProduit().getTaxeProduit().stream()
+                                            .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+                                            .collect(Collectors.toList())
+                            ))
+                            .collect(Collectors.toList()),
+                    vente.getMontantTotal(),
+                    convert(lang, vente.getMontantTotal()),
+                    vente.getMontantHT()
+            ))
+            .collect(Collectors.toList());
+
+    // The total number of elements is fetched from ventePage.getTotalElements()
+    return new PageImpl<>(ticketdtos, pageable, ventePage.getTotalElements());
+}
+
+@Transactional
+public Page<Ticketdto> findByRefMainNoCache(String title, UUID organisationId, Pageable pageable, String lang) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    Page<Vente> ventePage = venteRepository.findByRefAndOrganisationId(title, organisationId, pageable);
+
+    List<Ticketdto> ticketdtos = ventePage.getContent()
+            .stream()
+            .map(vente -> new Ticketdto(
+                    vente.getNumFacture(),
+                    vente.getClient() == null ? vente.getContact().getPartenaire().getNom() : vente.getClient().getPartenaire().getNom(),
+                    vente.getClient() == null ? vente.getContact().getPartenaire().getTelephone() : vente.getClient().getPartenaire().getTelephone(),
+                    vente.getCreatedDate().format(formatter),
+                    vente.getDetailventes().stream()
+                            .map(detailVente1 -> new ProduitTicketdto(
+                                    detailVente1.getReference(),
+                                    detailVente1.getProduit().getLibelle(),
+                                    detailVente1.getPrix(),
+                                    getPrix(detailVente1.getPrix(), detailVente1.getProduit().getTaxeProduit()),
+                                    detailVente1.getProduit().getDescription(),
+                                    detailVente1.getProduit().getTaxeProduit().stream()
+                                            .map(taxeProduit -> new TaxeTicketdto(taxeProduit.getTaxe().getNom(), taxeProduit.getTaxe().getValeur()))
+                                            .collect(Collectors.toList())
+                            ))
+                            .collect(Collectors.toList()),
+                    vente.getMontantTotal(),
+                    convert(lang, vente.getMontantTotal()),
+                    vente.getMontantHT()
+            ))
+            .collect(Collectors.toList());
+
+    // The total number of elements is fetched from ventePage.getTotalElements()
+    return new PageImpl<>(ticketdtos, pageable, ventePage.getTotalElements());
+}
+
     
     @Transactional
     @Cacheable(key = "'ticket-' + #pageable.toString()")
@@ -100,6 +173,8 @@ public class VenteService {
 
         return new PageImpl<>(ticketdtos, pageable, 300);
     }
+
+
     
      public double getPrix(double prixTTC, Set<TaxeProduit> taxeProduits){
 
